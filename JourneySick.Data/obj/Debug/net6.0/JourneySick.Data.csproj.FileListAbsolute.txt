@@ -1,0 +1,14 @@
+D:\JourneySick_Backend\JourneySick.Data\obj\Debug\net6.0\JourneySick.Data.csproj.AssemblyReference.cache
+D:\JourneySick_Backend\JourneySick.Data\obj\Debug\net6.0\JourneySick.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\JourneySick_Backend\JourneySick.Data\obj\Debug\net6.0\JourneySick.Data.AssemblyInfoInputs.cache
+D:\JourneySick_Backend\JourneySick.Data\obj\Debug\net6.0\JourneySick.Data.AssemblyInfo.cs
+D:\JourneySick_Backend\JourneySick.Data\obj\Debug\net6.0\JourneySick.Data.csproj.CoreCompileInputs.cache
+D:\JourneySick_Backend\JourneySick.Data\bin\Debug\net6.0\JourneySick.Data.deps.json
+D:\JourneySick_Backend\JourneySick.Data\bin\Debug\net6.0\JourneySick.Data.dll
+D:\JourneySick_Backend\JourneySick.Data\bin\Debug\net6.0\JourneySick.Data.pdb
+D:\JourneySick_Backend\JourneySick.Data\obj\Debug\net6.0\JourneySick.Data.dll
+D:\JourneySick_Backend\JourneySick.Data\obj\Debug\net6.0\refint\JourneySick.Data.dll
+D:\JourneySick_Backend\JourneySick.Data\obj\Debug\net6.0\JourneySick.Data.pdb
+D:\JourneySick_Backend\JourneySick.Data\obj\Debug\net6.0\ref\JourneySick.Data.dll
+D:\JourneySick_Backend\JourneySick.Data\bin\Debug\net6.0\JourneySick.Data.runtimeconfig.json
+D:\JourneySick_Backend\JourneySick.Data\obj\Debug\net6.0\JourneySick.Data.genruntimeconfig.cache

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "3QjNYAHLyULktWaTjxcYxUzitcTYzIw8cWEeLcGMsJU=",
+  "Source": "JourneySick.API",
+  "BasePath": "_content/JourneySick.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
