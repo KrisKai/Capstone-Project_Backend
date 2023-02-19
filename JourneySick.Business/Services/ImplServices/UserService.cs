@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Repositories;
@@ -25,13 +26,32 @@ namespace JourneySick.Business.Services.ImplServices
             try
             {
                 Tbluser userEntity = _mapper.Map<Tbluser>(userDTO);
+                Console.Write(userEntity.FldUsername);
+                
                 int result = await _userRepository.CreateUser(userEntity);
                 return result;
-            }catch(Exception ex)
+            }catch(UserException ex)
             {
-                throw new Exception(ex.Message, ex);
+                throw new UserException("warning");
             }
 
         }
+        public async Task<List<UserDTO>> SelectUser(UserDTO userDTO)
+        {
+            try
+            {
+                Tbluser userEntity = _mapper.Map<Tbluser>(userDTO);
+                Console.Write(userEntity.FldUsername);
+                
+                List<Tbluser> result = await _userRepository.SelectUser(userEntity);
+                List<UserDTO> finalResult = _mapper.Map<List<UserDTO>>(result);
+                return finalResult;
+            }catch(UserException ex)
+            {
+                throw new UserException("warning");
+            }
+
+        }
+
     }
 }

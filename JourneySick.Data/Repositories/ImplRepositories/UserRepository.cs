@@ -44,5 +44,23 @@ namespace JourneySick.Data.Repositories.ImplRepositories
                 throw new Exception(e.Message, e);
             }
         }
+        //SELECT
+        public async Task<List<Tbluser>> SelectUser(Tbluser userEntity)
+        {
+            try
+            {
+                var query = "SELECT * FROM tbluser WHERE fldUserId = @fldUserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUserId", userEntity.FldUserId, DbType.String);
+
+                using var connection = CreateConnection();
+                return (await connection.QueryAsync<Tbluser>(query, parameters)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }

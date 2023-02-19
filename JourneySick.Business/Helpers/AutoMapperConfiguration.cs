@@ -15,9 +15,20 @@ namespace JourneySick.Business.Helpers
         public AutoMapperConfiguration()
         {
             CreateMap<UserDTO, Tbluser>()
-                .ForMember(des => des.FldUserId, act => act.MapFrom(src => src.UserId))
-                .ForMember(des => des.FldUsername, act => act.MapFrom(src => src.UserName))
-                .ForMember(des => des.FldPassword, act => act.MapFrom(src => src.Password))
+                .ReverseMap(); //reverse so the both direction{
+            CreateMap<TripPlanDTO, Tbltripplan>()
+                .ReverseMap(); //reverse so the both direction
+            CreateMap<TripMemberDTO, Tbltripmember>()
+                .ReverseMap(); //reverse so the both direction
+            CreateMap<TripRoleDTO, Tbltriprole>()
+                .ReverseMap(); //reverse so the both direction
+            CreateMap<TripDTO, Tbltrip>()
+                .ReverseMap(); //reverse so the both direction
+            CreateMap<TripDetailDTO, Tbltripdetail>()
+                .ReverseMap(); //reverse so the both direction
+            CreateMap<UserDetailDTO, Tbluserdetail>()
+                .ReverseMap(); //reverse so the both direction
+            CreateMap<PlanLocationDTO, Tblplanlocation>()
                 .ReverseMap(); //reverse so the both direction
         }
     }
