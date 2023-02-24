@@ -33,7 +33,7 @@ namespace JourneySick.Business.IServices.Services
 
         private async Task<string> GenerateUserID()
         {
-            string lastOne = await _userRepository.getLastOneId();
+            String lastOne = await _userRepository.getLastOneId();
             if (lastOne!=null)
             {
                 string lastId = lastOne.Substring(4);

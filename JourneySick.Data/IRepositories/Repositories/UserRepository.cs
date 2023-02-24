@@ -52,7 +52,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 var query = "SELECT MAX(fldUserId) FROM tbluser ";
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<string>(query)).ToString();
+                return await connection.QueryFirstOrDefaultAsync<string>(query);
             }
             catch (Exception e)
             {
