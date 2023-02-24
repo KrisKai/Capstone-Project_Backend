@@ -31,6 +31,9 @@ namespace JourneySick.Business.Helpers
                         // custom application error
                         response.StatusCode = (int)HttpStatusCode.BadRequest;
                         break;
+                    case InsertUserException e:
+                        response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        break;
                     default:
                         // unhandled error
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;

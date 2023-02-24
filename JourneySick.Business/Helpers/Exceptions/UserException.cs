@@ -16,5 +16,18 @@ namespace JourneySick.Business.Helpers.Exceptions
             : base(String.Format(CultureInfo.CurrentCulture, message, args))
         {
         }
+    }    
+    
+    public class InsertUserException : Exception
+    {
+        public InsertUserException() : base() { }
+        public InsertUserException(string message) : base(message) { }
+
+        public InsertUserException(string message, params object[] args)
+            : base(String.Format(CultureInfo.CurrentCulture, message, args))
+        {
+        }
     }
+
+
 }

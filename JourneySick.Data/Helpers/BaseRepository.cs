@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.Data;
 
-namespace JourneySick.Data.Repositories.Helpers
+namespace JourneySick.Data.Helpers
 {
     public abstract class BaseRepository
     {
@@ -13,7 +13,7 @@ namespace JourneySick.Data.Repositories.Helpers
 
         protected IDbConnection CreateConnection()
         {
-            return new MySql.Data.MySqlClient.MySqlConnection(_configuration.GetConnectionString("DEV"));
+            return new MySql.Data.MySqlClient.MySqlConnection(_configuration.GetConnectionString("DEV_PHAT"));
         }
     }
 }

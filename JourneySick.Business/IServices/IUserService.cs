@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JourneySick.Business.Services
+namespace JourneySick.Business.IServices
 {
     public interface IUserService
     {
         //CREATE
-        public Task<int> CreateUser(UserDTO userDTO);
+        public Task<string> CreateUser(UserDTO userDTO);
     }
 }

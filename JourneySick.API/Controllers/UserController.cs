@@ -1,4 +1,4 @@
-﻿using JourneySick.Business.Services;
+﻿using JourneySick.Business.IServices;
 using JourneySick.Data.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;

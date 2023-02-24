@@ -1,6 +1,6 @@
 ﻿using Dapper;
+using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.Entities;
-using JourneySick.Data.Repositories.Helpers;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -8,8 +8,9 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace JourneySick.Data.Repositories.ImplRepositories
+namespace JourneySick.Data.IRepositories.Repositories
 {
     public class UserRepository : BaseRepository, IUserRepository
     {

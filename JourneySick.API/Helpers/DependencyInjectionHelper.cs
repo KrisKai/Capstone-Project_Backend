@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers;
-using JourneySick.Business.Services;
-using JourneySick.Business.Services.ImplServices;
-using JourneySick.Data.Repositories;
-using JourneySick.Data.Repositories.ImplRepositories;
+using JourneySick.Business.IServices;
+using JourneySick.Business.IServices.Services;
+using JourneySick.Data.IRepositories;
+using JourneySick.Data.IRepositories.Repositories;
 
 namespace JourneySick.API.Startup
 {
