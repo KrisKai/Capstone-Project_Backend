@@ -45,6 +45,21 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        public async Task<string> getLastOneId()
+        {
+            try
+            {
+                var query = "SELECT MAX(fldUserId) FROM tbluser ";
+                using var connection = CreateConnection();
+                return (await connection.QueryAsync<string>(query)).ToString();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
         //SELECT
         public async Task<List<Tbluser>> SelectUser(Tbluser userEntity)
         {
