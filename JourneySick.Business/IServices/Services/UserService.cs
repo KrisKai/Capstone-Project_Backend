@@ -26,9 +26,10 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-
+                return "ok";
             }catch(Exception ex)
             {
+                throw new Exception();
             }
         }
     }
