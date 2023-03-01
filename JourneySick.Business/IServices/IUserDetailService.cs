@@ -7,14 +7,11 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Business.IServices
 {
-    public interface IUserService
+    public interface IUserDetailService
     {
-        //CREATE
-        public Task<string> CreateUser(UserDTO userDTO);
-<<<<<<< Updated upstream
-=======
         public Task<string> GenerateUserID();
-        
->>>>>>> Stashed changes
+        //Select list
+        public Task<string> SelectAllUsersWithPaging();
+
     }
 }

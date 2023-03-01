@@ -1,5 +1,6 @@
 ﻿using JourneySick.Business.IServices;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -23,25 +24,26 @@ namespace JourneySick.API.Controllers
 
         //CREATE
         [HttpPost]
-        public async Task<IActionResult> CreateArea([FromBody] UserDTO userDTO)
+        public async Task<IActionResult> CreateUser([FromBody] UserDTO userDTO)
         {
             var result = await _userService.CreateUser(userDTO);
             return Ok(result);
             
         }
 
-/*        //GET ALL
+        //GET ALL
         [HttpGet]
-        public async Task<IActionResult> GetAllAreas(int pageIndex, int pageSize)
+        public async Task<IActionResult> GetAllUsersWithPaging(int pageIndex, int pageSize)
         {
             var result = new List<UserDTO>();
-            result = await _areaService.GetAllAreas(pageIndex, pageSize, currentUser);
+            UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService);
+            result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
-            
 
-        }*/
 
-       
+        }
+
+
 
     }
 }

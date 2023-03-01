@@ -78,5 +78,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+        
+        
     }
 }
