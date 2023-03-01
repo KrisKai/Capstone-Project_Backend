@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Business.IServices
 {
-    public interface IUserService
+    public interface IAuthenticateService
     {
-        //CREATE
-        public Task<string> CreateUser(UserDTO userDTO);
-        public Task<string> GenerateUserID();
+        public Task<RegisterResponse> RegisterUser(RegisterRequest registereRequest);
     }
 }
