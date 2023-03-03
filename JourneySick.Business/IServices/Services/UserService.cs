@@ -23,7 +23,7 @@ namespace JourneySick.Business.IServices.Services
                 userDTO.FldUserId = await GenerateUserID();
                 Tbluser tblUser = _mapper.Map<Tbluser>(userDTO);
                 int id = await _userRepository.CreateUser(tblUser);
-                return "ok";
+                return userDTO.FldUserId;
             }
             catch (Exception ex)
             {
@@ -48,7 +48,7 @@ namespace JourneySick.Business.IServices.Services
                 {
                     newIdStr = "0" + newIdStr;
                 }
-                return "USER" + lastId;
+                return "USER" + newIdStr;
             }
             else
             {

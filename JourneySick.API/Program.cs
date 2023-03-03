@@ -2,6 +2,8 @@
 using JourneySick.API.Startup;
 using JourneySick.Business.Helpers;
 using Microsoft.Extensions.Configuration;
+using System.Text.Json.Serialization;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,11 +13,19 @@ builder.Services.AddControllers();
 
 builder.Services.DatabaseSetup(builder.Configuration);
 
-builder.Services.ServicesConfiguration();
+builder.Services.AddServicesConfiguration();
 
-builder.Services.MapperConfiguration();
+builder.Services.AddMapperConfiguration();
 
-builder.Services.SwaggerConfiguration();
+builder.Services.AddSwaggerServices();
+
+builder.Services.AddJWTServices(builder.Configuration);
+
+builder.Services.AddSettingObjects(builder.Configuration);
+
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 var app = builder.Build();
 
@@ -27,7 +37,7 @@ app.UseCors("CorsPolicy");
 //app.UseEndpoints();
 
 // global error handler
-app.UseMiddleware<ExceptionHandlerMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 

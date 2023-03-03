@@ -33,9 +33,9 @@ public partial class Tbluserdetail
 
     public DateTime? FldCreateDate { get; set; }
 
-    public DateTime? FldCreateBy { get; set; }
+    public string? FldCreateBy { get; set; }
 
     public DateTime? FldUpdateDate { get; set; }
 
-    public DateTime? FldUpdateBy { get; set; }
+    public string? FldUpdateBy { get; set; }
 }
