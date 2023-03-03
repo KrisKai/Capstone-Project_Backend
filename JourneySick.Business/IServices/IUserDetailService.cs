@@ -1,4 +1,5 @@
 ﻿using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,10 @@ namespace JourneySick.Business.IServices
 {
     public interface IUserDetailService
     {
-        public Task<string> GenerateUserID();
         //Select list
         public Task<string> SelectAllUsersWithPaging();
+        //Select User
+        public Task<UserVO> SelectUserDetailByUserName(String username);
 
     }
 }

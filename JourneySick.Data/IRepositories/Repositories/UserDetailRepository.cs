@@ -109,7 +109,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<Tbluserdetail> SelectUserDetailByUserName(UserVO userEntity)
+        public async Task<UserVO> SelectUserDetailByUserName(String username)
         {
             try
             {
@@ -130,10 +130,10 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "a.fldUpdateBy  FROM tbluserdetail a JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE fldUsername = @fldUsername";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldUsername", userEntity.FldUsername, DbType.String);
+                parameters.Add("fldUsername", username, DbType.String);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryFirstOrDefaultAsync<Tbluserdetail>(query));
+                return (await connection.QueryFirstOrDefaultAsync<UserVO>(query));
             }
             catch (Exception e)
             {

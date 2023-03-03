@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using JourneySick.Data.Helpers;
+using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -78,7 +79,23 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
-        
-        
+
+        public async Task<Tbluser> SelectUser(string userId)
+        {
+            try
+            {
+                var query = "SELECT * FROM tbluser WHERE fldUserId = @fldUserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUserId", userId, DbType.String);
+
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<Tbluser>(query);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }

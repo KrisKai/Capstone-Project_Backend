@@ -12,8 +12,7 @@ namespace JourneySick.API.Extensions
 {
     internal static class GetCurrentUserInfo
     {
-
-        internal static async Task<UserDetailDTO> GetThisUserInfo(HttpContext httpContext, IUserService _userService)
+        internal static async Task<UserDetailDTO> GetThisUserInfo(HttpContext httpContext, IUserService _userService, IUserDetailService _userDetailService)
         {
             UserDetailDTO currentUser = new();
 
@@ -32,54 +31,55 @@ namespace JourneySick.API.Extensions
                 currentUser.FldRole = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
                 currentUser.FldFullname = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Actor).Value;
             }
-;
-            UserDetailDTO? userDTO = await _userService.GetUserByEmail(currentUser.email);
 
-            if (userDTO == null)
-            {
-                currentUser.roleId = "";
-                currentUser.businessId = "";
-            }
-            else
-            {
-                currentUser.roleId = userDTO.role.id;
+            UserDTO userDTO = await _userService.SelectUser(currentUser.FldUserId);
 
-                if (userDTO.business != null)
-                {
-                    currentUser.businessId = userDTO.business.id;
-                }
-                else
-                {
-                    currentUser.businessId = "";
-                }
-            }
+            UserDetailDTO userDetailDTO = await _userDetailService.SelectUserDetailByUserName(userDTO.FldUsername);
 
-            foreach (RoleDTO role in roleList)
-            {
-                if (role.name.Equals(Enum.GetNames(typeof(RoleEnum)).ElementAt(0)))
-                {
-                    currentUser.adminRoleId = role.id;
-                }
-                if (role.name.Equals(Enum.GetNames(typeof(RoleEnum)).ElementAt(3)))
-                {
-                    currentUser.investorRoleId = role.id;
-                }
-                if (role.name.Equals(Enum.GetNames(typeof(RoleEnum)).ElementAt(1)))
-                {
-                    currentUser.businessManagerRoleId = role.id;
-                }
-                if (role.name.Equals(Enum.GetNames(typeof(RoleEnum)).ElementAt(2)))
-                {
-                    currentUser.projectManagerRoleId = role.id;
-                }
-            }
+            //if (userDetailDTO == null)
+            //{
+            //    currentUser.FldRole = "";
+            //}
+            //else
+            //{
+            //    userDetailDTO.FldRole = userDTO.role.id;
 
-            if (currentUser.roleId.Equals(currentUser.projectManagerRoleId))
-            {
-                //currentUser.projectId = await _userService.GetProjectIdByManagerEmail(currentUser.email);
-                //currentUser.projectId??="";
+            //    if (userDTO.business != null)
+            //    {
+            //        currentUser.businessId = userDTO.business.id;
+            //    }
+            //    else
+            //    {
+            //        currentUser.businessId = "";
+            //    }
+            //}
 
-            }
+            //foreach (RoleDTO role in roleList)
+            //{
+            //    if (role.name.Equals(Enum.GetNames(typeof(RoleEnum)).ElementAt(0)))
+            //    {
+            //        currentUser.adminRoleId = role.id;
+            //    }
+            //    if (role.name.Equals(Enum.GetNames(typeof(RoleEnum)).ElementAt(3)))
+            //    {
+            //        currentUser.investorRoleId = role.id;
+            //    }
+            //    if (role.name.Equals(Enum.GetNames(typeof(RoleEnum)).ElementAt(1)))
+            //    {
+            //        currentUser.businessManagerRoleId = role.id;
+            //    }
+            //    if (role.name.Equals(Enum.GetNames(typeof(RoleEnum)).ElementAt(2)))
+            //    {
+            //        currentUser.projectManagerRoleId = role.id;
+            //    }
+            //}
+
+            //if (currentUser.roleId.Equals(currentUser.projectManagerRoleId))
+            //{
+            //    //currentUser.projectId = await _userService.GetProjectIdByManagerEmail(currentUser.email);
+            //    //currentUser.projectId??="";
+
+            //}
 
             return currentUser;
         }

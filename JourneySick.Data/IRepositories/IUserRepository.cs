@@ -1,4 +1,5 @@
-﻿using JourneySick.Data.Models.Entities;
+﻿using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace JourneySick.Data.IRepositories
         //CREATE
         public Task<int> CreateUser(Tbluser userEntity);
         public Task<string> getLastOneId();
+        Task<UserDTO> SelectUser(string userId);
     }
 }

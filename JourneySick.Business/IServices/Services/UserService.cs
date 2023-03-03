@@ -31,6 +31,11 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
+        public async Task<UserDTO> SelectUser(String userId)
+        {
+            return await _userRepository.SelectUser(userId);
+        }
+
         private async Task<string> GenerateUserID()
         {
             string lastOne = await _userRepository.getLastOneId();
@@ -50,5 +55,6 @@ namespace JourneySick.Business.IServices.Services
                 return "USER00000001";
             }
         }
+
     }
 }

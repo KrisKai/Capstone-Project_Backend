@@ -1,5 +1,6 @@
 ﻿using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace JourneySick.Data.IRepositories
         public Task<int> CreateUserDetail(Tbluserdetail userDetail);
         //Select list
         public Task<List<UserDetailDTO>> SelectAllUsersWithPaging(int pageIndex, int pageSize);
+        //Select User Detail
+        public Task<UserVO> SelectUserDetailByUserName(String username);
     }
 }

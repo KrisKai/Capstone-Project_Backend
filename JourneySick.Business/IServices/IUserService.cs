@@ -11,10 +11,7 @@ namespace JourneySick.Business.IServices
     {
         //CREATE
         public Task<string> CreateUser(UserDTO userDTO);
-<<<<<<< Updated upstream
-=======
-        public Task<string> GenerateUserID();
-        
->>>>>>> Stashed changes
+
+        public Task<UserDTO> SelectUser(String userId);
     }
 }
