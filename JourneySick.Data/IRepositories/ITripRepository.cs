@@ -1,4 +1,6 @@
-﻿using JourneySick.Data.Models.Entities;
+﻿using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,8 @@ namespace JourneySick.Data.IRepositories
     {
         //CREATE
         public Task<int> CreateTrip(Tbltrip Tbltrip);
-        public Task<string> getLastOneId();
+        public Task<string> GetLastOneId();
+        Task<Tbltrip> SelectTrip(string tripId);
+        Task<int> UpdateTrip(TripDTO tripDTO);
     }
 }

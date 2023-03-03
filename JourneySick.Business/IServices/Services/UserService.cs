@@ -2,6 +2,7 @@
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.VO;
 
 namespace JourneySick.Business.IServices.Services
 {
@@ -20,7 +21,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
+                // generate ID (format: USER00000000)
                 userDTO.FldUserId = await GenerateUserID();
+                // convert entity to dto
                 Tbluser tblUser = _mapper.Map<Tbluser>(userDTO);
                 int id = await _userRepository.CreateUser(tblUser);
                 return userDTO.FldUserId;
@@ -33,12 +36,15 @@ namespace JourneySick.Business.IServices.Services
 
         public async Task<UserDTO> SelectUser(String userId)
         {
-            return await _userRepository.SelectUser(userId);
+            Tbluser tblUser = await _userRepository.SelectUser(userId);
+            // convert entity to dto
+            UserDTO userDTO = _mapper.Map<UserDTO>(tblUser);
+            return userDTO;
         }
 
         private async Task<string> GenerateUserID()
         {
-            string lastOne = await _userRepository.getLastOneId();
+            string lastOne = await _userRepository.GetLastOneId();
             if (lastOne != null)
             {
                 string lastId = lastOne.Substring(4);

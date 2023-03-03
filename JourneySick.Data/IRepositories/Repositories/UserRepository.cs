@@ -47,7 +47,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<string> getLastOneId()
+        public async Task<string> GetLastOneId()
         {
             try
             {
@@ -62,24 +62,6 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<List<Tbluser>> SelectUser(Tbluser userEntity)
-        {
-            try
-            {
-                var query = "SELECT * FROM tbluser WHERE fldUserId = @fldUserId";
-
-                var parameters = new DynamicParameters();
-                parameters.Add("fldUserId", userEntity.FldUserId, DbType.String);
-
-                using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tbluser>(query, parameters)).ToList();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
         public async Task<Tbluser> SelectUser(string userId)
         {
             try
