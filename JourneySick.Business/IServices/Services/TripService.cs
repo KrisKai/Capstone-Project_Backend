@@ -50,9 +50,11 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 TripDTO getTrip = await SelectTrip(tripDTO.FldTripId);
+                
                 if (getTrip != null)
                 {
-                    int id = await _tripRepository.UpdateTrip(tripDTO);
+                    Tbltrip tbltrip = _mapper.Map<Tbltrip>(tripDTO);
+                    int id = await _tripRepository.UpdateTrip(tbltrip);
                     return "";
                 }
                 else
@@ -66,6 +68,21 @@ namespace JourneySick.Business.IServices.Services
                 throw new Exception();
             }
             
+        }
+
+        public async Task<string> DeleteTrip(string tripId)
+        {
+            TripDTO getTrip = await SelectTrip(tripId);
+
+            if (getTrip != null)
+            {
+                int id = await _tripRepository.DeleteTrip(tripId);
+                return "done";
+            }
+            else
+            {
+                return "fail";
+            }
         }
     }
 }

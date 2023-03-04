@@ -44,7 +44,6 @@ namespace JourneySick.Business.IServices.Services
                 RegisterResponse registerResponse = new();
                 userEntity.FldUsername = registereRequest.Username;
                 userEntity.FldPassword = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
-                userEntity.FldUserId = await _userService.GenerateUserID();
 
                 if( await _userRepository.CreateUser(userEntity) > 0)
                 {

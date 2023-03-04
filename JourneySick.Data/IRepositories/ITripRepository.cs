@@ -12,9 +12,10 @@ namespace JourneySick.Data.IRepositories
     public interface ITripRepository
     {
         //CREATE
-        public Task<int> CreateTrip(Tbltrip Tbltrip);
+        public Task<int> CreateTrip(Tbltrip tbltrip);
         public Task<string> GetLastOneId();
-        Task<Tbltrip> SelectTrip(string tripId);
-        Task<int> UpdateTrip(TripDTO tripDTO);
+        public Task<Tbltrip> SelectTrip(string tripId);
+        public Task<int> UpdateTrip(Tbltrip tbltrip);
+        public Task<int> DeleteTrip(string tripId);
     }
 }
