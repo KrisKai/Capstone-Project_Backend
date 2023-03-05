@@ -5,7 +5,7 @@ namespace JourneySick.Data.Models.Entities;
 
 public partial class Tbltriprole
 {
-    public string FldRoleId { get; set; } = null!;
+    public int? FldRoleId { get; set; } = null!;
 
     public string? FldRoleName { get; set; }
 

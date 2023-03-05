@@ -5,14 +5,14 @@ namespace JourneySick.Business.IServices
     public interface ITripService
     {
         //Select list w paging
-        public Task<string> SelectAllTripWithPaging();
+        public Task<List<TripDTO>> SelectAllTripWithPaging();
         //Select User
-        public Task<TripDTO> SelectTrip(String tripId);
+        public Task<TripDTO> SelectTrip(int tripId);
         //insert
-        public Task<String> CreateTrip(TripDTO tripDTO);
+        public Task<int> CreateTrip(TripDTO tripDTO);
         //update
         public Task<String> UpdateTrip(TripDTO tripDTO);
         //update
-        public Task<String> DeleteTrip(String tripId);
+        public Task<String> DeleteTrip(int tripId);
     }
 }

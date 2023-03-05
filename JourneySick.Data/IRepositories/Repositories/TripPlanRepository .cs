@@ -18,13 +18,13 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
 
-        public async Task<string> GetLastOneId()
+        public async Task<int> GetLastOneId()
         {
             try
             {
                 var query = "SELECT MAX(fldPlanId) FROM tbltripplan ";
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<string>(query);
+                return await connection.QueryFirstOrDefaultAsync<int>(query);
             }
             catch (Exception e)
             {
@@ -33,14 +33,14 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
 
-        public async Task<Tbltripplan> SelectTripPlan(string tripPlanId)
+        public async Task<Tbltripplan> SelectTripPlan(int tripPlanId)
         {
             try
             {
                 var query = "SELECT * FROM tbltripplan WHERE fldPlanId = @fldPlanId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldPlanId", tripPlanId, DbType.String);
+                parameters.Add("fldPlanId", tripPlanId, DbType.Int16);
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<Tbltripplan>(query, parameters);
             }

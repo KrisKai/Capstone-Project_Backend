@@ -13,9 +13,9 @@ namespace JourneySick.Data.IRepositories
     {
         //CREATE
         public Task<int> CreateTrip(Tbltrip tbltrip);
-        public Task<string> GetLastOneId();
-        public Task<Tbltrip> SelectTrip(string tripId);
+        public Task<int> GetLastOneId();
+        public Task<Tbltrip> SelectTrip(int tripId);
         public Task<int> UpdateTrip(Tbltrip tbltrip);
-        public Task<int> DeleteTrip(string tripId);
+        public Task<int> DeleteTrip(int tripId);
     }
 }

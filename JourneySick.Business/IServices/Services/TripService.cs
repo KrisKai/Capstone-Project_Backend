@@ -18,23 +18,24 @@ namespace JourneySick.Business.IServices.Services
             _mapper = mapper;
         }
 
-        public Task<string> SelectAllTripWithPaging()
+        public Task<List<TripDTO>> SelectAllTripWithPaging()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<TripDTO> SelectTrip(String tripId)
+        public async Task<TripDTO> SelectTrip(int tripId)
         {
             Tbltrip tbltrip = await _tripRepository.SelectTrip(tripId);
             TripDTO tripDTO = _mapper.Map<TripDTO>(tbltrip);
             return tripDTO;
         }
 
-        public async Task<string> CreateTrip(TripDTO tripDTO)
+        public async Task<int> CreateTrip(TripDTO tripDTO)
         {
             try
             {
-                string lastOne = await _tripRepository.GetLastOneId();
+                int lastOne = await _tripRepository.GetLastOneId();
+                tripDTO.FldTripId = lastOne;
                 Tbltrip tbltrip = _mapper.Map<Tbltrip>(tripDTO);
                 int id = await _tripRepository.CreateTrip(tbltrip);
                 return lastOne;
@@ -70,7 +71,7 @@ namespace JourneySick.Business.IServices.Services
             
         }
 
-        public async Task<string> DeleteTrip(string tripId)
+        public async Task<string> DeleteTrip(int tripId)
         {
             TripDTO getTrip = await SelectTrip(tripId);
 

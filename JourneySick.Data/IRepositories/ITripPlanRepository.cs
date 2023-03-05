@@ -13,8 +13,8 @@ namespace JourneySick.Data.IRepositories
     {
         //CREATE
         public Task<int> CreateTripPlan(Tbltripplan tbltripplan);
-        public Task<string> GetLastOneId();
-        Task<Tbltripplan> SelectTripPlan(string tripPlanId);
+        public Task<int> GetLastOneId();
+        Task<Tbltripplan> SelectTripPlan(int tripPlanId);
         Task<int> UpdateTripPlan(Tbltripplan tbltripplan);
     }
 }

@@ -6,18 +6,18 @@ using System.Data;
 
 namespace JourneySick.Data.IRepositories.Repositories
 {
-    public class TripRepository : BaseRepository, ITripRepository
+    public class TripRoleRepository : BaseRepository, ITripRoleRepository
     {
-        public TripRepository(IConfiguration configuration) : base(configuration)
+        public TripRoleRepository(IConfiguration configuration) : base(configuration)
         {
         }
 
         //CREATE
-        public async Task<int> CreateTrip(Tbltrip tripEntity)
+        public async Task<int> CreateTripRole(Tbltriprole tbltriprole)
         {
             try
             {
-                var query = "INSERT INTO tbltrip ("
+                var query = "INSERT INTO tbltriprole ("
                     + "         fldTripId, "
                     + "         fldTripName, "
                     + "         fldTripBudget, "
@@ -37,14 +37,14 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @fldTripMember) ";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripEntity.FldTripId, DbType.Int16);
-                parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
-                parameters.Add("fldTripBudget", tripEntity.FldTripBudget, DbType.Decimal);
-                parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
-                parameters.Add("fldEstimateStartTime", tripEntity.FldEstimateStartTime, DbType.DateTime);
-                parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.DateTime);
-                parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
-                parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
+                /*parameters.Add("fldTripId", tbltriprole.FldTripId, DbType.String);
+                parameters.Add("fldTripName", tbltriprole.FldTripName, DbType.String);
+                parameters.Add("fldTripBudget", tbltriprole.FldTripBudget, DbType.Decimal);
+                parameters.Add("fldTripDescription", tbltriprole.FldTripDescription, DbType.String);
+                parameters.Add("fldEstimateStartTime", tbltriprole.FldEstimateStartTime, DbType.DateTime);
+                parameters.Add("fldEstimateArrivalTime", tbltriprole.FldEstimateArrivalTime, DbType.DateTime);
+                parameters.Add("fldTripStatus", tbltriprole.FldTripStatus, DbType.String);
+                parameters.Add("fldTripMember", tbltriprole.FldTripMember, DbType.String);*/
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query,parameters);
@@ -55,14 +55,14 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> DeleteTrip(int tripId)
+        public async Task<int> DeleteTripRole(int roleId)
         {
             try
             {
-                var query = "DELETE FROM tbltrip WHERE fldTripId = @fldTripId";
+                var query = "DELETE FROM tbltriprole WHERE fldRoleId = @fldRoleId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripId, DbType.Int16);
+                parameters.Add("fldRoleId", roleId, DbType.Int16);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
@@ -76,7 +76,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT MAX(fldTripId) FROM tbltrip ";
+                var query = "SELECT MAX(fldRoleId) FROM tbltriprole ";
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<int>(query);
             }
@@ -86,16 +86,16 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<Tbltrip> SelectTrip(int tripId)
+        public async Task<Tbltriprole> SelectTripRole(int roleId)
         {
             try
             {
-                var query = "SELECT * FROM tbltrip WHERE fldTripId = @fldTripId";
+                var query = "SELECT * FROM tbltriprole WHERE fldRoleId = @fldRoleId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripId, DbType.Int16);
+                parameters.Add("fldRoleId", roleId, DbType.Int16);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tbltrip>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<Tbltriprole>(query, parameters);
             }
             catch (Exception e)
             {
@@ -103,11 +103,11 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateTrip(Tbltrip tripEntity)
+        public async Task<int> UpdateTripRole(Tbltriprole tbltriprole)
         {
             try
             {
-                var query = "UPDATE tbltrip SET"
+                var query = "UPDATE tbltriprole SET"
                     + "         fldTripId = @fldTripId, "
                     + "         fldTripName = @fldTripName, "
                     + "         fldTripBudget = @fldTripBudget, "
@@ -118,14 +118,14 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldTripMember = @fldTripMember";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripEntity.FldTripId, DbType.Int16);
+                /*parameters.Add("fldTripId", tripEntity.FldTripId, DbType.String);
                 parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
                 parameters.Add("fldTripBudget", tripEntity.FldTripBudget, DbType.Decimal);
                 parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
                 parameters.Add("fldEstimateStartTime", tripEntity.FldEstimateStartTime, DbType.DateTime);
                 parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.DateTime);
                 parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
-                parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
+                parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);*/
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
