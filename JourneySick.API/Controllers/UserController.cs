@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Net;
+using JourneySick.Business.IServices.Services;
 
 namespace JourneySick.API.Controllers
 {
@@ -16,10 +17,12 @@ namespace JourneySick.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor)
+        private readonly IUserDetailService _userDetailService;
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, IUserDetailService userDetailService)
         {
             _userService = userService;
             _httpContextAccessor = httpContextAccessor;
+            _userDetailService = userDetailService;
         }
 
         //CREATE
@@ -36,8 +39,8 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllUsersWithPaging(int pageIndex, int pageSize)
         {
             var result = new List<UserDTO>();
-            UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService);
-            result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
+            UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
+            //result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 
 
