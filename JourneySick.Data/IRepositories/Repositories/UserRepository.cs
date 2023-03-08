@@ -61,6 +61,49 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public async Task<string> GetUsernameIfExist(string username)
+        {
+            try
+            {
+                var query = "SELECT fldUsername FROM tbluser";
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<string>(query);
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<string> GetPasswordByUsername(string username)
+        {
+            try
+            {
+                var query = "SELECT fldPassword FROM tblUser WHERE fldUsername = @fldUsername";
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<string>(query);
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<Tbluser> GetUserByUsername(string username)
+        {
+            try
+            {
+                var query = "SELECT * FROM tblUser WHERE fldUsername = @fldUsername";
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<Tbluser>(query);
+
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
         //SELECT
         public async Task<Tbluser> SelectUser(string userId)
         {

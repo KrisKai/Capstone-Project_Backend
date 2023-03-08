@@ -40,15 +40,20 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 Tbluser userEntity = new();
-                Tbluserdetail userDetailEntity = new();
+                Tbluserdetail userDetailEntity = new(); 
                 RegisterResponse registerResponse = new();
+                string checkNameExist = await _userRepository.GetUsernameIfExist(registereRequest.Username);
+                if(checkNameExist != null)
+                {
+                    throw new UserAlreadyExistException("User With This Username Already Exist!!");
+                }
                 userEntity.FldUsername = registereRequest.Username;
                 userEntity.FldPassword = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
 
                 if( await _userRepository.CreateUser(userEntity) > 0)
                 {
                     userDetailEntity.FldUserId = userEntity.FldUserId;
-                    userDetailEntity.FldRole = "None";
+                    userDetailEntity.FldRole = UserRoleEnum.USER.ToString();
                     userDetailEntity.FldBirthday = Convert.ToDateTime(registereRequest.Birthdate, CultureInfo.InvariantCulture);
                     userDetailEntity.FldActiveStatus = "Active";
                     userDetailEntity.FldEmail = registereRequest.Email;
@@ -75,7 +80,6 @@ namespace JourneySick.Business.IServices.Services
                 registerResponse.Username = registereRequest.Username;
                 registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userEntity.FldUserId);
 
-
                 return registerResponse;
             }
             catch(Exception ex)
@@ -83,6 +87,32 @@ namespace JourneySick.Business.IServices.Services
                 throw new RegisterUserException("Register Failed!!");
             }
             
+        }
+
+        public async Task<LoginResponse> Login(LoginRequest loginRequest)
+        {
+            try
+            {
+                LoginResponse loginResponse = new();
+                string checkValue = await _userRepository.GetPasswordByUsername(loginRequest.Username);
+                if (string.IsNullOrEmpty(checkValue))
+                {
+                    throw new LoginFailedException("Username Not Exist!!");
+                }
+                else
+                {
+                    string encryptedPassword = PasswordEncryption.Encrypt(loginRequest.Password, _appSecrect.SecrectKey);
+                    if(encryptedPassword.Equals(checkValue))
+                    {
+                        Tbluser tbluser = await _userRepository.GetUserByUsername(loginRequest.Username);
+                        loginResponse.Token = GenerateTokenAsync(UserRoleEnum.USER.ToString(),);
+                    }
+                }
+
+            }catch(Exception ex)
+            {
+                throw new LoginFailedException("Login Failed!!");
+            }
         }
 
         private async Task<string> GenerateTokenAsync(string roleCheck, string userId)
