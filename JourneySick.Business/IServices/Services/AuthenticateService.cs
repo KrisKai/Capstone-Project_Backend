@@ -105,9 +105,11 @@ namespace JourneySick.Business.IServices.Services
                     if(encryptedPassword.Equals(checkValue))
                     {
                         Tbluser tbluser = await _userRepository.GetUserByUsername(loginRequest.Username);
-                        loginResponse.Token = GenerateTokenAsync(UserRoleEnum.USER.ToString(),);
+                        loginResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), tbluser.FldUserId);
                     }
                 }
+
+                return loginResponse;
 
             }catch(Exception ex)
             {
