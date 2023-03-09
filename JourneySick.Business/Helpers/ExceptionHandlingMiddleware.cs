@@ -45,8 +45,12 @@ namespace JourneySick.Business.Helpers
                     errorMessageObject.Code = "R001";
                     statusCode = (int)HttpStatusCode.InternalServerError;
                     break;
+                case UserAlreadyExistException:
+                    errorMessageObject.Code = "U003";
+                    statusCode = (int)HttpStatusCode.BadRequest;
+                    break;
                 default:
-                    errorMessageObject.Code = "R001";
+                    errorMessageObject.Code = "D001";
                     statusCode = (int)HttpStatusCode.InternalServerError;
                     break;
 
