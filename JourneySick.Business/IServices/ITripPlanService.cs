@@ -5,9 +5,9 @@ namespace JourneySick.Business.IServices
     public interface ITripPlanService
     {
         //Select list w paging
-        public Task<List<TripPlanDTO>> SelectAllTripPlanWithPaging();
+        public Task<List<TripPlanDTO>> GetAllTripPlanWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser);
         //Select Plan
-        public Task<TripPlanDTO> SelectTripPlan(String planId);
+        public Task<TripPlanDTO> GetTripPlan(String planId);
         //insert
         public Task<String> CreateTripPlan(TripPlanDTO tripPlanDTO);
         //update

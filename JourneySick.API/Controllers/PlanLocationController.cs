@@ -34,13 +34,22 @@ namespace JourneySick.API.Controllers
             
         }
 
+        //UPDATE
+        [HttpPost]
+        public async Task<IActionResult> UpdatelanLocation([FromBody] PlanLocationDTO planLocationDTO)
+        {
+            var result = await _planLocationService.UpdatePlanLocation(planLocationDTO);
+            return Ok(result);
+            
+        }
+
         //GET ALL
         [HttpGet]
         public async Task<IActionResult> GetAllLocationsWithPaging(int pageIndex, int pageSize)
         {
             var result = new List<PlanLocationDTO>();
             UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
-            //result = await _planLocationService.GetAllPlansWithPaging(pageIndex, pageSize, currentUser);
+            result = await _planLocationService.GetAllLocationsWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 
 
