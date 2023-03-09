@@ -42,6 +42,11 @@ namespace JourneySick.Business.IServices.Services
             return userDTO;
         }
 
+        public Task<string> UpdateUser(UserDTO userDTO)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task<string> GenerateUserID()
         {
             string lastOne = await _userRepository.GetLastOneId();

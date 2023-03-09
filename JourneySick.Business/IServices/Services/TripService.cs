@@ -18,11 +18,6 @@ namespace JourneySick.Business.IServices.Services
             _mapper = mapper;
         }
 
-        public Task<List<TripDTO>> SelectAllTripsWithPaging()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<TripDTO> SelectTrip(int tripId)
         {
             Tbltrip tbltrip = await _tripRepository.SelectTrip(tripId);
@@ -84,6 +79,11 @@ namespace JourneySick.Business.IServices.Services
             {
                 return "fail";
             }
+        }
+
+        public Task<List<UserDTO>> GetAllTripsWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
+        {
+            throw new NotImplementedException();
         }
     }
 }
