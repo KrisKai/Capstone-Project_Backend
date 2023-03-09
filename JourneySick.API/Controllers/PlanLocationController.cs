@@ -13,34 +13,34 @@ namespace JourneySick.API.Controllers
     [ApiController]
     [Route("api/v1.0/plans")]
     [EnableCors]
-    public class TripPlanController : ControllerBase
+    public class PlanLocationController : ControllerBase
     {
-        private readonly ITripPlanService _tripPlanService;
+        private readonly IPlanLocationService _planLocationService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
         private readonly IUserDetailService _userDetailService;
-        public TripPlanController(ITripPlanService tripPlanService, IHttpContextAccessor httpContextAccessor)
+        public PlanLocationController(IPlanLocationService planLocationService, IHttpContextAccessor httpContextAccessor)
         {
-            _tripPlanService = tripPlanService;
+            _planLocationService = planLocationService;
             _httpContextAccessor = httpContextAccessor;
         }
 
         //CREATE
         [HttpPost]
-        public async Task<IActionResult> CreateTripPlan([FromBody] TripPlanDTO tripPlanDTO)
+        public async Task<IActionResult> CreatePlanLocation([FromBody] PlanLocationDTO planLocationDTO)
         {
-            var result = await _tripPlanService.CreateTripPlan(tripPlanDTO);
+            var result = await _planLocationService.CreatePlanLocation(planLocationDTO);
             return Ok(result);
             
         }
 
         //GET ALL
         [HttpGet]
-        public async Task<IActionResult> GetAllPlansWithPaging(int pageIndex, int pageSize)
+        public async Task<IActionResult> GetAllLocationsWithPaging(int pageIndex, int pageSize)
         {
-            var result = new List<TripPlanDTO>();
+            var result = new List<PlanLocationDTO>();
             UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
-            //result = await _tripPlanService.GetAllPlansWithPaging(pageIndex, pageSize, currentUser);
+            //result = await _planLocationService.GetAllPlansWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 
 
