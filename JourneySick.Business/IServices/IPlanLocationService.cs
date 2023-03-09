@@ -13,7 +13,7 @@ namespace JourneySick.Business.IServices
         //update
         public Task<String> UpdatePlanLocation(PlanLocationDTO planLocationDTO);
         //update
-        public Task<String> DeletePlanLocation(String locationId);
+        public Task<String> DeletePlanLocation(int locationId, UserDetailDTO currentUser);
 
     }
 }

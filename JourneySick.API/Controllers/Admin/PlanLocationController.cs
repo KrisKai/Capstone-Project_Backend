@@ -52,10 +52,19 @@ namespace JourneySick.API.Controllers.Admin
             result = await _planLocationService.GetAllLocationsWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 
-
         }
 
+        //DELETE BY ID
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteLocation(int id)
+        {
+            UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
 
+            var result = await _planLocationService.DeletePlanLocation(id, currentUser);
+            return Ok(result);
+            return StatusCode((int)HttpStatusCode.Forbidden, "Only user with role ADMIN can perform this action!!!");
+        }
 
     }
 }

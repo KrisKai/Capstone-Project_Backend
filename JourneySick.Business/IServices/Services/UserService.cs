@@ -34,7 +34,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<UserDTO> SelectUser(String userId)
+        public async Task<UserDTO> GetUserById(String userId)
         {
             Tbluser tblUser = await _userRepository.GetUserById(userId);
             // convert entity to dto

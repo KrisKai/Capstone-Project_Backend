@@ -21,7 +21,7 @@ namespace JourneySick.Business.IServices.Services
             throw new NotImplementedException();
         }
 
-        public Task<string> DeletePlanLocation(string locationId)
+        public Task<string> DeletePlanLocation(int locationId, UserDetailDTO currentUser)
         {
             throw new NotImplementedException();
         }
