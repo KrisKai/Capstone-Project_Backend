@@ -8,7 +8,7 @@ using System.Data;
 using System.Net;
 using JourneySick.Business.IServices.Services;
 
-namespace JourneySick.API.Controllers
+namespace JourneySick.API.Controllers.Admin
 {
     [ApiController]
     [Route("api/v1.0/plans")]
@@ -31,7 +31,7 @@ namespace JourneySick.API.Controllers
         {
             var result = await _tripPlanService.CreateTripPlan(tripPlanDTO);
             return Ok(result);
-            
+
         }
 
         //GET ALL

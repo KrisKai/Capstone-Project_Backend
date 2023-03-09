@@ -8,49 +8,50 @@ using System.Data;
 using System.Net;
 using JourneySick.Business.IServices.Services;
 
-namespace JourneySick.API.Controllers
+namespace JourneySick.API.Controllers.Admin
 {
     [ApiController]
-    [Route("api/v1.0/trips")]
+    [Route("api/v1.0/users")]
     [EnableCors]
-    public class TripController : ControllerBase
+    public class UserController : ControllerBase
     {
-        private readonly ITripService _tripService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserDetailService _userDetailService;
-        public TripController(ITripService tripService, IHttpContextAccessor httpContextAccessor)
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, IUserDetailService userDetailService)
         {
-            _tripService = tripService;
+            _userService = userService;
             _httpContextAccessor = httpContextAccessor;
+            _userDetailService = userDetailService;
         }
 
         //CREATE
         [HttpPost]
-        public async Task<IActionResult> CreateTrip([FromBody] TripDTO tripDTO)
+        public async Task<IActionResult> CreateUser([FromBody] UserDTO userDTO)
         {
-            var result = await _tripService.CreateTrip(tripDTO);
+            var result = await _userService.CreateUser(userDTO);
             return Ok(result);
-            
+
         }
 
         //UPDATE
         [HttpPost]
-        public async Task<IActionResult> UpdateTrip([FromBody] TripDTO tripDTO)
+        public async Task<IActionResult> UpdateUser([FromBody] UserDTO userDTO)
         {
-            var result = await _tripService.UpdateTrip(tripDTO);
+            var result = await _userService.UpdateUser(userDTO);
             return Ok(result);
 
         }
 
         //GET ALL
         [HttpGet]
-        public async Task<IActionResult> GetAllTripsWithPaging(int pageIndex, int pageSize)
+        public async Task<IActionResult> GetAllUsersWithPaging(int pageIndex, int pageSize)
         {
             var result = new List<UserDTO>();
             UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
-            result = await _tripService.GetAllTripsWithPaging(pageIndex, pageSize, currentUser);
+            //result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
+
 
         }
 

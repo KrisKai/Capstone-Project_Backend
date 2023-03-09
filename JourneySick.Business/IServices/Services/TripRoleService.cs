@@ -7,36 +7,38 @@ using JourneySick.Data.Models.VO;
 
 namespace JourneySick.Business.IServices.Services
 {
-    public class PlanLocationService : IPlanLocationService
+    public class TripRoleService : ITripRoleService
     {
-        private readonly IPlanLocationRepository _planLocationRepository;
+        private readonly ITripRepository _tripRepository;
         private readonly IMapper _mapper;
-        public PlanLocationService(IPlanLocationRepository planLocationRepository, IMapper mapper)
+
+        public TripRoleService(ITripRepository tripRepository, IMapper mapper)
         {
-            _planLocationRepository = planLocationRepository;
+            _tripRepository = tripRepository;
             _mapper = mapper;
         }
-        public Task<string> CreatePlanLocation(PlanLocationDTO planLocationDTO)
+
+        public Task<string> CreateTripRole(TripRoleDTO planLocationDTO)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> DeletePlanLocation(string locationId)
+        public Task<string> DeleteTripRole(string locationId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
+        public Task<List<TripRoleDTO>> GetAllTripRolesWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
         {
             throw new NotImplementedException();
         }
 
-        public Task<PlanLocationDTO> GetPlanLocation(string locationId)
+        public Task<TripRoleDTO> GetTripRole(string roleId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> UpdatePlanLocation(PlanLocationDTO planLocationDTO)
+        public Task<string> UpdateTripRole(TripRoleDTO planLocationDTO)
         {
             throw new NotImplementedException();
         }

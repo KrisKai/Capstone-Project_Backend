@@ -11,6 +11,11 @@ namespace JourneySick.Business.IServices.Services
     {
         private readonly ITripPlanService _tripPlanRepository;
         private readonly IMapper _mapper;
+        public TripPlanService(ITripPlanService tripMemberRepository, IMapper mapper)
+        {
+            _tripPlanRepository = _tripPlanRepository;
+            _mapper = mapper;
+        }
 
         public Task<string> CreateTripPlan(TripPlanDTO tripPlanDTO)
         {

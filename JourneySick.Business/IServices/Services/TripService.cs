@@ -18,9 +18,9 @@ namespace JourneySick.Business.IServices.Services
             _mapper = mapper;
         }
 
-        public async Task<TripDTO> SelectTrip(int tripId)
+        public async Task<TripDTO> GetTripById(int tripId)
         {
-            Tbltrip tbltrip = await _tripRepository.SelectTrip(tripId);
+            Tbltrip tbltrip = await _tripRepository.GetTripById(tripId);
             TripDTO tripDTO = _mapper.Map<TripDTO>(tbltrip);
             return tripDTO;
         }
@@ -45,7 +45,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                TripDTO getTrip = await SelectTrip(tripDTO.FldTripId);
+                TripDTO getTrip = await GetTripById(tripDTO.FldTripId);
                 
                 if (getTrip != null)
                 {
@@ -68,7 +68,7 @@ namespace JourneySick.Business.IServices.Services
 
         public async Task<string> DeleteTrip(int tripId)
         {
-            TripDTO getTrip = await SelectTrip(tripId);
+            TripDTO getTrip = await GetTripById(tripId);
 
             if (getTrip != null)
             {

@@ -8,18 +8,18 @@ using System.Data;
 using System.Net;
 using JourneySick.Business.IServices.Services;
 
-namespace JourneySick.API.Controllers
+namespace JourneySick.API.Controllers.Admin
 {
     [ApiController]
-    [Route("api/v1.0/plans")]
+    [Route("api/v1.0/tripDetails")]
     [EnableCors]
-    public class PlanLocationController : ControllerBase
+    public class TripDetailController : ControllerBase
     {
         private readonly IPlanLocationService _planLocationService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
         private readonly IUserDetailService _userDetailService;
-        public PlanLocationController(IPlanLocationService planLocationService, IHttpContextAccessor httpContextAccessor)
+        public TripDetailController(IPlanLocationService planLocationService, IHttpContextAccessor httpContextAccessor)
         {
             _planLocationService = planLocationService;
             _httpContextAccessor = httpContextAccessor;
@@ -31,7 +31,7 @@ namespace JourneySick.API.Controllers
         {
             var result = await _planLocationService.CreatePlanLocation(planLocationDTO);
             return Ok(result);
-            
+
         }
 
         //UPDATE
@@ -40,7 +40,7 @@ namespace JourneySick.API.Controllers
         {
             var result = await _planLocationService.UpdatePlanLocation(planLocationDTO);
             return Ok(result);
-            
+
         }
 
         //GET ALL

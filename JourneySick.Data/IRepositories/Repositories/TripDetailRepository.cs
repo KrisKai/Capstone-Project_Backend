@@ -6,20 +6,10 @@ using System.Data;
 
 namespace JourneySick.Data.IRepositories.Repositories
 {
-    public class PlanLocationRepository : BaseRepository, IPlanLocationRepository
+    public class TripDetailRepository : BaseRepository, ITripDetailRepository
     {
-        public PlanLocationRepository(IConfiguration configuration) : base(configuration)
+        public TripDetailRepository(IConfiguration configuration) : base(configuration)
         {
-        }
-
-        public Task<int> CreatePlanLocation(Tblplanlocation tblplanlocation)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> DeletePlanLocation(int locationId)
-        {
-            throw new NotImplementedException();
         }
 
         public Task<int> GetLastOneId()
@@ -27,17 +17,25 @@ namespace JourneySick.Data.IRepositories.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<Tblplanlocation> GetPlanLocationById(int locationId)
+        public Task<Tbltripdetail> GetTripDetailById(int planDetailId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Tblplanlocation>> GetAllLocationsWithPaging(int pageIndex, int pageSize)
+        public Task<List<Tbltripdetail>> GetAllTripDetailsWithPaging(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<int> CreateTripDetail(Tbltripdetail tbltripdetail)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> UpdatePlanLocation(Tblplanlocation tblplanlocation)
+        public Task<int> UpdateTripDetail(Tbltripdetail tbltripdetail)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<int> DeleteTripDetail(int planDetailId)
         {
             throw new NotImplementedException();
         }

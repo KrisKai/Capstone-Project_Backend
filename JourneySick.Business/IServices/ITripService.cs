@@ -5,7 +5,7 @@ namespace JourneySick.Business.IServices
     public interface ITripService
     {
         //Select User
-        public Task<TripDTO> SelectTrip(int tripId);
+        public Task<TripDTO> GetTripById(int tripId);
         //insert
         public Task<int> CreateTrip(TripDTO tripDTO);
         //update

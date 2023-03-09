@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace JourneySick.API.Controllers
+namespace JourneySick.API.Controllers.Admin
 {
     [ApiController]
     [Route("api/v1.0/users")]
