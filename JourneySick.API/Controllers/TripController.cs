@@ -43,7 +43,6 @@ namespace JourneySick.API.Controllers
             //result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 
-
         }
 
 
