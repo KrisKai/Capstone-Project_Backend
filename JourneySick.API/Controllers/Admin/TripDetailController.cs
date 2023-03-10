@@ -15,47 +15,61 @@ namespace JourneySick.API.Controllers.Admin
     [EnableCors]
     public class TripDetailController : ControllerBase
     {
-        private readonly IPlanLocationService _planLocationService;
+        private readonly ITripDetailService _tripDetailService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
         private readonly IUserDetailService _userDetailService;
-        public TripDetailController(IPlanLocationService planLocationService, IHttpContextAccessor httpContextAccessor)
+        public TripDetailController(ITripDetailService tripDetailService, IHttpContextAccessor httpContextAccessor)
         {
-            _planLocationService = planLocationService;
+            _tripDetailService = tripDetailService;
             _httpContextAccessor = httpContextAccessor;
+        }
+
+        //GET ALL
+        [HttpGet]
+        public async Task<IActionResult> GetAllTripDetailsWithPaging(int pageIndex, int pageSize)
+        {
+            var result = new List<TripDetailDTO>();
+            UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
+            result = await _tripDetailService.GetAllTripDetailsWithPaging(pageIndex, pageSize, currentUser);
+            return Ok(result);
+
+        }
+
+        //GET
+        [HttpGet]
+        public async Task<IActionResult> GetTripDetailById(int id)
+        {
+            TripDetailDTO result = await _tripDetailService.GetTripDetailById(id);
+            return Ok(result);
+
         }
 
         //CREATE
         [HttpPost]
-        public async Task<IActionResult> CreatePlanLocation([FromBody] PlanLocationDTO planLocationDTO)
+        public async Task<IActionResult> CreateTripDetail([FromBody] TripDetailDTO tripDetailDTO)
         {
-            var result = await _planLocationService.CreatePlanLocation(planLocationDTO);
+            var result = await _tripDetailService.CreateTripDetail(tripDetailDTO);
             return Ok(result);
 
         }
 
         //UPDATE
         [HttpPost]
-        public async Task<IActionResult> UpdatelanLocation([FromBody] PlanLocationDTO planLocationDTO)
+        public async Task<IActionResult> UpdateTripDetail([FromBody] TripDetailDTO tripDetailDTO)
         {
-            var result = await _planLocationService.UpdatePlanLocation(planLocationDTO);
+            var result = await _tripDetailService.UpdateTripDetail(tripDetailDTO);
             return Ok(result);
 
         }
 
-        //GET ALL
-        [HttpGet]
-        public async Task<IActionResult> GetAllLocationsWithPaging(int pageIndex, int pageSize)
+        //DELETE BY ID
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteTripDetail(int id)
         {
-            var result = new List<PlanLocationDTO>();
-            UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
-            result = await _planLocationService.GetAllLocationsWithPaging(pageIndex, pageSize, currentUser);
+            var result = await _tripDetailService.DeleteTripDetail(id);
             return Ok(result);
-
-
         }
-
-
-
     }
 }

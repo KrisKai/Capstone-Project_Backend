@@ -11,7 +11,7 @@ using JourneySick.Business.IServices.Services;
 namespace JourneySick.API.Controllers.Admin
 {
     [ApiController]
-    [Route("api/v1.0/plans")]
+    [Route("api/v1.0/planLocations")]
     [EnableCors]
     public class PlanLocationController : ControllerBase
     {
@@ -25,6 +25,26 @@ namespace JourneySick.API.Controllers.Admin
             _httpContextAccessor = httpContextAccessor;
         }
 
+        //GET ALL
+        [HttpGet]
+        public async Task<IActionResult> GetAllLocationsWithPaging(int pageIndex, int pageSize)
+        {
+            var result = new List<PlanLocationDTO>();
+            UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
+            result = await _planLocationService.GetAllLocationsWithPaging(pageIndex, pageSize, currentUser);
+            return Ok(result);
+
+        }
+        //GET
+        [HttpGet]
+        public async Task<IActionResult> GetPlanLocationById(int id)
+        {
+            PlanLocationDTO result = await _planLocationService.GetPlanLocationById(id);
+            return Ok(result);
+
+        }
+
+
         //CREATE
         [HttpPost]
         public async Task<IActionResult> CreatePlanLocation([FromBody] PlanLocationDTO planLocationDTO)
@@ -36,20 +56,9 @@ namespace JourneySick.API.Controllers.Admin
 
         //UPDATE
         [HttpPost]
-        public async Task<IActionResult> UpdatelanLocation([FromBody] PlanLocationDTO planLocationDTO)
+        public async Task<IActionResult> UpdatePlanLocation([FromBody] PlanLocationDTO planLocationDTO)
         {
             var result = await _planLocationService.UpdatePlanLocation(planLocationDTO);
-            return Ok(result);
-
-        }
-
-        //GET ALL
-        [HttpGet]
-        public async Task<IActionResult> GetAllLocationsWithPaging(int pageIndex, int pageSize)
-        {
-            var result = new List<PlanLocationDTO>();
-            UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
-            result = await _planLocationService.GetAllLocationsWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 
         }
@@ -63,7 +72,6 @@ namespace JourneySick.API.Controllers.Admin
 
             var result = await _planLocationService.DeletePlanLocation(id, currentUser);
             return Ok(result);
-            return StatusCode((int)HttpStatusCode.Forbidden, "Only user with role ADMIN can perform this action!!!");
         }
 
     }

@@ -1,12 +1,8 @@
 ﻿using JourneySick.Business.IServices;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.API.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using System.Net;
-using JourneySick.Business.IServices.Services;
 
 namespace JourneySick.API.Controllers.Admin
 {
@@ -15,47 +11,61 @@ namespace JourneySick.API.Controllers.Admin
     [EnableCors]
     public class TripMemberController : ControllerBase
     {
-        private readonly IPlanLocationService _planLocationService;
+        private readonly ITripMemberService _tripMemberService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
         private readonly IUserDetailService _userDetailService;
-        public TripMemberController(IPlanLocationService planLocationService, IHttpContextAccessor httpContextAccessor)
+        public TripMemberController(ITripMemberService tripMemberService, IHttpContextAccessor httpContextAccessor)
         {
-            _planLocationService = planLocationService;
+            _tripMemberService = tripMemberService;
             _httpContextAccessor = httpContextAccessor;
         }
 
+        //GET ALL
+        [HttpGet]
+        public async Task<IActionResult> GetAllTripMembersWithPaging(int pageIndex, int pageSize)
+        {
+            var result = new List<TripMemberDTO>();
+            UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
+            result = await _tripMemberService.GetAllTripMembersWithPaging(pageIndex, pageSize, currentUser);
+            return Ok(result);
+
+        }
+        //GET
+        [HttpGet]
+        public async Task<IActionResult> GetTripMemberById(int id)
+        {
+            TripMemberDTO result = await _tripMemberService.GetTripMemberById(id);
+            return Ok(result);
+
+        }
+
+
         //CREATE
         [HttpPost]
-        public async Task<IActionResult> CreatePlanLocation([FromBody] PlanLocationDTO planLocationDTO)
+        public async Task<IActionResult> CreateTripMember([FromBody] TripMemberDTO tripMemberDTO)
         {
-            var result = await _planLocationService.CreatePlanLocation(planLocationDTO);
+            var result = await _tripMemberService.CreateTripMember(tripMemberDTO);
             return Ok(result);
 
         }
 
         //UPDATE
         [HttpPost]
-        public async Task<IActionResult> UpdatelanLocation([FromBody] PlanLocationDTO planLocationDTO)
+        public async Task<IActionResult> UpdateTripMember([FromBody] TripMemberDTO tripMemberDTO)
         {
-            var result = await _planLocationService.UpdatePlanLocation(planLocationDTO);
+            var result = await _tripMemberService.UpdateTripMember(tripMemberDTO);
             return Ok(result);
 
         }
 
-        //GET ALL
-        [HttpGet]
-        public async Task<IActionResult> GetAllLocationsWithPaging(int pageIndex, int pageSize)
+        //DELETE BY ID
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteTripMember(int id)
         {
-            var result = new List<PlanLocationDTO>();
-            UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
-            result = await _planLocationService.GetAllLocationsWithPaging(pageIndex, pageSize, currentUser);
+            var result = await _tripMemberService.DeleteTripMember(id);
             return Ok(result);
-
-
         }
-
-
-
     }
 }

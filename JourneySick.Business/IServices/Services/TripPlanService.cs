@@ -16,23 +16,17 @@ namespace JourneySick.Business.IServices.Services
             _tripPlanRepository = _tripPlanRepository;
             _mapper = mapper;
         }
+        public Task<List<TripPlanDTO>> GetAllTripPlansWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<TripPlanDTO> GetTripPlanById(int planId)
+        {
+            throw new NotImplementedException();
+        }
 
         public Task<string> CreateTripPlan(TripPlanDTO tripPlanDTO)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> DeleteTripPlan(string planId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<TripPlanDTO>> GetAllTripPlanWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<TripPlanDTO> GetTripPlan(string planId)
         {
             throw new NotImplementedException();
         }
@@ -41,5 +35,11 @@ namespace JourneySick.Business.IServices.Services
         {
             throw new NotImplementedException();
         }
+
+        public Task<string> DeleteTripPlan(int planId)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

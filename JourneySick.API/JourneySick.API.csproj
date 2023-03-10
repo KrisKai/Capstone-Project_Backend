@@ -23,4 +23,8 @@
     <ProjectReference Include="..\JourneySick.Data\JourneySick.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\User\" />
+  </ItemGroup>
+
 </Project>

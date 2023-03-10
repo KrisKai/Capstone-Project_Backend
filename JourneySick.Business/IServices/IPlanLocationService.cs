@@ -7,7 +7,7 @@ namespace JourneySick.Business.IServices
         //Select list w paging
         public Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser);
         //Select Location
-        public Task<PlanLocationDTO> GetPlanLocation(String locationId);
+        public Task<PlanLocationDTO> GetPlanLocationById(int locationId);
         //insert
         public Task<String> CreatePlanLocation(PlanLocationDTO planLocationDTO);
         //update

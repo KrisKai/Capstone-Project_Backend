@@ -7,13 +7,13 @@ namespace JourneySick.Business.IServices
         //Select list w paging
         public Task<List<TripDetailDTO>> GetAllTripDetailsWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser);
         //Select Location
-        public Task<TripDetailDTO> GetTripDetailById(String locationId);
+        public Task<TripDetailDTO> GetTripDetailById(int locationId);
         //insert
         public Task<String> CreateTripDetail(TripDetailDTO tripDetailDTO);
         //update
         public Task<String> UpdateTripDetail(TripDetailDTO tripDetailDTO);
         //update
-        public Task<String> DeleteTripDetail(String locationId);
+        public Task<String> DeleteTripDetail(int locationId);
 
     }
 }

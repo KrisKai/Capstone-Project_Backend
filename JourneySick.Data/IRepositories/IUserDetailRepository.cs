@@ -13,8 +13,8 @@ namespace JourneySick.Data.IRepositories
     {
         public Task<int> CreateUserDetail(Tbluserdetail userDetail);
         //Select list
-        public Task<List<UserDetailDTO>> SelectAllUsersWithPaging(int pageIndex, int pageSize);
+        public Task<List<UserDetailDTO>> GetAllUsersWithPaging(int pageIndex, int pageSize);
         //Select User Detail
-        public Task<UserVO> SelectUserDetailByUserName(String username);
+        public Task<UserVO> GetUserDetailByUserName(String username);
     }
 }

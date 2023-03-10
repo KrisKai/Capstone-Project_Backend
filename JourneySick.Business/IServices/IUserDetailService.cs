@@ -11,9 +11,9 @@ namespace JourneySick.Business.IServices
     public interface IUserDetailService
     {
         //Select list
-        public Task<string> SelectAllUsersWithPaging();
+        public Task<string> GetAllUsersWithPaging();
         //Select User
-        public Task<UserVO> SelectUserDetailByUserName(String username);
+        public Task<UserVO> GetUserDetailByUserName(String username);
 
     }
 }

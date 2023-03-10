@@ -87,7 +87,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<List<UserDetailDTO>> SelectAllUsersWithPaging(int pageIndex, int pageSize)
+        public async Task<List<UserDetailDTO>> GetAllUsersWithPaging(int pageIndex, int pageSize)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<UserVO> SelectUserDetailByUserName(String username)
+        public async Task<UserVO> GetUserDetailByUserName(String username)
         {
             try
             {
@@ -142,7 +142,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<List<Tbluserdetail>> SelectUserList(Tbluserdetail userEntity)
+        public async Task<List<Tbluserdetail>> GetUserList(Tbluserdetail userEntity)
         {
             try
             {

@@ -21,7 +21,7 @@ namespace JourneySick.Business.IServices.Services
             throw new NotImplementedException();
         }
 
-        public Task<string> DeleteTripDetail(string locationId)
+        public Task<string> DeleteTripDetail(int locationId)
         {
             throw new NotImplementedException();
         }
@@ -31,7 +31,7 @@ namespace JourneySick.Business.IServices.Services
             throw new NotImplementedException();
         }
 
-        public Task<TripDetailDTO> GetTripDetailById(string locationId)
+        public Task<TripDetailDTO> GetTripDetailById(int locationId)
         {
             throw new NotImplementedException();
         }

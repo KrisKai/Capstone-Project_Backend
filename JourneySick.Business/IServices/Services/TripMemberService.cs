@@ -18,27 +18,27 @@ namespace JourneySick.Business.IServices.Services
             _mapper = mapper;
         }
 
-        public Task<string> CreateTripMember(TripMemberDTO tripMemberDTO)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> DeleteTripMember(string memberId)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<List<TripMemberDTO>> GetAllTripMembersWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
         {
             throw new NotImplementedException();
         }
 
-        public Task<TripMemberDTO> GetTripMember(string memberId)
+        public Task<TripMemberDTO> GetTripMemberById(int memberId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> CreateTripMember(TripMemberDTO tripMemberDTO)
         {
             throw new NotImplementedException();
         }
 
         public Task<string> UpdateTripMember(TripMemberDTO tripMemberDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> DeleteTripMember(int memberId)
         {
             throw new NotImplementedException();
         }

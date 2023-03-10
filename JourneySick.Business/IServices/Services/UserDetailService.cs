@@ -19,15 +19,15 @@ namespace JourneySick.Business.IServices.Services
             _mapper = mapper;
         }
 
-        public async Task<string> SelectAllUsersWithPaging()
+        public async Task<string> GetAllUsersWithPaging()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<UserVO> SelectUserDetailByUserName(String username)
+        public async Task<UserVO> GetUserDetailByUserName(String username)
         {
             try {
-                return await _userDetailRepository.SelectUserDetailByUserName(username);
+                return await _userDetailRepository.GetUserDetailByUserName(username);
             }
             catch (Exception ex)
             {
