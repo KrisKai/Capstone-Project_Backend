@@ -86,6 +86,11 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public Task<Tbltrip> GetTripById(int tripId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Tbltrip> SelectTrip(int tripId)
         {
             try

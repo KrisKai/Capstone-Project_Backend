@@ -17,6 +17,10 @@ namespace JourneySick.Data.IRepositories.Repositories
             throw new NotImplementedException();
         }
 
+        public Task<int> DeleteTripPlan(int tripPlanId)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<int> GetLastOneId()
         {
@@ -32,6 +36,10 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public Task<List<Tbltripplan>> SelectAllTripPlansWithPaging(int pageIndex, int pageSize)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<Tbltripplan> SelectTripPlan(int tripPlanId)
         {

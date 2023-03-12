@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
-using JourneySick.Data.Models.VO;
-using MySqlX.XDevAPI.Common;
 using RevenueSharingInvest.Business.Exceptions;
 
 namespace JourneySick.Business.IServices.Services
