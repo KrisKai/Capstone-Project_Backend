@@ -1,11 +1,8 @@
 ﻿using JourneySick.Business.IServices;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.API.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using System.Net;
 using JourneySick.Business.IServices.Services;
 
 namespace JourneySick.API.Controllers.Admin
@@ -55,6 +52,24 @@ namespace JourneySick.API.Controllers.Admin
         }
 
 
+        //GET
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetTripById([FromRoute] int id)
+        {
+            TripDTO result = await _tripService.GetTripById(id);
+            return Ok(result);
+
+        }
+
+        //DELETE BY ID
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteTrip(int id)
+        {
+            var result = await _tripService.DeleteTrip(id);
+            return Ok(result);
+        }
 
     }
 }

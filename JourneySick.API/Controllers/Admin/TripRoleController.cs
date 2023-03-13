@@ -15,41 +15,41 @@ namespace JourneySick.API.Controllers.Admin
     [EnableCors]
     public class TripRoleController : ControllerBase
     {
-        private readonly IPlanLocationService _planLocationService;
+        private readonly ITripRoleService _tripRoleService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
         private readonly IUserDetailService _userDetailService;
-        public TripRoleController(IPlanLocationService planLocationService, IHttpContextAccessor httpContextAccessor)
+        public TripRoleController(ITripRoleService tripRoleService, IHttpContextAccessor httpContextAccessor)
         {
-            _planLocationService = planLocationService;
+            _tripRoleService = tripRoleService;
             _httpContextAccessor = httpContextAccessor;
         }
 
         //CREATE
         [HttpPost]
-        public async Task<IActionResult> CreatePlanLocation([FromBody] PlanLocationDTO planLocationDTO)
+        public async Task<IActionResult> CreateTripRole([FromBody] TripRoleDTO tripRoleDTO)
         {
-            var result = await _planLocationService.CreatePlanLocation(planLocationDTO);
+            var result = await _tripRoleService.CreateTripRole(tripRoleDTO);
             return Ok(result);
 
         }
 
         //UPDATE
         [HttpPut]
-        public async Task<IActionResult> UpdatelanLocation([FromBody] PlanLocationDTO planLocationDTO)
+        public async Task<IActionResult> UpdateTripRole([FromBody] TripRoleDTO tripRoleDTO)
         {
-            var result = await _planLocationService.UpdatePlanLocation(planLocationDTO);
+            var result = await _tripRoleService.CreateTripRole(tripRoleDTO);
             return Ok(result);
 
         }
 
         //GET ALL
         [HttpGet]
-        public async Task<IActionResult> GetAllLocationsWithPaging(int pageIndex, int pageSize)
+        public async Task<IActionResult> GetAllTripRolesWithPaging(int pageIndex, int pageSize)
         {
-            var result = new List<PlanLocationDTO>();
+            var result = new List<TripRoleDTO>();
             UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
-            result = await _planLocationService.GetAllLocationsWithPaging(pageIndex, pageSize, currentUser);
+            result = await _tripRoleService.GetAllTripRolesWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 
 

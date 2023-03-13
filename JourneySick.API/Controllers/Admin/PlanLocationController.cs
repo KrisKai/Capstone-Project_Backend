@@ -1,12 +1,8 @@
 ﻿using JourneySick.Business.IServices;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.API.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
-using System.Net;
-using JourneySick.Business.IServices.Services;
 
 namespace JourneySick.API.Controllers.Admin
 {
@@ -35,10 +31,11 @@ namespace JourneySick.API.Controllers.Admin
             return Ok(result);
 
         }
+
         //GET
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetPlanLocationById([FromRoute]int id)
+        public async Task<IActionResult> GetPlanLocationById([FromRoute] int id)
         {
             PlanLocationDTO result = await _planLocationService.GetPlanLocationById(id);
             return Ok(result);
