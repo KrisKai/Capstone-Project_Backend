@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JourneySick.Data.IRepositories;
+using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
 using RevenueSharingInvest.Business.Exceptions;
@@ -16,10 +17,18 @@ namespace JourneySick.Business.IServices.Services
             _mapper = mapper;
         }
 
-        public Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
+        public async Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _planLocationRepository.GetAllLocationsWithPaging(pageIndex, pageSize);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception();
+            }
         }
+    }
 
         public async Task<PlanLocationDTO> GetPlanLocationById(int locationId)
         {
