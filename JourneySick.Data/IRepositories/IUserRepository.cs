@@ -22,6 +22,7 @@ namespace JourneySick.Data.IRepositories
         public Task<string> GetUsernameIfExist(string username);
         public Task<string> GetPasswordByUsername(string username);
         public Task<Tbluser> GetUserByUsername(string username);
+        public Task<Tbluser> GetUserById(string userId);
     }
 }
 

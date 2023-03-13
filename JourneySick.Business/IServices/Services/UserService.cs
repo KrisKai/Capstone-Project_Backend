@@ -5,7 +5,7 @@ using JourneySick.Data.Models.Entities;
 
 namespace JourneySick.Business.IServices.Services
 {
-    public class UserService : IUserService
+    public class UserService : IUserService 
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;

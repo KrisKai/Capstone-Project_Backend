@@ -89,7 +89,7 @@ namespace JourneySick.Business.IServices.Services
             
         }
 
-        public async Task<LoginResponse> Login(LoginRequest loginRequest)
+        public async Task<LoginResponse> LoginUser(LoginRequest loginRequest)
         {
             try
             {

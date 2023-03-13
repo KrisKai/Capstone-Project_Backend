@@ -37,7 +37,8 @@ namespace JourneySick.API.Controllers.Admin
         }
         //GET
         [HttpGet]
-        public async Task<IActionResult> GetPlanLocationById(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> GetPlanLocationById([FromRoute]int id)
         {
             PlanLocationDTO result = await _planLocationService.GetPlanLocationById(id);
             return Ok(result);
@@ -55,7 +56,7 @@ namespace JourneySick.API.Controllers.Admin
         }
 
         //UPDATE
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdatePlanLocation([FromBody] PlanLocationDTO planLocationDTO)
         {
             var result = await _planLocationService.UpdatePlanLocation(planLocationDTO);

@@ -105,7 +105,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<Tbluser> SelectUser(string userId)
+        public async Task<Tbluser> GetUserById(string userId)
         {
             try
             {

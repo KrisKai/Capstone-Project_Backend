@@ -35,7 +35,7 @@ namespace JourneySick.API.Controllers.Admin
         }
 
         //UPDATE
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdateTrip([FromBody] TripDTO tripDTO)
         {
             var result = await _tripService.UpdateTrip(tripDTO);

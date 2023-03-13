@@ -24,9 +24,21 @@ namespace JourneySick.API.Controllers.Admin
         //CREATE
         [AllowAnonymous]
         [HttpPost]
+        [Route("/register")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterRequest registerRequest)
         {
             var result = _authenticateService.RegisterUser(registerRequest);
+            return Ok(result);
+
+        }
+
+        //CREATE
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("/login")]
+        public async Task<IActionResult> LoginUser([FromBody] LoginRequest loginRequest)
+        {
+            var result = _authenticateService.LoginUser(loginRequest);
             return Ok(result);
 
         }

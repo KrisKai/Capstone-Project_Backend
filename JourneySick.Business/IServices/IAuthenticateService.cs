@@ -10,5 +10,6 @@ namespace JourneySick.Business.IServices
     public interface IAuthenticateService
     {
         public Task<RegisterResponse> RegisterUser(RegisterRequest registereRequest);
+        public Task<LoginResponse> LoginUser(LoginRequest loginRequest);
     }
 }

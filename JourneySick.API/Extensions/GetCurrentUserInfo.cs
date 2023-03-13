@@ -32,9 +32,9 @@ namespace JourneySick.API.Extensions
                 currentUser.FldFullname = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Actor).Value;
             }
 
-            UserDTO userDTO = await _userService.SelectUser(currentUser.FldUserId);
+            UserDTO userDTO = await _userService.GetUserById(currentUser.FldUserId);
 
-            UserDetailDTO userDetailDTO = await _userDetailService.SelectUserDetailByUserName(userDTO.FldUsername);
+            UserDetailDTO userDetailDTO = await _userDetailService.GetUserDetailByUserName(userDTO.FldUsername);
 
             //if (userDetailDTO == null)
             //{

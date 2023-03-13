@@ -33,7 +33,8 @@ namespace JourneySick.API.Controllers.Admin
         }
         //GET
         [HttpGet]
-        public async Task<IActionResult> GetTripMemberById(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> GetTripMemberById([FromRoute] int id)
         {
             TripMemberDTO result = await _tripMemberService.GetTripMemberById(id);
             return Ok(result);
@@ -51,7 +52,7 @@ namespace JourneySick.API.Controllers.Admin
         }
 
         //UPDATE
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdateTripMember([FromBody] TripMemberDTO tripMemberDTO)
         {
             var result = await _tripMemberService.UpdateTripMember(tripMemberDTO);
@@ -62,7 +63,7 @@ namespace JourneySick.API.Controllers.Admin
         //DELETE BY ID
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteTripMember(int id)
+        public async Task<IActionResult> DeleteTripMember([FromRoute]int id)
         {
             var result = await _tripMemberService.DeleteTripMember(id);
             return Ok(result);

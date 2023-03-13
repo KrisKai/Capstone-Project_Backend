@@ -35,7 +35,7 @@ namespace JourneySick.API.Controllers.Admin
         }
 
         //UPDATE
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdateUser([FromBody] UserDTO userDTO)
         {
             var result = await _userService.UpdateUser(userDTO);

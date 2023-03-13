@@ -35,7 +35,7 @@ namespace JourneySick.API.Controllers.Admin
         }
 
         //UPDATE
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> UpdatelanLocation([FromBody] PlanLocationDTO planLocationDTO)
         {
             var result = await _planLocationService.UpdatePlanLocation(planLocationDTO);
@@ -54,8 +54,6 @@ namespace JourneySick.API.Controllers.Admin
 
 
         }
-
-
 
     }
 }
