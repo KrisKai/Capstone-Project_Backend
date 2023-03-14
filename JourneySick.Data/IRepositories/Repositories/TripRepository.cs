@@ -12,6 +12,40 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
+        public async Task<List<Tbltrip>> GetAllTripsWithPaging(int pageIndex, int pageSize)
+        {
+            int firstIndex = (pageIndex - 1) * pageSize;
+            int lastIndex = pageIndex * pageSize;
+            var query = "SELECT * FROM fldTripId LIMIT @firstIndex, @lastIndex";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("firstIndex", firstIndex, DbType.Int16);
+            parameters.Add("lastIndex", lastIndex, DbType.Int16);
+
+            using var connection = CreateConnection();
+            return (await connection.QueryAsync<Tbltrip>(query, parameters)).ToList();
+        }
+
+        public async Task<string> GetLastOneId()
+        {
+            try
+            {
+                var query = "SELECT MAX(fldTripId) FROM tbltrip ";
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<string>(query);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public Task<Tbltrip> GetTripById(string tripId)
+        {
+            throw new NotImplementedException();
+        }
+
+
         //CREATE
         public async Task<int> CreateTrip(Tbltrip tripEntity)
         {
@@ -37,7 +71,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @fldTripMember) ";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripEntity.FldTripId, DbType.Int16);
+                parameters.Add("fldTripId", tripEntity.FldTripId, DbType.String);
                 parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
                 parameters.Add("fldTripBudget", tripEntity.FldTripBudget, DbType.Decimal);
                 parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
@@ -47,60 +81,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
 
                 using var connection = CreateConnection();
-                return await connection.ExecuteAsync(query,parameters);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
-        public async Task<int> DeleteTrip(int tripId)
-        {
-            try
-            {
-                var query = "DELETE FROM tbltrip WHERE fldTripId = @fldTripId";
-
-                var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripId, DbType.Int16);
-                using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
-        public async Task<string> GetLastOneId()
-        {
-            try
-            {
-                var query = "SELECT MAX(fldTripId) FROM tbltrip ";
-                using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<string>(query);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
-        public Task<Tbltrip> GetTripById(int tripId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<Tbltrip> SelectTrip(int tripId)
-        {
-            try
-            {
-                var query = "SELECT * FROM tbltrip WHERE fldTripId = @fldTripId";
-
-                var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripId, DbType.Int16);
-                using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tbltrip>(query, parameters);
             }
             catch (Exception e)
             {
@@ -123,7 +104,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldTripMember = @fldTripMember";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripEntity.FldTripId, DbType.Int16);
+                parameters.Add("fldTripId", tripEntity.FldTripId, DbType.String);
                 parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
                 parameters.Add("fldTripBudget", tripEntity.FldTripBudget, DbType.Decimal);
                 parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
@@ -140,5 +121,23 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        public async Task<int> DeleteTrip(string tripId)
+        {
+            try
+            {
+                var query = "DELETE FROM tbltrip WHERE fldTripId = @fldTripId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldTripId", tripId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
     }
 }

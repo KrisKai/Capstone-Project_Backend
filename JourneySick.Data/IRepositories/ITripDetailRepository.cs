@@ -13,14 +13,13 @@ namespace JourneySick.Data.IRepositories
     {
         //SELECT ALL
         public Task<List<Tbltripdetail>> GetAllTripDetailsWithPaging(int pageIndex, int pageSize);
-        public Task<int> GetLastOneId();
-        public Task<Tbltripdetail> GetTripDetailById(int tripDetailId);
+        public Task<Tbltripdetail> GetTripDetailById(string tripDetailId);
         //CREATE
         public Task<int> CreateTripDetail(Tbltripdetail tbltripdetail);
         //UPDATE
         public Task<int> UpdateTripDetail(Tbltripdetail tbltripdetail);
         //DELETE
-        public Task<int> DeleteTripDetail(int tripDetailId);
+        public Task<int> DeleteTripDetail(string tripDetailId);
 
     }
 }
