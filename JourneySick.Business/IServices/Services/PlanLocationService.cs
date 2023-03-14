@@ -21,14 +21,17 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                return await _planLocationRepository.GetAllLocationsWithPaging(pageIndex, pageSize);
+                List<Tblplanlocation> tblplanlocations = await _planLocationRepository.GetAllLocationsWithPaging(pageIndex, pageSize);
+                // convert entity to dto
+                List<PlanLocationDTO> planLocations = _mapper.Map<List<PlanLocationDTO>>(tblplanlocations);
+                return planLocations;
             }
             catch (Exception ex)
             {
                 throw new Exception();
             }
         }
-    }
+    
 
         public async Task<PlanLocationDTO> GetPlanLocationById(int locationId)
         {
@@ -74,7 +77,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                // convert entity to dto
+                // convert dto to entity
                 Tblplanlocation tblplanlocation = _mapper.Map<Tblplanlocation>(planLocationDTO);
                 int id = await _planLocationRepository.UpdatePlanLocation(tblplanlocation);
                 if (id > 0)

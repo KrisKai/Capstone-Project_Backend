@@ -72,13 +72,13 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> GetLastOneId()
+        public async Task<string> GetLastOneId()
         {
             try
             {
                 var query = "SELECT MAX(fldTripId) FROM tbltrip ";
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<int>(query);
+                return await connection.QueryFirstOrDefaultAsync<string>(query);
             }
             catch (Exception e)
             {

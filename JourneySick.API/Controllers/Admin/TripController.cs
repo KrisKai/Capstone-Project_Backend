@@ -44,7 +44,7 @@ namespace JourneySick.API.Controllers.Admin
         [HttpGet]
         public async Task<IActionResult> GetAllTripsWithPaging(int pageIndex, int pageSize)
         {
-            var result = new List<UserDTO>();
+            var result = new List<TripDTO>();
             UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
             result = await _tripService.GetAllTripsWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
@@ -55,7 +55,7 @@ namespace JourneySick.API.Controllers.Admin
         //GET
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetTripById([FromRoute] int id)
+        public async Task<IActionResult> GetTripById([FromRoute] string id)
         {
             TripDTO result = await _tripService.GetTripById(id);
             return Ok(result);
@@ -65,7 +65,7 @@ namespace JourneySick.API.Controllers.Admin
         //DELETE BY ID
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteTrip(int id)
+        public async Task<IActionResult> DeleteTrip(string id)
         {
             var result = await _tripService.DeleteTrip(id);
             return Ok(result);
