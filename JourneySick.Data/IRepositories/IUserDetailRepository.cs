@@ -16,5 +16,6 @@ namespace JourneySick.Data.IRepositories
         public Task<List<UserDetailDTO>> GetAllUsersWithPaging(int pageIndex, int pageSize);
         //Select User Detail
         public Task<UserVO> GetUserDetailByUserName(String username);
+        public Task<int> UpdateUserDetail(Tbluserdetail userDetailEntity);
     }
 }
