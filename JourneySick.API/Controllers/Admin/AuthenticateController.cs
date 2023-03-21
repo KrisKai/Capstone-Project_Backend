@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace JourneySick.API.Controllers.Admin
 {
     [ApiController]
-    [Route("api/v1.0/users")]
+    [Route("api/v1.0/authenticate")]
     [EnableCors]
     public class AuthenticateController : ControllerBase
     {
