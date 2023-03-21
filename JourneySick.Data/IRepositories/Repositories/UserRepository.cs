@@ -98,8 +98,10 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "SELECT * FROM tblUser WHERE fldUsername = @fldUsername";
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUsername", username, DbType.String);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tbluser>(query);
+                return await connection.QueryFirstOrDefaultAsync<Tbluser>(query, parameters);
 
             }
             catch(Exception e)
