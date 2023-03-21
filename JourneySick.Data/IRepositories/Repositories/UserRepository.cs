@@ -65,9 +65,11 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT fldUsername FROM tbluser";
+                var query = "SELECT fldUsername FROM tbluser WHERE fldUsername = @fldUsername";
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUsername", username, DbType.String);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<string>(query);
+                return await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
             }
             catch(Exception e)
             {
@@ -80,8 +82,10 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "SELECT fldPassword FROM tblUser WHERE fldUsername = @fldUsername";
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUsername", username, DbType.String);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<string>(query);
+                return await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
             }
             catch(Exception e)
             {

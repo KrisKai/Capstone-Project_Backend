@@ -24,7 +24,7 @@ namespace JourneySick.API.Controllers.Admin
         //CREATE
         [AllowAnonymous]
         [HttpPost]
-        [Route("/register")]
+        [Route("register")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterRequest registerRequest)
         {
             var result = _authenticateService.RegisterUser(registerRequest);
@@ -35,7 +35,7 @@ namespace JourneySick.API.Controllers.Admin
         //CREATE
         [AllowAnonymous]
         [HttpPost]
-        [Route("/login")]
+        [Route("login")]
         public async Task<IActionResult> LoginUser([FromBody] LoginRequest loginRequest)
         {
             var result = _authenticateService.LoginUser(loginRequest);
