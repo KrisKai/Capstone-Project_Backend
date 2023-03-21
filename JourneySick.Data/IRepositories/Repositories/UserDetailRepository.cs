@@ -160,6 +160,39 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public async Task<int> UpdateUserDetail(Tbluserdetail userDetailEntity)
+        {
+            try
+            {
+                var query = "UPDATE tbluserdetail SET " +
+                    "fldBirthday = @Birthday, " +
+                    "fldEmail = @Email, " +
+                    "fldFullname = @Fullname, " +
+                    "fldPhone = @Phone, " +
+                    "fldAddress = @Address, " +
+                    "fldUpdateDate = @UpdateDate, " +
+                    "fldUpdateBy = @UpdateBy " +
+                    "WHERE fldUserId = @UserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("UserId", userDetailEntity.FldUserId, DbType.String);
+                parameters.Add("Birthday", userDetailEntity.FldBirthday, DbType.DateTime);
+                parameters.Add("Email", userDetailEntity.FldEmail, DbType.String);
+                parameters.Add("Fullname", userDetailEntity.FldFullname, DbType.String);
+                parameters.Add("Phone", userDetailEntity.FldPhone, DbType.String);
+                parameters.Add("Address", userDetailEntity.FldAddress, DbType.String);
+                parameters.Add("UpdateDate", userDetailEntity.FldUpdateDate, DbType.DateTime);
+                parameters.Add("UpdateBy", userDetailEntity.FldUserId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+
+            }
+            catch(Exception e) 
+            { 
+                throw new Exception(e.Message, e);
+            }
+        }
+
 /*        public async Task<string> GetUserRoleByUserId(string userId)
         {
             try
