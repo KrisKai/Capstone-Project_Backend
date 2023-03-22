@@ -3,7 +3,6 @@ using JourneySick.Data.Models.DTOs;
 using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using JourneySick.Business.IServices.Services;
 
 namespace JourneySick.API.Controllers.Admin
 {
