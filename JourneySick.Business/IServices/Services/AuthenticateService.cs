@@ -5,6 +5,7 @@ using JourneySick.Data.IRepositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Enums;
+using JourneySick.Data.Models.VO;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -104,8 +105,10 @@ namespace JourneySick.Business.IServices.Services
                     string encryptedPassword = PasswordEncryption.Encrypt(loginRequest.Password, _appSecrect.SecrectKey);
                     if(encryptedPassword.Equals(checkValue))
                     {
-                        Tbluser tbluser = await _userRepository.GetUserByUsername(loginRequest.Username);
-                        loginResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), tbluser.FldUserId);
+                        UserVO userVO = await _userRepository.GetUserByUsername(loginRequest.Username);
+                        loginResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userVO.FldUserId);
+                        loginResponse.Username = userVO.FldUsername;
+                        loginResponse.Fullname = userVO.FldUserId;
                     }
                 }
 
