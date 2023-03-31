@@ -2,6 +2,7 @@
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.VO;
 
@@ -81,9 +82,23 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public Task<List<TripDTO>> GetAllTripsWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
+        public async Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize)
         {
-            throw new NotImplementedException();
+            AllTripDTO result = new();
+            try
+            {
+                List<Tbltrip> tbltrips = await _tripRepository.GetAllTripsWithPaging(pageIndex, pageSize);
+                // convert entity to dto
+                List<TripDTO> trips = _mapper.Map<List<TripDTO>>(tbltrips);
+                int count = await _tripRepository.CountAllTrips();
+                result.listOfTrip = trips;
+                result.numOfTrip = count;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception();
+            }
         }
     }
 }

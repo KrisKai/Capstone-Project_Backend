@@ -32,6 +32,18 @@ namespace JourneySick.API.Startup
             services.AddTransient<IUserDetailRepository, UserDetailRepository>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthenticateService, AuthenticateService>();
+            services.AddTransient<ITripService, TripService>();
+            services.AddTransient<ITripRepository, TripRepository>();
+            services.AddTransient<ITripPlanService, TripPlanService>();
+            services.AddTransient<ITripPlanRepository, TripPlanRepository>();
+            services.AddTransient<ITripMemberService, TripMemberService>();
+            services.AddTransient<ITripMemberRepository, TripMemberRepository>();
+            services.AddTransient<ITripDetailService, TripDetailService>();
+            services.AddTransient<ITripDetailRepository, TripDetailRepository>();
+            services.AddTransient<ITripRoleService, TripRoleService>();
+            services.AddTransient<ITripRoleRepository, TripRoleRepository>();
+            services.AddTransient<IPlanLocationService, PlanLocationService>();
+            services.AddTransient<IPlanLocationRepository, PlanLocationRepository>();
 
             return services;
         }

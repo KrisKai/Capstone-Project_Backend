@@ -14,9 +14,9 @@ namespace JourneySick.Data.IRepositories.Repositories
 
         public async Task<List<Tbltrip>> GetAllTripsWithPaging(int pageIndex, int pageSize)
         {
-            int firstIndex = (pageIndex - 1) * pageSize;
-            int lastIndex = pageIndex * pageSize;
-            var query = "SELECT * FROM fldTripId LIMIT @firstIndex, @lastIndex";
+            int firstIndex = (pageIndex) * pageSize;
+            int lastIndex = (pageIndex + 1) * pageSize;
+            var query = "SELECT * FROM tbltrip LIMIT @firstIndex, @lastIndex";
 
             var parameters = new DynamicParameters();
             parameters.Add("firstIndex", firstIndex, DbType.Int16);
@@ -139,5 +139,19 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public async Task<int> CountAllTrips()
+        {
+            try
+            {
+                var query = "SELECT COUNT(*) FROM tbltrip";
+                using var connection = CreateConnection();
+                return ((int)(long)connection.ExecuteScalar(query));
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }
