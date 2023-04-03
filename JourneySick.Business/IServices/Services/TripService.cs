@@ -31,10 +31,11 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 string lastOne = await _tripRepository.GetLastOneId();
-                tripDTO.FldTripId = lastOne + 1;
+                tripDTO.FldTripId = (int.Parse(lastOne)+1).ToString();
+                tripDTO.FldTripStatus = "Active";
                 Tbltrip tbltrip = _mapper.Map<Tbltrip>(tripDTO);
                 int id = await _tripRepository.CreateTrip(tbltrip);
-                return lastOne;
+                return tripDTO.FldTripId;
             }
             catch (Exception ex)
             {

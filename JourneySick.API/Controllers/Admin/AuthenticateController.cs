@@ -3,6 +3,8 @@ using JourneySick.Data.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using static System.Net.Mime.MediaTypeNames;
+using System.Net;
 
 namespace JourneySick.API.Controllers.Admin
 {
@@ -38,8 +40,14 @@ namespace JourneySick.API.Controllers.Admin
         [Route("login")]
         public async Task<IActionResult> LoginUser([FromBody] LoginRequest loginRequest)
         {
-            var result = await _authenticateService.LoginUser(loginRequest);
-            return Ok(result);
+            try
+            {
+                var result = await _authenticateService.LoginUser(loginRequest);
+                return Ok(result);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
         }
     }

@@ -98,7 +98,7 @@ namespace JourneySick.Business.IServices.Services
                 string checkValue = await _userRepository.GetPasswordByUsername(loginRequest.Username);
                 if (string.IsNullOrEmpty(checkValue))
                 {
-                    throw new LoginFailedException("Username Not Exist!!");
+                    throw new LoginFailedException("Username Or Password Not Exist!!");
                 }
                 else
                 {
@@ -109,6 +109,9 @@ namespace JourneySick.Business.IServices.Services
                         loginResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userVO.FldUserId);
                         loginResponse.Username = userVO.FldUsername;
                         loginResponse.Fullname = userVO.FldUserId;
+                    } else
+                    {
+                        throw new LoginFailedException("Username Or Password Not Exist!!");
                     }
                 }
 
@@ -116,7 +119,7 @@ namespace JourneySick.Business.IServices.Services
 
             }catch(Exception ex)
             {
-                throw new LoginFailedException("Login Failed!!");
+                throw new LoginFailedException(ex.Message);
             }
         }
 
