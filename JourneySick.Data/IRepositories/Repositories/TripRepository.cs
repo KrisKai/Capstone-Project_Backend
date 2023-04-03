@@ -30,7 +30,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT MAX(fldTripId) FROM tbltrip ";
+                var query = "SELECT COALESCE(MAX(fldTripId)) FROM tbltrip ";
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<string>(query);
             }
