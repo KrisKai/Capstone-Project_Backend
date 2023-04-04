@@ -49,6 +49,10 @@ namespace JourneySick.Business.Helpers
                     errorMessageObject.Code = "U003";
                     statusCode = (int)HttpStatusCode.BadRequest;
                     break;
+                case LoginFailedException:
+                    errorMessageObject.Code = "L001";
+                    statusCode = (int)HttpStatusCode.BadRequest;
+                    break;
                 default:
                     errorMessageObject.Code = "D001";
                     statusCode = (int)HttpStatusCode.InternalServerError;
