@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Net;
 using JourneySick.Business.IServices.Services;
+using JourneySick.Business.Models.DTOs;
 
 namespace JourneySick.API.Controllers
 {
@@ -48,7 +49,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllUsersWithPaging(int pageIndex, int pageSize)
         {
             var result = new List<UserDTO>();
-           // UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
+            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             //result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 

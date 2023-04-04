@@ -3,6 +3,7 @@ using JourneySick.Data.Models.DTOs;
 using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using JourneySick.Business.Models.DTOs;
 
 namespace JourneySick.API.Controllers
 {
@@ -26,7 +27,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllTripPlansWithPaging(int pageIndex, int pageSize)
         {
             var result = new List<TripPlanDTO>();
-            UserDetailDTO currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext, _userService, _userDetailService);
+            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             result = await _tripPlanService.GetAllTripPlansWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 
