@@ -31,7 +31,6 @@ namespace JourneySick.API.Controllers
         {
             var result = await _authenticateService.RegisterUser(registerRequest);
             return Ok(result);
-
         }
 
         //CREATE

@@ -37,7 +37,7 @@ app.UseCors("CorsPolicy");
 //app.UseEndpoints();
 
 // global error handler
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
 
 app.UseHttpsRedirection();
 

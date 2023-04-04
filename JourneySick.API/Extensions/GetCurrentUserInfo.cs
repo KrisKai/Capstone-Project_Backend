@@ -1,4 +1,5 @@
 ﻿using JourneySick.Business.IServices;
+using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.DTOs;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -10,9 +11,9 @@ using System.Threading.Tasks;
 
 namespace JourneySick.API.Extensions
 {
-    internal static class GetCurrentUserInfo
+    public static class GetCurrentUserInfo
     {
-        internal static async Task<UserDetailDTO> GetThisUserInfo(HttpContext httpContext, IUserService _userService, IUserDetailService _userDetailService)
+        public static async Task<CurrentUserObj> GetThisUserInfo(HttpContext httpContext, IUserService _userService, IUserDetailService _userDetailService)
         {
             UserDetailDTO currentUser = new();
 
