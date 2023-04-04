@@ -46,7 +46,7 @@ namespace JourneySick.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTripsWithPaging(int pageIndex, int pageSize)
         {
-            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = new AllTripDTO();
             if(currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
             {
