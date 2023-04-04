@@ -35,23 +35,23 @@ namespace JourneySick.Business.Helpers
             {
                 case UserException:
                     errorMessageObject.Code = "U001";
-                    statusCode = (int)HttpStatusCode.InternalServerError;
+                    statusCode = (int)HttpStatusCode.OK;
                     break;
                 case InsertUserException:
                     errorMessageObject.Code = "U002";
-                    statusCode = (int)HttpStatusCode.InternalServerError;
+                    statusCode = (int)HttpStatusCode.OK;
                     break;
                 case RegisterUserException:
                     errorMessageObject.Code = "R001";
-                    statusCode = (int)HttpStatusCode.InternalServerError;
+                    statusCode = (int)HttpStatusCode.OK;
                     break;
                 case UserAlreadyExistException:
                     errorMessageObject.Code = "U003";
-                    statusCode = (int)HttpStatusCode.BadRequest;
+                    statusCode = (int)HttpStatusCode.OK;
                     break;
                 case LoginFailedException:
                     errorMessageObject.Code = "L001";
-                    statusCode = (int)HttpStatusCode.BadRequest;
+                    statusCode = (int)HttpStatusCode.OK;
                     break;
                 default:
                     errorMessageObject.Code = "D001";
