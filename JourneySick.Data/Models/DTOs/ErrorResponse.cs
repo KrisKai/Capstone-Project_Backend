@@ -8,6 +8,11 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class ErrorResponse
     {
+        //public ErrorResponse(string _Code, string _Message) {
+        //    this.Code = _Code;
+        //    this.Message = _Message;
+        //}
+        //public ErrorResponse() { };
         public string Code { get; set; }
         public string Message { get; set; }
     }

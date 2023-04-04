@@ -46,7 +46,8 @@ namespace JourneySick.API.Controllers.Admin
                 return Ok(result);
             } catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                ErrorResponse response = new ErrorResponse { Code = "L001", Message = ex.Message };
+                return Ok(response);
             }
 
         }
