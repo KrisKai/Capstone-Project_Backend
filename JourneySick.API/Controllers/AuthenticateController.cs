@@ -40,15 +40,8 @@ namespace JourneySick.API.Controllers
         [Route("login")]
         public async Task<IActionResult> LoginUser([FromBody] LoginRequest loginRequest)
         {
-            try
-            {
-                var result = await _authenticateService.LoginUser(loginRequest);
-                return Ok(result);
-            } catch (Exception ex)
-            {
-                ErrorResponse response = new ErrorResponse { Code = "L001", Message = ex.Message };
-                return Ok(response);
-            }
+            var result = await _authenticateService.LoginUser(loginRequest);
+            return Ok(result);
 
         }
     }
