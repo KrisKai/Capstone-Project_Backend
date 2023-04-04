@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using static System.Net.Mime.MediaTypeNames;
 using System.Net;
 
-namespace JourneySick.API.Controllers.Admin
+namespace JourneySick.API.Controllers
 {
     [ApiController]
     [Route("api/v1.0/authenticate")]

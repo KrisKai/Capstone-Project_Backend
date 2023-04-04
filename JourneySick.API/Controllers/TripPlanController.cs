@@ -4,7 +4,7 @@ using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace JourneySick.API.Controllers.Admin
+namespace JourneySick.API.Controllers
 {
     [ApiController]
     [Route("api/v1.0/plans")]
@@ -34,7 +34,7 @@ namespace JourneySick.API.Controllers.Admin
         //GET
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetTripPlanById([FromRoute]int id)
+        public async Task<IActionResult> GetTripPlanById([FromRoute] int id)
         {
             TripPlanDTO result = await _tripPlanService.GetTripPlanById(id);
             return Ok(result);
@@ -44,7 +44,7 @@ namespace JourneySick.API.Controllers.Admin
 
         //CREATE
         [HttpPost]
-        public async Task<IActionResult> CreateTripPlan([FromBody]TripPlanDTO tripPlanDTO)
+        public async Task<IActionResult> CreateTripPlan([FromBody] TripPlanDTO tripPlanDTO)
         {
             var result = await _tripPlanService.CreateTripPlan(tripPlanDTO);
             return Ok(result);
@@ -63,7 +63,7 @@ namespace JourneySick.API.Controllers.Admin
         //DELETE BY ID
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteTripPlan([FromRoute]int id)
+        public async Task<IActionResult> DeleteTripPlan([FromRoute] int id)
         {
             var result = await _tripPlanService.DeleteTripPlan(id);
             return Ok(result);

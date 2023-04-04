@@ -149,7 +149,7 @@ namespace JourneySick.Business.IServices.Services
             }
             else
             {
-                hours = 8760;
+                hours = 24;
             }
 
             var tokenDescriptor = new SecurityTokenDescriptor

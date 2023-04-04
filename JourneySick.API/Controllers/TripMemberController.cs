@@ -4,7 +4,7 @@ using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
-namespace JourneySick.API.Controllers.Admin
+namespace JourneySick.API.Controllers
 {
     [ApiController]
     [Route("api/v1.0/tripMembers")]
@@ -63,7 +63,7 @@ namespace JourneySick.API.Controllers.Admin
         //DELETE BY ID
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteTripMember([FromRoute]int id)
+        public async Task<IActionResult> DeleteTripMember([FromRoute] int id)
         {
             var result = await _tripMemberService.DeleteTripMember(id);
             return Ok(result);

@@ -8,7 +8,7 @@ using System.Data;
 using System.Net;
 using JourneySick.Business.IServices.Services;
 
-namespace JourneySick.API.Controllers.Admin
+namespace JourneySick.API.Controllers
 {
     [ApiController]
     [Route("api/v1.0/users")]

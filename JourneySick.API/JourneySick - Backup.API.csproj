@@ -11,13 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\User\**" />
-    <Content Remove="Controllers\User\**" />
-    <EmbeddedResource Remove="Controllers\User\**" />
-    <None Remove="Controllers\User\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.14" />
@@ -29,6 +22,10 @@
   <ItemGroup>
     <ProjectReference Include="..\JourneySick.Business\JourneySick.Business.csproj" />
     <ProjectReference Include="..\JourneySick.Data\JourneySick.Data.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\User\" />
   </ItemGroup>
 
 </Project>
