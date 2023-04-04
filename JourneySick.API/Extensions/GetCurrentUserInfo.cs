@@ -13,25 +13,21 @@ namespace JourneySick.API.Extensions
 {
     public static class GetCurrentUserInfo
     {
-        public static async Task<CurrentUserObj> GetThisUserInfo(HttpContext httpContext, IUserService _userService, IUserDetailService _userDetailService)
+        public static async Task<CurrentUserObj> GetThisUserInfo(HttpContext httpContext)
         {
-            UserDetailDTO currentUser = new();
+            CurrentUserObj currentUser = new();
 
             var checkUser = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.SerialNumber);
             if (checkUser == null)
             {
-                currentUser.FldUserId = "";
-                currentUser.FldRole = "";
+                currentUser.UserId = "";
+                currentUser.Role = "";
             }
             else
             {
-                currentUser.FldUserId = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.SerialNumber).Value;
-                currentUser.FldRole = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
+                currentUser.UserId = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.SerialNumber).Value;
+                currentUser.Role = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
             }
-
-            UserDTO userDTO = await _userService.GetUserById(currentUser.FldUserId);
-
-            UserDetailDTO userDetailDTO = await _userDetailService.GetUserDetailByUserName(userDTO.FldUsername);
 
             return currentUser;
         }
