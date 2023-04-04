@@ -14,16 +14,23 @@ namespace JourneySick.Data.IRepositories.Repositories
 
         public async Task<List<Tbltrip>> GetAllTripsWithPaging(int pageIndex, int pageSize)
         {
-            int firstIndex = (pageIndex) * pageSize;
-            int lastIndex = (pageIndex + 1) * pageSize;
-            var query = "SELECT * FROM tbltrip LIMIT @firstIndex, @lastIndex";
+            try
+            {
+                int firstIndex = (pageIndex) * pageSize;
+                int lastIndex = (pageIndex + 1) * pageSize;
+                var query = "SELECT * FROM tbltrip LIMIT @firstIndex, @lastIndex";
 
-            var parameters = new DynamicParameters();
-            parameters.Add("firstIndex", firstIndex, DbType.Int16);
-            parameters.Add("lastIndex", lastIndex, DbType.Int16);
+                var parameters = new DynamicParameters();
+                parameters.Add("firstIndex", firstIndex, DbType.Int16);
+                parameters.Add("lastIndex", lastIndex, DbType.Int16);
 
-            using var connection = CreateConnection();
-            return (await connection.QueryAsync<Tbltrip>(query, parameters)).ToList();
+                using var connection = CreateConnection();
+                return (await connection.QueryAsync<Tbltrip>(query, parameters)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
         }
 
         public async Task<string> GetLastOneId()
@@ -40,9 +47,21 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public Task<Tbltrip> GetTripById(string tripId)
+        public async Task<Tbltrip> GetTripById(string tripId)
         {
-            throw new NotImplementedException();
+            try { 
+                var query = "SELECT * FROM tbltrip WHERE fldTripId = @tripId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("tripId", tripId, DbType.String);
+
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<Tbltrip>(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
         }
 
 
@@ -75,8 +94,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
                 parameters.Add("fldTripBudget", tripEntity.FldTripBudget, DbType.Decimal);
                 parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
-                parameters.Add("fldEstimateStartTime", tripEntity.FldEstimateStartTime, DbType.DateTime);
-                parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.DateTime);
+                parameters.Add("fldEstimateStartTime", tripEntity.FldEstimateStartTime, DbType.String);
+                parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.String);
                 parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
                 parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
 
@@ -108,8 +127,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
                 parameters.Add("fldTripBudget", tripEntity.FldTripBudget, DbType.Decimal);
                 parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
-                parameters.Add("fldEstimateStartTime", tripEntity.FldEstimateStartTime, DbType.DateTime);
-                parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.DateTime);
+                parameters.Add("fldEstimateStartTime", tripEntity.FldEstimateStartTime, DbType.String);
+                parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.String);
                 parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
                 parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
 
