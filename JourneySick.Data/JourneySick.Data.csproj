@@ -24,8 +24,4 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\DTOs\CommonDTO\CountAllDTO\" />
-  </ItemGroup>
-
 </Project>
