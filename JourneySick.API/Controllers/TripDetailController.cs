@@ -8,7 +8,7 @@ using System.Data;
 using System.Net;
 using JourneySick.Business.IServices.Services;
 
-namespace JourneySick.API.Controllers.Admin
+namespace JourneySick.API.Controllers
 {
     [ApiController]
     [Route("api/v1.0/tripDetails")]
@@ -39,7 +39,7 @@ namespace JourneySick.API.Controllers.Admin
         //GET
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetTripDetailById([FromRoute]string id)
+        public async Task<IActionResult> GetTripDetailById([FromRoute] string id)
         {
             TripDetailDTO result = await _tripDetailService.GetTripDetailById(id);
             return Ok(result);
@@ -67,7 +67,7 @@ namespace JourneySick.API.Controllers.Admin
         //DELETE BY ID
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteTripDetail([FromRoute]string id)
+        public async Task<IActionResult> DeleteTripDetail([FromRoute] string id)
         {
             var result = await _tripDetailService.DeleteTripDetail(id);
             return Ok(result);

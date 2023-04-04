@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using JourneySick.Business.IServices.Services;
 
-namespace JourneySick.API.Controllers.Admin
+namespace JourneySick.API.Controllers
 {
     [ApiController]
     [Route("api/v1.0/trips")]
