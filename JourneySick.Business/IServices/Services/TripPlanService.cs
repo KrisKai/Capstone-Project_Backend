@@ -9,11 +9,11 @@ namespace JourneySick.Business.IServices.Services
 {
     public class TripPlanService : ITripPlanService
     {
-        private readonly ITripPlanService _tripPlanRepository;
+        private readonly ITripPlanRepository _tripPlanRepository;
         private readonly IMapper _mapper;
-        public TripPlanService(ITripPlanService tripMemberRepository, IMapper mapper)
+        public TripPlanService(ITripPlanRepository tripPlanRepository, IMapper mapper)
         {
-            _tripPlanRepository = _tripPlanRepository;
+            _tripPlanRepository = tripPlanRepository;
             _mapper = mapper;
         }
         public Task<List<TripPlanDTO>> GetAllTripPlansWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)

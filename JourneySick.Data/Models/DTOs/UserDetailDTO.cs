@@ -8,7 +8,7 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class UserDetailDTO
     {
-        public string FldUserId { get; set; } = null!;
+        public string? FldUserId { get; set; } = null!;
 
         public string? FldRole { get; set; }
 

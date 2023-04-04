@@ -2,6 +2,7 @@
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.VO;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -93,15 +94,15 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<Tbluser> GetUserByUsername(string username)
+        public async Task<UserVO> GetUserByUsername(string username)
         {
             try
             {
-                var query = "SELECT * FROM tblUser WHERE fldUsername = @fldUsername";
+                var query = "SELECT * FROM tblUser a LEFT JOIN tblUserDetail b ON a.fldUserId = b.fldUserId WHERE fldUsername = @fldUsername";
                 var parameters = new DynamicParameters();
                 parameters.Add("fldUsername", username, DbType.String);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tbluser>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<UserVO>(query, parameters);
 
             }
             catch(Exception e)

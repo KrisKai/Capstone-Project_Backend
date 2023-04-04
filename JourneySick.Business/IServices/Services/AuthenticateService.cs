@@ -5,6 +5,7 @@ using JourneySick.Data.IRepositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Enums;
+using JourneySick.Data.Models.VO;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -97,15 +98,20 @@ namespace JourneySick.Business.IServices.Services
                 string checkValue = await _userRepository.GetPasswordByUsername(loginRequest.Username);
                 if (string.IsNullOrEmpty(checkValue))
                 {
-                    throw new LoginFailedException("Username Not Exist!!");
+                    throw new LoginFailedException("Username Or Password Not Exist!!");
                 }
                 else
                 {
                     string encryptedPassword = PasswordEncryption.Encrypt(loginRequest.Password, _appSecrect.SecrectKey);
                     if(encryptedPassword.Equals(checkValue))
                     {
-                        Tbluser tbluser = await _userRepository.GetUserByUsername(loginRequest.Username);
-                        loginResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), tbluser.FldUserId);
+                        UserVO userVO = await _userRepository.GetUserByUsername(loginRequest.Username);
+                        loginResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userVO.FldUserId);
+                        loginResponse.Username = userVO.FldUsername;
+                        loginResponse.Fullname = userVO.FldUserId;
+                    } else
+                    {
+                        throw new LoginFailedException("Username Or Password Not Exist!!");
                     }
                 }
 
@@ -113,7 +119,7 @@ namespace JourneySick.Business.IServices.Services
 
             }catch(Exception ex)
             {
-                throw new LoginFailedException("Login Failed!!");
+                throw new LoginFailedException(ex.Message);
             }
         }
 

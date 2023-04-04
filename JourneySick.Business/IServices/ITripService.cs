@@ -1,4 +1,5 @@
 ﻿using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 
 namespace JourneySick.Business.IServices
 {
@@ -13,6 +14,6 @@ namespace JourneySick.Business.IServices
         //update
         public Task<String> DeleteTrip(string tripId);
         //Select list w paging
-        public Task<List<TripDTO>> GetAllTripsWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser);
+        public Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize);
     }
 }
