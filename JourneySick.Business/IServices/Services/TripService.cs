@@ -21,9 +21,15 @@ namespace JourneySick.Business.IServices.Services
 
         public async Task<TripDTO> GetTripById(string tripId)
         {
-            Tbltrip tbltrip = await _tripRepository.GetTripById(tripId);
-            TripDTO tripDTO = _mapper.Map<TripDTO>(tbltrip);
-            return tripDTO;
+            try {
+                Tbltrip tbltrip = await _tripRepository.GetTripById(tripId);
+                TripDTO tripDTO = _mapper.Map<TripDTO>(tbltrip);
+                return tripDTO;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception();
+            }
         }
 
         public async Task<String> CreateTrip(TripDTO tripDTO)

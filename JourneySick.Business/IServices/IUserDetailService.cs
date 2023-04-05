@@ -1,4 +1,6 @@
-﻿using JourneySick.Data.Models.DTOs;
+﻿using JourneySick.Business.Models.DTOs;
+using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.VO;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ namespace JourneySick.Business.IServices
     public interface IUserDetailService
     {
         //Select list
-        public Task<string> GetAllUsersWithPaging();
+        public Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser);
         //Select User
         public Task<UserVO> GetUserDetailByUserName(String username);
 

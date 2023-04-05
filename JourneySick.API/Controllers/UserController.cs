@@ -50,7 +50,7 @@ namespace JourneySick.API.Controllers
         {
             var result = new List<UserDTO>();
             CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            //result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
+            result = await _userDetailService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 
         }

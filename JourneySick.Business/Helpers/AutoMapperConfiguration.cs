@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
+using JourneySick.Data.Models.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +31,8 @@ namespace JourneySick.Business.Helpers
             CreateMap<UserDetailDTO, Tbluserdetail>()
                 .ReverseMap(); //reverse so the both direction
             CreateMap<PlanLocationDTO, Tblplanlocation>()
+                .ReverseMap(); //reverse so the both direction
+            CreateMap<UserVO, TbluserVO>()
                 .ReverseMap(); //reverse so the both direction
         }
     }
