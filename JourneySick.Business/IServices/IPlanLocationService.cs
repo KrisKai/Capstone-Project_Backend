@@ -1,11 +1,12 @@
-﻿using JourneySick.Data.Models.DTOs;
+﻿using JourneySick.Business.Models.DTOs;
+using JourneySick.Data.Models.DTOs;
 
 namespace JourneySick.Business.IServices
 {
     public interface IPlanLocationService
     {
         //Select list w paging
-        public Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser);
+        public Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser);
         //Select Location
         public Task<PlanLocationDTO> GetPlanLocationById(int locationId);
         //insert
@@ -13,7 +14,7 @@ namespace JourneySick.Business.IServices
         //update
         public Task<String> UpdatePlanLocation(PlanLocationDTO planLocationDTO);
         //update
-        public Task<String> DeletePlanLocation(int locationId, UserDetailDTO currentUser);
+        public Task<String> DeletePlanLocation(int locationId);
 
     }
 }

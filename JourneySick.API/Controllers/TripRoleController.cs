@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Net;
 using JourneySick.Business.IServices.Services;
+using JourneySick.Business.Models.DTOs;
 
 namespace JourneySick.API.Controllers
 {
