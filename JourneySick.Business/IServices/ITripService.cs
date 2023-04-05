@@ -14,6 +14,6 @@ namespace JourneySick.Business.IServices
         //update
         public Task<String> DeleteTrip(string tripId);
         //Select list w paging
-        public Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize);
+        public Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName);
     }
 }

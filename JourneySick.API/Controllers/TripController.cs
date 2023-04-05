@@ -44,19 +44,19 @@ namespace JourneySick.API.Controllers
 
         //GET ALL
         [HttpGet]
-        public async Task<IActionResult> GetAllTripsWithPaging(int pageIndex, int pageSize)
+        public async Task<IActionResult> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = new AllTripDTO();
-            if(currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
-            {
-                result = await _tripService.GetAllTripsWithPaging(pageIndex, pageSize);
+            //if(currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
+            //{
+            result = await _tripService.GetAllTripsWithPaging(pageIndex, pageSize, tripName);
                 return Ok(result);
-            }
-            else
-            {
-                throw new Exception("d");
-            }
+            //}
+            //else
+            //{
+            //throw new Exception("d");
+            //}
 
         }
 

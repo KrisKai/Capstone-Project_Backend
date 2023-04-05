@@ -12,17 +12,22 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<Tbltrip>> GetAllTripsWithPaging(int pageIndex, int pageSize)
+        public async Task<List<Tbltrip>> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName)
         {
             try
             {
                 int firstIndex = (pageIndex) * pageSize;
                 int lastIndex = (pageIndex + 1) * pageSize;
-                var query = "SELECT * FROM tbltrip LIMIT @firstIndex, @lastIndex";
-
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
                 parameters.Add("lastIndex", lastIndex, DbType.Int16);
+                if (tripName == null)
+                {
+                    tripName = "";
+                }
+                parameters.Add("tripName", tripName, DbType.String);
+
+                var query = "SELECT * FROM tbltrip WHERE fldTripName LIKE CONCAT('%', @tripName, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<Tbltrip>(query, parameters)).ToList();
@@ -49,7 +54,8 @@ namespace JourneySick.Data.IRepositories.Repositories
 
         public async Task<Tbltrip> GetTripById(string tripId)
         {
-            try { 
+            try
+            {
                 var query = "SELECT * FROM tbltrip WHERE fldTripId = @tripId";
 
                 var parameters = new DynamicParameters();

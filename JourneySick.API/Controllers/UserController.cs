@@ -8,6 +8,8 @@ using System.Data;
 using System.Net;
 using JourneySick.Business.IServices.Services;
 using JourneySick.Business.Models.DTOs;
+using JourneySick.Data.Models.VO;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 
 namespace JourneySick.API.Controllers
 {
@@ -48,7 +50,7 @@ namespace JourneySick.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUsersWithPaging(int pageIndex, int pageSize)
         {
-            var result = new List<UserDTO>();
+            var result = new AllUserDTO();
             CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             result = await _userDetailService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);

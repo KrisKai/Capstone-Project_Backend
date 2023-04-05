@@ -2,6 +2,7 @@
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
 using JourneySick.Data.Models.VO;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -17,6 +18,21 @@ namespace JourneySick.Data.IRepositories.Repositories
     {
         public UserDetailRepository(IConfiguration configuration) : base(configuration)
         {
+        }
+
+        public async Task<int> CountAllUsers()
+        {
+            try
+            {
+                var query = "SELECT COUNT(*) FROM tbluserdetail";
+                using var connection = CreateConnection();
+                return ((int)(long)connection.ExecuteScalar(query));
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
         }
 
         public async Task<int> CreateUserDetail(Tbluserdetail userDetail)
@@ -87,12 +103,12 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<List<UserDetailDTO>> GetAllUsersWithPaging(int pageIndex, int pageSize)
+        public async Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize)
         {
             try
             {
-                int firstIndex = (pageIndex - 1) * pageSize;
-                int lastIndex = pageIndex  * pageSize;
+                int firstIndex = pageIndex * pageSize;
+                int lastIndex = (pageIndex + 1)  * pageSize;
                 var query = "SELECT * FROM tbluserdetail LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
@@ -100,7 +116,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("lastIndex", lastIndex, DbType.Int16);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<UserDetailDTO>(query, parameters)).ToList();
+                return (await connection.QueryAsync<TbluserVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -193,15 +209,15 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-/*        public async Task<string> GetUserRoleByUserId(string userId)
-        {
-            try
-            {
-                var query = "SELECT fldRole FROM tblUserDetail WHERE fldUserId = @fldUserId";
-            }catch(Exception ex)
-            {
-                throw new Exception(ex.Message, ex);
-            }
-        }*/
+        /*        public async Task<string> GetUserRoleByUserId(string userId)
+                {
+                    try
+                    {
+                        var query = "SELECT fldRole FROM tblUserDetail WHERE fldUserId = @fldUserId";
+                    }catch(Exception ex)
+                    {
+                        throw new Exception(ex.Message, ex);
+                    }
+                }*/
     }
 }
