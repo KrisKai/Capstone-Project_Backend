@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
@@ -17,7 +18,7 @@ namespace JourneySick.Business.IServices.Services
             _mapper = mapper;
         }
 
-        public async Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
+        public async Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser)
         {
             try
             {
@@ -96,7 +97,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<string> DeletePlanLocation(int locationId, UserDetailDTO currentUser)
+        public async Task<string> DeletePlanLocation(int locationId)
         {
             try
             {

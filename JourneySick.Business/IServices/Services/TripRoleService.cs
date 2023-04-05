@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
@@ -28,7 +29,7 @@ namespace JourneySick.Business.IServices.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<TripRoleDTO>> GetAllTripRolesWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
+        public Task<List<TripRoleDTO>> GetAllTripRolesWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser)
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
@@ -16,7 +17,7 @@ namespace JourneySick.Business.IServices.Services
             _tripPlanRepository = tripPlanRepository;
             _mapper = mapper;
         }
-        public Task<List<TripPlanDTO>> GetAllTripPlansWithPaging(int pageIndex, int pageSize, UserDetailDTO currentUser)
+        public Task<List<TripPlanDTO>> GetAllTripPlansWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser)
         {
             throw new NotImplementedException();
         }

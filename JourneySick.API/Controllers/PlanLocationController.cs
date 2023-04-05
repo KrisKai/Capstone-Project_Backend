@@ -69,7 +69,7 @@ namespace JourneySick.API.Controllers
         {
             CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
 
-            var result = await _planLocationService.DeletePlanLocation(id, currentUser);
+            var result = await _planLocationService.DeletePlanLocation(id);
             return Ok(result);
         }
 
