@@ -2,7 +2,7 @@
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
-using JourneySick.Data.Models.VO;
+using Microsoft.Extensions.Logging;
 
 namespace JourneySick.Business.IServices.Services
 {
@@ -11,12 +11,14 @@ namespace JourneySick.Business.IServices.Services
         private readonly IUserRepository _userRepository;
         private readonly IUserDetailRepository _userDetailRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<UserService> _logger;
 
-        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, IMapper mapper)
+        public UserService(IUserRepository userRepository, IMapper mapper, ILogger<UserService> logger)
         {
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<string> CreateUser(UserVO userVO)
@@ -35,16 +37,26 @@ namespace JourneySick.Business.IServices.Services
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
         }
 
         public async Task<UserDTO> GetUserById(String userId)
         {
-            Tbluser tblUser = await _userRepository.GetUserById(userId);
-            // convert entity to dto
-            UserDTO userDTO = _mapper.Map<UserDTO>(tblUser);
-            return userDTO;
+            try
+            {
+                Tbluser tblUser = await _userRepository.GetUserById(userId);
+                // convert entity to dto
+                UserDTO userDTO = _mapper.Map<UserDTO>(tblUser);
+                return userDTO;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
+            }
+
         }
 
         public async Task<string> UpdateUser(UserVO userDTO)
@@ -63,22 +75,31 @@ namespace JourneySick.Business.IServices.Services
 
         private async Task<string> GenerateUserID()
         {
-            string lastOne = await _userRepository.GetLastOneId();
-            if (lastOne != null)
+            try
             {
-                string lastId = lastOne.Substring(5);
-                int newId = Convert.ToInt32(lastId) + 1;
-                string newIdStr = Convert.ToString(newId);
-                while (newIdStr.Length < 8)
+                string lastOne = await _userRepository.GetLastOneId();
+                if (lastOne != null)
                 {
-                    newIdStr = "0" + newIdStr;
+                    string lastId = lastOne.Substring(5);
+                    int newId = Convert.ToInt32(lastId) + 1;
+                    string newIdStr = Convert.ToString(newId);
+                    while (newIdStr.Length < 8)
+                    {
+                        newIdStr = "0" + newIdStr;
+                    }
+                    return "USER" + newIdStr;
                 }
-                return "USER" + newIdStr;
+                else
+                {
+                    return "USER00000001";
+                }
             }
-            else
+            catch(Exception ex)
             {
-                return "USER00000001";
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
+
         }
 
         private Tbluser ConvertUserVOToTblUser(UserVO userVO)

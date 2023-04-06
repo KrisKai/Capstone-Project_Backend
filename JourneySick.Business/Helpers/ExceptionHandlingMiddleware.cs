@@ -54,7 +54,7 @@ namespace JourneySick.Business.Helpers
                     statusCode = (int)HttpStatusCode.OK;
                     break;
                 default:
-                    errorMessageObject.Code = "D001";
+                    errorMessageObject.Code = "500";
                     statusCode = (int)HttpStatusCode.InternalServerError;
                     break;
 

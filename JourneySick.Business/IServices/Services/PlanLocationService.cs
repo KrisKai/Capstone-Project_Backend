@@ -4,6 +4,7 @@ using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using Microsoft.Extensions.Logging;
 using RevenueSharingInvest.Business.Exceptions;
 
 namespace JourneySick.Business.IServices.Services
@@ -12,10 +13,12 @@ namespace JourneySick.Business.IServices.Services
     {
         private readonly IPlanLocationRepository _planLocationRepository;
         private readonly IMapper _mapper;
-        public PlanLocationService(IPlanLocationRepository planLocationRepository, IMapper mapper)
+        private readonly ILogger<PlanLocationService> _logger;
+        public PlanLocationService(IPlanLocationRepository planLocationRepository, IMapper mapper, ILogger<PlanLocationService> logger)
         {
             _planLocationRepository = planLocationRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser)
@@ -29,6 +32,7 @@ namespace JourneySick.Business.IServices.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.StackTrace, ex);
                 throw new Exception();
             }
         }
@@ -45,10 +49,10 @@ namespace JourneySick.Business.IServices.Services
                 PlanLocationDTO planLocationDTO = _mapper.Map<PlanLocationDTO>(tblplanlocation);
                 return planLocationDTO;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                //LoggerService.Logger(e.ToString());
-                throw new Exception(e.Message);
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
         }
         public async Task<string> CreatePlanLocation(PlanLocationDTO planLocationDTO)
@@ -70,7 +74,8 @@ namespace JourneySick.Business.IServices.Services
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -93,7 +98,8 @@ namespace JourneySick.Business.IServices.Services
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -115,7 +121,8 @@ namespace JourneySick.Business.IServices.Services
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
         }
     }
