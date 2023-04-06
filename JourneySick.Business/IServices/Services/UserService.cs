@@ -88,11 +88,11 @@ namespace JourneySick.Business.IServices.Services
                     {
                         newIdStr = "0" + newIdStr;
                     }
-                    return "USER" + newIdStr;
+                    return "USER_" + newIdStr;
                 }
                 else
                 {
-                    return "USER00000001";
+                    return "USER_00000001";
                 }
             }
             catch(Exception ex)
