@@ -59,7 +59,7 @@ namespace JourneySick.Business.IServices.Services
                 {
                     Tbltrip tbltrip = _mapper.Map<Tbltrip>(tripDTO);
                     int id = await _tripRepository.UpdateTrip(tbltrip);
-                    return "";
+                    return getTrip.FldTripId;
                 }
                 else
                 {
