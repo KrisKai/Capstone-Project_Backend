@@ -5,6 +5,7 @@ using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.VO;
+using Microsoft.Extensions.Logging;
 
 namespace JourneySick.Business.IServices.Services
 {
@@ -12,18 +13,29 @@ namespace JourneySick.Business.IServices.Services
     {
         private readonly ITripRepository _tripRepository;
         private readonly IMapper _mapper;
+        private readonly ILogger<TripService> _logger;
 
-        public TripService(ITripRepository tripRepository, IMapper mapper)
+        public TripService(ITripRepository tripRepository, IMapper mapper, ILogger<TripService> logger)
         {
             _tripRepository = tripRepository;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<TripDTO> GetTripById(string tripId)
         {
-            Tbltrip tbltrip = await _tripRepository.GetTripById(tripId);
-            TripDTO tripDTO = _mapper.Map<TripDTO>(tbltrip);
-            return tripDTO;
+            try
+            {
+                Tbltrip tbltrip = await _tripRepository.GetTripById(tripId);
+                TripDTO tripDTO = _mapper.Map<TripDTO>(tbltrip);
+                return tripDTO;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
+            }
+
         }
 
         public async Task<String> CreateTrip(TripDTO tripDTO)
@@ -39,7 +51,8 @@ namespace JourneySick.Business.IServices.Services
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -63,24 +76,34 @@ namespace JourneySick.Business.IServices.Services
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
             
         }
 
         public async Task<string> DeleteTrip(string tripId)
         {
-            TripDTO getTrip = await GetTripById(tripId);
+            try
+            {
+                TripDTO getTrip = await GetTripById(tripId);
 
-            if (getTrip != null)
-            {
-                int id = await _tripRepository.DeleteTrip(tripId);
-                return "done";
+                if (getTrip != null)
+                {
+                    int id = await _tripRepository.DeleteTrip(tripId);
+                    return "done";
+                }
+                else
+                {
+                    return "fail";
+                }
             }
-            else
+            catch(Exception ex)
             {
-                return "fail";
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
+
         }
 
         public async Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize)
@@ -98,7 +121,8 @@ namespace JourneySick.Business.IServices.Services
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
         }
     }

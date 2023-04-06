@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JourneySick.API.Helpers;
 using JourneySick.API.Startup;
 using JourneySick.Business.Helpers;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ builder.Services.AddSettingObjects(builder.Configuration);
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+builder.Services.AddConsoleLogger();
 
 var app = builder.Build();
 

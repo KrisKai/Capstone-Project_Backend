@@ -6,6 +6,7 @@ using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Enums;
 using JourneySick.Data.Models.VO;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -25,15 +26,19 @@ namespace JourneySick.Business.IServices.Services
         private readonly IUserRepository _userRepository;
         private readonly IUserDetailRepository _userDetailRepository;
         private readonly AppSecrect _appSecrect;
+        private readonly ILogger<AuthenticateService> _logger;
+
         public AuthenticateService(IUserService userService, 
             IUserDetailRepository userDetailRepository,
             IUserRepository userRepository,
-            IOptions<AppSecrect> appSecrect)
+            IOptions<AppSecrect> appSecrect,
+            ILogger<AuthenticateService> logger)
         {
             _userService = userService;
             _appSecrect = appSecrect.Value;
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
+            _logger = logger;
         }
 
         public async Task<RegisterResponse> RegisterUser(RegisterRequest registereRequest)
@@ -85,6 +90,7 @@ namespace JourneySick.Business.IServices.Services
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex.StackTrace, ex);
                 throw new RegisterUserException("Register Failed!!");
             }
             
@@ -95,6 +101,7 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 LoginResponse loginResponse = new();
+                int ok = int.Parse("dddd");
                 string checkValue = await _userRepository.GetPasswordByUsername(loginRequest.Username);
                 if (string.IsNullOrEmpty(checkValue))
                 {
@@ -102,6 +109,7 @@ namespace JourneySick.Business.IServices.Services
                 }
                 else
                 {
+                    
                     string encryptedPassword = PasswordEncryption.Encrypt(loginRequest.Password, _appSecrect.SecrectKey);
                     if(encryptedPassword.Equals(checkValue))
                     {
@@ -119,55 +127,64 @@ namespace JourneySick.Business.IServices.Services
 
             }catch(Exception ex)
             {
-                throw new LoginFailedException(ex.Message);
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
         }
 
         private async Task<string> GenerateTokenAsync(string roleCheck, string userId)
         {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSecrect.JwtSecrect);
-
-            Claim roleClaim;
-
-            if (roleCheck.Equals(UserRoleEnum.ADMIN.ToString()))
+            try
             {
-                roleClaim = new Claim(ClaimTypes.Role, UserRoleEnum.ADMIN.ToString());
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_appSecrect.JwtSecrect);
 
-            }
-            else
-            {
-                roleClaim = new Claim(ClaimTypes.Role, UserRoleEnum.USER.ToString());
+                Claim roleClaim;
 
-            }
-
-            int hours;
-
-            if (roleCheck.Equals(UserRoleEnum.ADMIN.ToString()))
-            {
-                hours = 3;
-            }
-            else
-            {
-                hours = 24;
-            }
-
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
+                if (roleCheck.Equals(UserRoleEnum.ADMIN.ToString()))
                 {
+                    roleClaim = new Claim(ClaimTypes.Role, UserRoleEnum.ADMIN.ToString());
+
+                }
+                else
+                {
+                    roleClaim = new Claim(ClaimTypes.Role, UserRoleEnum.USER.ToString());
+
+                }
+
+                int hours;
+
+                if (roleCheck.Equals(UserRoleEnum.ADMIN.ToString()))
+                {
+                    hours = 3;
+                }
+                else
+                {
+                    hours = 24;
+                }
+
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
                    new Claim(ClaimTypes.SerialNumber, userId),
                    roleClaim,
-                }),
+                    }),
 
-                Expires = DateTime.UtcNow.AddHours(hours),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
-            };
+                    Expires = DateTime.UtcNow.AddHours(hours),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
+                };
 
-            var token = tokenHandler.CreateToken(tokenDescriptor);
+                var token = tokenHandler.CreateToken(tokenDescriptor);
 
-            string result = tokenHandler.WriteToken(token);
-            return result;
+                string result = tokenHandler.WriteToken(token);
+                return result;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.ToString());
+            }
         }
 
 
