@@ -2,6 +2,7 @@
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.VO;
 using Microsoft.Extensions.Logging;
 
 namespace JourneySick.Business.IServices.Services
@@ -13,7 +14,7 @@ namespace JourneySick.Business.IServices.Services
         private readonly IMapper _mapper;
         private readonly ILogger<UserService> _logger;
 
-        public UserService(IUserRepository userRepository, IMapper mapper, ILogger<UserService> logger)
+        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, IMapper mapper, ILogger<UserService> logger)
         {
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
