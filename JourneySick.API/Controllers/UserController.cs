@@ -1,12 +1,12 @@
 ﻿using JourneySick.Business.IServices;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.API.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.VO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Business.IServices.Services;
 
 namespace JourneySick.API.Controllers
 {
@@ -52,6 +52,14 @@ namespace JourneySick.API.Controllers
             result = await _userDetailService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 
+        }
+        //GET
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetUserById([FromRoute] string id)
+        {
+            UserVO result = await _userService.GetUserById(id);
+            return Ok(result);
         }
     }
 }

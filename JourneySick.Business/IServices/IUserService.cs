@@ -10,6 +10,6 @@ namespace JourneySick.Business.IServices
         //UPDATE
         public Task<string> UpdateUser(UserVO userDTO);
 
-        public Task<UserDTO> GetUserById(String userId);
+        public Task<UserVO> GetUserById(string userId);
     }
 }

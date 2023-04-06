@@ -2,6 +2,7 @@
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
 using JourneySick.Data.Models.VO;
 using Microsoft.Extensions.Logging;
 
@@ -31,6 +32,7 @@ namespace JourneySick.Business.IServices.Services
                 Tbluser tbluser = ConvertUserVOToTblUser(userVO);
                 int id = await _userRepository.CreateUser(tbluser);
                 Tbluserdetail tbluserdetail = ConvertUserVOToTblUserDetail(userVO);
+                tbluserdetail.FldActiveStatus = "Active";
                 tbluserdetail.FldCreateBy = "Admin";
                 tbluserdetail.FldCreateDate = DateTime.Now;
                 await _userDetailRepository.CreateUserDetail(tbluserdetail);
@@ -43,13 +45,13 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<UserDTO> GetUserById(String userId)
+        public async Task<UserVO> GetUserById(string userId)
         {
             try
             {
-                Tbluser tblUser = await _userRepository.GetUserById(userId);
+                TbluserVO tblUserVO = await _userRepository.GetUserById(userId);
                 // convert entity to dto
-                UserDTO userDTO = _mapper.Map<UserDTO>(tblUser);
+                UserVO userDTO = _mapper.Map<UserVO>(tblUserVO);
                 return userDTO;
             }
             catch(Exception ex)
