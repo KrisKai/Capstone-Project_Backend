@@ -30,18 +30,18 @@ namespace JourneySick.API.Controllers
 
         //CREATE
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] UserDTO userDTO)
+        public async Task<IActionResult> CreateUser([FromBody] UserVO userVO)
         {
-            var result = await _userService.CreateUser(userDTO);
+            var result = await _userService.CreateUser(userVO);
             return Ok(result);
 
         }
 
         //UPDATE
         [HttpPut]
-        public async Task<IActionResult> UpdateUser([FromBody] UserDTO userDTO)
+        public async Task<IActionResult> UpdateUser([FromBody] UserVO userVO)
         {
-            var result = await _userService.UpdateUser(userDTO);
+            var result = await _userService.UpdateUser(userVO);
             return Ok(result);
 
         }

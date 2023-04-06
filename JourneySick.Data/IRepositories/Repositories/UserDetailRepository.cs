@@ -48,13 +48,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "fldFullname, " +
                     "fldPhone, " +
                     "fldAddress, " +
-                    "fldExperience, " +
-                    "fldTripCreated, " +
-                    "fldTripJoined, " +
-                    "fldTripCompleted, " +
-                    "fldTripCancelled, " +
-                    "fldCreateDate, " +
-                    "fldCreateBy, " +
                     "fldUpdateDate, " +
                     "fldUpdateBy) " +
                     "VALUES " +
@@ -66,15 +59,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "@fldFullname, " +
                     "@fldPhone, " +
                     "@fldAddress, " +
-                    "@fldExperience, " +
-                    "@fldTripCreated, " +
-                    "@fldTripJoined, " +
-                    "@fldTripCompleted, " +
-                    "@fldTripCancelled, " +
                     "@fldCreateDate, " +
-                    "@fldCreateBy, " +
-                    "@fldUpdateDate, " +
-                    "@fldUpdateBy);";
+                    "@fldCreateBy);";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldUserId", userDetail.FldUserId, DbType.String);
@@ -85,15 +71,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldFullname", userDetail.FldFullname, DbType.String);
                 parameters.Add("fldPhone", userDetail.FldPhone, DbType.String);
                 parameters.Add("fldAddress", userDetail.FldAddress, DbType.String);
-                parameters.Add("fldExperience", userDetail.FldExperience, DbType.Double);
-                parameters.Add("fldTripCreated", userDetail.FldTripCreated, DbType.Int16);
-                parameters.Add("fldTripJoined", userDetail.FldTripJoined, DbType.Int16);
-                parameters.Add("fldTripCompleted", userDetail.FldTripCompleted, DbType.Int16);
-                parameters.Add("fldTripCancelled", userDetail.FldTripCancelled, DbType.Int16);
                 parameters.Add("fldCreateDate", userDetail.FldCreateDate, DbType.DateTime);
                 parameters.Add("fldCreateBy", userDetail.FldCreateBy, DbType.String);
-                parameters.Add("fldUpdateDate", userDetail.FldUpdateDate, DbType.DateTime);
-                parameters.Add("fldUpdateBy", userDetail.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }

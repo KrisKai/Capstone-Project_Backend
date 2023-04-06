@@ -1,18 +1,14 @@
 ﻿using JourneySick.Data.Models.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using JourneySick.Data.Models.VO;
 
 namespace JourneySick.Business.IServices
 {
     public interface IUserService
     {
         //CREATE
-        public Task<string> CreateUser(UserDTO userDTO);
+        public Task<string> CreateUser(UserVO userDTO);
         //UPDATE
-        public Task<string> UpdateUser(UserDTO userDTO);
+        public Task<string> UpdateUser(UserVO userDTO);
 
         public Task<UserDTO> GetUserById(String userId);
     }
