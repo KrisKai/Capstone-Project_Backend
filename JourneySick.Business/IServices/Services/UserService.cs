@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Helpers;
+using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
@@ -14,11 +16,13 @@ namespace JourneySick.Business.IServices.Services
         private readonly IUserDetailRepository _userDetailRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<UserService> _logger;
+        private readonly AppSecrect _appSecrect;
 
-        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, IMapper mapper, ILogger<UserService> logger)
+        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, AppSecrect appSecrect, IMapper mapper, ILogger<UserService> logger)
         {
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
+            _appSecrect = appSecrect;
             _mapper = mapper;
             _logger = logger;
         }
@@ -30,6 +34,7 @@ namespace JourneySick.Business.IServices.Services
                 // generate ID (format: USER00000000)
                 userVO.FldUserId = await GenerateUserID();
                 Tbluser tbluser = ConvertUserVOToTblUser(userVO);
+                tbluser.FldPassword = PasswordEncryption.Encrypt(tbluser.FldPassword, _appSecrect.SecrectKey);
                 int id = await _userRepository.CreateUser(tbluser);
                 Tbluserdetail tbluserdetail = ConvertUserVOToTblUserDetail(userVO);
                 tbluserdetail.FldActiveStatus = "Active";
