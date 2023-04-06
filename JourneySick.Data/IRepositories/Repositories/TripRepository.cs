@@ -21,10 +21,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
                 parameters.Add("lastIndex", lastIndex, DbType.Int16);
-                if (tripName == null)
-                {
-                    tripName = "";
-                }
+                tripName ??= "";
                 parameters.Add("tripName", tripName, DbType.String);
 
                 var query = "SELECT * FROM tbltrip WHERE fldTripName LIKE CONCAT('%', @tripName, '%')  LIMIT @firstIndex, @lastIndex";
@@ -100,8 +97,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
                 parameters.Add("fldTripBudget", tripEntity.FldTripBudget, DbType.Decimal);
                 parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
-                parameters.Add("fldEstimateStartTime", tripEntity.FldEstimateStartTime, DbType.String);
-                parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.String);
+                parameters.Add("fldEstimateStartTime", tripEntity.FldEstimateStartTime, DbType.DateTime);
+                parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.DateTime);
                 parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
                 parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
 
@@ -133,8 +130,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
                 parameters.Add("fldTripBudget", tripEntity.FldTripBudget, DbType.Decimal);
                 parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
-                parameters.Add("fldEstimateStartTime", tripEntity.FldEstimateStartTime, DbType.String);
-                parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.String);
+                parameters.Add("fldEstimateStartTime", tripEntity.FldEstimateStartTime, DbType.DateTime);
+                parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.DateTime);
                 parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
                 parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
 

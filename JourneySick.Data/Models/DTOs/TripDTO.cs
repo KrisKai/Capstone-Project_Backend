@@ -16,9 +16,9 @@ namespace JourneySick.Data.Models.DTOs
 
         public string? FldTripDescription { get; set; }
 
-        public string FldEstimateStartTime { get; set; }
+        public DateTime FldEstimateStartTime { get; set; }
 
-        public string FldEstimateArrivalTime { get; set; }
+        public DateTime FldEstimateArrivalTime { get; set; }
 
         public string? FldTripStatus { get; set; }
 
