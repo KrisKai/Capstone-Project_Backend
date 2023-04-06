@@ -48,8 +48,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "fldFullname, " +
                     "fldPhone, " +
                     "fldAddress, " +
-                    "fldUpdateDate, " +
-                    "fldUpdateBy) " +
+                    "fldCreateDate, " +
+                    "fldCreateBy) " +
                     "VALUES " +
                     "(@fldUserId, " +
                     "@fldRole, " +
@@ -88,7 +88,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 int firstIndex = pageIndex * pageSize;
                 int lastIndex = (pageIndex + 1)  * pageSize;
-                var query = "SELECT * FROM tbluserdetail LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
