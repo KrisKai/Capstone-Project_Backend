@@ -91,7 +91,7 @@ namespace JourneySick.Business.IServices.Services
             catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new RegisterUserException("Register Failed!!");
+                throw;
             }
             
         }
@@ -127,7 +127,7 @@ namespace JourneySick.Business.IServices.Services
             }catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
 
@@ -182,7 +182,7 @@ namespace JourneySick.Business.IServices.Services
             catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.ToString());
+                throw;
             }
         }
 
