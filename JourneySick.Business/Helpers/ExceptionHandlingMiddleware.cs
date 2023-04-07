@@ -42,8 +42,8 @@ namespace JourneySick.Business.Helpers
                     errorMessageObject.Code = "U001";
                     statusCode = (int)HttpStatusCode.OK;
                     break;
-                case InsertUserException:
-                    errorMessageObject.Code = "U002";
+                case InsertException:
+                    errorMessageObject.Code = "I001";
                     statusCode = (int)HttpStatusCode.OK;
                     break;
                 case RegisterUserException:
@@ -51,11 +51,19 @@ namespace JourneySick.Business.Helpers
                     statusCode = (int)HttpStatusCode.OK;
                     break;
                 case UserAlreadyExistException:
-                    errorMessageObject.Code = "U003";
+                    errorMessageObject.Code = "U002";
                     statusCode = (int)HttpStatusCode.OK;
                     break;
                 case LoginFailedException:
                     errorMessageObject.Code = "L001";
+                    statusCode = (int)HttpStatusCode.OK;
+                    break;
+                case UpdateException:
+                    errorMessageObject.Code = "U001";
+                    statusCode = (int)HttpStatusCode.OK;
+                    break;
+                case DeleteException:
+                    errorMessageObject.Code = "D001";
                     statusCode = (int)HttpStatusCode.OK;
                     break;
                 default:

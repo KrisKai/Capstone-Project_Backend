@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Business.Helpers.Exceptions
 {
-    public class UserException : Exception
+    public class InsertException:Exception
     {
-        public UserException() : base() { }
-        public UserException(string message) : base(message) { }
+        public InsertException() : base() { }
+        public InsertException(string message) : base(message) { }
 
-        public UserException(string message, params object[] args)
+        public InsertException(string message, params object[] args)
             : base(String.Format(CultureInfo.CurrentCulture, message, args))
         {
         }
-    }    
-
+    }
 }

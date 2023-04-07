@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Business.Helpers.Exceptions
 {
-    public class UserException : Exception
+    public class DeleteException : Exception
     {
-        public UserException() : base() { }
-        public UserException(string message) : base(message) { }
+        public DeleteException() : base() { }
+        public DeleteException(string message) : base(message) { }
 
-        public UserException(string message, params object[] args)
+        public DeleteException(string message, params object[] args)
             : base(String.Format(CultureInfo.CurrentCulture, message, args))
         {
         }
-    }    
-
+    }
 }
