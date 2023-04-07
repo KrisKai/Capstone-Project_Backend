@@ -91,7 +91,7 @@ namespace JourneySick.Business.IServices.Services
             catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new RegisterUserException("Register Failed!!");
+                throw;
             }
             
         }
@@ -101,7 +101,6 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 LoginResponse loginResponse = new();
-                int ok = int.Parse("dddd");
                 string checkValue = await _userRepository.GetPasswordByUsername(loginRequest.Username);
                 if (string.IsNullOrEmpty(checkValue))
                 {
@@ -128,7 +127,7 @@ namespace JourneySick.Business.IServices.Services
             }catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
 
@@ -183,7 +182,7 @@ namespace JourneySick.Business.IServices.Services
             catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.ToString());
+                throw;
             }
         }
 

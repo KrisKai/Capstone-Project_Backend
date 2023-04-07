@@ -35,7 +35,7 @@ namespace JourneySick.Business.IServices.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
 
@@ -53,7 +53,7 @@ namespace JourneySick.Business.IServices.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
         public async Task<string> CreateTripDetail(TripDetailDTO tripDetailDTO)
@@ -76,7 +76,7 @@ namespace JourneySick.Business.IServices.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
 
@@ -100,7 +100,7 @@ namespace JourneySick.Business.IServices.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
 
@@ -123,7 +123,7 @@ namespace JourneySick.Business.IServices.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
     }
