@@ -69,17 +69,29 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> UpdateUser(UserVO userDTO)
+        public async Task<int> UpdateUser(UserVO userDTO)
         {
             try
             {
-                // convert entity to dto
-                Tbluser tblUser = _mapper.Map<Tbluser>(userDTO);
-                return userDTO.FldUserId;
+                UserVO getTrip = await GetUserById(userId: userDTO.FldUserId);
+
+                if (getTrip != null)
+                {
+                    Tbluserdetail tbluserdetail = ConvertUserVOToTblUserDetail(userDTO);
+                    tbluserdetail.FldUpdateBy = "Admin";
+                    tbluserdetail.FldUpdateDate = DateTime.Now;
+                    int id = await _userDetailRepository.UpdateUserDetail(tbluserdetail);
+                    return id;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -151,6 +163,7 @@ namespace JourneySick.Business.IServices.Services
                 if (getTrip != null)
                 {
                     int id = await _userRepository.DeleteUser(userId);
+                    await _userDetailRepository.DeleteUserDetail(userId);
                     return id;
                 }
                 else

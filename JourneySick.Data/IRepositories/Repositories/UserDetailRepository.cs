@@ -82,6 +82,23 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public async Task<int> DeleteUserDetail(string userId)
+        {
+            try
+            {
+                var query = "DELETE FROM tbluserdetail WHERE fldUserId = @fldUserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUserId", userId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
         public async Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize)
         {
             try
@@ -177,7 +194,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("Phone", userDetailEntity.FldPhone, DbType.String);
                 parameters.Add("Address", userDetailEntity.FldAddress, DbType.String);
                 parameters.Add("UpdateDate", userDetailEntity.FldUpdateDate, DbType.DateTime);
-                parameters.Add("UpdateBy", userDetailEntity.FldUserId, DbType.String);
+                parameters.Add("UpdateBy", userDetailEntity.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
 

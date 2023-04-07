@@ -9,9 +9,10 @@ namespace JourneySick.Data.IRepositories
     {
         public Task<int> CountAllUsers();
         public Task<int> CreateUserDetail(Tbluserdetail userDetail);
+        public Task<int> DeleteUserDetail(string userId);
         public Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize);
         //Select User Detail
-        public Task<UserVO> GetUserDetailByUserName(String username);
+        public Task<UserVO> GetUserDetailByUserName(string username);
         public Task<int> UpdateUserDetail(Tbluserdetail userDetailEntity);
     }
 }

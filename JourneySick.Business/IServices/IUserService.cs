@@ -8,7 +8,7 @@ namespace JourneySick.Business.IServices
         //CREATE
         public Task<int> CreateUser(UserVO userDTO);
         //UPDATE
-        public Task<string> UpdateUser(UserVO userDTO);
+        public Task<int> UpdateUser(UserVO userDTO);
         //SELECT BY ID
         public Task<UserVO> GetUserById(string userId);
         //DELETE
