@@ -9,8 +9,10 @@ namespace JourneySick.Business.IServices
         public Task<string> CreateAdmin(UserVO userDTO);
         public Task<string> CreateUser(UserDTO userDTO);
         //UPDATE
-        public Task<string> UpdateUser(UserVO userDTO);
-
-        public Task<UserDTO> GetUserById(String userId);
+        public Task<int> UpdateUser(UserVO userDTO);
+        //SELECT BY ID
+        public Task<UserVO> GetUserById(string userId);
+        //DELETE
+        public Task<int> DeleteUser(string id);
     }
 }

@@ -1,9 +1,14 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Helpers;
+using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
+using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
 using JourneySick.Data.Models.VO;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace JourneySick.Business.IServices.Services
 {
@@ -13,28 +18,32 @@ namespace JourneySick.Business.IServices.Services
         private readonly IUserDetailRepository _userDetailRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<UserService> _logger;
+        private readonly AppSecrect _appSecrect;
 
-        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, IMapper mapper, ILogger<UserService> logger)
+        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, IOptions<AppSecrect> appSecrect, IMapper mapper, ILogger<UserService> logger)
         {
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
+            _appSecrect = appSecrect.Value;
             _mapper = mapper;
             _logger = logger;
         }
 
-        public async Task<string> CreateAdmin(UserVO userVO)
+        public async Task<int> CreateAdmin(UserVO userVO)
         {
             try
             {
                 // generate ID (format: USER00000000)
                 userVO.FldUserId = await GenerateUserID();
                 Tbluser tbluser = ConvertUserVOToTblUser(userVO);
+                tbluser.FldPassword = PasswordEncryption.Encrypt(tbluser.FldPassword, _appSecrect.SecrectKey);
                 int id = await _userRepository.CreateUser(tbluser);
                 Tbluserdetail tbluserdetail = ConvertUserVOToTblUserDetail(userVO);
+                tbluserdetail.FldActiveStatus = "Active";
                 tbluserdetail.FldCreateBy = "Admin";
                 tbluserdetail.FldCreateDate = DateTime.Now;
                 await _userDetailRepository.CreateUserDetail(tbluserdetail);
-                return userVO.FldUserId;
+                return id;
             }
             catch (Exception ex)
             {
@@ -66,30 +75,42 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tbluser tblUser = await _userRepository.GetUserById(userId);
+                TbluserVO tblUserVO = await _userRepository.GetUserById(userId);
                 // convert entity to dto
-                UserDTO userDTO = _mapper.Map<UserDTO>(tblUser);
+                UserVO userDTO = _mapper.Map<UserVO>(tblUserVO);
                 return userDTO;
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex.StackTrace, ex);
+                _logger.LogError(message: ex.StackTrace, ex);
                 throw new Exception(ex.Message);
             }
 
         }
 
-        public async Task<string> UpdateUser(UserVO userDTO)
+        public async Task<int> UpdateUser(UserVO userDTO)
         {
             try
             {
-                // convert entity to dto
-                Tbluser tblUser = _mapper.Map<Tbluser>(userDTO);
-                return userDTO.FldUserId;
+                UserVO getTrip = await GetUserById(userId: userDTO.FldUserId);
+
+                if (getTrip != null)
+                {
+                    Tbluserdetail tbluserdetail = ConvertUserVOToTblUserDetail(userDTO);
+                    tbluserdetail.FldUpdateBy = "Admin";
+                    tbluserdetail.FldUpdateDate = DateTime.Now;
+                    int id = await _userDetailRepository.UpdateUserDetail(tbluserdetail);
+                    return id;
+                }
+                else
+                {
+                    return 0;
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -150,6 +171,29 @@ namespace JourneySick.Business.IServices.Services
 
             Tbluserdetail tbluserDetail = _mapper.Map<Tbluserdetail>(userDetailDTO);
             return tbluserDetail;
+        }
+
+        public async Task<int> DeleteUser(string userId)
+        {
+            try
+            {
+                UserVO getTrip = await GetUserById(userId);
+
+                if (getTrip != null)
+                {
+                    int id = await _userRepository.DeleteUser(userId);
+                    await _userDetailRepository.DeleteUserDetail(userId);
+                    return id;
+                }
+                else
+                {
+                    return 0;
+                }
+            } catch(Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

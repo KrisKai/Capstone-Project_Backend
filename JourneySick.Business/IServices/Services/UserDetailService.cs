@@ -38,19 +38,19 @@ namespace JourneySick.Business.IServices.Services
             }
             catch (Exception ex)
             {
-                throw new Exception();
+                throw;
             }
         }
 
         public async Task<UserVO> GetUserDetailByUserName(String username)
         {
-            try {
+            try 
+            {
                 return await _userDetailRepository.GetUserDetailByUserName(username);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
 

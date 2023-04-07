@@ -48,9 +48,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "fldFullname, " +
                     "fldPhone, " +
                     "fldAddress, " +
-                    "fldUpdateDate, " +
-                    "fldUpdateBy," +
-                    "fldCreateDate," +
+                    "fldCreateDate, " +
                     "fldCreateBy) " +
                     "VALUES " +
                     "(@fldUserId, " +
@@ -88,13 +86,30 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public async Task<int> DeleteUserDetail(string userId)
+        {
+            try
+            {
+                var query = "DELETE FROM tbluserdetail WHERE fldUserId = @fldUserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUserId", userId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
         public async Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize)
         {
             try
             {
                 int firstIndex = pageIndex * pageSize;
                 int lastIndex = (pageIndex + 1)  * pageSize;
-                var query = "SELECT * FROM tbluserdetail LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
@@ -183,7 +198,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("Phone", userDetailEntity.FldPhone, DbType.String);
                 parameters.Add("Address", userDetailEntity.FldAddress, DbType.String);
                 parameters.Add("UpdateDate", userDetailEntity.FldUpdateDate, DbType.DateTime);
-                parameters.Add("UpdateBy", userDetailEntity.FldUserId, DbType.String);
+                parameters.Add("UpdateBy", userDetailEntity.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
 

@@ -33,7 +33,7 @@ namespace JourneySick.Business.IServices.Services
             catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
 
         }
@@ -52,7 +52,7 @@ namespace JourneySick.Business.IServices.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
 
@@ -77,7 +77,7 @@ namespace JourneySick.Business.IServices.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
             
         }
@@ -101,9 +101,8 @@ namespace JourneySick.Business.IServices.Services
             catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
-
         }
 
         public async Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName)
@@ -122,7 +121,7 @@ namespace JourneySick.Business.IServices.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
     }
