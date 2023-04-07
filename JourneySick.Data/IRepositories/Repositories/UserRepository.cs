@@ -119,7 +119,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldUserId", userId, DbType.String);
 
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<TbluserVO>(query);
+                return await connection.QueryFirstOrDefaultAsync<TbluserVO>(query, parameters);
             }
             catch (Exception e)
             {

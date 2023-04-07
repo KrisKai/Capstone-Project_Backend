@@ -58,7 +58,7 @@ namespace JourneySick.API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetUserById([FromRoute] string id)
         {
-            UserVO result = await _userService.GetUserById(id);
+            var result = await _userService.GetUserById(id);
             return Ok(result);
         }
 
