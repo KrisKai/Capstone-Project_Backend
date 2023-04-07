@@ -103,7 +103,6 @@ namespace JourneySick.Business.IServices.Services
                 _logger.LogError(ex.StackTrace, ex);
                 throw new Exception(ex.Message);
             }
-
         }
 
         public async Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName)

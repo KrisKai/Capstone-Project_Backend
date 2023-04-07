@@ -61,5 +61,15 @@ namespace JourneySick.API.Controllers
             UserVO result = await _userService.GetUserById(id);
             return Ok(result);
         }
+
+
+        //DELETE BY ID
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteUser(string id)
+        {
+            var result = await _userService.DeleteUser(id);
+            return Ok(result);
+        }
     }
 }

@@ -8,11 +8,17 @@ namespace JourneySick.Data.IRepositories
     {
         //CREATE
         public Task<int> CreateUser(Tbluser userEntity);
+
         public Task<string> GetLastOneId();
+
         public Task<string> GetUsernameIfExist(string username);
+
         public Task<string> GetPasswordByUsername(string username);
+
         public Task<UserVO> GetUserByUsername(string username);
+
         public Task<TbluserVO> GetUserById(string userId);
+        //DELETE
         public Task<int> DeleteUser(string userId);
     }
 }

@@ -2,6 +2,7 @@
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
+using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -28,7 +29,7 @@ namespace JourneySick.Business.IServices.Services
             _logger = logger;
         }
 
-        public async Task<string> CreateUser(UserVO userVO)
+        public async Task<int> CreateUser(UserVO userVO)
         {
             try
             {
@@ -42,7 +43,7 @@ namespace JourneySick.Business.IServices.Services
                 tbluserdetail.FldCreateBy = "Admin";
                 tbluserdetail.FldCreateDate = DateTime.Now;
                 await _userDetailRepository.CreateUserDetail(tbluserdetail);
-                return userVO.FldUserId;
+                return id;
             }
             catch (Exception ex)
             {
@@ -62,7 +63,7 @@ namespace JourneySick.Business.IServices.Services
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex.StackTrace, ex);
+                _logger.LogError(message: ex.StackTrace, ex);
                 throw new Exception(ex.Message);
             }
 
@@ -139,6 +140,28 @@ namespace JourneySick.Business.IServices.Services
 
             Tbluserdetail tbluserDetail = _mapper.Map<Tbluserdetail>(userDetailDTO);
             return tbluserDetail;
+        }
+
+        public async Task<int> DeleteUser(string userId)
+        {
+            try
+            {
+                UserVO getTrip = await GetUserById(userId);
+
+                if (getTrip != null)
+                {
+                    int id = await _userRepository.DeleteUser(userId);
+                    return id;
+                }
+                else
+                {
+                    return 0;
+                }
+            } catch(Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

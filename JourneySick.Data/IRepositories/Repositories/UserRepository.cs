@@ -127,9 +127,21 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public Task<int> DeleteUser(string userId)
+        public async Task<int> DeleteUser(string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var query = "DELETE FROM tbluser WHERE fldUserId = @fldUserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUserId", userId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
         }
     }
 }
