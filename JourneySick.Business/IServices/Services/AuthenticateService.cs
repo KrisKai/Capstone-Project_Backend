@@ -45,7 +45,8 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tbluser userEntity = new();
+
+                UserVO userDTO = new();
                 Tbluserdetail userDetailEntity = new(); 
                 RegisterResponse registerResponse = new();
                 string checkNameExist = await _userRepository.GetUsernameIfExist(registereRequest.Username);
@@ -53,12 +54,12 @@ namespace JourneySick.Business.IServices.Services
                 {
                     throw new UserAlreadyExistException("User With This Username Already Exist!!");
                 }
-                userEntity.FldUsername = registereRequest.Username;
-                userEntity.FldPassword = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
-
-                if( await _userRepository.CreateUser(userEntity) > 0)
+                userDTO.FldUsername = registereRequest.Username;
+                userDTO.FldPassword = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
+                userDTO.FldUserId = await _userService.CreateUser(userDTO);
+                if (!userDTO.FldUserId.Equals(""))
                 {
-                    userDetailEntity.FldUserId = userEntity.FldUserId;
+                    userDetailEntity.FldUserId = userDTO.FldUserId;
                     userDetailEntity.FldRole = UserRoleEnum.USER.ToString();
                     userDetailEntity.FldBirthday = Convert.ToDateTime(registereRequest.Birthdate, CultureInfo.InvariantCulture);
                     userDetailEntity.FldActiveStatus = "Active";
@@ -73,8 +74,8 @@ namespace JourneySick.Business.IServices.Services
                     userDetailEntity.FldTripCompleted = 0;
                     userDetailEntity.FldTripCancelled = 0;
                     userDetailEntity.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    userDetailEntity.FldCreateBy = userEntity.FldUserId;
-                    userDetailEntity.FldUpdateBy = userEntity.FldUserId;
+                    userDetailEntity.FldCreateBy = userDTO.FldUserId;
+                    userDetailEntity.FldUpdateBy = userDTO.FldUserId;
                     userDetailEntity.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
                     if(await _userDetailRepository.CreateUserDetail(userDetailEntity) < 1)
                     {
@@ -84,7 +85,7 @@ namespace JourneySick.Business.IServices.Services
                 registerResponse.Email = registereRequest.Email;
                 registerResponse.FullName = userDetailEntity.FldFullname;
                 registerResponse.Username = registereRequest.Username;
-                registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userEntity.FldUserId);
+                registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userDTO.FldUserId);
 
                 return registerResponse;
             }
@@ -185,6 +186,7 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
         }
+
 
 
 
