@@ -23,7 +23,7 @@ namespace JourneySick.Business.IServices.Services
         {
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
-            _appSecrect = appSecrect;
+            _appSecrect = appSecrect.Value;
             _mapper = mapper;
             _logger = logger;
         }
