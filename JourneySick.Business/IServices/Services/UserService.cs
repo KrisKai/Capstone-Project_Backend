@@ -7,6 +7,7 @@ using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using JourneySick.Data.Models.VO;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace JourneySick.Business.IServices.Services
 {
@@ -18,7 +19,7 @@ namespace JourneySick.Business.IServices.Services
         private readonly ILogger<UserService> _logger;
         private readonly AppSecrect _appSecrect;
 
-        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, AppSecrect appSecrect, IMapper mapper, ILogger<UserService> logger)
+        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, IOptions<AppSecrect> appSecrect, IMapper mapper, ILogger<UserService> logger)
         {
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
