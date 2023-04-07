@@ -6,7 +6,8 @@ namespace JourneySick.Business.IServices
     public interface IUserService
     {
         //CREATE
-        public Task<string> CreateUser(UserVO userDTO);
+        public Task<string> CreateAdmin(UserVO userDTO);
+        public Task<string> CreateUser(UserDTO userDTO);
         //UPDATE
         public Task<string> UpdateUser(UserVO userDTO);
 

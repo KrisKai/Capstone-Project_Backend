@@ -22,7 +22,7 @@ namespace JourneySick.Business.IServices.Services
             _logger = logger;
         }
 
-        public async Task<string> CreateUser(UserVO userVO)
+        public async Task<string> CreateAdmin(UserVO userVO)
         {
             try
             {
@@ -37,6 +37,25 @@ namespace JourneySick.Business.IServices.Services
                 return userVO.FldUserId;
             }
             catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<string> CreateUser(UserDTO userDTO)
+        {
+            try
+            {
+                userDTO.FldUserId = await GenerateUserID();
+                Tbluser userEntity = _mapper.Map<Tbluser>(userDTO);
+                if(await _userRepository.CreateUser(userEntity) > 0)
+                {
+                    return userDTO.FldUserId;
+                }
+                return "";
+
+            }catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
                 throw new Exception(ex.Message);

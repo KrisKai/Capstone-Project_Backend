@@ -52,6 +52,10 @@ namespace JourneySick.Business.Helpers
                 case LoginFailedException:
                     errorMessageObject.Code = "L001";
                     statusCode = (int)HttpStatusCode.OK;
+                    break;                
+                case EmptyFieldException:
+                    errorMessageObject.Code = "E001";
+                    statusCode = (int)HttpStatusCode.OK;
                     break;
                 default:
                     errorMessageObject.Code = "500";
