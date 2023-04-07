@@ -62,7 +62,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<UserDTO> GetUserById(String userId)
+        public async Task<UserDTO> GetUserById(string userId)
         {
             try
             {
