@@ -46,7 +46,7 @@ namespace JourneySick.Business.IServices.Services
             try
             {
 
-                UserDTO userDTO = new();
+                UserVO userDTO = new();
                 Tbluserdetail userDetailEntity = new(); 
                 RegisterResponse registerResponse = new();
                 string checkNameExist = await _userRepository.GetUsernameIfExist(registereRequest.Username);

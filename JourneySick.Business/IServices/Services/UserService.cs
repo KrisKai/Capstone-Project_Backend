@@ -29,7 +29,7 @@ namespace JourneySick.Business.IServices.Services
             _logger = logger;
         }
 
-        public async Task<int> CreateAdmin(UserVO userVO)
+        public async Task<string> CreateAdmin(UserVO userVO)
         {
             try
             {
@@ -43,7 +43,7 @@ namespace JourneySick.Business.IServices.Services
                 tbluserdetail.FldCreateBy = "Admin";
                 tbluserdetail.FldCreateDate = DateTime.Now;
                 await _userDetailRepository.CreateUserDetail(tbluserdetail);
-                return id;
+                return tbluserdetail.FldUserId;
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<string> CreateUser(UserDTO userDTO)
+        public async Task<string> CreateUser(UserVO userDTO)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<UserDTO> GetUserById(string userId)
+        public async Task<UserVO> GetUserById(string userId)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<int> UpdateUser(UserVO userDTO)
+        public async Task<string> UpdateUser(UserVO userDTO)
         {
             try
             {
@@ -100,11 +100,11 @@ namespace JourneySick.Business.IServices.Services
                     tbluserdetail.FldUpdateBy = "Admin";
                     tbluserdetail.FldUpdateDate = DateTime.Now;
                     int id = await _userDetailRepository.UpdateUserDetail(tbluserdetail);
-                    return id;
+                    return userDTO.FldUserId;
                 }
                 else
                 {
-                    return 0;
+                    return "Fail";
                 }
             }
             catch (Exception ex)
