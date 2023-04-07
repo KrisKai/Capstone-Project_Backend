@@ -62,6 +62,10 @@ namespace JourneySick.Business.Helpers
                     errorMessageObject.Code = "E001";
                     statusCode = (int)HttpStatusCode.OK;
                     break;
+                case GetOneException:
+                    errorMessageObject.Code = "G001";
+                    statusCode = (int)HttpStatusCode.OK;
+                    break;
                 case UpdateException:
                     errorMessageObject.Code = "U001";
                     statusCode = (int)HttpStatusCode.OK;

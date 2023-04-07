@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers;
+using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
@@ -48,7 +49,7 @@ namespace JourneySick.Business.IServices.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
 
@@ -62,12 +63,12 @@ namespace JourneySick.Business.IServices.Services
                 {
                     return userDTO.FldUserId;
                 }
-                return "";
+                throw new InsertException("Create user failed!");
 
             }catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
 
@@ -83,7 +84,7 @@ namespace JourneySick.Business.IServices.Services
             catch(Exception ex)
             {
                 _logger.LogError(message: ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
 
         }
@@ -99,18 +100,24 @@ namespace JourneySick.Business.IServices.Services
                     Tbluserdetail tbluserdetail = ConvertUserVOToTblUserDetail(userDTO);
                     tbluserdetail.FldUpdateBy = "Admin";
                     tbluserdetail.FldUpdateDate = DateTime.Now;
-                    int id = await _userDetailRepository.UpdateUserDetail(tbluserdetail);
-                    return userDTO.FldUserId;
+                    if( await _userDetailRepository.UpdateUserDetail(tbluserdetail)>0)
+                    {
+                        return userDTO.FldUserId;
+                    }
+                    else
+                    {
+                        throw new UpdateException("Update user failes!");
+                    }
                 }
                 else
                 {
-                    return "Fail";
+                    throw new GetOneException("User is not existed!");
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
 
@@ -181,18 +188,23 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    int id = await _userRepository.DeleteUser(userId);
-                    await _userDetailRepository.DeleteUserDetail(userId);
-                    return id;
+                    if(await _userRepository.DeleteUser(userId)>0 && await _userDetailRepository.DeleteUserDetail(userId) > 0)
+                    {
+                        return 1;
+                    } else
+                    {
+                        throw new DeleteException("Delete user failed!");
+                    }
+                    
                 }
                 else
                 {
-                    return 0;
+                    throw new GetOneException("User is not existed!");
                 }
             } catch(Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
         }
     }
