@@ -2,6 +2,7 @@
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
 using JourneySick.Data.Models.VO;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -108,17 +109,17 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<Tbluser> GetUserById(string userId)
+        public async Task<TbluserVO> GetUserById(string userId)
         {
             try
             {
-                var query = "SELECT * FROM tbluser WHERE fldUserId = @fldUserId";
+                var query = "SELECT * FROM tbluser a JOIN tblUserDetail b ON a.fldUserId = b.fldUserId WHERE a.fldUserId = @fldUserId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldUserId", userId, DbType.String);
 
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tbluser>(query);
+                return await connection.QueryFirstOrDefaultAsync<TbluserVO>(query, parameters);
             }
             catch (Exception e)
             {
@@ -126,9 +127,21 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public Task<int> DeleteUser(string userId)
+        public async Task<int> DeleteUser(string userId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var query = "DELETE FROM tbluser WHERE fldUserId = @fldUserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUserId", userId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
         }
     }
 }

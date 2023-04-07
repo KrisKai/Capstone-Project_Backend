@@ -2,6 +2,7 @@
 using JourneySick.Data.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net;
 using System.Text.Json;
@@ -10,26 +11,30 @@ namespace JourneySick.Business.Helpers
 {
     public class ExceptionHandlingMiddleware : AuthorizeAttribute
     {
-        public RequestDelegate requestDelegate;
-        public ExceptionHandlingMiddleware(RequestDelegate requestDelegate)
+        private readonly RequestDelegate _requestDelegate;
+        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+
+        public ExceptionHandlingMiddleware(RequestDelegate requestDelegate, ILogger<ExceptionHandlingMiddleware> logger)
         {
-            this.requestDelegate = requestDelegate;
+            _requestDelegate = requestDelegate;
+            _logger = logger;
         }
-        public async Task Invoke(HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
-                await requestDelegate(context);
+                await _requestDelegate(context);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.StackTrace);
                 await HandleException(context, ex);
             }
         }
 
         private static Task HandleException(HttpContext context, Exception ex)
         {
-            var errorMessageObject = new ErrorResponse { Message = ex.Message, Code = "500" };
+            var errorMessageObject = new ErrorResponse { Message = ex.Message, Code = "500"};
             var statusCode = (int)HttpStatusCode.InternalServerError;
             switch (ex)
             {

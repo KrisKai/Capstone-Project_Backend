@@ -41,7 +41,6 @@ namespace JourneySick.API.Controllers
         {
             var result = await _authenticateService.LoginUser(loginRequest);
             return Ok(result);
-
         }
     }
 }
