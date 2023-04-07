@@ -105,7 +105,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName)
+        public async Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize, string? tripName)
         {
             AllTripDTO result = new();
             try
@@ -113,7 +113,7 @@ namespace JourneySick.Business.IServices.Services
                 List<Tbltrip> tbltrips = await _tripRepository.GetAllTripsWithPaging(pageIndex, pageSize, tripName);
                 // convert entity to dto
                 List<TripDTO> trips = _mapper.Map<List<TripDTO>>(tbltrips);
-                int count = await _tripRepository.CountAllTrips();
+                int count = await _tripRepository.CountAllTrips(tripName);
                 result.listOfTrip = trips;
                 result.numOfTrip = count;
                 return result;

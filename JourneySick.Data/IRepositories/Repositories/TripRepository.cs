@@ -161,13 +161,17 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountAllTrips()
+        public async Task<int> CountAllTrips(string? tripName)
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbltrip";
+                var query = "SELECT COUNT(*) FROM tbltrip WHERE fldTripName LIKE CONCAT('%', @tripName, '%')";
+
+                tripName ??= "";
+                var parameters = new DynamicParameters();
+                parameters.Add("tripName", tripName, DbType.String);
                 using var connection = CreateConnection();
-                return ((int)(long)connection.ExecuteScalar(query));
+                return ((int)(long)connection.ExecuteScalar(query, parameters));
 
             }
             catch (Exception e)

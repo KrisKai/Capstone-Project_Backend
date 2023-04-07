@@ -101,7 +101,6 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 LoginResponse loginResponse = new();
-                int ok = int.Parse("dddd");
                 string checkValue = await _userRepository.GetPasswordByUsername(loginRequest.Username);
                 if (string.IsNullOrEmpty(checkValue))
                 {

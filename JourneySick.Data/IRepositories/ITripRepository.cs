@@ -6,8 +6,8 @@ namespace JourneySick.Data.IRepositories
     {
         
         //CREATE
-        public Task<List<Tbltrip>> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName);
-        public Task<int> CountAllTrips();
+        public Task<List<Tbltrip>> GetAllTripsWithPaging(int pageIndex, int pageSize, string? tripName);
+        public Task<int> CountAllTrips(string? tripName);
         public Task<string> GetLastOneId();
         public Task<Tbltrip> GetTripById(string tripId);
         //CREATE

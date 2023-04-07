@@ -38,6 +38,7 @@ namespace JourneySick.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateUser([FromBody] UserVO userVO)
         {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.UpdateUser(userVO);
             return Ok(result);
 
