@@ -24,11 +24,19 @@ namespace JourneySick.API.Controllers
         //CREATE
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> RegisterUser(string date)
+        public async Task<IActionResult> RegisterUser(string nnn)
         {
-            Tbluser tbluser= new();
-            string tp = tbluser.GetType().Name;
-            return Ok(tp);
+            Tbltrip trip = new();
+            string ok = checkok(trip);
+            
+            return Ok(ok);
+        }
+
+        private string checkok(dynamic result)
+        {
+            string checkResult = result.GetType().Name;
+
+            return checkResult;
         }
     }
 }

@@ -49,7 +49,9 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "fldPhone, " +
                     "fldAddress, " +
                     "fldUpdateDate, " +
-                    "fldUpdateBy) " +
+                    "fldUpdateBy," +
+                    "fldCreateDate," +
+                    "fldCreateBy) " +
                     "VALUES " +
                     "(@fldUserId, " +
                     "@fldRole, " +
@@ -58,7 +60,9 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "@fldEmail, " +
                     "@fldFullname, " +
                     "@fldPhone, " +
-                    "@fldAddress, " +
+                    "@fldAddress," +
+                    "@fldUpdateDate," +
+                    "@fldUpdateBy, " +
                     "@fldCreateDate, " +
                     "@fldCreateBy);";
 
@@ -72,7 +76,9 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldPhone", userDetail.FldPhone, DbType.String);
                 parameters.Add("fldAddress", userDetail.FldAddress, DbType.String);
                 parameters.Add("fldCreateDate", userDetail.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", userDetail.FldCreateBy, DbType.String);
+                parameters.Add("fldCreateBy", userDetail.FldCreateBy, DbType.String);                
+                parameters.Add("fldUpdateDate", userDetail.FldUpdateDate, DbType.DateTime);
+                parameters.Add("fldUpdateBy", userDetail.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
