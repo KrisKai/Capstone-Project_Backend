@@ -70,7 +70,7 @@ namespace JourneySick.Business.IServices.Services
                 tripVO.FldTripId = (int.Parse(lastOne) + 1).ToString();
                 tripVO.FldTripStatus = "Active";
                 TbltripVO tbltrip = _mapper.Map<TbltripVO>(tripVO);
-                if (await _tripRepository.CreateTrip(tbltrip) > 0)
+                if (await _tripRepository.CreateTrip(tbltrip) > 0 && await _tripDetailRepository.CreateTripDetail(tbltrip) > 0)
                 {
                     return tripVO.FldTripId;
                 }
@@ -95,7 +95,7 @@ namespace JourneySick.Business.IServices.Services
                 if (getTrip != null)
                 {
                     TbltripVO tbltripVO = _mapper.Map<TbltripVO>(tripVO);
-                    if (await _tripRepository.UpdateTrip(tbltripVO) > 0)
+                    if (await _tripRepository.UpdateTrip(tbltripVO) > 0 && await _tripDetailRepository.UpdateTripDetail(tbltripVO) > 0)
                     {
                         return getTrip.FldTripId;
                     }
