@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JourneySick.Data.Models.DTOs.CommonDTO.VO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,6 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO
     public class AllTripDTO
     {
         public int numOfTrip { get; set; }
-        public List<TripDTO> listOfTrip { get; set; }
+        public List<TripVO> listOfTrip { get; set; }
     }
 }

@@ -24,8 +24,4 @@
     <PackageReference Include="MySql.Data" Version="8.0.32" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="7.0.0" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Entities\VO\" />
-  </ItemGroup>
 </Project>
