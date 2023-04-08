@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
@@ -12,7 +13,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<Tbltrip>> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName)
+        public async Task<List<TbltripVO>> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName)
         {
             try
             {
@@ -24,10 +25,10 @@ namespace JourneySick.Data.IRepositories.Repositories
                 tripName ??= "";
                 parameters.Add("tripName", tripName, DbType.String);
 
-                var query = "SELECT * FROM tbltrip WHERE fldTripName LIKE CONCAT('%', @tripName, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM tbltrip a INNER JOIN tbltripdetail b ON a.fldTripId = b.fldTripId WHERE a.fldTripName LIKE CONCAT('%', @tripName, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tbltrip>(query, parameters)).ToList();
+                return (await connection.QueryAsync<TbltripVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -49,17 +50,17 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<Tbltrip> GetTripById(string tripId)
+        public async Task<TbltripVO> GetTripById(string tripId)
         {
             try
             {
-                var query = "SELECT * FROM tbltrip WHERE fldTripId = @tripId";
+                var query = "SELECT * FROM tbltrip INNER JOIN tbltripdetail b ON a.fldTripId = b.fldTripId WHERE a.fldTripId = @tripId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("tripId", tripId, DbType.String);
 
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tbltrip>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<TbltripVO>(query, parameters);
             }
             catch (Exception e)
             {
@@ -69,7 +70,7 @@ namespace JourneySick.Data.IRepositories.Repositories
 
 
         //CREATE
-        public async Task<int> CreateTrip(Tbltrip tripEntity)
+        public async Task<int> CreateTrip(TbltripVO tripEntity)
         {
             try
             {
@@ -111,7 +112,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateTrip(Tbltrip tripEntity)
+        public async Task<int> UpdateTrip(TbltripVO tripEntity)
         {
             try
             {

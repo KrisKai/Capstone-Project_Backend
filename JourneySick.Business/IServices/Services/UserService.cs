@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
+using JourneySick.Business.Models.DTOs;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -30,21 +32,39 @@ namespace JourneySick.Business.IServices.Services
             _logger = logger;
         }
 
+        public async Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser)
+        {
+            AllUserDTO result = new();
+            try
+            {
+                List<TbluserVO> tblusers = await _userRepository.GetAllUsersWithPaging(pageIndex, pageSize);
+                // convert entity to dto
+                List<UserVO> users = _mapper.Map<List<UserVO>>(tblusers);
+                int count = await _userRepository.CountAllUsers();
+                result.listOfUser = users;
+                result.numOfUser = count;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public async Task<string> CreateAdmin(UserVO userVO)
         {
             try
             {
                 // generate ID (format: USER00000000)
                 userVO.FldUserId = await GenerateUserID();
-                Tbluser tbluser = ConvertUserVOToTblUser(userVO);
-                tbluser.FldPassword = PasswordEncryption.Encrypt(tbluser.FldPassword, _appSecrect.SecrectKey);
-                int id = await _userRepository.CreateUser(tbluser);
-                Tbluserdetail tbluserdetail = ConvertUserVOToTblUserDetail(userVO);
-                tbluserdetail.FldActiveStatus = "Active";
-                tbluserdetail.FldCreateBy = "Admin";
-                tbluserdetail.FldCreateDate = DateTime.Now;
-                await _userDetailRepository.CreateUserDetail(tbluserdetail);
-                return tbluserdetail.FldUserId;
+                userVO.FldPassword = PasswordEncryption.Encrypt(userVO.FldPassword, _appSecrect.SecrectKey);
+                userVO.FldActiveStatus = "Active";
+                userVO.FldCreateBy = "Admin";
+                userVO.FldCreateDate = DateTime.Now;
+                TbluserVO tbluserVO = _mapper.Map<TbluserVO>(userVO);
+                int id = await _userRepository.CreateUser(tbluserVO);
+                await _userDetailRepository.CreateUserDetail(tbluserVO);
+                return tbluserVO.FldUserId;
             }
             catch (Exception ex)
             {
@@ -53,15 +73,20 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<string> CreateUser(UserVO userDTO)
+        public async Task<string> CreateUser(UserVO userVO)
         {
             try
             {
-                userDTO.FldUserId = await GenerateUserID();
-                Tbluser userEntity = _mapper.Map<Tbluser>(userDTO);
-                if(await _userRepository.CreateUser(userEntity) > 0)
+                // generate ID (format: USER00000000)
+                userVO.FldUserId = await GenerateUserID();
+                userVO.FldPassword = PasswordEncryption.Encrypt(userVO.FldPassword, _appSecrect.SecrectKey);
+                userVO.FldActiveStatus = "Active";
+                userVO.FldCreateBy = "Admin";
+                userVO.FldCreateDate = DateTime.Now;
+                TbluserVO userEntity = _mapper.Map<TbluserVO>(userVO);
+                if (await _userRepository.CreateUser(userEntity) > 0 && await _userDetailRepository.CreateUserDetail(userEntity) > 0)
                 {
-                    return userDTO.FldUserId;
+                    return userEntity.FldUserId;
                 }
                 throw new InsertException("Create user failed!");
 
@@ -89,24 +114,24 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> UpdateUser(UserVO userDTO)
+        public async Task<string> UpdateUser(UserVO userVO)
         {
             try
             {
-                UserVO getTrip = await GetUserById(userId: userDTO.FldUserId);
+                UserVO getTrip = await GetUserById(userId: userVO.FldUserId);
 
                 if (getTrip != null)
                 {
-                    Tbluserdetail tbluserdetail = ConvertUserVOToTblUserDetail(userDTO);
-                    tbluserdetail.FldUpdateBy = "Admin";
-                    tbluserdetail.FldUpdateDate = DateTime.Now;
-                    if( await _userDetailRepository.UpdateUserDetail(tbluserdetail)>0)
+                    userVO.FldUpdateBy = "Admin";
+                    userVO.FldUpdateDate = DateTime.Now;
+                    TbluserVO tbluserVO = _mapper.Map<TbluserVO>(userVO);
+                    if ( await _userDetailRepository.UpdateUserDetail(tbluserVO) >0)
                     {
-                        return userDTO.FldUserId;
+                        return userVO.FldUserId;
                     }
                     else
                     {
-                        throw new UpdateException("Update user failes!");
+                        throw new UpdateException("Update user failed!");
                     }
                 }
                 else
@@ -119,65 +144,6 @@ namespace JourneySick.Business.IServices.Services
                 _logger.LogError(ex.StackTrace, ex);
                 throw;
             }
-        }
-
-        private async Task<string> GenerateUserID()
-        {
-            try
-            {
-                string lastOne = await _userRepository.GetLastOneId();
-                if (lastOne != null)
-                {
-                    string lastId = lastOne.Substring(5);
-                    int newId = Convert.ToInt32(lastId) + 1;
-                    string newIdStr = Convert.ToString(newId);
-                    while (newIdStr.Length < 8)
-                    {
-                        newIdStr = "0" + newIdStr;
-                    }
-                    return "USER_" + newIdStr;
-                }
-                else
-                {
-                    return "USER_00000001";
-                }
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
-            }
-
-        }
-
-        private Tbluser ConvertUserVOToTblUser(UserVO userVO)
-        {
-            UserDTO userDTO = new()
-            {
-                FldUserId = userVO.FldUserId,
-                FldUsername = userVO.FldUsername,
-                FldPassword = userVO.FldPassword
-            };
-
-            Tbluser tbluser = _mapper.Map<Tbluser>(userDTO);
-            return tbluser;
-        }
-
-        private Tbluserdetail ConvertUserVOToTblUserDetail(UserVO userVO)
-        {
-            UserDetailDTO userDetailDTO = new()
-            {
-                FldUserId = userVO.FldUserId,
-                FldFullname = userVO.FldFullname,
-                FldAddress = userVO.FldAddress,
-                FldRole = userVO.FldRole,
-                FldPhone = userVO.FldPhone,
-                FldEmail = userVO.FldEmail,
-                FldBirthday = userVO.FldBirthday
-            };
-
-            Tbluserdetail tbluserDetail = _mapper.Map<Tbluserdetail>(userDetailDTO);
-            return tbluserDetail;
         }
 
         public async Task<int> DeleteUser(string userId)
@@ -207,5 +173,35 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
         }
+
+        private async Task<string> GenerateUserID()
+        {
+            try
+            {
+                string lastOne = await _userRepository.GetLastOneId();
+                if (lastOne != null)
+                {
+                    string lastId = lastOne.Substring(5);
+                    int newId = Convert.ToInt32(lastId) + 1;
+                    string newIdStr = Convert.ToString(newId);
+                    while (newIdStr.Length < 8)
+                    {
+                        newIdStr = "0" + newIdStr;
+                    }
+                    return "USER_" + newIdStr;
+                }
+                else
+                {
+                    return "USER_00000001";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
+            }
+
+        }
+
     }
 }

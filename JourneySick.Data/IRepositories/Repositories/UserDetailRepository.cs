@@ -20,22 +20,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<int> CountAllUsers()
-        {
-            try
-            {
-                var query = "SELECT COUNT(*) FROM tbluserdetail";
-                using var connection = CreateConnection();
-                return ((int)(long)connection.ExecuteScalar(query));
-
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
-        public async Task<int> CreateUserDetail(Tbluserdetail userDetail)
+        public async Task<int> CreateUserDetail(TbluserVO userDetail)
         {
             try
             {
@@ -103,29 +88,8 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize)
-        {
-            try
-            {
-                int firstIndex = pageIndex * pageSize;
-                int lastIndex = (pageIndex + 1)  * pageSize;
-                var query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId LIMIT @firstIndex, @lastIndex";
-
-                var parameters = new DynamicParameters();
-                parameters.Add("firstIndex", firstIndex, DbType.Int16);
-                parameters.Add("lastIndex", lastIndex, DbType.Int16);
-
-                using var connection = CreateConnection();
-                return (await connection.QueryAsync<TbluserVO>(query, parameters)).ToList();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
         //SELECT
-        public async Task<UserVO> GetUserDetailByUserName(String username)
+        public async Task<UserVO> GetUserDetailByUserName(string username)
         {
             try
             {
@@ -158,7 +122,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<List<Tbluserdetail>> GetUserList(Tbluserdetail userEntity)
+        public async Task<List<TbluserVO>> GetUserList(TbluserVO userEntity)
         {
             try
             {
@@ -168,7 +132,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldUserId", userEntity.FldUserId, DbType.String);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tbluserdetail>(query, parameters)).ToList();
+                return (await connection.QueryAsync<TbluserVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -176,7 +140,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateUserDetail(Tbluserdetail userDetailEntity)
+        public async Task<int> UpdateUserDetail(TbluserVO userDetailEntity)
         {
             try
             {

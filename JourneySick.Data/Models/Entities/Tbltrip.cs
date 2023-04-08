@@ -6,7 +6,7 @@ namespace JourneySick.Data.Models.Entities;
 
 public partial class Tbltrip
 {
-    public string FldTripId { get; set; } = null!;
+    public string? FldTripId { get; set; } = null!;
 
     public string? FldTripName { get; set; }
 

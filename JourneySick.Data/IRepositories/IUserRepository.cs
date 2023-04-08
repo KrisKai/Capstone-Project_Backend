@@ -6,8 +6,10 @@ namespace JourneySick.Data.IRepositories
 {
     public interface IUserRepository
     {
-        //CREATE
-        public Task<int> CreateUser(Tbluser userEntity);
+
+        public Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize);
+
+        public Task<int> CountAllUsers();
 
         public Task<string> GetLastOneId();
 
@@ -15,9 +17,13 @@ namespace JourneySick.Data.IRepositories
 
         public Task<string> GetPasswordByUsername(string username);
 
-        public Task<UserVO> GetUserByUsername(string username);
+        public Task<TbluserVO> GetUserByUsername(string username);
 
         public Task<TbluserVO> GetUserById(string userId);
+
+        //CREATE
+        public Task<int> CreateUser(TbluserVO userEntity);
+
         //DELETE
         public Task<int> DeleteUser(string userId);
     }

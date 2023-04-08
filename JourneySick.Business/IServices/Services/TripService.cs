@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
-using JourneySick.Data.Models.VO;
+using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Logging;
 
 namespace JourneySick.Business.IServices.Services
@@ -13,97 +14,16 @@ namespace JourneySick.Business.IServices.Services
     public class TripService : ITripService
     {
         private readonly ITripRepository _tripRepository;
+        private readonly ITripDetailRepository _tripDetailRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<TripService> _logger;
 
-        public TripService(ITripRepository tripRepository, IMapper mapper, ILogger<TripService> logger)
+        public TripService(ITripRepository tripRepository, IMapper mapper, ITripDetailRepository tripDetailRepository, ILogger<TripService> logger)
         {
             _tripRepository = tripRepository;
+            _tripDetailRepository = tripDetailRepository;
             _mapper = mapper;
             _logger = logger;
-        }
-
-        public async Task<TripDTO> GetTripById(string tripId)
-        {
-            try
-            {
-                Tbltrip tbltrip = await _tripRepository.GetTripById(tripId);
-                TripDTO tripDTO = _mapper.Map<TripDTO>(tbltrip);
-                return tripDTO;
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(ex.StackTrace, ex);
-                throw;
-            }
-
-        }
-
-        public async Task<String> CreateTrip(TripDTO tripDTO)
-        {
-            try
-            {
-                string lastOne = await _tripRepository.GetLastOneId();
-                tripDTO.FldTripId = (int.Parse(lastOne)+1).ToString();
-                tripDTO.FldTripStatus = "Active";
-                Tbltrip tbltrip = _mapper.Map<Tbltrip>(tripDTO);
-                int id = await _tripRepository.CreateTrip(tbltrip);
-                return tripDTO.FldTripId;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.StackTrace, ex);
-                throw;
-            }
-        }
-
-        public async Task<string> UpdateTrip(TripDTO tripDTO)
-        {
-            try
-            {
-                TripDTO getTrip = await GetTripById(tripDTO.FldTripId);
-                
-                if (getTrip != null)
-                {
-                    Tbltrip tbltrip = _mapper.Map<Tbltrip>(tripDTO);
-                    int id = await _tripRepository.UpdateTrip(tbltrip);
-                    return getTrip.FldTripId;
-                }
-                else
-                {
-                    return "fail";
-                }
-                
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.StackTrace, ex);
-                throw;
-            }
-            
-        }
-
-        public async Task<string> DeleteTrip(string tripId)
-        {
-            try
-            {
-                TripDTO getTrip = await GetTripById(tripId);
-
-                if (getTrip != null)
-                {
-                    int id = await _tripRepository.DeleteTrip(tripId);
-                    return "done";
-                }
-                else
-                {
-                    return "fail";
-                }
-            }
-            catch(Exception ex)
-            {
-                _logger.LogError(ex.StackTrace, ex);
-                throw;
-            }
         }
 
         public async Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize, string? tripName)
@@ -111,7 +31,7 @@ namespace JourneySick.Business.IServices.Services
             AllTripDTO result = new();
             try
             {
-                List<Tbltrip> tbltrips = await _tripRepository.GetAllTripsWithPaging(pageIndex, pageSize, tripName);
+                List<TbltripVO> tbltrips = await _tripRepository.GetAllTripsWithPaging(pageIndex, pageSize, tripName);
                 // convert entity to dto
                 List<TripVO> trips = _mapper.Map<List<TripVO>>(tbltrips);
                 int count = await _tripRepository.CountAllTrips(tripName);
@@ -125,5 +45,108 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
         }
+
+        public async Task<TripVO> GetTripById(string tripId)
+        {
+            try
+            {
+                TbltripVO tbltrip = await _tripRepository.GetTripById(tripId);
+                TripVO tripDTO = _mapper.Map<TripVO>(tbltrip);
+                return tripDTO;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+
+        }
+
+        public async Task<string> CreateTrip(TripVO tripVO)
+        {
+            try
+            {
+                string lastOne = await _tripRepository.GetLastOneId();
+                tripVO.FldTripId = (int.Parse(lastOne) + 1).ToString();
+                tripVO.FldTripStatus = "Active";
+                TbltripVO tbltrip = _mapper.Map<TbltripVO>(tripVO);
+                if (await _tripRepository.CreateTrip(tbltrip) > 0)
+                {
+                    return tripVO.FldTripId;
+                }
+                else
+                {
+                    throw new InsertException("Add trip failed!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
+        public async Task<string> UpdateTrip(TripVO tripVO)
+        {
+            try
+            {
+                TripVO getTrip = await GetTripById(tripVO.FldTripId);
+
+                if (getTrip != null)
+                {
+                    TbltripVO tbltripVO = _mapper.Map<TbltripVO>(tripVO);
+                    if (await _tripRepository.UpdateTrip(tbltripVO) > 0)
+                    {
+                        return getTrip.FldTripId;
+                    }
+                    else
+                    {
+                        throw new UpdateException("Update trip failed!");
+                    }
+                }
+                else
+                {
+                    throw new GetOneException("Trip is not existed!");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+
+        }
+
+        public async Task<int> DeleteTrip(string tripId)
+        {
+            try
+            {
+                TripVO getTrip = await GetTripById(tripId);
+
+                if (getTrip != null)
+                {
+                    if (await _tripRepository.DeleteTrip(tripId) > 0 && await _tripDetailRepository.DeleteTripDetail(tripId) > 0)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        throw new DeleteException("Delete trip failed!");
+                    }
+
+                }
+                else
+                {
+                    throw new GetOneException("User is not existed!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
     }
 }

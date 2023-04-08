@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.Enums;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 
 namespace JourneySick.API.Controllers
 {
@@ -17,7 +18,6 @@ namespace JourneySick.API.Controllers
         private readonly ITripService _tripService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
-        private readonly IUserDetailService _userDetailService;
         public TripController(ITripService tripService, IHttpContextAccessor httpContextAccessor)
         {
             _tripService = tripService;
@@ -26,18 +26,18 @@ namespace JourneySick.API.Controllers
 
         //CREATE
         [HttpPost]
-        public async Task<IActionResult> CreateTrip([FromBody] TripDTO tripDTO)
+        public async Task<IActionResult> CreateTrip([FromBody] TripVO tripVO)
         {
-            var result = await _tripService.CreateTrip(tripDTO);
+            var result = await _tripService.CreateTrip(tripVO);
             return Ok(result);
 
         }
 
         //UPDATE
         [HttpPut]
-        public async Task<IActionResult> UpdateTrip([FromBody] TripDTO tripDTO)
+        public async Task<IActionResult> UpdateTrip([FromBody] TripVO tripVO)
         {
-            var result = await _tripService.UpdateTrip(tripDTO);
+            var result = await _tripService.UpdateTrip(tripVO);
             return Ok(result);
 
         }
@@ -66,7 +66,7 @@ namespace JourneySick.API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetTripById([FromRoute] string id)
         {
-            TripDTO result = await _tripService.GetTripById(id);
+            TripVO result = await _tripService.GetTripById(id);
             return Ok(result);
 
         }

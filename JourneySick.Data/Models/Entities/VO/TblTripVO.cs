@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Data.Models.Entities.VO
 {
-    public class TblTripVO:Tbltripdetail
+    public class TbltripVO:Tbltripdetail
     {
         public string? FldTripName { get; set; }
 

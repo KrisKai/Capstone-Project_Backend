@@ -20,12 +20,10 @@ namespace JourneySick.API.Controllers
     {
         private readonly IUserService _userService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IUserDetailService _userDetailService;
-        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor, IUserDetailService userDetailService)
+        public UserController(IUserService userService, IHttpContextAccessor httpContextAccessor)
         {
             _userService = userService;
             _httpContextAccessor = httpContextAccessor;
-            _userDetailService = userDetailService;
         }
 
         //CREATE
@@ -54,7 +52,7 @@ namespace JourneySick.API.Controllers
         {
             var result = new AllUserDTO();
             CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            result = await _userDetailService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
+            result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
             return Ok(result);
 
         }

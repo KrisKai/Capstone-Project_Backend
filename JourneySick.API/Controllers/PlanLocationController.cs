@@ -15,7 +15,6 @@ namespace JourneySick.API.Controllers
         private readonly IPlanLocationService _planLocationService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
-        private readonly IUserDetailService _userDetailService;
         public PlanLocationController(IPlanLocationService planLocationService, IHttpContextAccessor httpContextAccessor)
         {
             _planLocationService = planLocationService;

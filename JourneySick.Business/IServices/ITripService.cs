@@ -1,19 +1,20 @@
 ﻿using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 
 namespace JourneySick.Business.IServices
 {
     public interface ITripService
     {
         //Select User
-        public Task<TripDTO> GetTripById(string tripId);
+        public Task<TripVO> GetTripById(string tripId);
         //insert
-        public Task<String> CreateTrip(TripDTO tripDTO);
+        public Task<string> CreateTrip(TripVO tripVO);
         //update
-        public Task<String> UpdateTrip(TripDTO tripDTO);
+        public Task<string> UpdateTrip(TripVO tripVO);
         //update
-        public Task<String> DeleteTrip(string tripId);
+        public Task<int> DeleteTrip(string tripId);
         //Select list w paging
-        public Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName);
+        public Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize, string? tripName);
     }
 }

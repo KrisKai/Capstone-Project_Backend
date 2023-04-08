@@ -1,10 +1,12 @@
-﻿using JourneySick.Business.Helpers;
+﻿using AutoMapper;
+using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
 using JourneySick.Data.Models.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -27,18 +29,20 @@ namespace JourneySick.Business.IServices.Services
         private readonly IUserDetailRepository _userDetailRepository;
         private readonly AppSecrect _appSecrect;
         private readonly ILogger<AuthenticateService> _logger;
+        private readonly IMapper _mapper;
 
         public AuthenticateService(IUserService userService, 
             IUserDetailRepository userDetailRepository,
             IUserRepository userRepository,
             IOptions<AppSecrect> appSecrect,
-            ILogger<AuthenticateService> logger)
+            ILogger<AuthenticateService> logger, IMapper mapper)
         {
             _userService = userService;
             _appSecrect = appSecrect.Value;
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public async Task<RegisterResponse> RegisterUser(RegisterRequest registereRequest)
@@ -47,7 +51,7 @@ namespace JourneySick.Business.IServices.Services
             {
 
                 UserVO userDTO = new();
-                Tbluserdetail userDetailEntity = new(); 
+                TbluserVO userDetailEntity = new(); 
                 RegisterResponse registerResponse = new();
                 string checkNameExist = await _userRepository.GetUsernameIfExist(registereRequest.Username);
                 if(checkNameExist != null)
@@ -113,7 +117,8 @@ namespace JourneySick.Business.IServices.Services
                     string encryptedPassword = PasswordEncryption.Encrypt(loginRequest.Password, _appSecrect.SecrectKey);
                     if(encryptedPassword.Equals(checkValue))
                     {
-                        UserVO userVO = await _userRepository.GetUserByUsername(loginRequest.Username);
+                        TbluserVO tbluserVO = await _userRepository.GetUserByUsername(loginRequest.Username);
+                        UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
                         loginResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userVO.FldUserId);
                         loginResponse.Username = userVO.FldUsername;
                         loginResponse.Fullname = userVO.FldUserId;

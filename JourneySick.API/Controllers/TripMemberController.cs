@@ -15,7 +15,6 @@ namespace JourneySick.API.Controllers
         private readonly ITripMemberService _tripMemberService;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IUserService _userService;
-        private readonly IUserDetailService _userDetailService;
         public TripMemberController(ITripMemberService tripMemberService, IHttpContextAccessor httpContextAccessor)
         {
             _tripMemberService = tripMemberService;

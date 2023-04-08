@@ -18,8 +18,6 @@ namespace JourneySick.API.Controllers
     {
         private readonly ITripRoleService _tripRoleService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IUserService _userService;
-        private readonly IUserDetailService _userDetailService;
         public TripRoleController(ITripRoleService tripRoleService, IHttpContextAccessor httpContextAccessor)
         {
             _tripRoleService = tripRoleService;

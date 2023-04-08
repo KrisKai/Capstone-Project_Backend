@@ -1,4 +1,6 @@
-﻿using JourneySick.Data.Models.DTOs;
+﻿using JourneySick.Business.Models.DTOs;
+using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 
 namespace JourneySick.Business.IServices
@@ -14,5 +16,6 @@ namespace JourneySick.Business.IServices
         public Task<UserVO> GetUserById(string userId);
         //DELETE
         public Task<int> DeleteUser(string id);
+        Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser);
     }
 }

@@ -17,27 +17,35 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        //CREATE
-        public async Task<int> CreateUser(Tbluser userEntity)
+        public async Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize)
         {
             try
             {
-                var query = "INSERT INTO tbluser ("
-                    + "         fldUserId, "
-                    + "         fldUserName, "
-                    + "         fldPassword) "
-                    + "     VALUES ( "
-                    + "         @fldUserId, "
-                    + "         @fldUserName, "
-                    + "         @fldPassword)";
+                int firstIndex = pageIndex * pageSize;
+                int lastIndex = (pageIndex + 1) * pageSize;
+                var query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldUserId", userEntity.FldUserId, DbType.String);
-                parameters.Add("fldUserName", userEntity.FldUsername, DbType.String);
-                parameters.Add("fldPassword", userEntity.FldPassword, DbType.String);
+                parameters.Add("firstIndex", firstIndex, DbType.Int16);
+                parameters.Add("lastIndex", lastIndex, DbType.Int16);
 
                 using var connection = CreateConnection();
-                return await connection.ExecuteAsync(query, parameters);
+                return (await connection.QueryAsync<TbluserVO>(query, parameters)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> CountAllUsers()
+        {
+            try
+            {
+                var query = "SELECT COUNT(*) FROM tbluser";
+                using var connection = CreateConnection();
+                return ((int)(long)connection.ExecuteScalar(query));
+
             }
             catch (Exception e)
             {
@@ -91,7 +99,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<UserVO> GetUserByUsername(string username)
+        public async Task<TbluserVO> GetUserByUsername(string username)
         {
             try
             {
@@ -99,7 +107,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("fldUsername", username, DbType.String);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<UserVO>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<TbluserVO>(query, parameters);
 
             }
             catch(Exception e)
@@ -126,6 +134,35 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        //CREATE
+        public async Task<int> CreateUser(TbluserVO userEntity)
+        {
+            try
+            {
+                var query = "INSERT INTO tbluser ("
+                    + "         fldUserId, "
+                    + "         fldUserName, "
+                    + "         fldPassword) "
+                    + "     VALUES ( "
+                    + "         @fldUserId, "
+                    + "         @fldUserName, "
+                    + "         @fldPassword)";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUserId", userEntity.FldUserId, DbType.String);
+                parameters.Add("fldUserName", userEntity.FldUsername, DbType.String);
+                parameters.Add("fldPassword", userEntity.FldPassword, DbType.String);
+
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
 
         public async Task<int> DeleteUser(string userId)
         {

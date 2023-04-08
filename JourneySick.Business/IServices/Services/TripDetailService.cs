@@ -4,7 +4,6 @@ using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
-using JourneySick.Data.Models.VO;
 using Microsoft.Extensions.Logging;
 using RevenueSharingInvest.Business.Exceptions;
 
