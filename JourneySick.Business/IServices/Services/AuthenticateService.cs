@@ -167,8 +167,8 @@ namespace JourneySick.Business.IServices.Services
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                   new Claim(ClaimTypes.SerialNumber, userId),
-                   roleClaim,
+                        new Claim(ClaimTypes.SerialNumber, userId),
+                        roleClaim
                     }),
 
                     Expires = DateTime.UtcNow.AddHours(hours),

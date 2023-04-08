@@ -7,6 +7,9 @@ using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.VO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Business.IServices.Services;
+using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JourneySick.API.Controllers
 {
@@ -58,8 +61,10 @@ namespace JourneySick.API.Controllers
         //GET
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetUserById([FromRoute] string id)
         {
+            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.GetUserById(id);
             return Ok(result);
         }

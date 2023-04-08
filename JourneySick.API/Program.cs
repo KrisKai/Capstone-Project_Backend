@@ -43,6 +43,8 @@ app.UseMiddleware(typeof(ExceptionHandlingMiddleware));
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
