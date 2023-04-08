@@ -3,6 +3,7 @@ using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.VO;
 using Microsoft.Extensions.Logging;
@@ -112,7 +113,7 @@ namespace JourneySick.Business.IServices.Services
             {
                 List<Tbltrip> tbltrips = await _tripRepository.GetAllTripsWithPaging(pageIndex, pageSize, tripName);
                 // convert entity to dto
-                List<TripDTO> trips = _mapper.Map<List<TripDTO>>(tbltrips);
+                List<TripVO> trips = _mapper.Map<List<TripVO>>(tbltrips);
                 int count = await _tripRepository.CountAllTrips(tripName);
                 result.listOfTrip = trips;
                 result.numOfTrip = count;
