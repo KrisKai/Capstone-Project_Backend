@@ -54,7 +54,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM tbltrip INNER JOIN tbltripdetail b ON a.fldTripId = b.fldTripId WHERE a.fldTripId = @tripId";
+                var query = "SELECT * FROM tbltrip a INNER JOIN tbltripdetail b ON a.fldTripId = b.fldTripId WHERE a.fldTripId = @tripId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("tripId", tripId, DbType.String);
