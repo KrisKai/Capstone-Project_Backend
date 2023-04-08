@@ -1,6 +1,6 @@
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
-using JourneySick.Data.Models.VO;
 
 namespace JourneySick.Data.IRepositories
 {

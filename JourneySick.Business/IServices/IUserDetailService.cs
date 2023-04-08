@@ -1,7 +1,7 @@
 ﻿using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
-using JourneySick.Data.Models.VO;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

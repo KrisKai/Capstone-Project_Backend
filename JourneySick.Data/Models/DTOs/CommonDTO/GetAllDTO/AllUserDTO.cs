@@ -1,5 +1,5 @@
 ﻿using System;
-using JourneySick.Data.Models.VO;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 
 namespace JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO
 {

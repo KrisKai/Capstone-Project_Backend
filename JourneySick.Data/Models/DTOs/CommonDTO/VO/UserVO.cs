@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JourneySick.Data.Models.VO
+namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
     public class UserVO : UserDetailDTO
     {
-        public String? FldUsername { get; set; }
-        public String? FldPassword { get; set; }
+        public string? FldUsername { get; set; }
+        public string? FldPassword { get; set; }
     }
 }

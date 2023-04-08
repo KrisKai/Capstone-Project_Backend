@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace JourneySick.Data.Models.DTOs
+﻿namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
-    public class TripDTO
+    public class TripVO: TripDetailDTO
     {
-        public string? FldTripId { get; set; }
-
         public string? FldTripName { get; set; }
 
         public decimal? FldTripBudget { get; set; }

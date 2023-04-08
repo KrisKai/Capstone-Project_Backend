@@ -21,4 +21,6 @@ public partial class Tbltrip
     public string? FldTripStatus { get; set; }
 
     public int? FldTripMember { get; set; }
+
+    public string FldTripPresenter { get; set; }
 }
