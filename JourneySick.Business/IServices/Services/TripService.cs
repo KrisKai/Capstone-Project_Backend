@@ -69,6 +69,8 @@ namespace JourneySick.Business.IServices.Services
                 string lastOne = await _tripRepository.GetLastOneId();
                 tripVO.FldTripId = (int.Parse(lastOne) + 1).ToString();
                 tripVO.FldTripStatus = "Active";
+                tripVO.FldCreateBy = "Admin";
+                tripVO.FldCreateDate = DateTime.Now;
                 TbltripVO tbltrip = _mapper.Map<TbltripVO>(tripVO);
                 if (await _tripRepository.CreateTrip(tbltrip) > 0 && await _tripDetailRepository.CreateTripDetail(tbltrip) > 0)
                 {
@@ -94,10 +96,12 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
+                    tripVO.FldUpdateBy = "Admin";
+                    tripVO.FldUpdateDate = DateTime.Now;
                     TbltripVO tbltripVO = _mapper.Map<TbltripVO>(tripVO);
                     if (await _tripRepository.UpdateTrip(tbltripVO) > 0 && await _tripDetailRepository.UpdateTripDetail(tbltripVO) > 0)
                     {
-                        return getTrip.FldTripId;
+                        return tripVO.FldTripId;
                     }
                     else
                     {
