@@ -82,6 +82,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldEstimateStartTime, "
                     + "         fldEstimateArrivalTime, "
                     + "         fldTripStatus, "
+                    + "         fldTripPresenter, "
                     + "         fldTripMember) "
                     + "     VALUES ( "
                     + "         @fldTripId, "
@@ -91,6 +92,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @fldEstimateStartTime, "
                     + "         @fldEstimateArrivalTime, "
                     + "         @fldTripStatus, "
+                    + "         @fldTripPresenter, "
                     + "         @fldTripMember) ";
 
                 var parameters = new DynamicParameters();
@@ -102,6 +104,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.DateTime);
                 parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
                 parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
+                parameters.Add("fldTripPresenter", tripEntity.FldTripPresenter, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -124,7 +127,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldEstimateStartTime = @fldEstimateStartTime, "
                     + "         fldEstimateArrivalTime = @fldEstimateArrivalTime, "
                     + "         fldTripStatus = @fldTripStatus, "
-                    + "         fldTripMember = @fldTripMember";
+                    + "         fldTripMember = @fldTripMember"
+                    + "         fldTripPresenter = @fldTripPresenter";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tripEntity.FldTripId, DbType.String);
@@ -135,6 +139,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.DateTime);
                 parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
                 parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
+                parameters.Add("fldTripPresenter", tripEntity.FldTripPresenter, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);

@@ -55,39 +55,33 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "INSERT INTO tbltripdetail ("
-                    + "         fldPlanId, "
-                    + "         fldOrdinal, "
-                    + "         fldPlanLocationId, "
-                    + "         fldPlanLocationName, "
-                    + "         fldPlanLocationDescription, "
-                    + "         fldLocationArrivalTime, "
+                    + "         fldTripId, "
+                    + "         fldTripType, "
+                    + "         fldTripStartLocationName, "
+                    + "         fldTripStartLocationAddress, "
+                    + "         fldTripDestinationLocationName, "
+                    + "         fldTripDestinationLocationAddress, "
                     + "         fldCreateDate, "
-                    + "         fldCreateBy, "
-                    + "         fldUpdateDate, "
-                    + "         fldUpdateBy) "
+                    + "         fldCreateBy) "
                     + "     VALUES ( "
-                    + "         @fldPlanId, "
-                    + "         @fldOrdinal, "
-                    + "         @fldPlanLocationId, "
-                    + "         @fldPlanLocationName, "
-                    + "         @fldPlanLocationDescription, "
-                    + "         @fldLocationArrivalTime, "
+                    + "         @fldTripId, "
+                    + "         @fldTripType, "
+                    + "         @fldTripStartLocationName, "
+                    + "         @fldTripStartLocationAddress, "
+                    + "         @fldTripDestinationLocationName, "
+                    + "         @fldTripDestinationLocationAddress, "
                     + "         @fldCreateDate, "
-                    + "         @fldCreateBy, "
-                    + "         @fldUpdateDate, "
-                    + "         @fldUpdateBy)";
+                    + "         @fldCreateBy)";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tbltripdetail.FldTripId, DbType.String);
-                parameters.Add("fldTripType", tbltripdetail.FldTripType, DbType.Int16);
+                parameters.Add("fldTripType", tbltripdetail.FldTripType, DbType.String);
                 parameters.Add("fldTripStartLocationName", tbltripdetail.FldTripStartLocationName, DbType.String);
                 parameters.Add("fldTripStartLocationAddress", tbltripdetail.FldTripStartLocationAddress, DbType.String);
                 parameters.Add("fldTripDestinationLocationName", tbltripdetail.FldTripDestinationLocationName, DbType.String);
                 parameters.Add("fldTripDestinationLocationAddress", tbltripdetail.FldTripDestinationLocationAddress, DbType.String);
                 parameters.Add("fldCreateDate", tbltripdetail.FldCreateDate, DbType.DateTime);
                 parameters.Add("fldCreateBy", tbltripdetail.FldCreateBy, DbType.String);
-                parameters.Add("fldUpdateDate", tbltripdetail.FldUpdateDate, DbType.DateTime);
-                parameters.Add("fldUpdateBy", tbltripdetail.FldUpdateBy, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -109,20 +103,16 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldTripStartLocationAddress = @fldTripStartLocationAddress, "
                     + "         fldTripDestinationLocationName = @fldTripDestinationLocationName, "
                     + "         fldTripDestinationLocationAddress = @fldTripDestinationLocationAddress, "
-                    + "         fldCreateDate = @fldCreateDate, "
-                    + "         fldCreateBy = @fldCreateBy, "
                     + "         fldUpdateDate = @fldUpdateDate, "
                     + "         fldUpdateBy = @fldUpdateBy";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tbltripdetail.FldTripId, DbType.String);
-                parameters.Add("fldTripType", tbltripdetail.FldTripType, DbType.Int16);
+                parameters.Add("fldTripType", tbltripdetail.FldTripType, DbType.String);
                 parameters.Add("fldTripStartLocationName", tbltripdetail.FldTripStartLocationName, DbType.String);
                 parameters.Add("fldTripStartLocationAddress", tbltripdetail.FldTripStartLocationAddress, DbType.String);
                 parameters.Add("fldTripDestinationLocationName", tbltripdetail.FldTripDestinationLocationName, DbType.String);
                 parameters.Add("fldTripDestinationLocationAddress", tbltripdetail.FldTripDestinationLocationAddress, DbType.String);
-                parameters.Add("fldCreateDate", tbltripdetail.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", tbltripdetail.FldCreateBy, DbType.String);
                 parameters.Add("fldUpdateDate", tbltripdetail.FldUpdateDate, DbType.DateTime);
                 parameters.Add("fldUpdateBy", tbltripdetail.FldUpdateBy, DbType.String);
 
