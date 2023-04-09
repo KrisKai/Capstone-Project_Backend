@@ -30,6 +30,7 @@ namespace JourneySick.API.Controllers
         //CREATE
         [HttpPost]
         [Route("create-admin")]
+        [Authorize]
         public async Task<IActionResult> CreateAdmin([FromBody] UserVO userVO)
         {
             var result = await _userService.CreateAdmin(userVO);
@@ -39,6 +40,7 @@ namespace JourneySick.API.Controllers
 
         //UPDATE
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdateUser([FromBody] UserVO userVO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
@@ -49,6 +51,7 @@ namespace JourneySick.API.Controllers
 
         //GET ALL
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllUsersWithPaging(int pageIndex, int pageSize)
         {
             var result = new AllUserDTO();
@@ -75,6 +78,7 @@ namespace JourneySick.API.Controllers
         //DELETE BY ID
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteUser(string id)
         {
             var result = await _userService.DeleteUser(id);

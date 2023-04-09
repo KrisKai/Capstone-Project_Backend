@@ -8,6 +8,7 @@ using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.Enums;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetOneDTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JourneySick.API.Controllers
 {
@@ -36,6 +37,7 @@ namespace JourneySick.API.Controllers
 
         //UPDATE
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdateTrip([FromBody] TripVO tripVO)
         {
             var result = await _tripService.UpdateTrip(tripVO);
@@ -45,6 +47,7 @@ namespace JourneySick.API.Controllers
 
         //GET ALL
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllTripsWithPaging(int pageIndex, int pageSize, string? tripName)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
@@ -66,6 +69,7 @@ namespace JourneySick.API.Controllers
         //GET
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetTripById([FromRoute] string id)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
@@ -80,6 +84,7 @@ namespace JourneySick.API.Controllers
         //DELETE BY ID
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTrip(string id)
         {
             var result = await _tripService.DeleteTrip(id);
