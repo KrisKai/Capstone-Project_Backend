@@ -72,8 +72,7 @@ namespace JourneySick.API.Controllers
             TripVO result = await _tripService.GetTripById(id);
             TripResponse tripResponse = new TripResponse();
             tripResponse.TripVO = result;
-            tripResponse.UserId = currentUser.UserId;
-            tripResponse.Role = currentUser.Role;
+            tripResponse.CurrentUserObj = currentUser;
             return Ok(tripResponse);
 
         }

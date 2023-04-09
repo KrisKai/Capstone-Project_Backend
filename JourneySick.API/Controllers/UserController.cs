@@ -67,8 +67,7 @@ namespace JourneySick.API.Controllers
             var result = await _userService.GetUserById(id);
             UserResponse userResponse = new();
             userResponse.UserVO = result;
-            userResponse.UserId = currentUser.UserId;
-            userResponse.Role = currentUser.Role;
+            userResponse.CurrentUserObj = currentUser;
             return Ok(userResponse);
         }
 
