@@ -44,8 +44,7 @@ namespace JourneySick.Business.IServices.Services
                 int count = await _userRepository.CountAllUsers();
                 result.ListOfUser = users;
                 result.NumOfUser = count;
-                result.UserId = currentUser.UserId;
-                result.Role = currentUser.Role;
+                result.CurrentUserObj = currentUser;
                 return result;
             }
             catch (Exception ex)

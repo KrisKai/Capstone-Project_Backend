@@ -1,4 +1,5 @@
-﻿using JourneySick.Data.Models.DTOs.CommonDTO.VO;
+﻿using JourneySick.Business.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,6 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO
     {
         public int NumOfTrip { get; set; }
         public List<TripVO>? ListOfTrip { get; set; }
-        public string UserId { get; set; }
-        public string Role { get; set; }
+        public CurrentUserObj CurrentUserObj { get; set; }
     }
 }

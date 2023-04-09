@@ -89,7 +89,7 @@ namespace JourneySick.Business.IServices.Services
                 registerResponse.Email = registereRequest.Email;
                 registerResponse.FullName = userDetailEntity.FldFullname;
                 registerResponse.Username = registereRequest.Username;
-                registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userDTO.FldUserId);
+                registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userDTO.FldUserId, name: userDTO.FldFullname);
 
                 return registerResponse;
             }
@@ -119,7 +119,7 @@ namespace JourneySick.Business.IServices.Services
                     {
                         TbluserVO tbluserVO = await _userRepository.GetUserByUsername(loginRequest.Username);
                         UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
-                        loginResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userVO.FldUserId);
+                        loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
                         loginResponse.Username = userVO.FldUsername;
                         loginResponse.Fullname = userVO.FldUserId;
                     } else
@@ -137,7 +137,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        private async Task<string> GenerateTokenAsync(string roleCheck, string userId)
+        private async Task<string> GenerateTokenAsync(string roleCheck, string userId, string name)
         {
             try
             {
@@ -165,7 +165,7 @@ namespace JourneySick.Business.IServices.Services
                 }
                 else
                 {
-                    hours = 24;
+                    hours = 5;
                 }
 
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -173,7 +173,9 @@ namespace JourneySick.Business.IServices.Services
                     Subject = new ClaimsIdentity(new Claim[]
                     {
                         new Claim(ClaimTypes.SerialNumber, userId),
+                        new Claim(ClaimTypes.Name, name),
                         roleClaim
+                        
                     }),
 
                     Expires = DateTime.UtcNow.AddHours(hours),

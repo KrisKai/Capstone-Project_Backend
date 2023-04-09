@@ -19,7 +19,6 @@ namespace JourneySick.API.Controllers
     {
         private readonly ITripService _tripService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IUserService _userService;
         public TripController(ITripService tripService, IHttpContextAccessor httpContextAccessor)
         {
             _tripService = tripService;
@@ -64,7 +63,6 @@ namespace JourneySick.API.Controllers
             //}
 
         }
-
 
         //GET
         [HttpGet]
