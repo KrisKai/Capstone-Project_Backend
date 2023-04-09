@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetOneDTO;
 
 namespace JourneySick.API.Controllers
 {
@@ -64,7 +65,11 @@ namespace JourneySick.API.Controllers
         {
             CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.GetUserById(id);
-            return Ok(result);
+            UserResponse userResponse = new();
+            userResponse.UserVO = result;
+            userResponse.UserId = currentUser.UserId;
+            userResponse.Role = currentUser.Role;
+            return Ok(userResponse);
         }
 
 

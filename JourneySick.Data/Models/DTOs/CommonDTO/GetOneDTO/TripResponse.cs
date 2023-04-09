@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Data.Models.DTOs.CommonDTO.GetOneDTO
 {
-    public class TripResponse:TripVO
+    public class TripResponse
     {
+        public TripVO TripVO { get; set; }
+        public string UserId { get; set; }
+        public string Role { get; set; }
     }
 }

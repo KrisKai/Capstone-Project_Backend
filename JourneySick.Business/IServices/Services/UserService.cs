@@ -7,6 +7,7 @@ using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetOneDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -41,8 +42,10 @@ namespace JourneySick.Business.IServices.Services
                 // convert entity to dto
                 List<UserVO> users = _mapper.Map<List<UserVO>>(tblusers);
                 int count = await _userRepository.CountAllUsers();
-                result.listOfUser = users;
-                result.numOfUser = count;
+                result.ListOfUser = users;
+                result.NumOfUser = count;
+                result.UserId = currentUser.UserId;
+                result.Role = currentUser.Role;
                 return result;
             }
             catch (Exception ex)
@@ -103,8 +106,9 @@ namespace JourneySick.Business.IServices.Services
             {
                 TbluserVO tblUserVO = await _userRepository.GetUserById(userId);
                 // convert entity to dto
-                UserVO userDTO = _mapper.Map<UserVO>(tblUserVO);
-                return userDTO;
+                UserVO userVO = _mapper.Map<UserVO>(tblUserVO);
+                
+                return userVO;
             }
             catch(Exception ex)
             {

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers.Exceptions;
+using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetOneDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -26,7 +28,7 @@ namespace JourneySick.Business.IServices.Services
             _logger = logger;
         }
 
-        public async Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize, string? tripName)
+        public async Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize, string? tripName, CurrentUserObj currentUser)
         {
             AllTripDTO result = new();
             try
@@ -35,8 +37,10 @@ namespace JourneySick.Business.IServices.Services
                 // convert entity to dto
                 List<TripVO> trips = _mapper.Map<List<TripVO>>(tbltrips);
                 int count = await _tripRepository.CountAllTrips(tripName);
-                result.listOfTrip = trips;
-                result.numOfTrip = count;
+                result.ListOfTrip = trips;
+                result.NumOfTrip = count;
+                result.UserId = currentUser.UserId;
+                result.Role = currentUser.Role;
                 return result;
             }
             catch (Exception ex)
@@ -51,8 +55,8 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 TbltripVO tbltrip = await _tripRepository.GetTripById(tripId);
-                TripVO tripDTO = _mapper.Map<TripVO>(tbltrip);
-                return tripDTO;
+                TripVO tripVO = _mapper.Map<TripVO>(tbltrip);
+                return tripVO;
             }
             catch (Exception ex)
             {

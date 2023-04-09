@@ -7,6 +7,7 @@ using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.Enums;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetOneDTO;
 
 namespace JourneySick.API.Controllers
 {
@@ -50,7 +51,8 @@ namespace JourneySick.API.Controllers
             var result = new AllTripDTO();
             //if(currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
             //{
-           result = await _tripService.GetAllTripsWithPaging(pageIndex, pageSize, tripName);
+            result = await _tripService.GetAllTripsWithPaging(pageIndex, pageSize, tripName, currentUser);
+            
             return Ok(result);
             //}
             //else
@@ -66,8 +68,13 @@ namespace JourneySick.API.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetTripById([FromRoute] string id)
         {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             TripVO result = await _tripService.GetTripById(id);
-            return Ok(result);
+            TripResponse tripResponse = new TripResponse();
+            tripResponse.TripVO = result;
+            tripResponse.UserId = currentUser.UserId;
+            tripResponse.Role = currentUser.Role;
+            return Ok(tripResponse);
 
         }
 
