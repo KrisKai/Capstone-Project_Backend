@@ -116,6 +116,9 @@ public partial class JourneySickContext : DbContext
                 .HasColumnName("fldTripStatus")
                 .UseCollation("utf8_general_ci")
                 .HasCharSet("utf8");
+            entity.Property(e => e.FldTripPresenter)
+                .HasMaxLength(50)
+                .HasColumnName("fldTripPresenter");
         });
 
         modelBuilder.Entity<Tbltripdetail>(entity =>
@@ -177,18 +180,12 @@ public partial class JourneySickContext : DbContext
             entity.Property(e => e.FldUserId)
                 .HasMaxLength(50)
                 .HasColumnName("fldUserId");
-            entity.Property(e => e.FldAddress)
-                .HasColumnType("text")
-                .HasColumnName("fldAddress");
             entity.Property(e => e.FldCreateBy)
                 .HasMaxLength(50)
                 .HasColumnName("fldCreateBy");
             entity.Property(e => e.FldCreateDate)
                 .HasColumnType("datetime")
                 .HasColumnName("fldCreateDate");
-            entity.Property(e => e.FldEmail)
-                .HasMaxLength(50)
-                .HasColumnName("fldEmail");
             entity.Property(e => e.FldMemberRoleId)
                 .HasMaxLength(50)
                 .HasColumnName("fldMemberRoleId");
@@ -197,9 +194,6 @@ public partial class JourneySickContext : DbContext
                 .HasColumnName("fldNickName")
                 .UseCollation("utf8_general_ci")
                 .HasCharSet("utf8");
-            entity.Property(e => e.FldPhone)
-                .HasMaxLength(10)
-                .HasColumnName("fldPhone");
             entity.Property(e => e.FldStatus)
                 .HasMaxLength(1)
                 .IsFixedLength()

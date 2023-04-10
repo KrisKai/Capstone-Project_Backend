@@ -4,6 +4,8 @@ using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using JourneySick.Business.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JourneySick.API.Controllers
 {
@@ -22,17 +24,19 @@ namespace JourneySick.API.Controllers
 
         //GET ALL
         [HttpGet]
-        public async Task<IActionResult> GetAllTripPlansWithPaging(int pageIndex, int pageSize)
+        [Authorize]
+        public async Task<IActionResult> GetAllTripPlansWithPaging(int pageIndex, int pageSize, string? planId)
         {
-            var result = new List<TripPlanDTO>();
+            var result = new AllTripPlanDTO();
             CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            result = await _tripPlanService.GetAllTripPlansWithPaging(pageIndex, pageSize, currentUser);
+            result = await _tripPlanService.GetAllTripPlansWithPaging(pageIndex, pageSize, planId, currentUser);
             return Ok(result);
 
         }
         //GET
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetTripPlanById([FromRoute] int id)
         {
             TripPlanDTO result = await _tripPlanService.GetTripPlanById(id);
@@ -43,6 +47,7 @@ namespace JourneySick.API.Controllers
 
         //CREATE
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateTripPlan([FromBody] TripPlanDTO tripPlanDTO)
         {
             var result = await _tripPlanService.CreateTripPlan(tripPlanDTO);
@@ -52,6 +57,7 @@ namespace JourneySick.API.Controllers
 
         //UPDATE
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdateTripPlan([FromBody] TripPlanDTO tripPlanDTO)
         {
             var result = await _tripPlanService.UpdateTripPlan(tripPlanDTO);
@@ -62,6 +68,7 @@ namespace JourneySick.API.Controllers
         //DELETE BY ID
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTripPlan([FromRoute] int id)
         {
             var result = await _tripPlanService.DeleteTripPlan(id);

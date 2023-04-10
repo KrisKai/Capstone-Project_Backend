@@ -27,6 +27,7 @@ namespace JourneySick.API.Controllers
 
         //CREATE
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateTrip([FromBody] TripVO tripVO)
         {
             var result = await _tripService.CreateTrip(tripVO);

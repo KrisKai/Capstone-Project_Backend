@@ -10,9 +10,6 @@ namespace JourneySick.Data.IRepositories
 {
     public interface ITripDetailRepository
     {
-        //SELECT ALL
-        public Task<List<Tbltripdetail>> GetAllTripDetailsWithPaging(int pageIndex, int pageSize);
-        public Task<Tbltripdetail> GetTripDetailById(string tripDetailId);
         //CREATE
         public Task<int> CreateTripDetail(Tbltripdetail tbltripdetail);
         //UPDATE

@@ -4,6 +4,7 @@ using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using JourneySick.Business.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JourneySick.API.Controllers
 {
@@ -23,6 +24,7 @@ namespace JourneySick.API.Controllers
 
         //GET ALL
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllLocationsWithPaging(int pageIndex, int pageSize)
         {
             var result = new List<PlanLocationDTO>();
@@ -35,6 +37,7 @@ namespace JourneySick.API.Controllers
         //GET
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetPlanLocationById([FromRoute] int id)
         {
             PlanLocationDTO result = await _planLocationService.GetPlanLocationById(id);
@@ -45,6 +48,7 @@ namespace JourneySick.API.Controllers
 
         //CREATE
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreatePlanLocation([FromBody] PlanLocationDTO planLocationDTO)
         {
             var result = await _planLocationService.CreatePlanLocation(planLocationDTO);
@@ -54,6 +58,7 @@ namespace JourneySick.API.Controllers
 
         //UPDATE
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdatePlanLocation([FromBody] PlanLocationDTO planLocationDTO)
         {
             var result = await _planLocationService.UpdatePlanLocation(planLocationDTO);
@@ -64,6 +69,7 @@ namespace JourneySick.API.Controllers
         //DELETE BY ID
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteLocation(int id)
         {
             CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);

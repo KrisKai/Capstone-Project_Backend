@@ -26,6 +26,7 @@ namespace JourneySick.API.Controllers
 
         //CREATE
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateTripRole([FromBody] TripRoleDTO tripRoleDTO)
         {
             var result = await _tripRoleService.CreateTripRole(tripRoleDTO);
@@ -35,6 +36,7 @@ namespace JourneySick.API.Controllers
 
         //UPDATE
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdateTripRole([FromBody] TripRoleDTO tripRoleDTO)
         {
             var result = await _tripRoleService.CreateTripRole(tripRoleDTO);
@@ -44,6 +46,7 @@ namespace JourneySick.API.Controllers
 
         //GET ALL
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllTripRolesWithPaging(int pageIndex, int pageSize)
         {
             var result = new List<TripRoleDTO>();

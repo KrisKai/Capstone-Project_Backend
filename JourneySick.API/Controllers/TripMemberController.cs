@@ -4,6 +4,7 @@ using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using JourneySick.Business.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace JourneySick.API.Controllers
 {
@@ -23,6 +24,7 @@ namespace JourneySick.API.Controllers
 
         //GET ALL
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetAllTripMembersWithPaging(int pageIndex, int pageSize)
         {
             var result = new List<TripMemberDTO>();
@@ -34,6 +36,7 @@ namespace JourneySick.API.Controllers
         //GET
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetTripMemberById([FromRoute] int id)
         {
             TripMemberDTO result = await _tripMemberService.GetTripMemberById(id);
@@ -44,6 +47,7 @@ namespace JourneySick.API.Controllers
 
         //CREATE
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateTripMember([FromBody] TripMemberDTO tripMemberDTO)
         {
             var result = await _tripMemberService.CreateTripMember(tripMemberDTO);
@@ -53,6 +57,7 @@ namespace JourneySick.API.Controllers
 
         //UPDATE
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdateTripMember([FromBody] TripMemberDTO tripMemberDTO)
         {
             var result = await _tripMemberService.UpdateTripMember(tripMemberDTO);
@@ -63,6 +68,7 @@ namespace JourneySick.API.Controllers
         //DELETE BY ID
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTripMember([FromRoute] int id)
         {
             var result = await _tripMemberService.DeleteTripMember(id);
