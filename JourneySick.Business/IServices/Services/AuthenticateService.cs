@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
+using JourneySick.Business.Models.DTOs;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.Models.DTOs;
@@ -120,8 +121,11 @@ namespace JourneySick.Business.IServices.Services
                         TbluserVO tbluserVO = await _userRepository.GetUserByUsername(loginRequest.Username);
                         UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
                         loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
-                        loginResponse.Username = userVO.FldUsername;
-                        loginResponse.Fullname = userVO.FldUserId;
+                        CurrentUserObj currentUser = new();
+                        currentUser.Name = userVO.FldFullname;
+                        currentUser.Role = userVO.FldRole;
+                        currentUser.UserId = userVO.FldUserId;
+                        loginResponse.CurrentUserObj = currentUser;
                     } else
                     {
                         throw new LoginFailedException("Username Or Password Not Exist!!");

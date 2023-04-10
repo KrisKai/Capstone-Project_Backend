@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JourneySick.Business.Models.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,8 @@ namespace JourneySick.Data.Models.DTOs
 
     public class LoginResponse
     {
-        public string Username { get; set;}
-        public string Fullname { get; set;}
+        public CurrentUserObj CurrentUserObj { get; set;}
+
         public string Token { get; set;}
     }
 }
