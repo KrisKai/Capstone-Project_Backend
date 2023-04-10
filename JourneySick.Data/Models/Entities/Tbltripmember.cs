@@ -16,12 +16,6 @@ public partial class Tbltripmember
 
     public string? FldStatus { get; set; }
 
-    public string? FldEmail { get; set; }
-
-    public string? FldPhone { get; set; }
-
-    public string? FldAddress { get; set; }
-
     public DateTime? FldCreateDate { get; set; }
 
     public string? FldCreateBy { get; set; }
