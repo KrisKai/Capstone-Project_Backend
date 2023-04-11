@@ -10,7 +10,7 @@ namespace JourneySick.Data.Models.DTOs
     {
         public string? FldTripId { get; set; }
 
-        public string? FldTripType { get; set; }
+        public string? FldTripStatus { get; set; }
 
         public string? FldTripStartLocationName { get; set; }
 

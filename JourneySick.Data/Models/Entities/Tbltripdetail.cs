@@ -7,7 +7,7 @@ public partial class Tbltripdetail
 {
     public string? FldTripId { get; set; } = null!;
 
-    public string? FldTripType { get; set; }
+    public string? FldTripStatus { get; set; }
 
     public string? FldTripStartLocationName { get; set; }
 
