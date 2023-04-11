@@ -17,17 +17,19 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize)
+        public async Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName)
         {
             try
             {
                 int firstIndex = pageIndex * pageSize;
                 int lastIndex = (pageIndex + 1) * pageSize;
-                var query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId LIMIT @firstIndex, @lastIndex";
+                userName ??= "";
+                var query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
                 parameters.Add("lastIndex", lastIndex, DbType.Int16);
+                parameters.Add("userName", userName, DbType.String);
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TbluserVO>(query, parameters)).ToList();

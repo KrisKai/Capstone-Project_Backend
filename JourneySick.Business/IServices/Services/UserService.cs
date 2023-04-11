@@ -33,12 +33,12 @@ namespace JourneySick.Business.IServices.Services
             _logger = logger;
         }
 
-        public async Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser)
+        public async Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, CurrentUserObj currentUser)
         {
             AllUserDTO result = new();
             try
             {
-                List<TbluserVO> tblusers = await _userRepository.GetAllUsersWithPaging(pageIndex, pageSize);
+                List<TbluserVO> tblusers = await _userRepository.GetAllUsersWithPaging(pageIndex, pageSize, userName);
                 // convert entity to dto
                 List<UserVO> users = _mapper.Map<List<UserVO>>(tblusers);
                 int count = await _userRepository.CountAllUsers();
