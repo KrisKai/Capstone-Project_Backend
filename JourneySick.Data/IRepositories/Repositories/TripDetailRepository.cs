@@ -19,7 +19,6 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 var query = "INSERT INTO tbltripdetail ("
                     + "         fldTripId, "
-                    + "         fldTripStatus, "
                     + "         fldTripStartLocationName, "
                     + "         fldTripStartLocationAddress, "
                     + "         fldTripDestinationLocationName, "
@@ -28,7 +27,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldCreateBy) "
                     + "     VALUES ( "
                     + "         @fldTripId, "
-                    + "         @fldTripStatus, "
                     + "         @fldTripStartLocationName, "
                     + "         @fldTripStartLocationAddress, "
                     + "         @fldTripDestinationLocationName, "
@@ -38,7 +36,6 @@ namespace JourneySick.Data.IRepositories.Repositories
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tbltripdetail.FldTripId, DbType.String);
-                parameters.Add("fldTripStatus", tbltripdetail.FldTripStatus, DbType.String);
                 parameters.Add("fldTripStartLocationName", tbltripdetail.FldTripStartLocationName, DbType.String);
                 parameters.Add("fldTripStartLocationAddress", tbltripdetail.FldTripStartLocationAddress, DbType.String);
                 parameters.Add("fldTripDestinationLocationName", tbltripdetail.FldTripDestinationLocationName, DbType.String);
@@ -61,7 +58,6 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 var query = "UPDATE tbltripdetail SET"
                     + "         fldTripId = @fldTripId, "
-                    + "         fldTripStatus = @fldTripStatus, "
                     + "         fldTripStartLocationName = @fldTripStartLocationName, "
                     + "         fldTripStartLocationAddress = @fldTripStartLocationAddress, "
                     + "         fldTripDestinationLocationName = @fldTripDestinationLocationName, "
@@ -71,7 +67,6 @@ namespace JourneySick.Data.IRepositories.Repositories
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tbltripdetail.FldTripId, DbType.String);
-                parameters.Add("fldTripStatus", tbltripdetail.FldTripStatus, DbType.String);
                 parameters.Add("fldTripStartLocationName", tbltripdetail.FldTripStartLocationName, DbType.String);
                 parameters.Add("fldTripStartLocationAddress", tbltripdetail.FldTripStartLocationAddress, DbType.String);
                 parameters.Add("fldTripDestinationLocationName", tbltripdetail.FldTripDestinationLocationName, DbType.String);

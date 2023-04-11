@@ -158,11 +158,6 @@ public partial class JourneySickContext : DbContext
                 .HasColumnName("fldTripStartLocationName")
                 .UseCollation("utf8_general_ci")
                 .HasCharSet("utf8");
-            entity.Property(e => e.FldTripStatus)
-                .HasMaxLength(50)
-                .HasColumnName("fldTripStatus")
-                .UseCollation("utf8_general_ci")
-                .HasCharSet("utf8");
             entity.Property(e => e.FldUpdateBy)
                 .HasMaxLength(50)
                 .HasColumnName("fldUpdateBy");
