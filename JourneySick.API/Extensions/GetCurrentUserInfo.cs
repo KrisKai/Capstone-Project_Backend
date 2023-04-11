@@ -23,8 +23,12 @@ namespace JourneySick.API.Extensions
                 currentUser.UserId = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.SerialNumber).Value;
                 currentUser.Name = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
                 currentUser.Role = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role).Value;
-            } 
-            return null;
+            }
+            else
+            {
+                return null;
+            }
+            return currentUser;
         }
     }
 }
