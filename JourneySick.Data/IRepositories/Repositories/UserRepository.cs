@@ -24,7 +24,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 int firstIndex = pageIndex * pageSize;
                 int lastIndex = (pageIndex + 1) * pageSize;
                 userName ??= "";
-                var query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE a.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
