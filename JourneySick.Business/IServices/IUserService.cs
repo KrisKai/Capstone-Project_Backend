@@ -8,7 +8,7 @@ namespace JourneySick.Business.IServices
 {
     public interface IUserService
     {
-        Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser);
+        Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, CurrentUserObj currentUser);
         //CREATE
         public Task<string> CreateAdmin(UserVO userDTO);
         public Task<string> CreateUser(UserVO userDTO);

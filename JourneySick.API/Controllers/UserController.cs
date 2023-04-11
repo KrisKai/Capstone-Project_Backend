@@ -52,11 +52,11 @@ namespace JourneySick.API.Controllers
         //GET ALL
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllUsersWithPaging(int pageIndex, int pageSize)
+        public async Task<IActionResult> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName)
         {
             var result = new AllUserDTO();
             CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, currentUser);
+            result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, userName, currentUser);
             return Ok(result);
 
         }

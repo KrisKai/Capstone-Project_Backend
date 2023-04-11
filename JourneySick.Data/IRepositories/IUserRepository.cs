@@ -7,7 +7,7 @@ namespace JourneySick.Data.IRepositories
     public interface IUserRepository
     {
 
-        public Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize);
+        public Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName);
 
         public Task<int> CountAllUsers();
 
