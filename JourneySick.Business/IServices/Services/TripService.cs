@@ -69,8 +69,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                string lastOne = await _tripRepository.GetLastOneId();
-                tripVO.FldTripId = (int.Parse(lastOne) + 1).ToString();
+                tripVO.FldTripId = await GenerateUserID(); ;
                 tripVO.FldTripStatus = "Active";
                 tripVO.FldCreateBy = "Admin";
                 tripVO.FldCreateDate = DateTime.Now;
@@ -153,6 +152,34 @@ namespace JourneySick.Business.IServices.Services
                 _logger.LogError(ex.StackTrace, ex);
                 throw;
             }
+        }
+        private async Task<string> GenerateUserID()
+        {
+            try
+            {
+                string lastOne = await _tripRepository.GetLastOneId();
+                if (lastOne != null)
+                {
+                    string lastId = lastOne.Substring(5);
+                    int newId = Convert.ToInt32(lastId) + 1;
+                    string newIdStr = Convert.ToString(newId);
+                    while (newIdStr.Length < 8)
+                    {
+                        newIdStr = "0" + newIdStr;
+                    }
+                    return "TRIP_" + newIdStr;
+                }
+                else
+                {
+                    return "TRIP_00000001";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
+            }
+
         }
 
     }
