@@ -40,13 +40,15 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountAllUsers()
+        public async Task<int> CountAllUsers(string? userName)
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbluser";
+                var query = "SELECT COUNT(*) FROM tbluser WHERE fldUsername LIKE CONCAT('%', @userName, '%')";
+                var parameters = new DynamicParameters();
+                parameters.Add("userName", userName, DbType.String);
                 using var connection = CreateConnection();
-                return ((int)(long)connection.ExecuteScalar(query));
+                return ((int)(long)connection.ExecuteScalar(query, parameters));
 
             }
             catch (Exception e)

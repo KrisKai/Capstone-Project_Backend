@@ -3,42 +3,60 @@ using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
 
 namespace JourneySick.Business.IServices.Services
 {
     public class TripRoleService : ITripRoleService
     {
-        private readonly ITripRepository _tripRepository;
+        private readonly ITripRoleRepository _tripRoleRepository;
         private readonly IMapper _mapper;
 
-        public TripRoleService(ITripRepository tripRepository, IMapper mapper)
+        public TripRoleService(ITripRoleRepository tripRoleRepository, IMapper mapper)
         {
-            _tripRepository = tripRepository;
+            _tripRoleRepository = tripRoleRepository;
             _mapper = mapper;
         }
 
-        public Task<string> CreateTripRole(TripRoleDTO planLocationDTO)
+
+        public async Task<AllTripRoleDTO> GetAllTripRolesWithPaging(int pageIndex, int pageSize, string? roleName)
+        {
+            AllTripRoleDTO result = new();
+            try
+            {
+                List<Tbltriprole> tbltriproles = await _tripRoleRepository.GetAllTripRolesWithPaging(pageIndex, pageSize, roleName);
+                // convert entity to dto
+                List<TripRoleDTO> users = _mapper.Map<List<TripRoleDTO>>(tbltriproles);
+                int count = await _tripRoleRepository.CountAllTripRoles(roleName);
+                result.ListOfRole = users;
+                result.NumOfRole = count;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<TripRoleDTO> GetTripRole(string roleId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> DeleteTripRole(string locationId)
+        public async Task<string> CreateTripRole(TripRoleDTO planLocationDTO)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<TripRoleDTO>> GetAllTripRolesWithPaging(int pageIndex, int pageSize)
+        public async Task<string> UpdateTripRole(TripRoleDTO planLocationDTO)
         {
             throw new NotImplementedException();
         }
 
-        public Task<TripRoleDTO> GetTripRole(string roleId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<string> UpdateTripRole(TripRoleDTO planLocationDTO)
+        public async Task<string> DeleteTripRole(string locationId)
         {
             throw new NotImplementedException();
         }

@@ -10,13 +10,15 @@ namespace JourneySick.Data.IRepositories
 {
     public interface ITripRoleRepository
     {
+        public Task<int> GetLastOneId();
+        public Task<Tbltriprole> GetTripRoleById(string roleId);
+        public Task<List<Tbltriprole>> GetAllTripRolesWithPaging(int pageIndex, int pageSize, string? roleName);
+        public Task<int> CountAllTripRoles(string? roleName);
         //CREATE
         public Task<int> CreateTripRole(Tbltriprole tbltriprole);
         //UPDATE
         public Task<int> UpdateTripRole(Tbltriprole tbltriprole);
         //DELETE
         public Task<int> DeleteTripRole(int roleId);
-        public Task<int> GetLastOneId();
-        public Task<Tbltriprole> SelectTripRole(int roleId);
     }
 }

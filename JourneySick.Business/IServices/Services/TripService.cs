@@ -74,7 +74,7 @@ namespace JourneySick.Business.IServices.Services
                 TbltripVO tbltrip = _mapper.Map<TbltripVO>(tripVO);
                 if (await _tripRepository.CreateTrip(tbltrip) > 0 && await _tripDetailRepository.CreateTripDetail(tbltrip) > 0)
                 {
-                    return tripVO.FldTripId;
+                    return "1";
                 }
                 else
                 {
