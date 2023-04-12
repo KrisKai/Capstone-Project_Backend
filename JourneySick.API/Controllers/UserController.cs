@@ -28,7 +28,7 @@ namespace JourneySick.API.Controllers
 
         //CREATE
         [HttpPost]
-        [Route("create-admin")]
+        //[Route("create-admin")]
         [Authorize]
         public async Task<IActionResult> CreateAdmin([FromBody] UserVO userVO)
         {
