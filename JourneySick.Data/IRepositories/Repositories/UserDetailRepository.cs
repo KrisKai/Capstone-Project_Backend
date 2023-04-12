@@ -172,16 +172,5 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
-
-        /*        public async Task<string> GetUserRoleByUserId(string userId)
-                {
-                    try
-                    {
-                        var query = "SELECT fldRole FROM tblUserDetail WHERE fldUserId = @fldUserId";
-                    }catch(Exception ex)
-                    {
-                        throw new Exception(ex.Message, ex);
-                    }
-                }*/
     }
 }

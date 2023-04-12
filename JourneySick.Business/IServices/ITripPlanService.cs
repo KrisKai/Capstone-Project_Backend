@@ -11,11 +11,11 @@ namespace JourneySick.Business.IServices
         //Select Plan
         public Task<TripPlanDTO> GetTripPlanById(int planId);
         //insert
-        public Task<String> CreateTripPlan(TripPlanDTO tripPlanDTO);
+        public Task<int> CreateTripPlan(TripPlanDTO tripPlanDTO);
         //update
-        public Task<String> UpdateTripPlan(TripPlanDTO tripPlanDTO);
+        public Task<int> UpdateTripPlan(TripPlanDTO tripPlanDTO);
         //update
-        public Task<String> DeleteTripPlan(int planId);
+        public Task<int> DeleteTripPlan(int planId);
 
     }
 }

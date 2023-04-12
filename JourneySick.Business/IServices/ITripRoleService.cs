@@ -9,13 +9,13 @@ namespace JourneySick.Business.IServices
         //Select list w paging
         public Task<AllTripRoleDTO> GetAllTripRolesWithPaging(int pageIndex, int pageSize, string? roleName);
         //Select Role
-        public Task<TripRoleDTO> GetTripRole(String roleId);
+        public Task<TripRoleDTO> GetTripRoleById(int roleId);
         //insert
-        public Task<String> CreateTripRole(TripRoleDTO planLocationDTO);
+        public Task<int> CreateTripRole(TripRoleDTO planLocationDTO);
         //update
-        public Task<String> UpdateTripRole(TripRoleDTO planLocationDTO);
+        public Task<int> UpdateTripRole(TripRoleDTO planLocationDTO);
         //update
-        public Task<String> DeleteTripRole(String locationId);
+        public Task<int> DeleteTripRole(int roleId);
 
     }
 }

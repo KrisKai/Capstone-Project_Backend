@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using JourneySick.Data.Helpers;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Configuration;
@@ -11,16 +12,6 @@ namespace JourneySick.Data.IRepositories.Repositories
     {
         public TripPlanRepository(IConfiguration configuration) : base(configuration)
         {
-        }
-
-        public Task<int> CreateTripPlan(Tbltripplan tbltripplan)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> DeleteTripPlan(int tripPlanId)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<int> GetLastOneId()
@@ -60,7 +51,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<Tbltripplan> SelectTripPlan(int tripPlanId)
+        public async Task<Tbltripplan> GetTripPlanById(int tripPlanId)
         {
             try
             {
@@ -75,12 +66,6 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 throw new Exception(e.Message, e);
             }
-        }
-
-       
-        public async Task<int> UpdateTripPlan(Tbltripplan tbltripplan)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<int> CountAllTripPlans(string? planId)
@@ -101,5 +86,81 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        public async Task<int> CreateTripPlan(Tbltripplan tbltripplan)
+        {
+            try
+            {
+                var query = "INSERT INTO tbltripplan ("
+                   // + "         fldPlanId, "
+                    + "         fldTripId, "
+                    + "         fldPlanDescription, "
+                    + "         fldCreateDate, "
+                    + "         fldCreateBy) "
+                    + "     VALUES ( "
+                    //+ "         @fldPlanId, "
+                    + "         @fldTripId, "
+                    + "         @fldPlanDescription, "
+                    + "         @fldCreateDate, "
+                    + "         @fldCreateBy)";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldPlanId", tbltripplan.FldPlanId, DbType.String);
+                parameters.Add("fldTripId", tbltripplan.FldTripId, DbType.String);
+                parameters.Add("fldPlanDescription", tbltripplan.FldPlanDescription, DbType.String);
+                parameters.Add("fldCreateDate", tbltripplan.FldCreateDate, DbType.DateTime);
+                parameters.Add("fldCreateBy", tbltripplan.FldCreateBy, DbType.String);
+
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+        public async Task<int> UpdateTripPlan(Tbltripplan tbltripplan)
+        {
+            try
+            {
+                var query = "UPDATE tbltripplan SET " +
+                    "fldPlanDescription = @fldPlanDescription, " +
+                    "fldUpdateDate = @fldUpdateDate, " +
+                    "fldUpdateBy = @fldUpdateBy, " +
+                    "WHERE fldPlanId = @fldPlanId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldPlanId", tbltripplan.FldPlanId, DbType.String);
+                parameters.Add("fldPlanDescription", tbltripplan.FldPlanDescription, DbType.String);
+                parameters.Add("fldUpdateDate ", tbltripplan.FldUpdateDate, DbType.DateTime);
+                parameters.Add("fldUpdateBy", tbltripplan.FldUpdateBy, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> DeleteTripPlan(int tripPlanId)
+        {
+            try
+            {
+                var query = "DELETE FROM tbltripplan WHERE fldPlanId = @fldPlanId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldPlanId", tripPlanId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+
     }
 }

@@ -15,7 +15,7 @@ public partial class Tbltripplan
 
     public string? FldCreateBy { get; set; }
 
-    public DateTime? UpdateDate { get; set; }
+    public DateTime? FldUpdateDate { get; set; }
 
     public string? FldUpdateBy { get; set; }
 }

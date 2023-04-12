@@ -67,42 +67,72 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public async Task<Tbltriprole> GetTripRoleById(int roleId)
+        {
+            try
+            {
+                var query = "SELECT * FROM tbltriprole WHERE fldRoleId = @fldRoleId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldRoleId", roleId, DbType.Int32);
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<Tbltriprole>(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
         //CREATE
         public async Task<int> CreateTripRole(Tbltriprole tbltriprole)
         {
             try
             {
                 var query = "INSERT INTO tbltriprole ("
-                    + "         fldTripId, "
-                    + "         fldTripName, "
-                    + "         fldTripBudget, "
-                    + "         fldTripDescription, "
-                    + "         fldEstimateStartTime, "
-                    + "         fldEstimateArrivalTime, "
-                    + "         fldTripStatus, "
-                    + "         fldTripMember) "
+                    //+ "         fldRoleId, "
+                    + "         fldRoleName, "
+                    + "         fldType, "
+                    + "         fldDescription) "
                     + "     VALUES ( "
-                    + "         @fldTripId, "
-                    + "         @fldTripName, "
-                    + "         @fldTripBudget, "
-                    + "         @fldTripDescription, "
-                    + "         @fldEstimateStartTime, "
-                    + "         @fldEstimateArrivalTime, "
-                    + "         @fldTripStatus, "
-                    + "         @fldTripMember) ";
+                    //+ "         @fldRoleId, "
+                    + "         @fldRoleName, "
+                    + "         @fldType, "
+                    + "         @fldDescription) ";
 
                 var parameters = new DynamicParameters();
-                /*parameters.Add("fldTripId", tbltriprole.FldTripId, DbType.String);
-                parameters.Add("fldTripName", tbltriprole.FldTripName, DbType.String);
-                parameters.Add("fldTripBudget", tbltriprole.FldTripBudget, DbType.Decimal);
-                parameters.Add("fldTripDescription", tbltriprole.FldTripDescription, DbType.String);
-                parameters.Add("fldEstimateStartTime", tbltriprole.FldEstimateStartTime, DbType.DateTime);
-                parameters.Add("fldEstimateArrivalTime", tbltriprole.FldEstimateArrivalTime, DbType.DateTime);
-                parameters.Add("fldTripStatus", tbltriprole.FldTripStatus, DbType.String);
-                parameters.Add("fldTripMember", tbltriprole.FldTripMember, DbType.String);*/
+                parameters.Add("fldRoleId", tbltriprole.FldRoleId, DbType.Int32);
+                parameters.Add("fldRoleName", tbltriprole.FldRoleName, DbType.String);
+                parameters.Add("fldType", tbltriprole.FldType, DbType.Decimal);
+                parameters.Add("fldDescription", tbltriprole.FldDescription, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query,parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> UpdateTripRole(Tbltriprole tbltriprole)
+        {
+            try
+            {
+                var query = "UPDATE tbltriprole SET"
+                    + "         fldRoleName = @fldRoleName, "
+                    + "         fldType = @fldType, "
+                    + "         fldDescription = @fldDescription"
+                    + "     WHERE fldRoleId = @fldRoleId"; ;
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldRoleId", tbltriprole.FldRoleId, DbType.Int32);
+                parameters.Add("fldRoleName", tbltriprole.FldRoleName, DbType.String);
+                parameters.Add("fldType", tbltriprole.FldType, DbType.Decimal);
+                parameters.Add("fldDescription", tbltriprole.FldDescription, DbType.String);
+
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
             }
             catch (Exception e)
             {
@@ -117,7 +147,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "DELETE FROM tbltriprole WHERE fldRoleId = @fldRoleId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldRoleId", roleId, DbType.Int16);
+                parameters.Add("fldRoleId", roleId, DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
@@ -125,44 +155,6 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 throw new Exception(e.Message, e);
             }
-        }
-
-        public async Task<int> UpdateTripRole(Tbltriprole tbltriprole)
-        {
-            try
-            {
-                var query = "UPDATE tbltriprole SET"
-                    + "         fldTripId = @fldTripId, "
-                    + "         fldTripName = @fldTripName, "
-                    + "         fldTripBudget = @fldTripBudget, "
-                    + "         fldTripDescription = @fldTripDescription, "
-                    + "         fldEstimateStartTime = @fldEstimateStartTime, "
-                    + "         fldEstimateArrivalTime = @fldEstimateArrivalTime, "
-                    + "         fldTripStatus = @fldTripStatus, "
-                    + "         fldTripMember = @fldTripMember";
-
-                var parameters = new DynamicParameters();
-                /*parameters.Add("fldTripId", tripEntity.FldTripId, DbType.String);
-                parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
-                parameters.Add("fldTripBudget", tripEntity.FldTripBudget, DbType.Decimal);
-                parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
-                parameters.Add("fldEstimateStartTime", tripEntity.FldEstimateStartTime, DbType.DateTime);
-                parameters.Add("fldEstimateArrivalTime", tripEntity.FldEstimateArrivalTime, DbType.DateTime);
-                parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
-                parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);*/
-
-                using var connection = CreateConnection();
-                return await connection.ExecuteAsync(query, parameters);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
-        public Task<Tbltriprole> GetTripRoleById(string roleId)
-        {
-            throw new NotImplementedException();
         }
     }
 }

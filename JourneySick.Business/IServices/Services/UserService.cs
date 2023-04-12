@@ -15,7 +15,7 @@ using Microsoft.Extensions.Options;
 
 namespace JourneySick.Business.IServices.Services
 {
-    public class UserService : IUserService 
+    public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserDetailRepository _userDetailRepository;
@@ -90,7 +90,8 @@ namespace JourneySick.Business.IServices.Services
                 }
                 throw new InsertException("Create user failed!");
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
                 throw;
@@ -104,10 +105,10 @@ namespace JourneySick.Business.IServices.Services
                 TbluserVO tblUserVO = await _userRepository.GetUserById(userId);
                 // convert entity to dto
                 UserVO userVO = _mapper.Map<UserVO>(tblUserVO);
-                
+
                 return userVO;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(message: ex.StackTrace, ex);
                 throw;
@@ -126,7 +127,7 @@ namespace JourneySick.Business.IServices.Services
                     userVO.FldUpdateBy = "Admin";
                     userVO.FldUpdateDate = DateTime.Now;
                     TbluserVO tbluserVO = _mapper.Map<TbluserVO>(userVO);
-                    if ( await _userDetailRepository.UpdateUserDetail(tbluserVO) >0)
+                    if (await _userDetailRepository.UpdateUserDetail(tbluserVO) > 0)
                     {
                         return userVO.FldUserId;
                     }
@@ -155,20 +156,22 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    if(await _userRepository.DeleteUser(userId)>0 && await _userDetailRepository.DeleteUserDetail(userId) > 0)
+                    if (await _userRepository.DeleteUser(userId) > 0 && await _userDetailRepository.DeleteUserDetail(userId) > 0)
                     {
                         return 1;
-                    } else
+                    }
+                    else
                     {
                         throw new DeleteException("Delete user failed!");
                     }
-                    
+
                 }
                 else
                 {
                     throw new GetOneException("User is not existed!");
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
                 throw;

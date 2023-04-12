@@ -105,7 +105,6 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "UPDATE tblplanlocation SET"
-                    + "         fldPlanId = @fldPlanId, "
                     + "         fldOrdinal = @fldOrdinal, "
                     + "         fldPlanLocationId = @fldPlanLocationId, "
                     + "         fldPlanLocationName = @fldPlanLocationName, "
@@ -114,7 +113,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldCreateDate = @fldCreateDate, "
                     + "         fldCreateBy = @fldCreateBy, "
                     + "         fldUpdateDate = @fldUpdateDate, "
-                    + "         fldUpdateBy = @fldUpdateBy";
+                    + "         fldUpdateBy = @fldUpdateBy"
+                    + "     WHERE fldPlanId = @fldPlanId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldPlanId", tblplanlocation.FldPlanId, DbType.Int16);

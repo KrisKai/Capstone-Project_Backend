@@ -57,13 +57,13 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "UPDATE tbltripdetail SET"
-                    + "         fldTripId = @fldTripId, "
                     + "         fldTripStartLocationName = @fldTripStartLocationName, "
                     + "         fldTripStartLocationAddress = @fldTripStartLocationAddress, "
                     + "         fldTripDestinationLocationName = @fldTripDestinationLocationName, "
                     + "         fldTripDestinationLocationAddress = @fldTripDestinationLocationAddress, "
                     + "         fldUpdateDate = @fldUpdateDate, "
-                    + "         fldUpdateBy = @fldUpdateBy";
+                    + "         fldUpdateBy = @fldUpdateBy"
+                    + "     WHERE fldTripId = @fldTripId"; ;
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tbltripdetail.FldTripId, DbType.String);

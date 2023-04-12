@@ -168,10 +168,15 @@ public partial class JourneySickContext : DbContext
 
         modelBuilder.Entity<Tbltripmember>(entity =>
         {
-            entity.HasKey(e => e.FldUserId).HasName("PRIMARY");
+            entity.HasKey(e => e.FldMemberId).HasName("PRIMARY");
 
             entity.ToTable("tbltripmember");
 
+            entity.HasIndex(e => e.FldMemberId, "fldMemberId_UNIQUE").IsUnique();
+
+            entity.Property(e => e.FldMemberId)
+                .HasMaxLength(50)
+                .HasColumnName("fldMemberId");
             entity.Property(e => e.FldUserId)
                 .HasMaxLength(50)
                 .HasColumnName("fldUserId");
@@ -228,9 +233,9 @@ public partial class JourneySickContext : DbContext
             entity.Property(e => e.FldUpdateBy)
                 .HasMaxLength(50)
                 .HasColumnName("fldUpdateBy");
-            entity.Property(e => e.UpdateDate)
+            entity.Property(e => e.FldUpdateDate)
                 .HasColumnType("datetime")
-                .HasColumnName("updateDate");
+                .HasColumnName("fldUpdateDate");
         });
 
         modelBuilder.Entity<Tbltriprole>(entity =>

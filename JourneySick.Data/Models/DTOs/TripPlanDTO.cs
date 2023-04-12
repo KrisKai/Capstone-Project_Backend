@@ -18,7 +18,7 @@ namespace JourneySick.Data.Models.DTOs
 
         public string? FldCreateBy { get; set; }
 
-        public DateTime? UpdateDate { get; set; }
+        public DateTime? FldUpdateDate { get; set; }
 
         public string? FldUpdateBy { get; set; }
     }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using JourneySick.Business.Models.DTOs;
+using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
@@ -16,10 +16,11 @@ namespace JourneySick.Business.IServices.Services
         private readonly ITripPlanRepository _tripPlanRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<TripPlanService> _logger;
-        public TripPlanService(ITripPlanRepository tripPlanRepository, IMapper mapper)
+        public TripPlanService(ITripPlanRepository tripPlanRepository, IMapper mapper, ILogger<TripPlanService> logger)
         {
             _tripPlanRepository = tripPlanRepository;
             _mapper = mapper;
+            _logger = logger;
         }
         public async Task<AllTripPlanDTO> GetAllTripPlansWithPaging(int pageIndex, int pageSize, string? planId)
         {
@@ -41,24 +42,106 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public Task<TripPlanDTO> GetTripPlanById(int planId)
+        public async Task<TripPlanDTO> GetTripPlanById(int planId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                Tbltripplan tbltripplan = await _tripPlanRepository.GetTripPlanById(planId);
+                // convert entity to dto
+                TripPlanDTO tripPlanDTO = _mapper.Map<TripPlanDTO>(tbltripplan);
+
+                return tripPlanDTO;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(message: ex.StackTrace, ex);
+                throw;
+            }
         }
 
-        public Task<string> CreateTripPlan(TripPlanDTO tripPlanDTO)
+        public async Task<int> CreateTripPlan(TripPlanDTO tripPlanDTO)
         {
-            throw new NotImplementedException();
+            try
+            {
+                int lastOne = await _tripPlanRepository.GetLastOneId();
+                tripPlanDTO.FldPlanId = lastOne + 1;
+                tripPlanDTO.FldCreateBy = "Admin";
+                tripPlanDTO.FldCreateDate = DateTime.Now;
+                Tbltripplan tbltripplan = _mapper.Map<Tbltripplan>(tripPlanDTO);
+                int id = await _tripPlanRepository.CreateTripPlan(tbltripplan);
+                if (id > 0)
+                {
+                    return id;
+                }
+                throw new InsertException("Create trip plan failed!");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
         }
 
-        public Task<string> UpdateTripPlan(TripPlanDTO tripPlanDTO)
+        public async Task<int> UpdateTripPlan(TripPlanDTO tripPlanDTO)
         {
-            throw new NotImplementedException();
+            try
+            {
+                TripPlanDTO getTrip = await GetTripPlanById((int)tripPlanDTO.FldPlanId);
+
+                if (getTrip != null)
+                {
+                    tripPlanDTO.FldUpdateBy = "Admin";
+                    tripPlanDTO.FldUpdateDate = DateTime.Now;
+                    Tbltripplan tbltripplan = _mapper.Map<Tbltripplan>(tripPlanDTO);
+                    if (await _tripPlanRepository.UpdateTripPlan(tbltripplan) > 0)
+                    {
+                        return (int)tripPlanDTO.FldPlanId;
+                    }
+                    else
+                    {
+                        throw new UpdateException("Update trip plan failed!");
+                    }
+                }
+                else
+                {
+                    throw new GetOneException("Trip plan is not existed!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
         }
 
-        public Task<string> DeleteTripPlan(int planId)
+        public async Task<int> DeleteTripPlan(int planId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                TripPlanDTO getTrip = await GetTripPlanById(planId);
+
+                if (getTrip != null)
+                {
+                    if (await _tripPlanRepository.DeleteTripPlan(planId) > 0)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        throw new DeleteException("Delete trip plan failed!");
+                    }
+
+                }
+                else
+                {
+                    throw new GetOneException("Trip plan is not existed!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
         }
 
     }

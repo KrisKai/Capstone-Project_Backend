@@ -25,6 +25,30 @@ namespace JourneySick.API.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        //GET ALL
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAllTripRolesWithPaging(int pageIndex, int pageSize, string? roleName)
+        {
+            var result = new AllTripRoleDTO();
+            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            result = await _tripRoleService.GetAllTripRolesWithPaging(pageIndex, pageSize, roleName);
+            return Ok(result);
+
+
+        }
+
+        //GET
+        [HttpGet]
+        [Route("{id}")]
+        [Authorize]
+        public async Task<IActionResult> GetTripRoleById([FromRoute] int id)
+        {
+            TripRoleDTO result = await _tripRoleService.GetTripRoleById(id);
+            return Ok(result);
+
+        }
+
         //CREATE
         [HttpPost]
         [Authorize]
@@ -45,17 +69,14 @@ namespace JourneySick.API.Controllers
 
         }
 
-        //GET ALL
-        [HttpGet]
+        //DELETE BY ID
+        [HttpDelete]
+        [Route("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetAllTripRolesWithPaging(int pageIndex, int pageSize, string? roleName)
+        public async Task<IActionResult> DeleteTripRole([FromRoute] int id)
         {
-            var result = new AllTripRoleDTO();
-            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            result = await _tripRoleService.GetAllTripRolesWithPaging(pageIndex, pageSize, roleName);
+            var result = await _tripRoleService.DeleteTripRole(id);
             return Ok(result);
-
-
         }
 
     }

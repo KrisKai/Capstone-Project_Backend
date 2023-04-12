@@ -120,7 +120,6 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "UPDATE tbltrip SET"
-                    + "         fldTripId = @fldTripId, "
                     + "         fldTripName = @fldTripName, "
                     + "         fldTripBudget = @fldTripBudget, "
                     + "         fldTripDescription = @fldTripDescription, "
@@ -128,7 +127,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldEstimateArrivalTime = @fldEstimateArrivalTime, "
                     + "         fldTripStatus = @fldTripStatus, "
                     + "         fldTripMember = @fldTripMember"
-                    + "         fldTripPresenter = @fldTripPresenter";
+                    + "         fldTripPresenter = @fldTripPresenter"
+                    + "      WHERE fldTripId = @fldTripId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tripEntity.FldTripId, DbType.String);
