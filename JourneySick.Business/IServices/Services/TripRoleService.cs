@@ -28,7 +28,7 @@ namespace JourneySick.Business.IServices.Services
             throw new NotImplementedException();
         }
 
-        public Task<List<TripRoleDTO>> GetAllTripRolesWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser)
+        public Task<List<TripRoleDTO>> GetAllTripRolesWithPaging(int pageIndex, int pageSize)
         {
             throw new NotImplementedException();
         }

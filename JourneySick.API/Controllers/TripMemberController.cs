@@ -29,7 +29,7 @@ namespace JourneySick.API.Controllers
         {
             var result = new List<TripMemberDTO>();
             CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            result = await _tripMemberService.GetAllTripMembersWithPaging(pageIndex, pageSize, currentUser);
+            result = await _tripMemberService.GetAllTripMembersWithPaging(pageIndex, pageSize);
             return Ok(result);
 
         }

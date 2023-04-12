@@ -7,7 +7,6 @@ using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
-using JourneySick.Data.Models.DTOs.CommonDTO.GetOneDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -33,7 +32,7 @@ namespace JourneySick.Business.IServices.Services
             _logger = logger;
         }
 
-        public async Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, CurrentUserObj currentUser)
+        public async Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName)
         {
             AllUserDTO result = new();
             try
@@ -44,7 +43,6 @@ namespace JourneySick.Business.IServices.Services
                 int count = await _userRepository.CountAllUsers();
                 result.ListOfUser = users;
                 result.NumOfUser = count;
-                result.CurrentUserObj = currentUser;
                 return result;
             }
             catch (Exception ex)

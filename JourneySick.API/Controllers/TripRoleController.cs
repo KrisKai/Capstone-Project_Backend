@@ -51,7 +51,7 @@ namespace JourneySick.API.Controllers
         {
             var result = new List<TripRoleDTO>();
             CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            result = await _tripRoleService.GetAllTripRolesWithPaging(pageIndex, pageSize, currentUser);
+            result = await _tripRoleService.GetAllTripRolesWithPaging(pageIndex, pageSize);
             return Ok(result);
 
 

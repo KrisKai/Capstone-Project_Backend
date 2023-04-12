@@ -21,7 +21,7 @@ namespace JourneySick.Business.IServices.Services
             _logger = logger;
         }
 
-        public async Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser)
+        public async Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize)
         {
             try
             {

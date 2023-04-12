@@ -18,7 +18,7 @@ namespace JourneySick.Business.IServices.Services
             _mapper = mapper;
         }
 
-        public Task<List<TripMemberDTO>> GetAllTripMembersWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser)
+        public Task<List<TripMemberDTO>> GetAllTripMembersWithPaging(int pageIndex, int pageSize)
         {
             throw new NotImplementedException();
         }

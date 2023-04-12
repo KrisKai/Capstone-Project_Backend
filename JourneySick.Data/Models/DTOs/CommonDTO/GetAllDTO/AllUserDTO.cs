@@ -8,7 +8,6 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO
     {
         public int NumOfUser { get; set; }
         public List<UserVO> ListOfUser { get; set; }
-        public CurrentUserObj CurrentUserObj { get; set; }
     }
 }
 

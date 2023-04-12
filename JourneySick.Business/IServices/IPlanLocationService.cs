@@ -6,7 +6,7 @@ namespace JourneySick.Business.IServices
     public interface IPlanLocationService
     {
         //Select list w paging
-        public Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize, CurrentUserObj currentUser);
+        public Task<List<PlanLocationDTO>> GetAllLocationsWithPaging(int pageIndex, int pageSize);
         //Select Location
         public Task<PlanLocationDTO> GetPlanLocationById(int locationId);
         //insert

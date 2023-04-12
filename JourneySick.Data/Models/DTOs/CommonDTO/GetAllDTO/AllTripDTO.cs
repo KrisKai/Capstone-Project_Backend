@@ -12,6 +12,5 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO
     {
         public int NumOfTrip { get; set; }
         public List<TripVO>? ListOfTrip { get; set; }
-        public CurrentUserObj CurrentUserObj { get; set; }
     }
 }

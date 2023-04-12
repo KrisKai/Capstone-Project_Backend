@@ -21,7 +21,7 @@ namespace JourneySick.Business.IServices.Services
             _tripPlanRepository = tripPlanRepository;
             _mapper = mapper;
         }
-        public async Task<AllTripPlanDTO> GetAllTripPlansWithPaging(int pageIndex, int pageSize, string? planId, CurrentUserObj currentUser)
+        public async Task<AllTripPlanDTO> GetAllTripPlansWithPaging(int pageIndex, int pageSize, string? planId)
         {
             AllTripPlanDTO result = new();
             try
@@ -32,7 +32,6 @@ namespace JourneySick.Business.IServices.Services
                 int count = await _tripPlanRepository.CountAllTripPlans(planId);
                 result.ListOfPlan = trips;
                 result.NumOfPlan = count;
-                result.CurrentUserObj = currentUser;
                 return result;
             }
             catch (Exception ex)
