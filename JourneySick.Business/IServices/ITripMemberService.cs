@@ -1,12 +1,13 @@
 ﻿using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 
 namespace JourneySick.Business.IServices
 {
     public interface ITripMemberService
     {
         //Select list w paging
-        public Task<List<TripMemberDTO>> GetAllTripMembersWithPaging(int pageIndex, int pageSize);
+        public Task<AllTripMemberDTO> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName);
         //Select Location
         public Task<TripMemberDTO> GetTripMemberById(int memberId);
         //insert

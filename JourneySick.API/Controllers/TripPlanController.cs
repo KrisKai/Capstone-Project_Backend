@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace JourneySick.API.Controllers
 {
     [ApiController]
-    [Route("api/v1.0/plans")]
+    [Route("api/v1.0/tripPlans")]
     [EnableCors]
     public class TripPlanController : ControllerBase
     {

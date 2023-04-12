@@ -55,6 +55,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "SELECT COUNT(*) FROM tbltriprole WHERE fldRoleName LIKE CONCAT('%', @roleName, '%')";
+                roleName ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("roleName", roleName, DbType.String);
                 using var connection = CreateConnection();
@@ -103,7 +104,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("fldRoleId", tbltriprole.FldRoleId, DbType.Int32);
                 parameters.Add("fldRoleName", tbltriprole.FldRoleName, DbType.String);
-                parameters.Add("fldType", tbltriprole.FldType, DbType.Decimal);
+                parameters.Add("fldType", tbltriprole.FldType, DbType.String);
                 parameters.Add("fldDescription", tbltriprole.FldDescription, DbType.String);
 
                 using var connection = CreateConnection();

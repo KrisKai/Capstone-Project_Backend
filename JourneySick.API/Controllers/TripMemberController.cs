@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using JourneySick.Business.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 
 namespace JourneySick.API.Controllers
 {
@@ -25,11 +26,11 @@ namespace JourneySick.API.Controllers
         //GET ALL
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllTripMembersWithPaging(int pageIndex, int pageSize)
+        public async Task<IActionResult> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName)
         {
-            var result = new List<TripMemberDTO>();
+            var result = new AllTripMemberDTO();
             CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            result = await _tripMemberService.GetAllTripMembersWithPaging(pageIndex, pageSize);
+            result = await _tripMemberService.GetAllTripMembersWithPaging(pageIndex, pageSize, memberName);
             return Ok(result);
 
         }
