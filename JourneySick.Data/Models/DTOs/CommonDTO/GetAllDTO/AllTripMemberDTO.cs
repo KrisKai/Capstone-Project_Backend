@@ -11,6 +11,6 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO
     public class AllTripMemberDTO
     {
         public int NumOfMember { get; set; }
-        public List<TripMemberDTO>? ListOfMember { get; set; }
+        public List<TripMemberVO>? ListOfMember { get; set; }
     }
 }

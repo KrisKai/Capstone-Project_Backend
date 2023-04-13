@@ -126,7 +126,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldEstimateStartTime = @fldEstimateStartTime, "
                     + "         fldEstimateArrivalTime = @fldEstimateArrivalTime, "
                     + "         fldTripStatus = @fldTripStatus, "
-                    + "         fldTripMember = @fldTripMember"
+                    + "         fldTripMember = @fldTripMember,"
                     + "         fldTripPresenter = @fldTripPresenter"
                     + "      WHERE fldTripId = @fldTripId";
 

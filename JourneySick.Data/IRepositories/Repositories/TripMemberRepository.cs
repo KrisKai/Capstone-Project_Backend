@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Numerics;
@@ -45,7 +46,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<List<Tbltripmember>> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName)
+        public async Task<List<TbltripmemberVO>> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName)
         {
             try
             {
@@ -57,10 +58,10 @@ namespace JourneySick.Data.IRepositories.Repositories
                 memberName ??= "";
                 parameters.Add("fldNickName", memberName, DbType.String);
 
-                var query = "SELECT * FROM tbltripmember WHERE fldNickName LIKE CONCAT('%', @fldNickName, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM tbltripmember a INNER JOIN tbluserdetail b ON a.fldUserId = b.fldUserId INNER JOIN tbltriprole c ON a.fldMemberRoleId = c.fldRoleId WHERE fldNickName LIKE CONCAT('%', @fldNickName, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tbltripmember>(query, parameters)).ToList();
+                return (await connection.QueryAsync<TbltripmemberVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -99,7 +100,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldCreateDate, "
                     + "         fldCreateBy) "
                     + "     VALUES ( "
-                    + "         @fldPlanId, "
+                    + "         @fldUserId, "
                     + "         @fldTripId, "
                     + "         @fldMemberRoleId, "
                     + "         @fldNickName, "

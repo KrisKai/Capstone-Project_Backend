@@ -42,7 +42,6 @@ namespace JourneySick.API.Controllers
         {
             TripMemberDTO result = await _tripMemberService.GetTripMemberById(id);
             return Ok(result);
-
         }
 
 

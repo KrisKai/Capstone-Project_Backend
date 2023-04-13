@@ -5,7 +5,9 @@ using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Logging;
 using System.Numerics;
 
@@ -29,9 +31,9 @@ namespace JourneySick.Business.IServices.Services
             AllTripMemberDTO result = new();
             try
             {
-                List<Tbltripmember> tbltripmembers = await _tripMemberRepository.GetAllTripMembersWithPaging(pageIndex, pageSize, memberName);
+                List<TbltripmemberVO> tbltripmembers = await _tripMemberRepository.GetAllTripMembersWithPaging(pageIndex, pageSize, memberName);
                 // convert entity to dto
-                List<TripMemberDTO> tripMemberDTOs = _mapper.Map<List<TripMemberDTO>>(tbltripmembers);
+                List<TripMemberVO> tripMemberDTOs = _mapper.Map<List<TripMemberVO>>(tbltripmembers);
                 int count = await _tripMemberRepository.CountAllTripMembers(memberName);
                 result.ListOfMember = tripMemberDTOs;
                 result.NumOfMember = count;
