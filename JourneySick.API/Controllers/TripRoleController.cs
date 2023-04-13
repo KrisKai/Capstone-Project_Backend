@@ -64,7 +64,7 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateTripRole([FromBody] TripRoleDTO tripRoleDTO)
         {
-            var result = await _tripRoleService.CreateTripRole(tripRoleDTO);
+            var result = await _tripRoleService.UpdateTripRole(tripRoleDTO);
             return Ok(result);
 
         }

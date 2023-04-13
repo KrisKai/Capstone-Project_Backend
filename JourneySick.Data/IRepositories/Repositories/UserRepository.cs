@@ -45,6 +45,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "SELECT COUNT(*) FROM tbluser WHERE fldUsername LIKE CONCAT('%', @userName, '%')";
+                userName ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("userName", userName, DbType.String);
                 using var connection = CreateConnection();

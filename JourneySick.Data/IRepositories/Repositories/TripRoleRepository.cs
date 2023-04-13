@@ -129,7 +129,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("fldRoleId", tbltriprole.FldRoleId, DbType.Int32);
                 parameters.Add("fldRoleName", tbltriprole.FldRoleName, DbType.String);
-                parameters.Add("fldType", tbltriprole.FldType, DbType.Decimal);
+                parameters.Add("fldType", tbltriprole.FldType, DbType.String);
                 parameters.Add("fldDescription", tbltriprole.FldDescription, DbType.String);
 
                 using var connection = CreateConnection();
