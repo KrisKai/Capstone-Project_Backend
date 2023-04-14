@@ -150,6 +150,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "fldFullname = @Fullname, " +
                     "fldPhone = @Phone, " +
                     "fldAddress = @Address, " +
+                    "fldActiveStatus = @Status, " +
                     "fldUpdateDate = @UpdateDate, " +
                     "fldUpdateBy = @UpdateBy " +
                     "WHERE fldUserId = @UserId";
@@ -161,6 +162,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("Fullname", userDetailEntity.FldFullname, DbType.String);
                 parameters.Add("Phone", userDetailEntity.FldPhone, DbType.String);
                 parameters.Add("Address", userDetailEntity.FldAddress, DbType.String);
+                parameters.Add("Status", userDetailEntity.FldActiveStatus, DbType.String);
                 parameters.Add("UpdateDate", userDetailEntity.FldUpdateDate, DbType.DateTime);
                 parameters.Add("UpdateBy", userDetailEntity.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
