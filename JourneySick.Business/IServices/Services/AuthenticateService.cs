@@ -119,7 +119,7 @@ namespace JourneySick.Business.IServices.Services
                     if (encryptedPassword.Equals(checkValue))
                     {
                         TbluserVO tbluserVO = await _userRepository.GetUserByUsername(loginRequest.Username);
-                        if (tbluserVO.FldRole == UserRoleEnum.ADMIN.ToString() || tbluserVO.FldRole == UserRoleEnum.EMPL.ToString())
+                        if (tbluserVO.FldRole.Equals(UserRoleEnum.ADMIN.ToString()) || tbluserVO.FldRole.Equals(UserRoleEnum.EMPL.ToString()))
                         {
                             UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
                             loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
