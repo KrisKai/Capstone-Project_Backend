@@ -74,6 +74,10 @@ namespace JourneySick.Business.Helpers
                     errorMessageObject.Code = "D001";
                     statusCode = (int)HttpStatusCode.OK;
                     break;
+                case ValidateException:
+                    errorMessageObject.Code = "V001";
+                    statusCode = (int)HttpStatusCode.OK;
+                    break;
                 default:
                     errorMessageObject.Code = "500";
                     statusCode = (int)HttpStatusCode.InternalServerError;

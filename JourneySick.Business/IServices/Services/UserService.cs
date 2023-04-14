@@ -51,31 +51,6 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<string> CreateUser(UserVO userVO, CurrentUserObj currentUser)
-        {
-            try
-            {
-                // generate ID (format: USER00000000)
-                userVO.FldUserId = await GenerateUserID();
-                userVO.FldPassword = PasswordEncryption.Encrypt(userVO.FldPassword, _appSecrect.SecrectKey);
-                userVO.FldActiveStatus = "ACTIVE";
-                userVO.FldCreateBy = currentUser.UserId;
-                userVO.FldCreateDate = DateTime.Now;
-                TbluserVO userEntity = _mapper.Map<TbluserVO>(userVO);
-                if (await _userRepository.CreateUser(userEntity) > 0 && await _userDetailRepository.CreateUserDetail(userEntity) > 0)
-                {
-                    return userEntity.FldUserId;
-                }
-                throw new InsertException("Create user failed!");
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.StackTrace, ex);
-                throw;
-            }
-        }
-
         public async Task<UserVO> GetUserById(string userId)
         {
             try
@@ -92,6 +67,35 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
 
+        }
+
+        public async Task<string> CreateUser(UserVO userVO, CurrentUserObj currentUser)
+        {
+            try
+            {
+                // validate
+                if(await ValidateUser(userVO) == 0)
+                {
+                    // generate ID (format: USER00000000)
+                    userVO.FldUserId = await GenerateUserID();
+                    userVO.FldPassword = PasswordEncryption.Encrypt(userVO.FldPassword, _appSecrect.SecrectKey);
+                    userVO.FldActiveStatus = "ACTIVE";
+                    userVO.FldCreateBy = currentUser.UserId;
+                    userVO.FldCreateDate = DateTime.Now;
+                    TbluserVO userEntity = _mapper.Map<TbluserVO>(userVO);
+                    if (await _userRepository.CreateUser(userEntity) > 0 && await _userDetailRepository.CreateUserDetail(userEntity) > 0)
+                    {
+                        return userEntity.FldUserId;
+                    }
+                }
+                throw new InsertException("Create user failed!");
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
         }
 
         public async Task<string> UpdateUser(UserVO userVO, CurrentUserObj currentUser)
@@ -183,6 +187,24 @@ namespace JourneySick.Business.IServices.Services
                 throw new Exception(ex.Message);
             }
 
+        }
+
+        private async Task<int> ValidateUser(UserVO userVO)
+        {
+            string username = await _userRepository.GetUsernameIfExist(userVO.FldUsername);
+            string email = await _userDetailRepository.GetEmailIfExist(userVO.FldEmail);
+            string phone = await _userDetailRepository.GetPhoneIfExist(userVO.FldPhone);
+            if (!string.IsNullOrEmpty(username))
+            {
+                throw new ValidateException("Username is Existed!");
+            } else if (!string.IsNullOrEmpty(email))
+            {
+                throw new ValidateException("Email is Existed!");
+            } else if (!string.IsNullOrEmpty(phone)) 
+            {
+                throw new ValidateException("Phone is is Existed!");
+            }
+            return 0;
         }
 
     }

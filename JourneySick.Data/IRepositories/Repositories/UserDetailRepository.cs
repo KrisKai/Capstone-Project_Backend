@@ -19,6 +19,37 @@ namespace JourneySick.Data.IRepositories.Repositories
         public UserDetailRepository(IConfiguration configuration) : base(configuration)
         {
         }
+        public async Task<string> GetEmailIfExist(string email)
+        {
+            try
+            {
+                var query = "SELECT fldEmail FROM tbluserdetail WHERE fldEmail = @fldEmail";
+                var parameters = new DynamicParameters();
+                parameters.Add("fldEmail", email, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<string> GetPhoneIfExist(string phone)
+        {
+            try
+            {
+                var query = "SELECT fldPhone FROM tbluserdetail WHERE fldPhone = @fldPhone";
+                var parameters = new DynamicParameters();
+                parameters.Add("fldPhone", phone, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
 
         public async Task<int> CreateUserDetail(TbluserVO userDetail)
         {
@@ -44,8 +75,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "@fldFullname, " +
                     "@fldPhone, " +
                     "@fldAddress," +
-                    "@fldUpdateDate," +
-                    "@fldUpdateBy, " +
                     "@fldCreateDate, " +
                     "@fldCreateBy);";
 
@@ -59,9 +88,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldPhone", userDetail.FldPhone, DbType.String);
                 parameters.Add("fldAddress", userDetail.FldAddress, DbType.String);
                 parameters.Add("fldCreateDate", userDetail.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", userDetail.FldCreateBy, DbType.String);                
-                parameters.Add("fldUpdateDate", userDetail.FldUpdateDate, DbType.DateTime);
-                parameters.Add("fldUpdateBy", userDetail.FldUpdateBy, DbType.String);
+                parameters.Add("fldCreateBy", userDetail.FldCreateBy, DbType.String);        
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
