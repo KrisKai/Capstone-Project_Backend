@@ -56,11 +56,11 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "";
                 if (role.Equals(UserRoleEnum.EMPL.ToString()))
                 {
-                    query = "SELECT COUNT(*) FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE fldRole IN ('EMPL', 'USER') AND fldUsername LIKE CONCAT('%', @userName, '%')";
+                    query = "SELECT COUNT(*) FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE fldRole IN ('EMPL', 'USER') AND b.fldUsername LIKE CONCAT('%', @userName, '%')";
                 }
                 else if (role.Equals(UserRoleEnum.ADMIN.ToString()))
                 {
-                    query = "SELECT COUNT(*) FROM tbluserdetail WHERE fldUsername LIKE CONCAT('%', @userName, '%')";
+                    query = "SELECT COUNT(*) FROM tbluser WHERE fldUsername LIKE CONCAT('%', @userName, '%')";
                 }
                 userName ??= "";
                 var parameters = new DynamicParameters();
