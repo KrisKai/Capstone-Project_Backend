@@ -35,8 +35,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 {
                     query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
                 }
-                
-
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
                 parameters.Add("lastIndex", lastIndex, DbType.Int16);
@@ -51,11 +49,19 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountAllUsers(string? userName)
+        public async Task<int> CountAllUsers(string? userName, string role)
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbluser WHERE fldUsername LIKE CONCAT('%', @userName, '%')";
+                var query = "";
+                if (role.Equals(UserRoleEnum.EMPL.ToString()))
+                {
+                    query = "SELECT COUNT(*) FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE fldRole IN ('EMPL', 'USER') AND fldUsername LIKE CONCAT('%', @userName, '%')";
+                }
+                else if (role.Equals(UserRoleEnum.ADMIN.ToString()))
+                {
+                    query = "SELECT COUNT(*) FROM tbluserdetail WHERE fldUsername LIKE CONCAT('%', @userName, '%')";
+                }
                 userName ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("userName", userName, DbType.String);

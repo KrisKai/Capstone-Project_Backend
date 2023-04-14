@@ -40,7 +40,7 @@ namespace JourneySick.Business.IServices.Services
                 List<TbluserVO> tblusers = await _userRepository.GetAllUsersWithPaging(pageIndex, pageSize, userName, currentUser.Role);
                 // convert entity to dto
                 List<UserVO> users = _mapper.Map<List<UserVO>>(tblusers);
-                int count = await _userRepository.CountAllUsers(userName);
+                int count = await _userRepository.CountAllUsers(userName, currentUser.Role);
                 result.ListOfUser = users;
                 result.NumOfUser = count;
                 return result;

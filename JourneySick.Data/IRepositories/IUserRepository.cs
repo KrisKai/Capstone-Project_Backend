@@ -9,7 +9,7 @@ namespace JourneySick.Data.IRepositories
 
         public Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, string role);
 
-        public Task<int> CountAllUsers(string? userName);
+        public Task<int> CountAllUsers(string? userName, string role);
 
         public Task<string> GetLastOneId();
 
