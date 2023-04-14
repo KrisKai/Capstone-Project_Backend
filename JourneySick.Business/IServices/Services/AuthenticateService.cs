@@ -32,7 +32,7 @@ namespace JourneySick.Business.IServices.Services
         private readonly ILogger<AuthenticateService> _logger;
         private readonly IMapper _mapper;
 
-        public AuthenticateService(IUserService userService, 
+        public AuthenticateService(IUserService userService,
             IUserDetailRepository userDetailRepository,
             IUserRepository userRepository,
             IOptions<AppSecrect> appSecrect,
@@ -52,10 +52,10 @@ namespace JourneySick.Business.IServices.Services
             {
 
                 UserVO userDTO = new();
-                TbluserVO userDetailEntity = new(); 
+                TbluserVO userDetailEntity = new();
                 RegisterResponse registerResponse = new();
                 string checkNameExist = await _userRepository.GetUsernameIfExist(registereRequest.Username);
-                if(checkNameExist != null)
+                if (checkNameExist != null)
                 {
                     throw new UserAlreadyExistException("User With This Username Already Exist!!");
                 }
@@ -82,7 +82,7 @@ namespace JourneySick.Business.IServices.Services
                     userDetailEntity.FldCreateBy = userDTO.FldUserId;
                     userDetailEntity.FldUpdateBy = userDTO.FldUserId;
                     userDetailEntity.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    if(await _userDetailRepository.CreateUserDetail(userDetailEntity) < 1)
+                    if (await _userDetailRepository.CreateUserDetail(userDetailEntity) < 1)
                     {
                         throw new RegisterUserException("Register Failed!!");
                     }
@@ -94,12 +94,12 @@ namespace JourneySick.Business.IServices.Services
 
                 return registerResponse;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
                 throw;
             }
-            
+
         }
 
         public async Task<LoginResponse> LoginUser(LoginRequest loginRequest)
@@ -114,19 +114,27 @@ namespace JourneySick.Business.IServices.Services
                 }
                 else
                 {
-                    
+
                     string encryptedPassword = PasswordEncryption.Encrypt(loginRequest.Password, _appSecrect.SecrectKey);
-                    if(encryptedPassword.Equals(checkValue))
+                    if (encryptedPassword.Equals(checkValue))
                     {
                         TbluserVO tbluserVO = await _userRepository.GetUserByUsername(loginRequest.Username);
-                        UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
-                        loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
-                        CurrentUserObj currentUser = new();
-                        currentUser.Name = userVO.FldFullname;
-                        currentUser.Role = userVO.FldRole;
-                        currentUser.UserId = userVO.FldUserId;
-                        loginResponse.CurrentUserObj = currentUser;
-                    } else
+                        if (tbluserVO.FldRole == UserRoleEnum.ADMIN.ToString() || tbluserVO.FldRole == UserRoleEnum.EMPL.ToString())
+                        {
+                            UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
+                            loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
+                            CurrentUserObj currentUser = new();
+                            currentUser.Name = userVO.FldFullname;
+                            currentUser.Role = userVO.FldRole;
+                            currentUser.UserId = userVO.FldUserId;
+                            loginResponse.CurrentUserObj = currentUser;
+                        }
+                        else
+                        {
+                            throw new LoginFailedException("You do not have permission to access!!");
+                        }
+                    }
+                    else
                     {
                         throw new LoginFailedException("Username Or Password Not Exist!!");
                     }
@@ -134,7 +142,8 @@ namespace JourneySick.Business.IServices.Services
 
                 return loginResponse;
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
                 throw;
@@ -179,7 +188,7 @@ namespace JourneySick.Business.IServices.Services
                         new Claim(ClaimTypes.SerialNumber, userId),
                         new Claim(ClaimTypes.Name, name),
                         roleClaim
-                        
+
                     }),
 
                     Expires = DateTime.UtcNow.AddHours(hours),
@@ -191,7 +200,7 @@ namespace JourneySick.Business.IServices.Services
                 string result = tokenHandler.WriteToken(token);
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
                 throw;

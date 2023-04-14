@@ -9,6 +9,7 @@ namespace JourneySick.Data.Models.Enums
     public enum UserRoleEnum
     {
         ADMIN,
-        USER
+        USER,
+        EMPL
     }
 }
