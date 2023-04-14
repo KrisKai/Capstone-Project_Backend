@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers.Exceptions;
+using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
@@ -59,13 +60,13 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateTripPlan(TripPlanDTO tripPlanDTO)
+        public async Task<int> CreateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserObj currentUser)
         {
             try
             {
                 int lastOne = await _tripPlanRepository.GetLastOneId();
                 tripPlanDTO.FldPlanId = lastOne + 1;
-                tripPlanDTO.FldCreateBy = "Admin";
+                tripPlanDTO.FldCreateBy = currentUser.UserId;
                 tripPlanDTO.FldCreateDate = DateTime.Now;
                 Tbltripplan tbltripplan = _mapper.Map<Tbltripplan>(tripPlanDTO);
                 int id = await _tripPlanRepository.CreateTripPlan(tbltripplan);
@@ -82,7 +83,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateTripPlan(TripPlanDTO tripPlanDTO)
+        public async Task<int> UpdateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserObj currentUser)
         {
             try
             {
@@ -90,7 +91,7 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    tripPlanDTO.FldUpdateBy = "Admin";
+                    tripPlanDTO.FldUpdateBy = currentUser.UserId;
                     tripPlanDTO.FldUpdateDate = DateTime.Now;
                     Tbltripplan tbltripplan = _mapper.Map<Tbltripplan>(tripPlanDTO);
                     if (await _tripPlanRepository.UpdateTripPlan(tbltripplan) > 0)

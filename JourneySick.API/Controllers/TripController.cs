@@ -29,7 +29,8 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> CreateTrip([FromBody] TripVO tripVO)
         {
-            var result = await _tripService.CreateTrip(tripVO);
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _tripService.CreateTrip(tripVO, currentUser);
             return Ok(result);
 
         }
@@ -39,7 +40,8 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> UpdateTrip([FromBody] TripVO tripVO)
         {
-            var result = await _tripService.UpdateTrip(tripVO);
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _tripService.UpdateTrip(tripVO, currentUser);
             return Ok(result);
 
         }

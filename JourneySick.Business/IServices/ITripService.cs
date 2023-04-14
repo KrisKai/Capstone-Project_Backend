@@ -12,9 +12,9 @@ namespace JourneySick.Business.IServices
         //Select User
         public Task<TripVO> GetTripById(string tripId);
         //insert
-        public Task<string> CreateTrip(TripVO tripVO);
+        public Task<string> CreateTrip(TripVO tripVO, CurrentUserObj currentUser);
         //update
-        public Task<string> UpdateTrip(TripVO tripVO);
+        public Task<string> UpdateTrip(TripVO tripVO, CurrentUserObj currentUser);
         //update
         public Task<int> DeleteTrip(string tripId);
     }

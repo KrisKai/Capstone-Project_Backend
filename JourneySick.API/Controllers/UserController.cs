@@ -30,9 +30,10 @@ namespace JourneySick.API.Controllers
         [HttpPost]
         //[Route("create-admin")]
         [Authorize]
-        public async Task<IActionResult> CreateAdmin([FromBody] UserVO userVO)
+        public async Task<IActionResult> CreateUser([FromBody] UserVO userVO)
         {
-            var result = await _userService.CreateAdmin(userVO);
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _userService.CreateUser(userVO, currentUser);
             return Ok(result);
 
         }
@@ -43,7 +44,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> UpdateUser([FromBody] UserVO userVO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            var result = await _userService.UpdateUser(userVO);
+            var result = await _userService.UpdateUser(userVO, currentUser);
             return Ok(result);
 
         }

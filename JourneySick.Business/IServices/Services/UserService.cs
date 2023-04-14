@@ -51,37 +51,15 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<string> CreateAdmin(UserVO userVO)
+        public async Task<string> CreateUser(UserVO userVO, CurrentUserObj currentUser)
         {
             try
             {
                 // generate ID (format: USER00000000)
                 userVO.FldUserId = await GenerateUserID();
                 userVO.FldPassword = PasswordEncryption.Encrypt(userVO.FldPassword, _appSecrect.SecrectKey);
-                userVO.FldActiveStatus = "Active";
-                userVO.FldCreateBy = "Admin";
-                userVO.FldCreateDate = DateTime.Now;
-                TbluserVO tbluserVO = _mapper.Map<TbluserVO>(userVO);
-                int id = await _userRepository.CreateUser(tbluserVO);
-                await _userDetailRepository.CreateUserDetail(tbluserVO);
-                return tbluserVO.FldUserId;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.StackTrace, ex);
-                throw;
-            }
-        }
-
-        public async Task<string> CreateUser(UserVO userVO)
-        {
-            try
-            {
-                // generate ID (format: USER00000000)
-                userVO.FldUserId = await GenerateUserID();
-                userVO.FldPassword = PasswordEncryption.Encrypt(userVO.FldPassword, _appSecrect.SecrectKey);
-                userVO.FldActiveStatus = "Active";
-                userVO.FldCreateBy = "Admin";
+                userVO.FldActiveStatus = "ACTIVE";
+                userVO.FldCreateBy = currentUser.UserId;
                 userVO.FldCreateDate = DateTime.Now;
                 TbluserVO userEntity = _mapper.Map<TbluserVO>(userVO);
                 if (await _userRepository.CreateUser(userEntity) > 0 && await _userDetailRepository.CreateUserDetail(userEntity) > 0)
@@ -116,7 +94,7 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> UpdateUser(UserVO userVO)
+        public async Task<string> UpdateUser(UserVO userVO, CurrentUserObj currentUser)
         {
             try
             {
@@ -124,7 +102,7 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    userVO.FldUpdateBy = "Admin";
+                    userVO.FldUpdateBy = currentUser.UserId;
                     userVO.FldUpdateDate = DateTime.Now;
                     TbluserVO tbluserVO = _mapper.Map<TbluserVO>(userVO);
                     if (await _userDetailRepository.UpdateUserDetail(tbluserVO) > 0)

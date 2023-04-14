@@ -63,13 +63,11 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateTripMember(TripMemberDTO tripMemberDTO)
+        public async Task<int> CreateTripMember(TripMemberDTO tripMemberDTO, CurrentUserObj currentUser)
         {
             try
             {
-                //int lastOne = await _tripMemberRepository.GetLastOneId();
-                //tripMemberDTO.FldPlanId = lastOne + 1;
-                tripMemberDTO.FldCreateBy = "Admin";
+                tripMemberDTO.FldCreateBy = currentUser.UserId;
                 tripMemberDTO.FldCreateDate = DateTime.Now;
                 Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(tripMemberDTO);
                 int id = await _tripMemberRepository.CreateTripMember(tbltripmember);
@@ -86,7 +84,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateTripMember(TripMemberDTO tripMemberDTO)
+        public async Task<int> UpdateTripMember(TripMemberDTO tripMemberDTO, CurrentUserObj currentUser)
         {
             try
             {
@@ -94,7 +92,7 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    tripMemberDTO.FldUpdateBy = "Admin";
+                    tripMemberDTO.FldUpdateBy = currentUser.UserId;
                     tripMemberDTO.FldUpdateDate = DateTime.Now;
                     Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(tripMemberDTO);
                     if (await _tripMemberRepository.UpdateTripMember(tbltripmember) > 0)

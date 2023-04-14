@@ -63,13 +63,13 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> CreateTrip(TripVO tripVO)
+        public async Task<string> CreateTrip(TripVO tripVO, CurrentUserObj currentUser)
         {
             try
             {
                 tripVO.FldTripId = await GenerateUserID(); ;
-                tripVO.FldTripStatus = "Active";
-                tripVO.FldCreateBy = "Admin";
+                tripVO.FldTripStatus = "ACTIVE";
+                tripVO.FldCreateBy = currentUser.UserId;
                 tripVO.FldCreateDate = DateTime.Now;
                 TbltripVO tbltrip = _mapper.Map<TbltripVO>(tripVO);
                 if (await _tripRepository.CreateTrip(tbltrip) > 0 && await _tripDetailRepository.CreateTripDetail(tbltrip) > 0)
@@ -88,7 +88,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<string> UpdateTrip(TripVO tripVO)
+        public async Task<string> UpdateTrip(TripVO tripVO, CurrentUserObj currentUser)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    tripVO.FldUpdateBy = "Admin";
+                    tripVO.FldUpdateBy = currentUser.UserId;
                     tripVO.FldUpdateDate = DateTime.Now;
                     TbltripVO tbltripVO = _mapper.Map<TbltripVO>(tripVO);
                     if (await _tripRepository.UpdateTrip(tbltripVO) > 0 && await _tripDetailRepository.UpdateTripDetail(tbltripVO) > 0)
