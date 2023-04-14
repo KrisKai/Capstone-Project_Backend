@@ -61,7 +61,7 @@ namespace JourneySick.Business.IServices.Services
                 }
                 userDTO.FldUsername = registereRequest.Username;
                 userDTO.FldPassword = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
-                userDTO.FldUserId = await _userService.CreateUser(userDTO);
+                //userDTO.FldUserId = await _userService.CreateUser(userDTO);
                 if (!userDTO.FldUserId.Equals(""))
                 {
                     userDetailEntity.FldUserId = userDTO.FldUserId;
