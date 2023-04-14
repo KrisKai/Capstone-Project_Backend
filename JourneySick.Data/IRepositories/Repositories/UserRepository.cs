@@ -1,9 +1,11 @@
 ﻿using Dapper;
+using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
+using JourneySick.Data.Models.Enums;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -17,14 +19,23 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName)
+        public async Task<List<TbluserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, string role)
         {
             try
             {
                 int firstIndex = pageIndex * pageSize;
                 int lastIndex = (pageIndex + 1) * pageSize;
                 userName ??= "";
-                var query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
+                var query = "";
+                if (role.Equals(UserRoleEnum.EMPL.ToString()))
+                {
+                    query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE fldRole IN ('EMPL', 'USER') AND b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
+                } 
+                else if(role.Equals(UserRoleEnum.ADMIN.ToString()))
+                {
+                    query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
+                }
+                
 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);

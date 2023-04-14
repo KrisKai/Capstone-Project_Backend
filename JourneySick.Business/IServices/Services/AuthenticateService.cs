@@ -166,7 +166,7 @@ namespace JourneySick.Business.IServices.Services
                 }
                 else
                 {
-                    roleClaim = new Claim(ClaimTypes.Role, UserRoleEnum.USER.ToString());
+                    roleClaim = new Claim(ClaimTypes.Role, UserRoleEnum.EMPL.ToString());
 
                 }
 
