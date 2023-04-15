@@ -46,10 +46,21 @@ namespace JourneySick.API.Controllers
 
         [HttpGet]
         [Route("getCurrentUser")]
+        [Authorize]
         public async Task<IActionResult> GetCurrentUser()
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             return Ok(currentUser);
+        }
+
+        [HttpGet]
+        [Route("getCurrentInfo")]
+        [Authorize]
+        public async Task<IActionResult> GetCurrentInfo()
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _authenticateService.GetCurrentInfo(currentUser);
+            return Ok(result);
         }
     }
 }

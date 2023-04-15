@@ -150,6 +150,23 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
+        public async Task<UserVO> GetCurrentInfo(CurrentUserObj currentUser)
+        {
+            try
+            {
+                TbluserVO tblUserVO = await _userRepository.GetUserById(currentUser.UserId);
+                // convert entity to dto
+                UserVO userVO = _mapper.Map<UserVO>(tblUserVO);
+
+                return userVO;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(message: ex.StackTrace, ex);
+                throw;
+            }
+        }
+
         private async Task<string> GenerateTokenAsync(string roleCheck, string userId, string name)
         {
             try
@@ -206,9 +223,5 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
         }
-
-
-
-
     }
 }

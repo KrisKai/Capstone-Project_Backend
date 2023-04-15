@@ -1,4 +1,6 @@
-﻿using JourneySick.Data.Models.DTOs;
+﻿using JourneySick.Business.Models.DTOs;
+using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +13,6 @@ namespace JourneySick.Business.IServices
     {
         public Task<RegisterResponse> RegisterUser(RegisterRequest registereRequest);
         public Task<LoginResponse> LoginUser(LoginRequest loginRequest);
+        public Task<UserVO> GetCurrentInfo(CurrentUserObj currentUser);
     }
 }
