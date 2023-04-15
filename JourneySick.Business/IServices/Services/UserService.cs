@@ -10,6 +10,7 @@ using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
+using JourneySick.Data.Models.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -74,7 +75,7 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 // validate
-                if(await ValidateUser(userVO) == 0)
+                if (await ValidateUser(userVO) == 0)
                 {
                     // generate ID (format: USER00000000)
                     userVO.FldUserId = await GenerateUserID();
@@ -189,6 +190,28 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
+        public async Task<int> ResetPassword(string? id, CurrentUserObj currentUser)
+        {
+            if (currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
+            {
+                try
+                {
+                    // reset password to Qwe1234!
+                    string newPassword = PasswordEncryption.Encrypt("Qwe1234!", _appSecrect.SecrectKey);
+                    if (await _userRepository.ResetPassword(id, newPassword) > 0)
+                    {
+                        return 1;
+                    }
+                    return 0;
+                }
+                catch
+                {
+                    throw new UpdateException("Reset Failed!!");
+                }
+            }
+            throw new PermissionException("You do not have permission to access!!");
+        }
+
         private async Task<int> ValidateUser(UserVO userVO)
         {
             string username = await _userRepository.GetUsernameIfExist(userVO.FldUsername);
@@ -197,15 +220,16 @@ namespace JourneySick.Business.IServices.Services
             if (!string.IsNullOrEmpty(username))
             {
                 throw new ValidateException("Username is Existed!");
-            } else if (!string.IsNullOrEmpty(email))
+            }
+            else if (!string.IsNullOrEmpty(email))
             {
                 throw new ValidateException("Email is Existed!");
-            } else if (!string.IsNullOrEmpty(phone)) 
+            }
+            else if (!string.IsNullOrEmpty(phone))
             {
                 throw new ValidateException("Phone is is Existed!");
             }
             return 0;
         }
-
     }
 }

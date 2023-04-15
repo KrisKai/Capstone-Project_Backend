@@ -30,8 +30,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                 if (role.Equals(UserRoleEnum.EMPL.ToString()))
                 {
                     query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE fldRole IN ('EMPL', 'USER') AND b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
-                } 
-                else if(role.Equals(UserRoleEnum.ADMIN.ToString()))
+                }
+                else if (role.Equals(UserRoleEnum.ADMIN.ToString()))
                 {
                     query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
                 }
@@ -99,7 +99,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message, e);
             }
@@ -115,7 +115,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message, e);
             }
@@ -132,7 +132,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 return await connection.QueryFirstOrDefaultAsync<TbluserVO>(query, parameters);
 
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message, e);
             }
@@ -194,6 +194,24 @@ namespace JourneySick.Data.IRepositories.Repositories
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldUserId", userId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> ResetPassword(string? id, string newPassword)
+        {
+            try
+            {
+                var query = "UPDATE tbluser SET fldPassword = @fldPassword WHERE fldUserId = @fldUserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUserId", id, DbType.String);
+                parameters.Add("fldPassword", newPassword, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }

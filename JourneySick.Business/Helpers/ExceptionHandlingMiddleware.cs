@@ -78,6 +78,10 @@ namespace JourneySick.Business.Helpers
                     errorMessageObject.Code = "V001";
                     statusCode = (int)HttpStatusCode.OK;
                     break;
+                case PermissionException:
+                    errorMessageObject.Code = "P001";
+                    statusCode = (int)HttpStatusCode.OK;
+                    break;
                 default:
                     errorMessageObject.Code = "500";
                     statusCode = (int)HttpStatusCode.InternalServerError;

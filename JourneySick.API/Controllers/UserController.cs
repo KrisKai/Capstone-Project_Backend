@@ -81,5 +81,17 @@ namespace JourneySick.API.Controllers
             var result = await _userService.DeleteUser(id);
             return Ok(result);
         }
+
+        //RESET PASSWORD
+        [HttpPost]
+        [Route("reset-password")]
+        [Authorize]
+        public async Task<IActionResult> ResetPassword([FromBody] string? id)
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _userService.ResetPassword(id, currentUser);
+            return Ok(result);
+
+        }
     }
 }

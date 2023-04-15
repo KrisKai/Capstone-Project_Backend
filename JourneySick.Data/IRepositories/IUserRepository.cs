@@ -26,6 +26,7 @@ namespace JourneySick.Data.IRepositories
 
         //DELETE
         public Task<int> DeleteUser(string userId);
+        public Task<int> ResetPassword(string? id, string newPassword);
     }
 }
 

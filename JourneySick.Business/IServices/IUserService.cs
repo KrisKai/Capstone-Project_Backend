@@ -7,7 +7,7 @@ namespace JourneySick.Business.IServices
 {
     public interface IUserService
     {
-        Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, CurrentUserObj currentUser);
+        public Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, CurrentUserObj currentUser);
         //CREATE
         public Task<string> CreateUser(UserVO userDTO, CurrentUserObj currentUser);
         //UPDATE
@@ -16,5 +16,6 @@ namespace JourneySick.Business.IServices
         public Task<UserVO> GetUserById(string userId);
         //DELETE
         public Task<int> DeleteUser(string id);
+        public Task<int> ResetPassword(string? id, CurrentUserObj currentUser);
     }
 }
