@@ -75,7 +75,7 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 // validate
-                if (await ValidateUser(userVO) == 0)
+                if (await ValidateUserCreate(userVO) == 0)
                 {
                     // generate ID (format: USER00000000)
                     userVO.FldUserId = await GenerateUserID();
@@ -105,7 +105,7 @@ namespace JourneySick.Business.IServices.Services
             {
                 UserVO getTrip = await GetUserById(userId: userVO.FldUserId);
 
-                if (getTrip != null)
+                if (getTrip != null && await ValidateUserUpdate(getTrip, userVO) == 0)
                 {
                     userVO.FldUpdateBy = currentUser.UserId;
                     userVO.FldUpdateDate = DateTime.Now;
@@ -212,7 +212,7 @@ namespace JourneySick.Business.IServices.Services
             throw new PermissionException("You do not have permission to access!!");
         }
 
-        private async Task<int> ValidateUser(UserVO userVO)
+        private async Task<int> ValidateUserCreate(UserVO userVO)
         {
             string username = await _userRepository.GetUsernameIfExist(userVO.FldUsername);
             string email = await _userDetailRepository.GetEmailIfExist(userVO.FldEmail);
@@ -229,6 +229,38 @@ namespace JourneySick.Business.IServices.Services
             {
                 throw new ValidateException("Phone is is Existed!");
             }
+            return 0;
+        }
+
+        private async Task<int> ValidateUserUpdate(UserVO oldUser, UserVO newUser)
+        {
+            if (!oldUser.FldUsername.Equals(newUser.FldUsername))
+            {
+                string username = await _userRepository.GetUsernameIfExist(newUser.FldUsername);
+                if (!string.IsNullOrEmpty(username))
+                {
+                    throw new ValidateException("Username is Existed!");
+                }
+            }
+            if (!oldUser.FldEmail.Equals(newUser.FldEmail))
+            {
+                string email = await _userDetailRepository.GetEmailIfExist(newUser.FldEmail);
+
+
+                if (!string.IsNullOrEmpty(email))
+                {
+                    throw new ValidateException("Email is Existed!");
+                }
+            }
+            if (!oldUser.FldPhone.Equals(newUser.FldPhone))
+            {
+                string phone = await _userDetailRepository.GetPhoneIfExist(newUser.FldPhone);
+                if (!string.IsNullOrEmpty(phone))
+                {
+                    throw new ValidateException("Phone is is Existed!");
+                }
+            }
+
             return 0;
         }
     }
