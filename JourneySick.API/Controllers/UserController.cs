@@ -93,5 +93,18 @@ namespace JourneySick.API.Controllers
             return Ok(result);
 
         }
+
+
+        //CHANGE PASSWORD
+        [HttpPut]
+        [Route("change-password")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(string? fldUserId, string? fldOldPassword, string? fldPassword)
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _userService.ChangePassword(fldUserId, fldOldPassword, fldPassword);
+            return Ok(result);
+
+        }
     }
 }

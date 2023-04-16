@@ -203,14 +203,14 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> ResetPassword(string? id, string newPassword)
+        public async Task<int> ChangePassword(string? fldUserId, string newPassword)
         {
             try
             {
                 var query = "UPDATE tbluser SET fldPassword = @fldPassword WHERE fldUserId = @fldUserId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldUserId", id, DbType.String);
+                parameters.Add("fldUserId", fldUserId, DbType.String);
                 parameters.Add("fldPassword", newPassword, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);

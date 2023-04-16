@@ -198,7 +198,7 @@ namespace JourneySick.Business.IServices.Services
                 {
                     // reset password to Qwe1234!
                     string newPassword = PasswordEncryption.Encrypt("Qwe1234!", _appSecrect.SecrectKey);
-                    if (await _userRepository.ResetPassword(id, newPassword) > 0)
+                    if (await _userRepository.ChangePassword(id, newPassword) > 0)
                     {
                         return 1;
                     }
@@ -212,7 +212,30 @@ namespace JourneySick.Business.IServices.Services
             throw new PermissionException("You do not have permission to access!!");
         }
 
-        private async Task<int> ValidateUserCreate(UserVO userVO)
+        public async Task<int> ChangePassword(string? fldUserId, string? fldOldPassword, string? fldPassword)
+        {
+            try
+            {
+                TbluserVO tbluserVO = await _userRepository.GetUserById(fldUserId);
+                UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
+                if (userVO != null && userVO.FldPassword.Equals(fldOldPassword))
+                {
+                    string newPassword = PasswordEncryption.Encrypt(fldPassword, _appSecrect.SecrectKey);
+                    if (await _userRepository.ChangePassword(fldUserId, newPassword) > 0)
+                    {
+                        return 1;
+                    }
+                    return 0;
+                }
+                throw new UpdateException("Your Password is not correct!!");
+            }
+            catch
+            {
+                throw new UpdateException("Change Password Failed!!");
+            }
+        }
+
+            private async Task<int> ValidateUserCreate(UserVO userVO)
         {
             string username = await _userRepository.GetUsernameIfExist(userVO.FldUsername);
             string email = await _userDetailRepository.GetEmailIfExist(userVO.FldEmail);
@@ -263,5 +286,6 @@ namespace JourneySick.Business.IServices.Services
 
             return 0;
         }
+
     }
 }

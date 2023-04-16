@@ -17,5 +17,6 @@ namespace JourneySick.Business.IServices
         //DELETE
         public Task<int> DeleteUser(string id);
         public Task<int> ResetPassword(string? id, CurrentUserObj currentUser);
+        public Task<int> ChangePassword(string? fldUserId, string? fldOldPassword, string? fldPassword);
     }
 }
