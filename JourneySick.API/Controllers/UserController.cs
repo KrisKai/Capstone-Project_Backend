@@ -83,7 +83,7 @@ namespace JourneySick.API.Controllers
         }
 
         //RESET PASSWORD
-        [HttpPost]
+        [HttpPut]
         [Route("reset-password")]
         [Authorize]
         public async Task<IActionResult> ResetPassword([FromBody] string? id)
