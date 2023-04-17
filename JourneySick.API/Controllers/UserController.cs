@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
+using JourneySick.Data.Models.DTOs.CommonDTO;
 
 namespace JourneySick.API.Controllers
 {
@@ -99,10 +100,10 @@ namespace JourneySick.API.Controllers
         [HttpPut]
         [Route("change-password")]
         [Authorize]
-        public async Task<IActionResult> ChangePassword(string? fldUserId, string? fldOldPassword, string? fldPassword)
+        public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePasswordDTO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            var result = await _userService.ChangePassword(fldUserId, fldOldPassword, fldPassword);
+            var result = await _userService.ChangePassword(changePasswordDTO);
             return Ok(result);
 
         }

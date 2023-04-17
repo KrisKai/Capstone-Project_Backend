@@ -1,5 +1,6 @@
 ﻿using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 
@@ -17,6 +18,6 @@ namespace JourneySick.Business.IServices
         //DELETE
         public Task<int> DeleteUser(string id);
         public Task<int> ResetPassword(string? id, CurrentUserObj currentUser);
-        public Task<int> ChangePassword(string? fldUserId, string? fldOldPassword, string? fldPassword);
+        public Task<int> ChangePassword(ChangePasswordDTO changePasswordDTO);
     }
 }

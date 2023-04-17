@@ -6,6 +6,7 @@ using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
@@ -185,7 +186,7 @@ namespace JourneySick.Business.IServices.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
+                throw;
             }
 
         }
@@ -212,26 +213,27 @@ namespace JourneySick.Business.IServices.Services
             throw new PermissionException("You do not have permission to access!!");
         }
 
-        public async Task<int> ChangePassword(string? fldUserId, string? fldOldPassword, string? fldPassword)
+        public async Task<int> ChangePassword(ChangePasswordDTO changePasswordDTO)
         {
             try
             {
-                TbluserVO tbluserVO = await _userRepository.GetUserById(fldUserId);
+                TbluserVO tbluserVO = await _userRepository.GetUserById(changePasswordDTO.FldUserId);
                 UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
-                if (userVO != null && userVO.FldPassword.Equals(fldOldPassword))
+                if (userVO != null && userVO.FldPassword.Equals(PasswordEncryption.Encrypt(changePasswordDTO.FldOldPassword, _appSecrect.SecrectKey)))
                 {
-                    string newPassword = PasswordEncryption.Encrypt(fldPassword, _appSecrect.SecrectKey);
-                    if (await _userRepository.ChangePassword(fldUserId, newPassword) > 0)
+                    string newPassword = PasswordEncryption.Encrypt(changePasswordDTO.FldPassword, _appSecrect.SecrectKey);
+                    if (await _userRepository.ChangePassword(changePasswordDTO.FldUserId, newPassword) > 0)
                     {
                         return 1;
                     }
-                    return 0;
+                    throw new UpdateException("Change Password Failed!!");
                 }
                 throw new UpdateException("Your Password is not correct!!");
             }
-            catch
+            catch (Exception ex)
             {
-                throw new UpdateException("Change Password Failed!!");
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
             }
         }
 
