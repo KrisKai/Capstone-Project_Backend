@@ -5,8 +5,8 @@ namespace JourneySick.Data.Models.Entities
 {
     public partial class Tbltripplan
     {
-        public int? FldPlanId { get; set; }
-        public string? FldTripId { get; set; }
+        public int FldPlanId { get; set; }
+        public string FldTripId { get; set; }
         public string? FldPlanDescription { get; set; }
         public DateTime? FldCreateDate { get; set; }
         public string? FldCreateBy { get; set; }
