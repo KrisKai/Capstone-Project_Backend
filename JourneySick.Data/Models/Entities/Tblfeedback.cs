@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Data.Models.Entities
 {
-    public class Tblfeedback
+    public partial class Tblfeedback
     {
         public int FldFeedbackId { get; set; }
-        public string FldTripId { get; set; }
-        public string FldUserId { get; set; }
+        public string FldTripId { get; set; } = null!;
+        public string FldUserId { get; set; } = null!;
         public string? FldFeedback { get; set; }
         public float? FldRate { get; set; }
         public int? FldLike { get; set; }
