@@ -138,7 +138,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "fldStatus = @fldStatus, " +
                     "fldUpdateDate = @fldUpdateDate, " +
                     "fldUpdateBy = @fldUpdateBy, " +
-                    "WHERE FldMemberId = @FldMemberId";
+                    "WHERE fldMemberId = @fldMemberId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldMemberId", tbltripmember.FldMemberId, DbType.Int32);
