@@ -3,13 +3,15 @@ using System.Collections.Generic;
 
 namespace JourneySick.Data.Models.Entities
 {
-    public partial class Tbltripdetail
+    public partial class Tbltripitem
     {
+        public string FldItemId { get; set; } = null!;
         public string FldTripId { get; set; } = null!;
-        public string? FldTripStartLocationName { get; set; }
-        public string? FldTripStartLocationAddress { get; set; }
-        public string? FldTripDestinationLocationName { get; set; }
-        public string? FldTripDestinationLocationAddress { get; set; }
+        public string? FldItemName { get; set; }
+        public string? FldItemDescription { get; set; }
+        public decimal? FldPriceMin { get; set; }
+        public decimal? FldPriceMax { get; set; }
+        public string? FldItemCategory { get; set; }
         public DateTime? FldCreateDate { get; set; }
         public string? FldCreateBy { get; set; }
         public DateTime? FldUpdateDate { get; set; }
