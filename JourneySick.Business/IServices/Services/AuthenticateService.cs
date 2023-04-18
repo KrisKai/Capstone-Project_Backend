@@ -119,6 +119,47 @@ namespace JourneySick.Business.IServices.Services
                     if (encryptedPassword.Equals(checkValue))
                     {
                         TbluserVO tbluserVO = await _userRepository.GetUserByUsername(loginRequest.Username);
+                        UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
+                        loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
+                        CurrentUserObj currentUser = new();
+                        currentUser.Name = userVO.FldFullname;
+                        currentUser.Role = userVO.FldRole;
+                        currentUser.UserId = userVO.FldUserId;
+                        loginResponse.CurrentUserObj = currentUser;
+                    }
+                    else
+                    {
+                        throw new LoginFailedException("Username Or Password Not Exist!!");
+                    }
+                }
+
+                return loginResponse;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
+        public async Task<LoginResponse> Login(LoginRequest loginRequest)
+        {
+            try
+            {
+                LoginResponse loginResponse = new();
+                string checkValue = await _userRepository.GetPasswordByUsername(loginRequest.Username);
+                if (string.IsNullOrEmpty(checkValue))
+                {
+                    throw new LoginFailedException("Username Or Password Not Exist!!");
+                }
+                else
+                {
+
+                    string encryptedPassword = PasswordEncryption.Encrypt(loginRequest.Password, _appSecrect.SecrectKey);
+                    if (encryptedPassword.Equals(checkValue))
+                    {
+                        TbluserVO tbluserVO = await _userRepository.GetUserByUsername(loginRequest.Username);
                         if (tbluserVO.FldRole.Equals(UserRoleEnum.ADMIN.ToString()) || tbluserVO.FldRole.Equals(UserRoleEnum.EMPL.ToString()))
                         {
                             UserVO userVO = _mapper.Map<UserVO>(tbluserVO);

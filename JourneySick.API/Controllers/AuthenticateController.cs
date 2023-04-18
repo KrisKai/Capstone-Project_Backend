@@ -34,10 +34,20 @@ namespace JourneySick.API.Controllers
             return Ok(result);
         }
 
-        //CREATE
+        //LOGIN
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
+        {
+            var result = await _authenticateService.Login(loginRequest);
+            return Ok(result);
+        }
+
+        //LOGIN-USER
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("login-user")]
         public async Task<IActionResult> LoginUser([FromBody] LoginRequest loginRequest)
         {
             var result = await _authenticateService.LoginUser(loginRequest);
