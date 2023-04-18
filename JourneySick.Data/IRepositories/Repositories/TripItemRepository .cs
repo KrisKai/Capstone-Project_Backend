@@ -78,13 +78,11 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "INSERT INTO tbltripitem ("
-                   // + "         fldItemId, "
                     + "         fldTripId, "
                     + "         fldItemDescription, "
                     + "         fldCreateDate, "
                     + "         fldCreateBy) "
                     + "     VALUES ( "
-                    //+ "         @fldItemId, "
                     + "         @fldTripId, "
                     + "         @fldItemDescription, "
                     + "         @fldCreateDate, "
