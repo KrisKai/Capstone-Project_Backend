@@ -14,7 +14,6 @@ namespace JourneySick.Data.IRepositories
         public Task<List<Tbltripplan>> GetAllTripPlansWithPaging(int pageIndex, int pageSize, string? planId);
         //CREATE
         public Task<int> CreateTripPlan(Tbltripplan tbltripplan);
-        public Task<int> GetLastOneId();
         public Task<Tbltripplan> GetTripPlanById(int tripPlanId);
         public Task<int> UpdateTripPlan(Tbltripplan tbltripplan);
         public Task<int> DeleteTripPlan(int tripPlanId);

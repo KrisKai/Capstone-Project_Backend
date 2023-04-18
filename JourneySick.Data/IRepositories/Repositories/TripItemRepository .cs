@@ -8,13 +8,13 @@ using System.Data;
 
 namespace JourneySick.Data.IRepositories.Repositories
 {
-    public class TripPlanRepository : BaseRepository, ITripPlanRepository
+    public class TripItemRepository : BaseRepository, ITripItemRepository
     {
-        public TripPlanRepository(IConfiguration configuration) : base(configuration)
+        public TripItemRepository(IConfiguration configuration) : base(configuration)
         {
         }
 
-        public async Task<List<Tbltripplan>> GetAllTripPlansWithPaging(int pageIndex, int pageSize, string? planId)
+        public async Task<List<Tbltripitem>> GetAllTripItemsWithPaging(int pageIndex, int pageSize, string? itemId)
         {
             try
             {
@@ -23,13 +23,13 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
                 parameters.Add("lastIndex", lastIndex, DbType.Int16);
-                planId ??= "";
-                parameters.Add("planId", planId, DbType.String);
+                itemId ??= "";
+                parameters.Add("itemId", itemId, DbType.String);
 
-                var query = "SELECT * FROM tbltripplan WHERE fldPlanId LIKE CONCAT('%', @planId, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM tbltripitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tbltripplan>(query, parameters)).ToList();
+                return (await connection.QueryAsync<Tbltripitem>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -37,16 +37,16 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<Tbltripplan> GetTripPlanById(int tripPlanId)
+        public async Task<Tbltripitem> GetTripItemById(int tripItemId)
         {
             try
             {
-                var query = "SELECT * FROM tbltripplan WHERE fldPlanId = @fldPlanId";
+                var query = "SELECT * FROM tbltripitem WHERE fldItemId = @fldItemId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldPlanId", tripPlanId, DbType.Int16);
+                parameters.Add("fldItemId", tripItemId, DbType.Int16);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tbltripplan>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<Tbltripitem>(query, parameters);
             }
             catch (Exception e)
             {
@@ -54,15 +54,15 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountAllTripPlans(string? planId)
+        public async Task<int> CountAllTripItems(string? itemId)
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbltripplan WHERE fldPlanId LIKE CONCAT('%', @planId, '%')";
+                var query = "SELECT COUNT(*) FROM tbltripitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%')";
 
-                planId ??= "";
+                itemId ??= "";
                 var parameters = new DynamicParameters();
-                parameters.Add("planId", planId, DbType.String);
+                parameters.Add("itemId", itemId, DbType.String);
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query, parameters));
 
@@ -73,27 +73,29 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CreateTripPlan(Tbltripplan tbltripplan)
+        public async Task<int> CreateTripItem(Tbltripitem tbltripitem)
         {
             try
             {
-                var query = "INSERT INTO tbltripplan ("
+                var query = "INSERT INTO tbltripitem ("
+                   // + "         fldItemId, "
                     + "         fldTripId, "
-                    + "         fldPlanDescription, "
+                    + "         fldItemDescription, "
                     + "         fldCreateDate, "
                     + "         fldCreateBy) "
                     + "     VALUES ( "
+                    //+ "         @fldItemId, "
                     + "         @fldTripId, "
-                    + "         @fldPlanDescription, "
+                    + "         @fldItemDescription, "
                     + "         @fldCreateDate, "
                     + "         @fldCreateBy)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldPlanId", tbltripplan.FldPlanId, DbType.String);
-                parameters.Add("fldTripId", tbltripplan.FldTripId, DbType.String);
-                parameters.Add("fldPlanDescription", tbltripplan.FldPlanDescription, DbType.String);
-                parameters.Add("fldCreateDate", tbltripplan.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", tbltripplan.FldCreateBy, DbType.String);
+                parameters.Add("fldItemId", tbltripitem.FldItemId, DbType.String);
+                parameters.Add("fldTripId", tbltripitem.FldTripId, DbType.String);
+                parameters.Add("fldItemDescription", tbltripitem.FldItemDescription, DbType.String);
+                parameters.Add("fldCreateDate", tbltripitem.FldCreateDate, DbType.DateTime);
+                parameters.Add("fldCreateBy", tbltripitem.FldCreateBy, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -103,21 +105,21 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
-        public async Task<int> UpdateTripPlan(Tbltripplan tbltripplan)
+        public async Task<int> UpdateTripItem(Tbltripitem tbltripitem)
         {
             try
             {
-                var query = "UPDATE tbltripplan SET " +
-                    "fldPlanDescription = @fldPlanDescription, " +
+                var query = "UPDATE tbltripitem SET " +
+                    "fldItemDescription = @fldItemDescription, " +
                     "fldUpdateDate = @fldUpdateDate, " +
                     "fldUpdateBy = @fldUpdateBy " +
-                    "WHERE fldPlanId = @fldPlanId";
+                    "WHERE fldItemId = @fldItemId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldPlanId", tbltripplan.FldPlanId, DbType.String);
-                parameters.Add("fldPlanDescription", tbltripplan.FldPlanDescription, DbType.String);
-                parameters.Add("fldUpdateDate ", tbltripplan.FldUpdateDate, DbType.DateTime);
-                parameters.Add("fldUpdateBy", tbltripplan.FldUpdateBy, DbType.String);
+                parameters.Add("fldItemId", tbltripitem.FldItemId, DbType.String);
+                parameters.Add("fldItemDescription", tbltripitem.FldItemDescription, DbType.String);
+                parameters.Add("fldUpdateDate ", tbltripitem.FldUpdateDate, DbType.DateTime);
+                parameters.Add("fldUpdateBy", tbltripitem.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
 
@@ -128,14 +130,14 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> DeleteTripPlan(int tripPlanId)
+        public async Task<int> DeleteTripItem(int tripItemId)
         {
             try
             {
-                var query = "DELETE FROM tbltripplan WHERE fldPlanId = @fldPlanId";
+                var query = "DELETE FROM tbltripitem WHERE fldItemId = @fldItemId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldPlanId", tripPlanId, DbType.String);
+                parameters.Add("fldItemId", tripItemId, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }

@@ -24,6 +24,8 @@ namespace JourneySick.Business.Helpers
                 .ReverseMap(); //reverse so the both direction
             CreateMap<TripRoleDTO, Tbltriprole>()
                 .ReverseMap(); //reverse so the both direction
+            CreateMap<TripItemDTO, Tbltripitem>()
+                .ReverseMap(); //reverse so the both direction
             CreateMap<TripDTO, Tbltrip>()
                 .ReverseMap(); //reverse so the both direction
             CreateMap<TripDetailDTO, Tbltripdetail>()

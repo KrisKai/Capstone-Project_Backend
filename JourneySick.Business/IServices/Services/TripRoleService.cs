@@ -67,8 +67,6 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                int lastOne = await _tripRoleRepository.GetLastOneId();
-                tripRoleDTO.FldRoleId = lastOne + 1;
                 Tbltriprole tbltriprole = _mapper.Map<Tbltriprole>(tripRoleDTO);
                 int id = await _tripRoleRepository.CreateTripRole(tbltriprole);
                 if (id > 0)

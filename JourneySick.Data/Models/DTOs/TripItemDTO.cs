@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace JourneySick.Data.Models.Entities
+namespace JourneySick.Data.Models.DTOs
 {
-    public partial class Tbltripitem
+    public class TripItemDTO
     {
         public int FldItemId { get; set; }
         public string FldTripId { get; set; } = null!;

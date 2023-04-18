@@ -36,20 +36,6 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> GetLastOneId()
-        {
-            try
-            {
-                var query = "SELECT COALESCE(MAX(fldRoleId), 0) FROM tbltriprole ";
-                using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<int>(query);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
         public async Task<int> CountAllTripRoles(string? roleName)
         {
             try
@@ -91,12 +77,10 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "INSERT INTO tbltriprole ("
-                    //+ "         fldRoleId, "
                     + "         fldRoleName, "
                     + "         fldType, "
                     + "         fldDescription) "
                     + "     VALUES ( "
-                    //+ "         @fldRoleId, "
                     + "         @fldRoleName, "
                     + "         @fldType, "
                     + "         @fldDescription) ";

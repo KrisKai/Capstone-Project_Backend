@@ -10,7 +10,6 @@ namespace JourneySick.Data.IRepositories
 {
     public interface ITripRoleRepository
     {
-        public Task<int> GetLastOneId();
         public Task<Tbltriprole> GetTripRoleById(int roleId);
         public Task<List<Tbltriprole>> GetAllTripRolesWithPaging(int pageIndex, int pageSize, string? roleName);
         public Task<int> CountAllTripRoles(string? roleName);

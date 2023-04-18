@@ -64,8 +64,6 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                int lastOne = await _tripPlanRepository.GetLastOneId();
-                tripPlanDTO.FldPlanId = lastOne + 1;
                 tripPlanDTO.FldCreateBy = currentUser.UserId;
                 tripPlanDTO.FldCreateDate = DateTime.Now;
                 Tbltripplan tbltripplan = _mapper.Map<Tbltripplan>(tripPlanDTO);
