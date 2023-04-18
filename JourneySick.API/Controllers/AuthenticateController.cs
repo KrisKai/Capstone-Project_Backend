@@ -3,8 +3,6 @@ using JourneySick.Data.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using static System.Net.Mime.MediaTypeNames;
-using System.Net;
 using JourneySick.API.Extensions;
 
 namespace JourneySick.API.Controllers
@@ -27,7 +25,7 @@ namespace JourneySick.API.Controllers
         //CREATE
         [AllowAnonymous]
         [HttpPost]
-        [Route("register")]
+        [Route("register-user")]
         public async Task<IActionResult> RegisterUser([FromBody] RegisterRequest registerRequest)
         {
             var result = await _authenticateService.RegisterUser(registerRequest);
