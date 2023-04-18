@@ -16,11 +16,11 @@ namespace JourneySick.API.Controllers
     [EnableCors]
     public class FeedbackController : ControllerBase
     {
-        private readonly IFeedbackService _userService;
+        private readonly IFeedbackService _feedbackService;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public FeedbackController(IFeedbackService userService, IHttpContextAccessor httpContextAccessor)
+        public FeedbackController(IFeedbackService feedbackService, IHttpContextAccessor httpContextAccessor)
         {
-            _userService = userService;
+            _feedbackService = feedbackService;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -30,7 +30,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? tripId)
         {
             var result = new AllFeedbackDTO();
-            result = await _userService.GetAllFeedbacksWithPaging(pageIndex, pageSize, tripId);
+            result = await _feedbackService.GetAllFeedbacksWithPaging(pageIndex, pageSize, tripId);
             return Ok(result);
 
         }
@@ -41,7 +41,7 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> GetFeedbackById([FromRoute] int id)
         {
-            var result = await _userService.GetFeedbackById(id);
+            var result = await _feedbackService.GetFeedbackById(id);
             return Ok(result);
         }
 
@@ -52,7 +52,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> CreateFeedback([FromBody] FeedbackDTO feedbackDTO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            var result = await _userService.CreateFeedback(feedbackDTO, currentUser);
+            var result = await _feedbackService.CreateFeedback(feedbackDTO, currentUser);
             return Ok(result);
 
         }
@@ -63,7 +63,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> UpdateFeedback([FromBody] FeedbackDTO feedbackDTO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            var result = await _userService.UpdateFeedback(feedbackDTO, currentUser);
+            var result = await _feedbackService.UpdateFeedback(feedbackDTO, currentUser);
             return Ok(result);
 
         }
@@ -74,7 +74,7 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteFeedback(int id)
         {
-            var result = await _userService.DeleteFeedback(id);
+            var result = await _feedbackService.DeleteFeedback(id);
             return Ok(result);
         }
     }
