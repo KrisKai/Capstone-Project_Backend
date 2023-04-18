@@ -79,19 +79,30 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 var query = "INSERT INTO tbltripitem ("
                     + "         fldTripId, "
+                    + "         fldItemName, "
                     + "         fldItemDescription, "
+                    + "         fldPriceMin, "
+                    + "         fldPriceMax, "
+                    + "         fldItemCategory, "
                     + "         fldCreateDate, "
                     + "         fldCreateBy) "
                     + "     VALUES ( "
                     + "         @fldTripId, "
+                    + "         @fldItemName, "
                     + "         @fldItemDescription, "
+                    + "         @fldPriceMin, "
+                    + "         @fldPriceMax, "
+                    + "         @fldItemCategory, "
                     + "         @fldCreateDate, "
                     + "         @fldCreateBy)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldItemId", tbltripitem.FldItemId, DbType.String);
                 parameters.Add("fldTripId", tbltripitem.FldTripId, DbType.String);
+                parameters.Add("fldItemName", tbltripitem.FldItemName, DbType.String);
                 parameters.Add("fldItemDescription", tbltripitem.FldItemDescription, DbType.String);
+                parameters.Add("fldPriceMin", tbltripitem.FldPriceMin, DbType.String);
+                parameters.Add("fldPriceMax", tbltripitem.FldPriceMax, DbType.String);
+                parameters.Add("fldItemCategory", tbltripitem.FldItemCategory, DbType.String);
                 parameters.Add("fldCreateDate", tbltripitem.FldCreateDate, DbType.DateTime);
                 parameters.Add("fldCreateBy", tbltripitem.FldCreateBy, DbType.String);
 
@@ -108,14 +119,22 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "UPDATE tbltripitem SET " +
+                    "fldItemName = @fldItemName, " +
                     "fldItemDescription = @fldItemDescription, " +
+                    "fldPriceMin = @fldPriceMin, " +
+                    "fldPriceMax = @fldPriceMax, " +
+                    "fldItemCategory = @fldItemCategory, " +
                     "fldUpdateDate = @fldUpdateDate, " +
                     "fldUpdateBy = @fldUpdateBy " +
                     "WHERE fldItemId = @fldItemId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldItemId", tbltripitem.FldItemId, DbType.String);
+                parameters.Add("fldItemName", tbltripitem.FldItemName, DbType.String);
                 parameters.Add("fldItemDescription", tbltripitem.FldItemDescription, DbType.String);
+                parameters.Add("fldPriceMin", tbltripitem.FldPriceMin, DbType.String);
+                parameters.Add("fldPriceMax", tbltripitem.FldPriceMax, DbType.String);
+                parameters.Add("fldItemCategory", tbltripitem.FldItemCategory, DbType.String);
                 parameters.Add("fldUpdateDate ", tbltripitem.FldUpdateDate, DbType.DateTime);
                 parameters.Add("fldUpdateBy", tbltripitem.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
