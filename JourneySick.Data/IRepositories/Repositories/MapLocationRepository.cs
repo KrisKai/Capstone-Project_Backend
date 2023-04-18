@@ -57,18 +57,15 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "INSERT INTO tblmaplocation ("
-                    + "         fldMapId, "
                     + "         fldLongitude, "
                     + "         fldLatitude, "
                     + "         fldLocationName) "
                     + "     VALUES ( "
-                    + "         @fldMapId, "
                     + "         @fldLongitude, "
                     + "         @fldLatitude, "
                     + "         @fldLocationName)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldMapId", tblmaplocation.FldMapId, DbType.Int32);
                 parameters.Add("fldLongitude", tblmaplocation.FldLongitude, DbType.String);
                 parameters.Add("fldLatitude", tblmaplocation.FldLatitude, DbType.String);
                 parameters.Add("fldLocationName", tblmaplocation.FldLocationName, DbType.String);

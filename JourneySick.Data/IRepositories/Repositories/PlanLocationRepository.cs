@@ -57,36 +57,27 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "INSERT INTO tblplanlocation ("
-                    + "         fldPlanId, "
                     + "         fldMapId, "
                     + "         fldPlanLocationId, "
                     + "         fldPlanLocationDescription, "
                     + "         fldLocationArrivalTime, "
                     + "         fldCreateDate, "
-                    + "         fldCreateBy, "
-                    + "         fldUpdateDate, "
-                    + "         fldUpdateBy) "
+                    + "         fldCreateBy) "
                     + "     VALUES ( "
-                    + "         @fldPlanId, "
                     + "         @fldMapId, "
                     + "         @fldPlanLocationId, "
                     + "         @fldPlanLocationDescription, "
                     + "         @fldLocationArrivalTime, "
                     + "         @fldCreateDate, "
-                    + "         @fldCreateBy, "
-                    + "         @fldUpdateDate, "
-                    + "         @fldUpdateBy)";
+                    + "         @fldCreateBy)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldPlanId", tblplanlocation.FldPlanId, DbType.Int16);
-                parameters.Add("fldMapId", tblplanlocation.FldMapId, DbType.Int16);
+                parameters.Add("fldMapId", tblplanlocation.FldMapId, DbType.Int32);
                 parameters.Add("fldPlanLocationId", tblplanlocation.FldPlanLocationId, DbType.String);
                 parameters.Add("fldPlanLocationDescription", tblplanlocation.FldPlanLocationDescription, DbType.String);
                 parameters.Add("fldLocationArrivalTime", tblplanlocation.FldLocationArrivalTime, DbType.String);
                 parameters.Add("fldCreateDate", tblplanlocation.FldCreateDate, DbType.DateTime);
                 parameters.Add("fldCreateBy", tblplanlocation.FldCreateBy, DbType.String);
-                parameters.Add("fldUpdateDate", tblplanlocation.FldUpdateDate, DbType.DateTime);
-                parameters.Add("fldUpdateBy", tblplanlocation.FldUpdateBy, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -105,8 +96,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldPlanLocationId = @fldPlanLocationId, "
                     + "         fldPlanLocationDescription = @fldPlanLocationDescription, "
                     + "         fldLocationArrivalTime = @fldLocationArrivalTime, "
-                    + "         fldCreateDate = @fldCreateDate, "
-                    + "         fldCreateBy = @fldCreateBy, "
                     + "         fldUpdateDate = @fldUpdateDate, "
                     + "         fldUpdateBy = @fldUpdateBy"
                     + "     WHERE fldPlanId = @fldPlanId";
@@ -116,8 +105,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldPlanLocationId", tblplanlocation.FldPlanLocationId, DbType.String);
                 parameters.Add("fldPlanLocationDescription", tblplanlocation.FldPlanLocationDescription, DbType.String);
                 parameters.Add("fldLocationArrivalTime", tblplanlocation.FldLocationArrivalTime, DbType.String);
-                parameters.Add("fldCreateDate", tblplanlocation.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", tblplanlocation.FldCreateBy, DbType.String);
                 parameters.Add("fldUpdateDate", tblplanlocation.FldUpdateDate, DbType.DateTime);
                 parameters.Add("fldUpdateBy", tblplanlocation.FldUpdateBy, DbType.String);
 
