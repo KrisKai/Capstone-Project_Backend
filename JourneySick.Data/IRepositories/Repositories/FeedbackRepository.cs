@@ -19,7 +19,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<Tblfeedback>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? tripId)
+        public async Task<List<TblfeedbackVO>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? tripId)
         {
             try
             {
@@ -34,7 +34,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("tripId", tripId, DbType.String);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tblfeedback>(query, parameters)).ToList();
+                return (await connection.QueryAsync<TblfeedbackVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {

@@ -37,9 +37,9 @@ namespace JourneySick.Business.IServices.Services
             AllFeedbackDTO result = new();
             try
             {
-                List<Tblfeedback> tblusers = await _feedbackRepository.GetAllFeedbacksWithPaging(pageIndex, pageSize, tripId);
+                List<TblfeedbackVO> tblusers = await _feedbackRepository.GetAllFeedbacksWithPaging(pageIndex, pageSize, tripId);
                 // convert entity to dto
-                List<FeedbackDTO> users = _mapper.Map<List<FeedbackDTO>>(tblusers);
+                List<FeedbackVO> users = _mapper.Map<List<FeedbackVO>>(tblusers);
                 int count = await _feedbackRepository.CountAllFeedbacks(tripId);
                 result.ListOfFeedback = users;
                 result.NumOfFeedback = count;
@@ -47,6 +47,7 @@ namespace JourneySick.Business.IServices.Services
             }
             catch (Exception ex)
             {
+                _logger.LogError(message: ex.StackTrace, ex);
                 throw;
             }
         }

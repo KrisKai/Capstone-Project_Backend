@@ -7,7 +7,7 @@ namespace JourneySick.Data.IRepositories
     public interface IFeedbackRepository
     {
 
-        public Task<List<Tblfeedback>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? userName);
+        public Task<List<TblfeedbackVO>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? userName);
 
         public Task<int> CountAllFeedbacks(string? userName);
 

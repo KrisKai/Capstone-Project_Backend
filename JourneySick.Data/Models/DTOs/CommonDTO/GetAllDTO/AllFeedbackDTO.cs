@@ -10,6 +10,6 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO
     public class AllFeedbackDTO
     {
         public int NumOfFeedback { get; set; }
-        public List<FeedbackDTO>? ListOfFeedback { get; set; }
+        public List<FeedbackVO>? ListOfFeedback { get; set; }
     }
 }
