@@ -4,18 +4,18 @@ using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 
 namespace JourneySick.Business.IServices
 {
-    public interface IItemService
+    public interface IItemCategoryService
     {
         //Select list w paging
-        public Task<AllItemDTO> GetAllItemsWithPaging(int pageIndex, int pageSize, string? itemId);
-        //Select Item
-        public Task<ItemDTO> GetItemById(int itemId);
+        public Task<AllItemCategoryDTO> GetAllItemCategorysWithPaging(int pageIndex, int pageSize, string? itemId);
+        //Select ItemCategory
+        public Task<ItemCategoryDTO> GetItemCategoryById(int itemId);
         //insert
-        public Task<int> CreateItem(ItemDTO tripItemDTO, CurrentUserObj currentUser);
+        public Task<int> CreateItemCategory(ItemCategoryDTO tripItemCategoryDTO, CurrentUserObj currentUser);
         //update
-        public Task<int> UpdateItem(ItemDTO tripItemDTO, CurrentUserObj currentUser);
+        public Task<int> UpdateItemCategory(ItemCategoryDTO tripItemCategoryDTO, CurrentUserObj currentUser);
         //update
-        public Task<int> DeleteItem(int itemId);
+        public Task<int> DeleteItemCategory(int itemId);
 
     }
 }
