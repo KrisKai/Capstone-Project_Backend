@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Data.Models.DTOs
 {
-    public class ItemDTO
+    public class ItemCategoryDTO
     {
         public int? FldItemId { get; set; }
         public string FldItemName { get; set; } = null!;

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO
 {
-    public class AllItemDTO
+    public class AllItemCategoryDTO
     {
-        public int NumOfItem { get; set; }
-        public List<ItemDTO>? ListOfItem { get; set; }
+        public int NumOfCategory { get; set; }
+        public List<ItemCategoryDTO>? ListOfCategory { get; set; }
     }
 }
