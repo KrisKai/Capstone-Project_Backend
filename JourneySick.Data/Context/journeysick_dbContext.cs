@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using JourneySick.Data.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace JourneySick.Data.Context
+namespace JourneySick.Data.Models.Entities
 {
     public partial class journeysick_dbContext : DbContext
     {
@@ -36,7 +35,7 @@ namespace JourneySick.Data.Context
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=localhost;user=root;database=journeysick_db", ServerVersion.Parse("8.0.27-mysql"));
+                //optionsBuilder.UseMySql("server=localhost;user=root;database=journeysick_db", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.27-mysql"));
             }
         }
 
@@ -55,18 +54,22 @@ namespace JourneySick.Data.Context
                 entity.Property(e => e.FldFeedbackId).HasColumnName("fldFeedbackId");
 
                 entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldCreateBy");
 
                 entity.Property(e => e.FldCreateDate)
                     .HasColumnType("datetime")
                     .HasColumnName("fldCreateDate");
 
-                entity.Property(e => e.FldDislike).HasColumnName("fldDislike");
+                entity.Property(e => e.FldDislike)
+                    .HasColumnName("fldDislike")
+                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.FldFeedback).HasColumnName("fldFeedback");
 
-                entity.Property(e => e.FldLike).HasColumnName("fldLike");
+                entity.Property(e => e.FldLike)
+                    .HasColumnName("fldLike")
+                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.FldLocationName)
                     .HasMaxLength(100)
@@ -77,11 +80,11 @@ namespace JourneySick.Data.Context
                     .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.FldTripId)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldTripId");
 
                 entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUpdateBy");
 
                 entity.Property(e => e.FldUpdateDate)
@@ -89,7 +92,7 @@ namespace JourneySick.Data.Context
                     .HasColumnName("fldUpdateDate");
 
                 entity.Property(e => e.FldUserId)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUserId");
             });
 
@@ -100,44 +103,42 @@ namespace JourneySick.Data.Context
 
                 entity.ToTable("tblitem");
 
-                entity.Property(e => e.FldItemId)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldItemId")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
+                entity.Property(e => e.FldItemId).HasColumnName("fldItemId");
+
+                entity.Property(e => e.FldCategoryId).HasColumnName("fldCategoryId");
 
                 entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldCreateBy");
 
                 entity.Property(e => e.FldCreateDate)
                     .HasColumnType("datetime")
                     .HasColumnName("fldCreateDate");
 
-                entity.Property(e => e.FldItemCategory)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldItemCategory");
-
-                entity.Property(e => e.FldItemDescription)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("fldItemDescription");
+                entity.Property(e => e.FldItemDescription).HasColumnName("fldItemDescription");
 
                 entity.Property(e => e.FldItemName)
-                    .HasColumnType("mediumtext")
+                    .HasMaxLength(150)
                     .HasColumnName("fldItemName");
 
                 entity.Property(e => e.FldItemUsage).HasColumnName("fldItemUsage");
 
                 entity.Property(e => e.FldPriceMax)
-                    .HasPrecision(10, 2)
-                    .HasColumnName("fldPriceMax");
+                    .HasPrecision(12, 2)
+                    .HasColumnName("fldPriceMax")
+                    .HasDefaultValueSql("'0.00'");
 
                 entity.Property(e => e.FldPriceMin)
-                    .HasPrecision(10, 2)
-                    .HasColumnName("fldPriceMin");
+                    .HasPrecision(12, 2)
+                    .HasColumnName("fldPriceMin")
+                    .HasDefaultValueSql("'0.00'");
+
+                entity.Property(e => e.FldQuantity)
+                    .HasColumnName("fldQuantity")
+                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUpdateBy");
 
                 entity.Property(e => e.FldUpdateDate)
@@ -152,20 +153,18 @@ namespace JourneySick.Data.Context
 
                 entity.ToTable("tblitemcategory");
 
-                entity.Property(e => e.FldCategoryId)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldCategoryId");
+                entity.Property(e => e.FldCategoryId).HasColumnName("fldCategoryId");
 
                 entity.Property(e => e.FldCategoryDescription)
                     .HasColumnType("tinytext")
                     .HasColumnName("fldCategoryDescription");
 
                 entity.Property(e => e.FldCategoryName)
-                    .HasMaxLength(50)
+                    .HasMaxLength(150)
                     .HasColumnName("fldCategoryName");
 
                 entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldCreateBy");
 
                 entity.Property(e => e.FldCreateDate)
@@ -173,7 +172,7 @@ namespace JourneySick.Data.Context
                     .HasColumnName("fldCreateDate");
 
                 entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUpdateBy");
 
                 entity.Property(e => e.FldUpdateDate)
@@ -188,20 +187,18 @@ namespace JourneySick.Data.Context
 
                 entity.ToTable("tblmaplocation");
 
-                entity.Property(e => e.FldMapId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("fldMapId");
+                entity.Property(e => e.FldMapId).HasColumnName("fldMapId");
 
                 entity.Property(e => e.FldLatitude)
-                    .HasMaxLength(45)
+                    .HasMaxLength(200)
                     .HasColumnName("fldLatitude");
 
                 entity.Property(e => e.FldLocationName)
-                    .HasMaxLength(45)
+                    .HasMaxLength(200)
                     .HasColumnName("fldLocationName");
 
                 entity.Property(e => e.FldLongitude)
-                    .HasMaxLength(100)
+                    .HasMaxLength(200)
                     .HasColumnName("fldLongitude");
             });
 
@@ -312,11 +309,11 @@ namespace JourneySick.Data.Context
                     .IsUnique();
 
                 entity.Property(e => e.FldTripId)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldTripId");
 
                 entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldCreateBy");
 
                 entity.Property(e => e.FldCreateDate)
@@ -324,31 +321,29 @@ namespace JourneySick.Data.Context
                     .HasColumnName("fldCreateDate");
 
                 entity.Property(e => e.FldTripDestinationLocationAddress)
-                    .HasMaxLength(50)
+                    .HasMaxLength(150)
                     .HasColumnName("fldTripDestinationLocationAddress")
                     .UseCollation("utf8_general_ci")
                     .HasCharSet("utf8");
 
                 entity.Property(e => e.FldTripDestinationLocationName)
-                    .HasMaxLength(50)
+                    .HasMaxLength(150)
                     .HasColumnName("fldTripDestinationLocationName")
                     .UseCollation("utf8_general_ci")
                     .HasCharSet("utf8");
 
                 entity.Property(e => e.FldTripStartLocationAddress)
-                    .HasMaxLength(50)
+                    .HasMaxLength(150)
                     .HasColumnName("fldTripStartLocationAddress")
                     .UseCollation("utf8_general_ci")
                     .HasCharSet("utf8");
 
                 entity.Property(e => e.FldTripStartLocationName)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldTripStartLocationName")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
+                    .HasMaxLength(150)
+                    .HasColumnName("fldTripStartLocationName");
 
                 entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUpdateBy");
 
                 entity.Property(e => e.FldUpdateDate)
@@ -363,46 +358,42 @@ namespace JourneySick.Data.Context
 
                 entity.ToTable("tbltripitem");
 
-                entity.Property(e => e.FldItemId)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldItemId")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
+                entity.Property(e => e.FldItemId).HasColumnName("fldItemId");
+
+                entity.Property(e => e.FldCategoryId).HasColumnName("fldCategoryId");
 
                 entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldCreateBy");
 
                 entity.Property(e => e.FldCreateDate)
                     .HasColumnType("datetime")
                     .HasColumnName("fldCreateDate");
 
-                entity.Property(e => e.FldItemCategory)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldItemCategory")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
-
-                entity.Property(e => e.FldItemDescription).HasColumnName("fldItemDescription");
+                entity.Property(e => e.FldItemDescription)
+                    .HasColumnType("mediumtext")
+                    .HasColumnName("fldItemDescription");
 
                 entity.Property(e => e.FldItemName)
                     .HasMaxLength(150)
                     .HasColumnName("fldItemName");
 
                 entity.Property(e => e.FldPriceMax)
-                    .HasPrecision(10, 2)
-                    .HasColumnName("fldPriceMax");
+                    .HasPrecision(12, 2)
+                    .HasColumnName("fldPriceMax")
+                    .HasDefaultValueSql("'0.00'");
 
                 entity.Property(e => e.FldPriceMin)
-                    .HasPrecision(10, 2)
-                    .HasColumnName("fldPriceMin");
+                    .HasPrecision(12, 2)
+                    .HasColumnName("fldPriceMin")
+                    .HasDefaultValueSql("'0.00'");
 
                 entity.Property(e => e.FldTripId)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldTripId");
 
                 entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUpdateBy");
 
                 entity.Property(e => e.FldUpdateDate)
@@ -423,7 +414,7 @@ namespace JourneySick.Data.Context
                 entity.Property(e => e.FldMemberId).HasColumnName("fldMemberId");
 
                 entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldCreateBy");
 
                 entity.Property(e => e.FldCreateDate)
@@ -443,11 +434,11 @@ namespace JourneySick.Data.Context
                     .HasColumnName("fldStatus");
 
                 entity.Property(e => e.FldTripId)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldTripId");
 
                 entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUpdateBy");
 
                 entity.Property(e => e.FldUpdateDate)
@@ -455,7 +446,7 @@ namespace JourneySick.Data.Context
                     .HasColumnName("fldUpdateDate");
 
                 entity.Property(e => e.FldUserId)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUserId");
             });
 
@@ -475,7 +466,7 @@ namespace JourneySick.Data.Context
                 entity.Property(e => e.FldPlanId).HasColumnName("fldPlanId");
 
                 entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldCreateBy");
 
                 entity.Property(e => e.FldCreateDate)
@@ -485,11 +476,11 @@ namespace JourneySick.Data.Context
                 entity.Property(e => e.FldPlanDescription).HasColumnName("fldPlanDescription");
 
                 entity.Property(e => e.FldTripId)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldTripId");
 
                 entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUpdateBy");
 
                 entity.Property(e => e.FldUpdateDate)
@@ -517,10 +508,8 @@ namespace JourneySick.Data.Context
                     .HasColumnName("fldDescription");
 
                 entity.Property(e => e.FldRoleName)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldRoleName")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
+                    .HasMaxLength(150)
+                    .HasColumnName("fldRoleName");
 
                 entity.Property(e => e.FldType)
                     .HasMaxLength(20)
@@ -546,7 +535,7 @@ namespace JourneySick.Data.Context
                     .IsUnique();
 
                 entity.Property(e => e.FldUserId)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUserId");
 
                 entity.Property(e => e.FldPassword)
@@ -578,7 +567,7 @@ namespace JourneySick.Data.Context
                     .IsUnique();
 
                 entity.Property(e => e.FldUserId)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUserId");
 
                 entity.Property(e => e.FldActiveStatus)
@@ -586,7 +575,6 @@ namespace JourneySick.Data.Context
                     .HasColumnName("fldActiveStatus");
 
                 entity.Property(e => e.FldAddress)
-                    .HasColumnType("text")
                     .HasColumnName("fldAddress")
                     .UseCollation("utf8_general_ci")
                     .HasCharSet("utf8");
@@ -596,7 +584,7 @@ namespace JourneySick.Data.Context
                     .HasColumnName("fldBirthday");
 
                 entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldCreateBy");
 
                 entity.Property(e => e.FldCreateDate)
@@ -609,7 +597,9 @@ namespace JourneySick.Data.Context
                     .UseCollation("utf8_general_ci")
                     .HasCharSet("utf8");
 
-                entity.Property(e => e.FldExperience).HasColumnName("fldExperience");
+                entity.Property(e => e.FldExperience)
+                    .HasColumnName("fldExperience")
+                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.FldFullname)
                     .HasMaxLength(50)
@@ -627,16 +617,24 @@ namespace JourneySick.Data.Context
                     .UseCollation("utf8_general_ci")
                     .HasCharSet("utf8");
 
-                entity.Property(e => e.FldTripCancelled).HasColumnName("fldTripCancelled");
+                entity.Property(e => e.FldTripCancelled)
+                    .HasColumnName("fldTripCancelled")
+                    .HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.FldTripCompleted).HasColumnName("fldTripCompleted");
+                entity.Property(e => e.FldTripCompleted)
+                    .HasColumnName("fldTripCompleted")
+                    .HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.FldTripCreated).HasColumnName("fldTripCreated");
+                entity.Property(e => e.FldTripCreated)
+                    .HasColumnName("fldTripCreated")
+                    .HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.FldTripJoined).HasColumnName("fldTripJoined");
+                entity.Property(e => e.FldTripJoined)
+                    .HasColumnName("fldTripJoined")
+                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(50)
+                    .HasMaxLength(20)
                     .HasColumnName("fldUpdateBy");
 
                 entity.Property(e => e.FldUpdateDate)
