@@ -102,7 +102,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldItemDescription", tbltripitem.FldItemDescription, DbType.String);
                 parameters.Add("fldPriceMin", tbltripitem.FldPriceMin, DbType.String);
                 parameters.Add("fldPriceMax", tbltripitem.FldPriceMax, DbType.String);
-                parameters.Add("fldItemCategory", tbltripitem.FldItemCategory, DbType.String);
+                parameters.Add("fldCategoryId", tbltripitem.FldCategoryId, DbType.Int32);
                 parameters.Add("fldCreateDate", tbltripitem.FldCreateDate, DbType.DateTime);
                 parameters.Add("fldCreateBy", tbltripitem.FldCreateBy, DbType.String);
 
@@ -134,7 +134,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldItemDescription", tbltripitem.FldItemDescription, DbType.String);
                 parameters.Add("fldPriceMin", tbltripitem.FldPriceMin, DbType.String);
                 parameters.Add("fldPriceMax", tbltripitem.FldPriceMax, DbType.String);
-                parameters.Add("fldItemCategory", tbltripitem.FldItemCategory, DbType.String);
+                parameters.Add("FldCategoryId", tbltripitem.FldCategoryId, DbType.Int32);
                 parameters.Add("fldUpdateDate ", tbltripitem.FldUpdateDate, DbType.DateTime);
                 parameters.Add("fldUpdateBy", tbltripitem.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
