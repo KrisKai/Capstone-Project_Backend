@@ -16,13 +16,15 @@ namespace JourneySick.Business.IServices.Services
     {
         private readonly ITripRepository _tripRepository;
         private readonly ITripDetailRepository _tripDetailRepository;
+        private readonly IUserDetailRepository _userDetailRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<TripService> _logger;
 
-        public TripService(ITripRepository tripRepository, IMapper mapper, ITripDetailRepository tripDetailRepository, ILogger<TripService> logger)
+        public TripService(ITripRepository tripRepository, IMapper mapper, ITripDetailRepository tripDetailRepository, IUserDetailRepository userDetailRepository, ILogger<TripService> logger)
         {
             _tripRepository = tripRepository;
             _tripDetailRepository = tripDetailRepository;
+            _userDetailRepository = userDetailRepository;
             _mapper = mapper;
             _logger = logger;
         }
@@ -74,7 +76,13 @@ namespace JourneySick.Business.IServices.Services
                 TbltripVO tbltrip = _mapper.Map<TbltripVO>(tripVO);
                 if (await _tripRepository.CreateTrip(tbltrip) > 0 && await _tripDetailRepository.CreateTripDetail(tbltrip) > 0)
                 {
-                    return "1";
+                    TbluserVO tbluserVO = await _userDetailRepository.GetUserDetailById(tripVO.FldCreateBy);
+                    tbluserVO.FldTripCreated++;
+                    if (await _userDetailRepository.UpdateTripQuantityCreated(tbluserVO) > 0)
+                    {
+                        return "1";
+                    }
+                    throw new InsertException("Something is wrong!!");
                 }
                 else
                 {

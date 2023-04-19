@@ -51,6 +51,23 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public async Task<TbluserVO> GetUserDetailById(string userId)
+        {
+            try
+            {
+                var query = "SELECT * FROM tbluserdetail WHERE fldUserId = @fldUserId";
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUserId", userId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<TbluserVO>(query, parameters);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
         public async Task<int> CreateUserDetail(TbluserVO userDetail)
         {
             try
@@ -198,6 +215,27 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
             catch(Exception e) 
             { 
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> UpdateTripQuantityCreated(TbluserVO userDetailEntity)
+        {
+            try
+            {
+                var query = "UPDATE tbluserdetail SET " +
+                    "fldTripCreated = @fldTripCreated, " +
+                    "WHERE fldUserId = @UserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("UserId", userDetailEntity.FldUserId, DbType.String);
+                parameters.Add("fldTripCreated", userDetailEntity.FldTripCreated, DbType.Int32);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+
+            }
+            catch (Exception e)
+            {
                 throw new Exception(e.Message, e);
             }
         }
