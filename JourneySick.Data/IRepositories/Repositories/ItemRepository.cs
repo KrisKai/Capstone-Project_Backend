@@ -8,13 +8,13 @@ using System.Data;
 
 namespace JourneySick.Data.IRepositories.Repositories
 {
-    public class TripItemRepository : BaseRepository, ITripItemRepository
+    public class ItemRepository : BaseRepository, IItemRepository
     {
-        public TripItemRepository(IConfiguration configuration) : base(configuration)
+        public ItemRepository(IConfiguration configuration) : base(configuration)
         {
         }
 
-        public async Task<List<Tbltripitem>> GetAllTripItemsWithPaging(int pageIndex, int pageSize, string? itemId)
+        public async Task<List<Tblitem>> GetAllItemsWithPaging(int pageIndex, int pageSize, string? itemId)
         {
             try
             {
@@ -26,10 +26,10 @@ namespace JourneySick.Data.IRepositories.Repositories
                 itemId ??= "";
                 parameters.Add("itemId", itemId, DbType.String);
 
-                var query = "SELECT * FROM tbltripitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM tblitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tbltripitem>(query, parameters)).ToList();
+                return (await connection.QueryAsync<Tblitem>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -37,16 +37,16 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<Tbltripitem> GetTripItemById(int tripItemId)
+        public async Task<Tblitem> GetItemById(int itemId)
         {
             try
             {
-                var query = "SELECT * FROM tbltripitem WHERE fldItemId = @fldItemId";
+                var query = "SELECT * FROM tblitem WHERE fldItemId = @fldItemId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldItemId", tripItemId, DbType.Int16);
+                parameters.Add("fldItemId", itemId, DbType.Int16);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tbltripitem>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<Tblitem>(query, parameters);
             }
             catch (Exception e)
             {
@@ -54,11 +54,11 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountAllTripItems(string? itemId)
+        public async Task<int> CountAllItems(string? itemId)
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbltripitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%')";
+                var query = "SELECT COUNT(*) FROM tblitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%')";
 
                 itemId ??= "";
                 var parameters = new DynamicParameters();
@@ -73,38 +73,41 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CreateTripItem(Tbltripitem tbltripitem)
+        public async Task<int> CreateItem(Tblitem tblitem)
         {
             try
             {
-                var query = "INSERT INTO tbltripitem ("
-                    + "         fldTripId, "
+                var query = "INSERT INTO tblitem ("
+                    + "         fldItemId, "
                     + "         fldItemName, "
                     + "         fldItemDescription, "
                     + "         fldPriceMin, "
                     + "         fldPriceMax, "
+                    + "         fldQuantity, "
                     + "         fldItemCategory, "
                     + "         fldCreateDate, "
                     + "         fldCreateBy) "
                     + "     VALUES ( "
-                    + "         @fldTripId, "
+                    + "         @fldItemId, "
                     + "         @fldItemName, "
                     + "         @fldItemDescription, "
                     + "         @fldPriceMin, "
                     + "         @fldPriceMax, "
+                    + "         @fldQuantity, "
                     + "         @fldItemCategory, "
                     + "         @fldCreateDate, "
                     + "         @fldCreateBy)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tbltripitem.FldTripId, DbType.Int32);
-                parameters.Add("fldItemName", tbltripitem.FldItemName, DbType.String);
-                parameters.Add("fldItemDescription", tbltripitem.FldItemDescription, DbType.String);
-                parameters.Add("fldPriceMin", tbltripitem.FldPriceMin, DbType.Decimal);
-                parameters.Add("fldPriceMax", tbltripitem.FldPriceMax, DbType.Decimal);
-                parameters.Add("fldCategoryId", tbltripitem.FldCategoryId, DbType.Int32);
-                parameters.Add("fldCreateDate", tbltripitem.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", tbltripitem.FldCreateBy, DbType.String);
+                parameters.Add("fldItemId", tblitem.FldItemId, DbType.Int32);
+                parameters.Add("fldItemName", tblitem.FldItemName, DbType.String);
+                parameters.Add("fldItemDescription", tblitem.FldItemDescription, DbType.String);
+                parameters.Add("fldPriceMin", tblitem.FldPriceMin, DbType.Decimal);
+                parameters.Add("fldPriceMax", tblitem.FldPriceMax, DbType.Decimal);
+                parameters.Add("fldQuantity", tblitem.FldPriceMax, DbType.Int32);
+                parameters.Add("fldCategoryId", tblitem.FldCategoryId, DbType.Int32);
+                parameters.Add("fldCreateDate", tblitem.FldCreateDate, DbType.DateTime);
+                parameters.Add("fldCreateBy", tblitem.FldCreateBy, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -114,29 +117,30 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
-        public async Task<int> UpdateTripItem(Tbltripitem tbltripitem)
+        public async Task<int> UpdateItem(Tblitem tblitem)
         {
             try
             {
-                var query = "UPDATE tbltripitem SET " +
+                var query = "UPDATE tblitem SET " +
                     "fldItemName = @fldItemName, " +
                     "fldItemDescription = @fldItemDescription, " +
                     "fldPriceMin = @fldPriceMin, " +
                     "fldPriceMax = @fldPriceMax, " +
+                    "fldQuantity = @fldQuantity, " +
                     "fldItemCategory = @fldItemCategory, " +
                     "fldUpdateDate = @fldUpdateDate, " +
                     "fldUpdateBy = @fldUpdateBy " +
                     "WHERE fldItemId = @fldItemId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldItemId", tbltripitem.FldItemId, DbType.Int32);
-                parameters.Add("fldItemName", tbltripitem.FldItemName, DbType.String);
-                parameters.Add("fldItemDescription", tbltripitem.FldItemDescription, DbType.String);
-                parameters.Add("fldPriceMin", tbltripitem.FldPriceMin, DbType.Decimal);
-                parameters.Add("fldPriceMax", tbltripitem.FldPriceMax, DbType.Decimal);
-                parameters.Add("FldCategoryId", tbltripitem.FldCategoryId, DbType.Int32);
-                parameters.Add("fldUpdateDate ", tbltripitem.FldUpdateDate, DbType.DateTime);
-                parameters.Add("fldUpdateBy", tbltripitem.FldUpdateBy, DbType.String);
+                parameters.Add("fldItemId", tblitem.FldItemId, DbType.Int32);
+                parameters.Add("fldItemName", tblitem.FldItemName, DbType.String);
+                parameters.Add("fldItemDescription", tblitem.FldItemDescription, DbType.String);
+                parameters.Add("fldPriceMin", tblitem.FldPriceMin, DbType.Decimal);
+                parameters.Add("fldPriceMax", tblitem.FldPriceMax, DbType.Decimal);
+                parameters.Add("FldCategoryId", tblitem.FldCategoryId, DbType.Int32);
+                parameters.Add("fldUpdateDate ", tblitem.FldUpdateDate, DbType.DateTime);
+                parameters.Add("fldUpdateBy", tblitem.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
 
@@ -147,14 +151,14 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> DeleteTripItem(int tripItemId)
+        public async Task<int> DeleteItem(int itemId)
         {
             try
             {
-                var query = "DELETE FROM tbltripitem WHERE fldItemId = @fldItemId";
+                var query = "DELETE FROM tblitem WHERE fldItemId = @fldItemId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldItemId", tripItemId, DbType.String);
+                parameters.Add("fldItemId", itemId, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
