@@ -14,7 +14,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<Tblitem>> GetAllItemsWithPaging(int pageIndex, int pageSize, string? itemId)
+        public async Task<List<TblitemVO>> GetAllItemsWithPaging(int pageIndex, int pageSize, string? itemId)
         {
             try
             {
@@ -26,10 +26,10 @@ namespace JourneySick.Data.IRepositories.Repositories
                 itemId ??= "";
                 parameters.Add("itemId", itemId, DbType.String);
 
-                var query = "SELECT * FROM tblitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM tblitem a INNER JOIN tblitemcategory b ON a.fldCategoryId = b.fldCategoryId WHERE fldItemId LIKE CONCAT('%', @itemId, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tblitem>(query, parameters)).ToList();
+                return (await connection.QueryAsync<TblitemVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -61,7 +61,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "SELECT * FROM tblitem WHERE fldItemName = @fldItemName";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldItemName", itemName, DbType.Int16);
+                parameters.Add("fldItemName", itemName, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<Tblitem>(query, parameters);
             }

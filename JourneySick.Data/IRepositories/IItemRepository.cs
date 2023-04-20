@@ -1,5 +1,6 @@
 ﻿using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace JourneySick.Data.IRepositories
     public interface IItemRepository
     {
         //SELECT ALL
-        public Task<List<Tblitem>> GetAllItemsWithPaging(int pageIndex, int pageSize, string? itemId);
+        public Task<List<TblitemVO>> GetAllItemsWithPaging(int pageIndex, int pageSize, string? itemId);
         public Task<Tblitem> GetItemById(int itemId);
         public Task<Tblitem> GetItemByName(string itemName);
         //CREATE

@@ -23,14 +23,15 @@ namespace JourneySick.Business.IServices.Services
             _mapper = mapper;
             _logger = logger;
         }
+
         public async Task<AllItemDTO> GetAllItemsWithPaging(int pageIndex, int pageSize, string? itemId)
         {
             AllItemDTO result = new();
             try
             {
-                List<Tblitem> tbltrips = await _itemRepository.GetAllItemsWithPaging(pageIndex, pageSize, itemId);
+                List<TblitemVO> tbltrips = await _itemRepository.GetAllItemsWithPaging(pageIndex, pageSize, itemId);
                 // convert entity to dto
-                List<ItemDTO> trips = _mapper.Map<List<ItemDTO>>(tbltrips);
+                List<ItemVO> trips = _mapper.Map<List<ItemVO>>(tbltrips);
                 int count = await _itemRepository.CountAllItems(itemId);
                 result.ListOfItem = trips;
                 result.NumOfItem = count;
