@@ -84,6 +84,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldPriceMin, "
                     + "         fldPriceMax, "
                     + "         fldItemCategory, "
+                    + "         fldQuantity, "
                     + "         fldCreateDate, "
                     + "         fldCreateBy) "
                     + "     VALUES ( "
@@ -93,6 +94,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @fldPriceMin, "
                     + "         @fldPriceMax, "
                     + "         @fldItemCategory, "
+                    + "         @fldQuantity, "
                     + "         @fldCreateDate, "
                     + "         @fldCreateBy)";
 
@@ -103,6 +105,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldPriceMin", tbltripitem.FldPriceMin, DbType.Decimal);
                 parameters.Add("fldPriceMax", tbltripitem.FldPriceMax, DbType.Decimal);
                 parameters.Add("fldCategoryId", tbltripitem.FldCategoryId, DbType.Int32);
+                parameters.Add("fldQuantity", tbltripitem.FldQuantity, DbType.Int32);
                 parameters.Add("fldCreateDate", tbltripitem.FldCreateDate, DbType.DateTime);
                 parameters.Add("fldCreateBy", tbltripitem.FldCreateBy, DbType.String);
 
@@ -124,6 +127,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "fldPriceMin = @fldPriceMin, " +
                     "fldPriceMax = @fldPriceMax, " +
                     "fldItemCategory = @fldItemCategory, " +
+                    "fldQuantity = @fldQuantity, " +
                     "fldUpdateDate = @fldUpdateDate, " +
                     "fldUpdateBy = @fldUpdateBy " +
                     "WHERE fldItemId = @fldItemId";
@@ -134,7 +138,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldItemDescription", tbltripitem.FldItemDescription, DbType.String);
                 parameters.Add("fldPriceMin", tbltripitem.FldPriceMin, DbType.Decimal);
                 parameters.Add("fldPriceMax", tbltripitem.FldPriceMax, DbType.Decimal);
-                parameters.Add("FldCategoryId", tbltripitem.FldCategoryId, DbType.Int32);
+                parameters.Add("fldQuantity", tbltripitem.FldQuantity, DbType.Int32);
+                parameters.Add("fldItemCategory", tbltripitem.FldCategoryId, DbType.Int32);
                 parameters.Add("fldUpdateDate ", tbltripitem.FldUpdateDate, DbType.DateTime);
                 parameters.Add("fldUpdateBy", tbltripitem.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();

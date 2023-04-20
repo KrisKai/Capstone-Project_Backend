@@ -26,7 +26,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 itemCategoryId ??= "";
                 parameters.Add("itemCategoryId", itemCategoryId, DbType.String);
 
-                var query = "SELECT * FROM tblitemCategory WHERE fldItemCategoryId LIKE CONCAT('%', @itemCategoryId, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM tblitemcategory WHERE fldCategoryId LIKE CONCAT('%', @itemCategoryId, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<Tblitemcategory>(query, parameters)).ToList();
@@ -41,10 +41,10 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM tblitemCategory WHERE fldItemCategoryId = @fldItemCategoryId";
+                var query = "SELECT * FROM tblitemcategory WHERE fldCategoryId = @fldCategoryId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldItemCategoryId", itemCategoryId, DbType.Int16);
+                parameters.Add("fldCategoryId", itemCategoryId, DbType.Int16);
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<Tblitemcategory>(query, parameters);
             }
@@ -58,7 +58,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tblitemCategory WHERE fldItemCategoryId LIKE CONCAT('%', @itemCategoryId, '%')";
+                var query = "SELECT COUNT(*) FROM tblitemcategory WHERE fldCategoryId LIKE CONCAT('%', @itemCategoryId, '%')";
 
                 itemCategoryId ??= "";
                 var parameters = new DynamicParameters();
@@ -73,35 +73,26 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CreateItemCategory(Tblitemcategory tblitemCategory)
+        public async Task<int> CreateItemCategory(Tblitemcategory tblitemcategory)
         {
             try
             {
-                var query = "INSERT INTO tblitemCategory ("
-                    + "         fldItemCategoryId, "
-                    + "         fldItemCategoryName, "
-                    + "         fldItemCategoryDescription, "
-                    + "         fldPriceMin, "
-                    + "         fldPriceMax, "
-                    + "         fldQuantity, "
-                    + "         fldItemCategoryCategory, "
+                var query = "INSERT INTO tblitemcategory ("
+                    + "         fldCategoryName, "
+                    + "         fldCategoryDescription, "
                     + "         fldCreateDate, "
                     + "         fldCreateBy) "
                     + "     VALUES ( "
-                    + "         @fldItemCategoryId, "
-                    + "         @fldItemCategoryName, "
-                    + "         @fldItemCategoryDescription, "
-                    + "         @fldPriceMin, "
-                    + "         @fldPriceMax, "
-                    + "         @fldQuantity, "
-                    + "         @fldItemCategoryCategory, "
+                    + "         @fldCategoryName, "
+                    + "         @fldCategoryDescription, "
                     + "         @fldCreateDate, "
                     + "         @fldCreateBy)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldCategoryId", tblitemCategory.FldCategoryId, DbType.Int32);
-                parameters.Add("fldCreateDate", tblitemCategory.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", tblitemCategory.FldCreateBy, DbType.String);
+                parameters.Add("fldCategoryName", tblitemcategory.FldCategoryName, DbType.String);
+                parameters.Add("fldCategoryDescription", tblitemcategory.FldCategoryDescription, DbType.String);
+                parameters.Add("fldCreateDate", tblitemcategory.FldCreateDate, DbType.DateTime);
+                parameters.Add("fldCreateBy", tblitemcategory.FldCreateBy, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -111,25 +102,23 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
-        public async Task<int> UpdateItemCategory(Tblitemcategory tblitemCategory)
+        public async Task<int> UpdateItemCategory(Tblitemcategory tblitemcategory)
         {
             try
             {
-                var query = "UPDATE tblitemCategory SET " +
-                    "fldItemCategoryName = @fldItemCategoryName, " +
-                    "fldItemCategoryDescription = @fldItemCategoryDescription, " +
-                    "fldPriceMin = @fldPriceMin, " +
-                    "fldPriceMax = @fldPriceMax, " +
-                    "fldQuantity = @fldQuantity, " +
-                    "fldItemCategoryCategory = @fldItemCategoryCategory, " +
+                var query = "UPDATE tblitemcategory SET " +
+                    "fldCategoryName = @fldCategoryName, " +
+                    "fldCategoryDescription = @fldCategoryDescription, " +
                     "fldUpdateDate = @fldUpdateDate, " +
                     "fldUpdateBy = @fldUpdateBy " +
-                    "WHERE fldItemCategoryId = @fldItemCategoryId";
+                    "WHERE fldCategoryId = @fldCategoryId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("FldCategoryId", tblitemCategory.FldCategoryId, DbType.Int32);
-                parameters.Add("fldUpdateDate ", tblitemCategory.FldUpdateDate, DbType.DateTime);
-                parameters.Add("fldUpdateBy", tblitemCategory.FldUpdateBy, DbType.String);
+                parameters.Add("fldCategoryId", tblitemcategory.FldCategoryId, DbType.Int32);
+                parameters.Add("fldCategoryName", tblitemcategory.FldCategoryName, DbType.String);
+                parameters.Add("fldCategoryDescription", tblitemcategory.FldCategoryDescription, DbType.String);
+                parameters.Add("fldUpdateDate ", tblitemcategory.FldUpdateDate, DbType.DateTime);
+                parameters.Add("fldUpdateBy", tblitemcategory.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
 
@@ -144,10 +133,10 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tblitemCategory WHERE fldItemCategoryId = @fldItemCategoryId";
+                var query = "DELETE FROM tblitemcategory WHERE fldCategoryId = @fldCategoryId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldItemCategoryId", itemCategoryId, DbType.String);
+                parameters.Add("fldCategoryId", itemCategoryId, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
