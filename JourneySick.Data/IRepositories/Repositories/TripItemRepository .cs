@@ -83,7 +83,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldItemDescription, "
                     + "         fldPriceMin, "
                     + "         fldPriceMax, "
-                    + "         fldItemCategory, "
+                    + "         fldCategoryId, "
                     + "         fldQuantity, "
                     + "         fldCreateDate, "
                     + "         fldCreateBy) "
@@ -99,12 +99,12 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @fldCreateBy)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tbltripitem.FldTripId, DbType.Int32);
+                parameters.Add("fldTripId", tbltripitem.FldTripId, DbType.String);
                 parameters.Add("fldItemName", tbltripitem.FldItemName, DbType.String);
                 parameters.Add("fldItemDescription", tbltripitem.FldItemDescription, DbType.String);
                 parameters.Add("fldPriceMin", tbltripitem.FldPriceMin, DbType.Decimal);
                 parameters.Add("fldPriceMax", tbltripitem.FldPriceMax, DbType.Decimal);
-                parameters.Add("fldCategoryId", tbltripitem.FldCategoryId, DbType.Int32);
+                parameters.Add("fldItemCategory", tbltripitem.FldCategoryId, DbType.Int32);
                 parameters.Add("fldQuantity", tbltripitem.FldQuantity, DbType.Int32);
                 parameters.Add("fldCreateDate", tbltripitem.FldCreateDate, DbType.DateTime);
                 parameters.Add("fldCreateBy", tbltripitem.FldCreateBy, DbType.String);
@@ -126,7 +126,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "fldItemDescription = @fldItemDescription, " +
                     "fldPriceMin = @fldPriceMin, " +
                     "fldPriceMax = @fldPriceMax, " +
-                    "fldItemCategory = @fldItemCategory, " +
+                    "fldCategoryId = @fldItemCategory, " +
                     "fldQuantity = @fldQuantity, " +
                     "fldUpdateDate = @fldUpdateDate, " +
                     "fldUpdateBy = @fldUpdateBy " +

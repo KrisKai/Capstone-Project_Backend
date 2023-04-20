@@ -101,7 +101,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldPriceMin, "
                     + "         fldPriceMax, "
                     + "         fldQuantity, "
-                    + "         fldItemCategory, "
+                    + "         fldCategoryId, "
                     + "         fldCreateDate, "
                     + "         fldCreateBy) "
                     + "     VALUES ( "
@@ -111,7 +111,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @fldPriceMin, "
                     + "         @fldPriceMax, "
                     + "         @fldQuantity, "
-                    + "         @fldItemCategory, "
+                    + "         @fldCategoryId, "
                     + "         @fldCreateDate, "
                     + "         @fldCreateBy)";
 
@@ -144,7 +144,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "fldPriceMin = @fldPriceMin, " +
                     "fldPriceMax = @fldPriceMax, " +
                     "fldQuantity = @fldQuantity, " +
-                    "fldItemCategory = @fldItemCategory, " +
+                    "fldCategoryId = @fldCategoryId, " +
                     "fldUpdateDate = @fldUpdateDate, " +
                     "fldUpdateBy = @fldUpdateBy " +
                     "WHERE fldItemId = @fldItemId";
@@ -155,7 +155,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldItemDescription", tblitem.FldItemDescription, DbType.String);
                 parameters.Add("fldPriceMin", tblitem.FldPriceMin, DbType.Decimal);
                 parameters.Add("fldPriceMax", tblitem.FldPriceMax, DbType.Decimal);
-                parameters.Add("FldCategoryId", tblitem.FldCategoryId, DbType.Int32);
+                parameters.Add("fldCategoryId", tblitem.FldCategoryId, DbType.Int32);
                 parameters.Add("fldUpdateDate ", tblitem.FldUpdateDate, DbType.DateTime);
                 parameters.Add("fldUpdateBy", tblitem.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
