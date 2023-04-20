@@ -107,18 +107,18 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "UPDATE tblitemcategory SET " +
-                    "fldCategoryName = @fldCategoryName, " +
-                    "fldCategoryDescription = @fldCategoryDescription, " +
-                    "fldUpdateDate = @fldUpdateDate, " +
-                    "fldUpdateBy = @fldUpdateBy " +
-                    "WHERE fldCategoryId = @fldCategoryId";
+                    "fldCategoryName = @CategoryName, " +
+                    "fldCategoryDescription = @CategoryDescription, " +
+                    "fldUpdateDate = @UpdateDate, " +
+                    "fldUpdateBy = @UpdateBy " +
+                    "WHERE fldCategoryId = @CategoryId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldCategoryId", tblitemcategory.FldCategoryId, DbType.Int32);
-                parameters.Add("fldCategoryName", tblitemcategory.FldCategoryName, DbType.String);
-                parameters.Add("fldCategoryDescription", tblitemcategory.FldCategoryDescription, DbType.String);
-                parameters.Add("fldUpdateDate ", tblitemcategory.FldUpdateDate, DbType.DateTime);
-                parameters.Add("fldUpdateBy", tblitemcategory.FldUpdateBy, DbType.String);
+                parameters.Add("CategoryId", tblitemcategory.FldCategoryId, DbType.Int32);
+                parameters.Add("CategoryName", tblitemcategory.FldCategoryName, DbType.String);
+                parameters.Add("CategoryDescription", tblitemcategory.FldCategoryDescription, DbType.String);
+                parameters.Add("UpdateDate", tblitemcategory.FldUpdateDate, DbType.DateTime);
+                parameters.Add("UpdateBy", tblitemcategory.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
@@ -90,7 +91,7 @@ namespace JourneySick.Business.IServices.Services
                 if (getTrip != null)
                 {
                     itemCategoryDTO.FldUpdateBy = currentUser.UserId;
-                    itemCategoryDTO.FldUpdateDate = DateTime.Now;
+                    itemCategoryDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
                     Tblitemcategory tblitemCategory = _mapper.Map<Tblitemcategory>(itemCategoryDTO);
                     if (await _itemCategoryRepository.UpdateItemCategory(tblitemCategory) > 0)
                     {
