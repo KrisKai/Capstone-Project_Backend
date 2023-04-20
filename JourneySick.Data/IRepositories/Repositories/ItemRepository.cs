@@ -44,7 +44,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "SELECT * FROM tblitem WHERE fldItemId = @fldItemId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldItemId", itemId, DbType.Int16);
+                parameters.Add("fldItemId", itemId, DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<Tblitem>(query, parameters);
             }
@@ -54,7 +54,24 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountAllItems(string? itemId)
+        public async Task<Tblitem> GetItemByName(string itemName)
+        {
+            try
+            {
+                var query = "SELECT * FROM tblitem WHERE fldItemName = @fldItemName";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldItemName", itemName, DbType.Int16);
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<Tblitem>(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+            public async Task<int> CountAllItems(string? itemId)
         {
             try
             {

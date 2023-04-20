@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
@@ -15,11 +16,13 @@ namespace JourneySick.Business.IServices.Services
     public class TripItemService : ITripItemService
     {
         private readonly ITripItemRepository _tripItemRepository;
+        private readonly IItemRepository _itemRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<TripItemService> _logger;
-        public TripItemService(ITripItemRepository tripItemRepository, IMapper mapper, ILogger<TripItemService> logger)
+        public TripItemService(ITripItemRepository tripItemRepository, IItemRepository itemRepository, IMapper mapper, ILogger<TripItemService> logger)
         {
             _tripItemRepository = tripItemRepository;
+            _itemRepository = itemRepository;
             _mapper = mapper;
             _logger = logger;
         }
@@ -65,11 +68,28 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 tripItemDTO.FldCreateBy = currentUser.UserId;
-                tripItemDTO.FldCreateDate = DateTime.Now;
+                tripItemDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
                 Tbltripitem tbltripitem = _mapper.Map<Tbltripitem>(tripItemDTO);
                 int id = await _tripItemRepository.CreateTripItem(tbltripitem);
                 if (id > 0)
                 {
+                    Tblitem tblitem = await _itemRepository.GetItemByName(tbltripitem.FldItemName);
+                    if(tblitem != null)
+                    {
+                        tblitem.FldQuantity += tbltripitem.FldQuantity;
+                        await _itemRepository.UpdateItem(tblitem);
+                    } else
+                    {
+                        Tblitem tblnewitem = new();
+                        tblnewitem.FldQuantity = tbltripitem.FldQuantity;
+                        tblnewitem.FldItemName = tbltripitem.FldItemName;
+                        tblnewitem.FldPriceMin = tbltripitem.FldPriceMin;
+                        tblnewitem.FldPriceMax = tbltripitem.FldPriceMax;
+                        tblnewitem.FldCategoryId = tbltripitem.FldCategoryId;
+                        tblnewitem.FldCreateBy = tbltripitem.FldCreateBy;
+                        tblnewitem.FldCreateDate = tbltripitem.FldCreateDate;
+                        await _itemRepository.CreateItem(tblnewitem);
+                    }
                     return id;
                 }
                 throw new InsertException("Create trip item failed!");
