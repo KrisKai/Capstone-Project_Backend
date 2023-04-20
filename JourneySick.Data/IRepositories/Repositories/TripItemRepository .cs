@@ -140,7 +140,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldPriceMax", tbltripitem.FldPriceMax, DbType.Decimal);
                 parameters.Add("fldQuantity", tbltripitem.FldQuantity, DbType.Int32);
                 parameters.Add("fldItemCategory", tbltripitem.FldCategoryId, DbType.Int32);
-                parameters.Add("fldUpdateDate ", tbltripitem.FldUpdateDate, DbType.DateTime);
+                parameters.Add("fldUpdateDate", tbltripitem.FldUpdateDate, DbType.DateTime);
                 parameters.Add("fldUpdateBy", tbltripitem.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
