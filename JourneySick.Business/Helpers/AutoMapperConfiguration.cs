@@ -46,6 +46,8 @@ namespace JourneySick.Business.Helpers
                 .ReverseMap(); //reverse so the both direction
             CreateMap<ItemCategoryDTO, Tblitemcategory>()
                 .ReverseMap(); //reverse so the both direction
+            CreateMap<ItemVO, TblitemVO>()
+                .ReverseMap(); //reverse so the both direction
         }
     }
 }

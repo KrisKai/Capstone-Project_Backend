@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JourneySick.Data.Models.Entities.VO
+namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
-    public class TblitemVO: Tblitem
+    public class ItemVO: ItemDTO
     {
         public string fldCategoryName { get; set; }
     }
