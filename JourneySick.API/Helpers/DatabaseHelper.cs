@@ -11,7 +11,7 @@ namespace JourneySick.API.Startup
             services.AddDbContext<journeysick_dbContext>(
             options =>
             {
-                options.UseMySql(configuration.GetConnectionString("DEV"),
+                options.UseMySql(configuration.GetConnectionString("DEV_PHAT"),
                 Microsoft.EntityFrameworkCore.ServerVersion.Parse("5.7.39-mysql"));
             });
             return services;

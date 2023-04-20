@@ -12,6 +12,7 @@ namespace JourneySick.Data.Models.Entities
         public decimal? FldPriceMin { get; set; }
         public decimal? FldPriceMax { get; set; }
         public int? FldCategoryId { get; set; }
+        public int? FldQuantity { get; set; }
         public DateTime? FldCreateDate { get; set; }
         public string? FldCreateBy { get; set; }
         public DateTime? FldUpdateDate { get; set; }

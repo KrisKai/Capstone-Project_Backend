@@ -16,6 +16,7 @@ namespace JourneySick.Data.Models.Entities
         {
         }
 
+        public virtual DbSet<Efmigrationshistory> Efmigrationshistories { get; set; } = null!;
         public virtual DbSet<Tblfeedback> Tblfeedbacks { get; set; } = null!;
         public virtual DbSet<Tblitem> Tblitems { get; set; } = null!;
         public virtual DbSet<Tblitemcategory> Tblitemcategories { get; set; } = null!;
@@ -35,7 +36,7 @@ namespace JourneySick.Data.Models.Entities
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                //optionsBuilder.UseMySql("server=localhost;user=root;database=journeysick_db", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.27-mysql"));
+                optionsBuilder.UseMySql("server=localhost;user=root;database=journeysick_db", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.27-mysql"));
             }
         }
 
@@ -43,6 +44,18 @@ namespace JourneySick.Data.Models.Entities
         {
             modelBuilder.UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
+
+            modelBuilder.Entity<Efmigrationshistory>(entity =>
+            {
+                entity.HasKey(e => e.MigrationId)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("__efmigrationshistory");
+
+                entity.Property(e => e.MigrationId).HasMaxLength(150);
+
+                entity.Property(e => e.ProductVersion).HasMaxLength(32);
+            });
 
             modelBuilder.Entity<Tblfeedback>(entity =>
             {
@@ -305,7 +318,7 @@ namespace JourneySick.Data.Models.Entities
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.FldTripId, "fldTripId_UNIQUE")
+                entity.HasIndex(e => e.FldTripId, "fldTripId_UNIQUE1")
                     .IsUnique();
 
                 entity.Property(e => e.FldTripId)
@@ -387,6 +400,10 @@ namespace JourneySick.Data.Models.Entities
                     .HasPrecision(12, 2)
                     .HasColumnName("fldPriceMin")
                     .HasDefaultValueSql("'0.00'");
+
+                entity.Property(e => e.FldQuantity)
+                    .HasColumnName("fldQuantity")
+                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.FldTripId)
                     .HasMaxLength(20)
@@ -563,7 +580,7 @@ namespace JourneySick.Data.Models.Entities
                 entity.HasIndex(e => e.FldPhone, "fldPhone_UNIQUE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.FldUserId, "fldUserId_UNIQUE")
+                entity.HasIndex(e => e.FldUserId, "fldUserId_UNIQUE1")
                     .IsUnique();
 
                 entity.Property(e => e.FldUserId)
