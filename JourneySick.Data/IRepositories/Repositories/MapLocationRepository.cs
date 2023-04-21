@@ -87,10 +87,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldLongitude = @fldLongitude, "
                     + "         fldLatitude = @fldLatitude, "
                     + "         fldLocationName = @fldLocationName, "
-                    + "         fldCreateDate = @fldCreateDate, "
-                    + "         fldCreateBy = @fldCreateBy, "
-                    + "         fldUpdateDate = @fldUpdateDate, "
-                    + "         fldUpdateBy = @fldUpdateBy"
                     + "     WHERE fldMapId = @fldMapId";
 
                 var parameters = new DynamicParameters();
@@ -112,10 +108,10 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tblmaplocation WHERE locationId = @locationId";
+                var query = "DELETE FROM tblmaplocation WHERE fldMapId = @fldMapId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", locationId, DbType.Int32);
+                parameters.Add("fldMapId", locationId, DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
