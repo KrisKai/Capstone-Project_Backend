@@ -17,14 +17,16 @@ namespace JourneySick.Business.IServices.Services
         private readonly ITripRepository _tripRepository;
         private readonly ITripDetailRepository _tripDetailRepository;
         private readonly IUserDetailRepository _userDetailRepository;
+        private readonly IMapLocationRepository _mapLocationRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<TripService> _logger;
 
-        public TripService(ITripRepository tripRepository, IMapper mapper, ITripDetailRepository tripDetailRepository, IUserDetailRepository userDetailRepository, ILogger<TripService> logger)
+        public TripService(ITripRepository tripRepository, IMapper mapper, ITripDetailRepository tripDetailRepository, IUserDetailRepository userDetailRepository, IMapLocationRepository mapLocationRepository, ILogger<TripService> logger)
         {
             _tripRepository = tripRepository;
             _tripDetailRepository = tripDetailRepository;
             _userDetailRepository = userDetailRepository;
+            _mapLocationRepository = mapLocationRepository;
             _mapper = mapper;
             _logger = logger;
         }
