@@ -19,23 +19,35 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 var query = "INSERT INTO tbltripdetail ("
                     + "         fldTripId, "
-                    + "         fldTripStartLocationName, "
-                    + "         fldTripStartLocationAddress, "
-                    + "         fldTripDestinationLocationName, "
-                    + "         fldTripDestinationLocationAddress, "
+                    + "         fldTripStartLocationId, "
+                    + "         fldTripDestinationLocationId, "
+                    + "         fldEstimateStartDate, "
+                    + "         fldEstimateStartTime, "
+                    + "         fldEstimateEndDate, "
+                    + "         fldEstimateEndTime, "
+                    + "         fldDistance, "
                     + "         fldCreateDate, "
                     + "         fldCreateBy) "
                     + "     VALUES ( "
                     + "         @fldTripId, "
                     + "         @fldTripStartLocationId, "
                     + "         @fldTripDestinationLocationId, "
+                    + "         @fldEstimateStartDate, "
+                    + "         @fldEstimateStartTime, "
+                    + "         @fldEstimateEndDate, "
+                    + "         @fldEstimateEndTime, "
+                    + "         @fldDistance, "
                     + "         @fldCreateDate, "
                     + "         @fldCreateBy)";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tbltripdetail.FldTripId, DbType.String);
-                parameters.Add("fldTripStartLocationId", tbltripdetail.FldTripStartLocationId, DbType.String);
-                parameters.Add("fldTripDestinationLocationId", tbltripdetail.FldTripDestinationLocationId, DbType.String);
+                parameters.Add("fldTripStartLocationId", tbltripdetail.FldTripStartLocationId, DbType.Int32);
+                parameters.Add("fldEstimateStartDate", tbltripdetail.FldEstimateStartDate, DbType.Date);
+                parameters.Add("fldEstimateStartTime", tbltripdetail.FldEstimateStartTime, DbType.String);
+                parameters.Add("fldEstimateEndDate", tbltripdetail.FldEstimateEndDate, DbType.Date);
+                parameters.Add("fldEstimateEndTime", tbltripdetail.FldEstimateEndTime, DbType.Single);
+                parameters.Add("fldDistance", tbltripdetail.FldDistance, DbType.Decimal);
                 parameters.Add("fldCreateDate", tbltripdetail.FldCreateDate, DbType.DateTime);
                 parameters.Add("fldCreateBy", tbltripdetail.FldCreateBy, DbType.String);
 
@@ -55,14 +67,23 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "UPDATE tbltripdetail SET"
                     + "         fldTripStartLocationId = @fldTripStartLocationId, "
                     + "         fldTripDestinationLocationId = @fldTripDestinationLocationId, "
+                    + "         fldEstimateStartDate = @fldEstimateStartDate, "
+                    + "         fldEstimateStartTime = @fldEstimateStartTime, "
+                    + "         fldEstimateEndDate = @fldEstimateEndDate, "
+                    + "         fldEstimateEndTime = @fldEstimateEndTime, "
+                    + "         fldDistance = @fldDistance, "
                     + "         fldUpdateDate = @fldUpdateDate, "
                     + "         fldUpdateBy = @fldUpdateBy"
                     + "     WHERE fldTripId = @fldTripId"; ;
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tbltripdetail.FldTripId, DbType.String);
-                parameters.Add("fldTripStartLocationId", tbltripdetail.FldTripStartLocationId, DbType.String);
-                parameters.Add("fldTripDestinationLocationId", tbltripdetail.FldTripDestinationLocationId, DbType.String);
+                parameters.Add("fldTripStartLocationId", tbltripdetail.FldTripStartLocationId, DbType.Int32);
+                parameters.Add("fldEstimateStartDate", tbltripdetail.FldEstimateStartDate, DbType.Date);
+                parameters.Add("fldEstimateStartTime", tbltripdetail.FldEstimateStartTime, DbType.String);
+                parameters.Add("fldEstimateEndDate", tbltripdetail.FldEstimateEndDate, DbType.Date);
+                parameters.Add("fldEstimateEndTime", tbltripdetail.FldEstimateEndTime, DbType.Single);
+                parameters.Add("fldDistance", tbltripdetail.FldDistance, DbType.Decimal);
                 parameters.Add("fldUpdateDate", tbltripdetail.FldUpdateDate, DbType.DateTime);
                 parameters.Add("fldUpdateBy", tbltripdetail.FldUpdateBy, DbType.String);
 

@@ -14,10 +14,6 @@ namespace JourneySick.Data.Models.Entities.VO
 
         public string? FldTripDescription { get; set; }
 
-        public DateTime FldEstimateStartTime { get; set; }
-
-        public DateTime FldEstimateArrivalTime { get; set; }
-
         public string? FldTripStatus { get; set; }
 
         public int? FldTripMember { get; set; }
