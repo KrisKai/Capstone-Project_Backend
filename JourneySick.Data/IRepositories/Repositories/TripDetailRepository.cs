@@ -27,19 +27,15 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         fldCreateBy) "
                     + "     VALUES ( "
                     + "         @fldTripId, "
-                    + "         @fldTripStartLocationName, "
-                    + "         @fldTripStartLocationAddress, "
-                    + "         @fldTripDestinationLocationName, "
-                    + "         @fldTripDestinationLocationAddress, "
+                    + "         @fldTripStartLocationId, "
+                    + "         @fldTripDestinationLocationId, "
                     + "         @fldCreateDate, "
                     + "         @fldCreateBy)";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tbltripdetail.FldTripId, DbType.String);
-                parameters.Add("fldTripStartLocationName", tbltripdetail.FldTripStartLocationName, DbType.String);
-                parameters.Add("fldTripStartLocationAddress", tbltripdetail.FldTripStartLocationAddress, DbType.String);
-                parameters.Add("fldTripDestinationLocationName", tbltripdetail.FldTripDestinationLocationName, DbType.String);
-                parameters.Add("fldTripDestinationLocationAddress", tbltripdetail.FldTripDestinationLocationAddress, DbType.String);
+                parameters.Add("fldTripStartLocationId", tbltripdetail.FldTripStartLocationId, DbType.String);
+                parameters.Add("fldTripDestinationLocationId", tbltripdetail.FldTripDestinationLocationId, DbType.String);
                 parameters.Add("fldCreateDate", tbltripdetail.FldCreateDate, DbType.DateTime);
                 parameters.Add("fldCreateBy", tbltripdetail.FldCreateBy, DbType.String);
 
@@ -57,20 +53,16 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "UPDATE tbltripdetail SET"
-                    + "         fldTripStartLocationName = @fldTripStartLocationName, "
-                    + "         fldTripStartLocationAddress = @fldTripStartLocationAddress, "
-                    + "         fldTripDestinationLocationName = @fldTripDestinationLocationName, "
-                    + "         fldTripDestinationLocationAddress = @fldTripDestinationLocationAddress, "
+                    + "         fldTripStartLocationId = @fldTripStartLocationId, "
+                    + "         fldTripDestinationLocationId = @fldTripDestinationLocationId, "
                     + "         fldUpdateDate = @fldUpdateDate, "
                     + "         fldUpdateBy = @fldUpdateBy"
                     + "     WHERE fldTripId = @fldTripId"; ;
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tbltripdetail.FldTripId, DbType.String);
-                parameters.Add("fldTripStartLocationName", tbltripdetail.FldTripStartLocationName, DbType.String);
-                parameters.Add("fldTripStartLocationAddress", tbltripdetail.FldTripStartLocationAddress, DbType.String);
-                parameters.Add("fldTripDestinationLocationName", tbltripdetail.FldTripDestinationLocationName, DbType.String);
-                parameters.Add("fldTripDestinationLocationAddress", tbltripdetail.FldTripDestinationLocationAddress, DbType.String);
+                parameters.Add("fldTripStartLocationId", tbltripdetail.FldTripStartLocationId, DbType.String);
+                parameters.Add("fldTripDestinationLocationId", tbltripdetail.FldTripDestinationLocationId, DbType.String);
                 parameters.Add("fldUpdateDate", tbltripdetail.FldUpdateDate, DbType.DateTime);
                 parameters.Add("fldUpdateBy", tbltripdetail.FldUpdateBy, DbType.String);
 
