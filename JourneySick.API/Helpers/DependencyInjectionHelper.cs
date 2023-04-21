@@ -52,6 +52,8 @@ namespace JourneySick.API.Startup
             services.AddTransient<IItemService, ItemService>();
             services.AddTransient<IItemCategoryRepository, ItemCategoryRepository>();
             services.AddTransient<IItemCategoryService, ItemCategoryService>();
+            services.AddTransient<ITripRouteService, TripRouteService>();
+            services.AddTransient<ITripRouteRepository, TripRouteRepository>();
 
             return services;
         }
