@@ -26,10 +26,10 @@ namespace JourneySick.Data.IRepositories.Repositories
                 routeId ??= "";
                 parameters.Add("routeId", routeId, DbType.String);
 
-                var query = "SELECT * FROM tbltriproute WHERE fldRouteId LIKE CONCAT('%', @routeId, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM tbltriproute a INNER JOIN tblmaplocation b ON a.fldMapId = b.fldMapId WHERE fldRouteId LIKE CONCAT('%', @routeId, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tbltriproute>(query, parameters)).ToList();
+                return (await connection.QueryAsync<TbltriprouteVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -79,19 +79,23 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 var query = "INSERT INTO tbltriproute ("
                     + "         fldTripId, "
-                    + "         fldRouteDescription, "
-                    + "         fldCreateDate, "
-                    + "         fldCreateBy) "
+                    + "         fldMapId, "
+                    + "         fldPriority, "
+                    + "         fldEstimateTime, "
+                    + "         fldDistance) "
                     + "     VALUES ( "
                     + "         @fldTripId, "
-                    + "         @fldRouteDescription, "
-                    + "         @fldCreateDate, "
-                    + "         @fldCreateBy)";
+                    + "         @fldMapId, "
+                    + "         @fldPriority, "
+                    + "         @fldEstimateTime, "
+                    + "         @fldDistance)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldRouteId", tbltriproute.FldRouteId, DbType.String);/*
-                parameters.Add("fldTripId", tbltriproute.FldTripId, DbType.String);
-                parameters.Add("fldRouteDescription", tbltriproute.FldRouteDescription, DbType.String);*/
+                parameters.Add("fldTripId", tbltriproute.FldTripid, DbType.String);
+                parameters.Add("fldMapId", tbltriproute.FldMapId, DbType.Int32);
+                parameters.Add("fldPriority", tbltriproute.FldPriority, DbType.Int32);
+                parameters.Add("fldEstimateTime", tbltriproute.FldEstimateTime, DbType.Decimal);
+                parameters.Add("fldDistance", tbltriproute.FldDistance, DbType.Decimal);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -106,14 +110,16 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "UPDATE tbltriproute SET " +
-                    "fldRouteDescription = @fldRouteDescription, " +
-                    "fldUpdateDate = @fldUpdateDate, " +
-                    "fldUpdateBy = @fldUpdateBy " +
+                    "fldPriority = @fldPriority, " +
+                    "fldEstimateTime = @fldEstimateTime, " +
+                    "fldDistance = @fldDistance, " +
                     "WHERE fldRouteId = @fldRouteId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldRouteId", tbltriproute.FldRouteId, DbType.String);
-                parameters.Add("fldRouteDescription", tbltriproute.FldRouteDescription, DbType.String);
+                parameters.Add("fldPriority", tbltriproute.FldPriority, DbType.Int32);
+                parameters.Add("fldEstimateTime", tbltriproute.FldEstimateTime, DbType.Decimal);
+                parameters.Add("fldDistance", tbltriproute.FldDistance, DbType.Decimal);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
 
