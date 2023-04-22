@@ -76,6 +76,16 @@ namespace JourneySick.Business.IServices.Services
                 tripVO.FldCreateBy = currentUser.UserId;
                 tripVO.FldCreateDate = DateTime.Now;
                 TbltripVO tbltrip = _mapper.Map<TbltripVO>(tripVO);
+                Tblmaplocation startmaplocation = new Tblmaplocation();
+                startmaplocation.FldLatitude = tripVO.FldStartLatitude;
+                startmaplocation.FldLongitude = tripVO.FldStartLongitude;
+                startmaplocation.FldLocationName = tripVO.FldStartLocationName;
+                await _mapLocationRepository.CreateMapLocation(startmaplocation);
+                Tblmaplocation endmaplocation = new Tblmaplocation();
+                endmaplocation.FldLatitude = tripVO.FldEndLatitude;
+                endmaplocation.FldLongitude = tripVO.FldEndLongitude;
+                endmaplocation.FldLocationName = tripVO.FldEndLocationName;
+                await _mapLocationRepository.CreateMapLocation(endmaplocation);
                 if (await _tripRepository.CreateTrip(tbltrip) > 0 && await _tripDetailRepository.CreateTripDetail(tbltrip) > 0)
                 {
                     TbluserVO tbluserVO = await _userDetailRepository.GetUserDetailById(tripVO.FldCreateBy);
