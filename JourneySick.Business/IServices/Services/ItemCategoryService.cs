@@ -66,7 +66,7 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 itemCategoryDTO.FldCreateBy = currentUser.UserId;
-                itemCategoryDTO.FldCreateDate = DateTime.Now;
+                itemCategoryDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
                 Tblitemcategory tblitemCategory = _mapper.Map<Tblitemcategory>(itemCategoryDTO);
                 int id = await _itemCategoryRepository.CreateItemCategory(tblitemCategory);
                 if (id > 0)

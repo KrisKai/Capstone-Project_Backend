@@ -4,6 +4,7 @@ using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using static Google.Protobuf.Reflection.SourceCodeInfo.Types;
 
 namespace JourneySick.Data.IRepositories.Repositories
 {
@@ -44,6 +45,21 @@ namespace JourneySick.Data.IRepositories.Repositories
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<Tblmaplocation>(query, parameters)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> GetLastOne()
+        {
+            try
+            {
+                var query = "SELECT COALESCE(MAX(fldMapId), 0) FROM tblmaplocation";
+
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<int>(query);
             }
             catch (Exception e)
             {
@@ -120,6 +136,5 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
-
     }
 }

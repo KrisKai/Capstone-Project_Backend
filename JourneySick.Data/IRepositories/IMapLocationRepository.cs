@@ -12,9 +12,10 @@ namespace JourneySick.Data.IRepositories
     {
         //SELECT ALL
         public Task<List<Tblmaplocation>> GetAllLocationsWithPaging(int pageIndex, int pageSize);
+        public Task<Tblmaplocation> GetMapLocationById(int locationId);
+        public Task<int> GetLastOne();
         //CREATE
         public Task<int> CreateMapLocation(Tblmaplocation tblmaplocation);
-        public Task<Tblmaplocation> GetMapLocationById(int locationId);
         //UPDATE
         public Task<int> UpdateMapLocation(Tblmaplocation tblmaplocation);
         //DELETE

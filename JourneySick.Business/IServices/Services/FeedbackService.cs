@@ -75,7 +75,7 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                     feedbackDTO.FldCreateBy = currentUser.UserId;
-                    feedbackDTO.FldCreateDate = DateTime.Now;
+                    feedbackDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
                     Tblfeedback userEntity = _mapper.Map<Tblfeedback>(feedbackDTO);
                     if (await _feedbackRepository.CreateFeedback(userEntity) > 0)
                     {
@@ -101,7 +101,7 @@ namespace JourneySick.Business.IServices.Services
                 if (getTrip != null)
                 {
                     feedbackDTO.FldUpdateBy = currentUser.UserId;
-                    feedbackDTO.FldUpdateDate = DateTime.Now;
+                    feedbackDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
                     Tblfeedback tblfeedbackDTO = _mapper.Map<Tblfeedback>(feedbackDTO);
                     int id = await _feedbackRepository.UpdateFeedback(tblfeedbackDTO);
                     if (id > 0)

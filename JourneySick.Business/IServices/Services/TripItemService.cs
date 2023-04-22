@@ -110,7 +110,7 @@ namespace JourneySick.Business.IServices.Services
                 if (getTrip != null)
                 {
                     tripItemDTO.FldUpdateBy = currentUser.UserId;
-                    tripItemDTO.FldUpdateDate = DateTime.Now;
+                    tripItemDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
                     Tbltripitem tbltripitem = _mapper.Map<Tbltripitem>(tripItemDTO);
                     if (await _tripItemRepository.UpdateTripItem(tbltripitem) > 0)
                     {

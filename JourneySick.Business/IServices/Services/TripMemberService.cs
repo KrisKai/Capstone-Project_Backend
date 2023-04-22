@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
@@ -68,7 +69,7 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 tripMemberDTO.FldCreateBy = currentUser.UserId;
-                tripMemberDTO.FldCreateDate = DateTime.Now;
+                tripMemberDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
                 Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(tripMemberDTO);
                 int id = await _tripMemberRepository.CreateTripMember(tbltripmember);
                 if (id > 0)
@@ -93,7 +94,7 @@ namespace JourneySick.Business.IServices.Services
                 if (getTrip != null)
                 {
                     tripMemberDTO.FldUpdateBy = currentUser.UserId;
-                    tripMemberDTO.FldUpdateDate = DateTime.Now;
+                    tripMemberDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
                     Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(tripMemberDTO);
                     if (await _tripMemberRepository.UpdateTripMember(tbltripmember) > 0)
                     {

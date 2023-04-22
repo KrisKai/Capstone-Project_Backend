@@ -83,7 +83,7 @@ namespace JourneySick.Business.IServices.Services
                     userVO.FldPassword = PasswordEncryption.Encrypt(userVO.FldPassword, _appSecrect.SecrectKey);
                     userVO.FldActiveStatus = "ACTIVE";
                     userVO.FldCreateBy = currentUser.UserId;
-                    userVO.FldCreateDate = DateTime.Now;
+                    userVO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
                     TbluserVO userEntity = _mapper.Map<TbluserVO>(userVO);
                     if (await _userRepository.CreateUser(userEntity) > 0 && await _userDetailRepository.CreateUserDetail(userEntity) > 0)
                     {
@@ -109,7 +109,7 @@ namespace JourneySick.Business.IServices.Services
                 if (getTrip != null && await ValidateUserUpdate(getTrip, userVO) == 0)
                 {
                     userVO.FldUpdateBy = currentUser.UserId;
-                    userVO.FldUpdateDate = DateTime.Now;
+                    userVO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
                     TbluserVO tbluserVO = _mapper.Map<TbluserVO>(userVO);
                     if (await _userDetailRepository.UpdateUserDetail(tbluserVO) > 0)
                     {

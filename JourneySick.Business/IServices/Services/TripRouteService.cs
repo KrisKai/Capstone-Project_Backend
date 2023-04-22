@@ -66,15 +66,17 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
+                Tblmaplocation tblmaplocation = new Tblmaplocation();
+                tblmaplocation.FldLatitude = tripRouteDTO.FldLatitude;
+                tblmaplocation.FldLongitude = tripRouteDTO.FldLongitude;
+                tblmaplocation.FldLocationName = tripRouteDTO.FldLocationName;
+                await _mapLocationRepository.CreateMapLocation(tblmaplocation);
+                int mapId = await _mapLocationRepository.GetLastOne();
+                tripRouteDTO.FldMapId = mapId;
                 Tbltriproute tbltriproute = _mapper.Map<Tbltriproute>(tripRouteDTO);
                 int id = await _tripRouteRepository.CreateTripRoute(tbltriproute);
                 if (id > 0)
                 {
-                    Tblmaplocation tblmaplocation = new Tblmaplocation();
-                    tblmaplocation.FldLatitude = tripRouteDTO.FldLatitude;
-                    tblmaplocation.FldLongitude = tripRouteDTO.FldLongitude;
-                    tblmaplocation.FldLocationName = tripRouteDTO.FldLocationName;
-                    await _mapLocationRepository.CreateMapLocation(tblmaplocation);
                     return id;
                 }
                 throw new InsertException("Create trip route failed!");
