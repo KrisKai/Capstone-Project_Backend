@@ -134,7 +134,7 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    if (await _tripRouteRepository.DeleteTripRoute(routeId) > 0)
+                    if (await _tripRouteRepository.DeleteTripRoute(routeId) > 0 && await _mapLocationRepository.DeleteMapLocation((int)getTrip.FldRouteId) > 0)
                     {
                         return 1;
                     }

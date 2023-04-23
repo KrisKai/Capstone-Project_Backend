@@ -168,7 +168,8 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    if (await _tripRepository.DeleteTrip(tripId) > 0 && await _tripDetailRepository.DeleteTripDetail(tripId) > 0)
+                    if (await _tripRepository.DeleteTrip(tripId) > 0 && await _tripDetailRepository.DeleteTripDetail(tripId) > 0 
+                        && await _mapLocationRepository.DeleteMapLocation((int)getTrip.FldTripStartLocationId) > 0 && await _mapLocationRepository.DeleteMapLocation((int)getTrip.FldTripDestinationLocationId) > 0)
                     {
                         return 1;
                     }
