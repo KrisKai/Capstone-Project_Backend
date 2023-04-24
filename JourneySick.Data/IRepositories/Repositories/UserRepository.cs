@@ -29,11 +29,11 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "";
                 if (role.Equals(UserRoleEnum.EMPL.ToString()))
                 {
-                    query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE fldRole IN ('EMPL', 'USER') AND b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
+                    query = "SELECT a.fldUserId, fldUsername, fldFullname, fldRole, fldEmail, fldActiveStatus FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE fldRole IN ('EMPL', 'USER') AND b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
                 }
                 else if (role.Equals(UserRoleEnum.ADMIN.ToString()))
                 {
-                    query = "SELECT * FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
+                    query = "SELECT a.fldUserId, fldUsername, fldFullname, fldRole, fldEmail, fldActiveStatus FROM tbluserdetail a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE b.fldUsername LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
                 }
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);

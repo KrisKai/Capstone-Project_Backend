@@ -53,16 +53,8 @@ namespace JourneySick.API.Controllers
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = new AllTripDTO();
-            //if(currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
-            //{
             result = await _tripService.GetAllTripsWithPaging(pageIndex, pageSize, tripName);
-            
             return Ok(result);
-            //}
-            //else
-            //{
-            //throw new Exception("d");
-            //}
 
         }
 

@@ -58,6 +58,20 @@ namespace JourneySick.Business.IServices.Services
             {
                 TbltripVO tbltrip = await _tripRepository.GetTripById(tripId);
                 TripVO tripVO = _mapper.Map<TripVO>(tbltrip);
+                Tblmaplocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.FldTripStartLocationId);
+                if(startmaplocation != null)
+                {
+                    tripVO.FldStartLocationName = startmaplocation.FldLocationName;
+                    tripVO.FldStartLatitude = startmaplocation.FldLatitude;
+                    tripVO.FldStartLongitude = startmaplocation.FldLongitude;
+                }
+                Tblmaplocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.FldTripDestinationLocationId);
+                if (endmaplocation != null)
+                {
+                    tripVO.FldEndLocationName = endmaplocation.FldLocationName;
+                    tripVO.FldEndLatitude = endmaplocation.FldLatitude;
+                    tripVO.FldEndLongitude = endmaplocation.FldLongitude;
+                }
                 return tripVO;
             }
             catch (Exception ex)
