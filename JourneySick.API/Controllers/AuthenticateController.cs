@@ -57,13 +57,16 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetCurrentUser()
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            if("EMPL".Equals(currentUser.Role))
+            if(currentUser != null)
             {
-                currentUser.Role = "Employee";
-            }
-            else
-            {
-                currentUser.Role = "Admin";
+                if ("EMPL".Equals(currentUser.Role))
+                {
+                    currentUser.Role = "Employee";
+                }
+                else
+                {
+                    currentUser.Role = "Admin";
+                }
             }
             return Ok(currentUser);
         }
