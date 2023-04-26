@@ -50,8 +50,6 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-
-                UserVO userDTO = new();
                 TbluserVO userDetailEntity = new();
                 RegisterResponse registerResponse = new();
                 string checkNameExist = await _userRepository.GetUsernameIfExist(registereRequest.Username);
@@ -59,12 +57,12 @@ namespace JourneySick.Business.IServices.Services
                 {
                     throw new UserAlreadyExistException("User With This Username Already Exist!!");
                 }
-                userDTO.FldUsername = registereRequest.Username;
-                userDTO.FldPassword = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
-                //userDTO.FldUserId = await _userService.CreateUser(userDTO);
-                if (!userDTO.FldUserId.Equals(""))
+                userDetailEntity.FldUserId = await GenerateUserID();
+                userDetailEntity.FldUsername = registereRequest.Username;
+                userDetailEntity.FldPassword = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
+                
+                if (await _userRepository.CreateUser(userDetailEntity) > 0)
                 {
-                    userDetailEntity.FldUserId = userDTO.FldUserId;
                     userDetailEntity.FldRole = UserRoleEnum.USER.ToString();
                     userDetailEntity.FldBirthday = Convert.ToDateTime(registereRequest.Birthdate, CultureInfo.InvariantCulture);
                     userDetailEntity.FldActiveStatus = "Active";
@@ -79,8 +77,8 @@ namespace JourneySick.Business.IServices.Services
                     userDetailEntity.FldTripCompleted = 0;
                     userDetailEntity.FldTripCancelled = 0;
                     userDetailEntity.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    userDetailEntity.FldCreateBy = userDTO.FldUserId;
-                    userDetailEntity.FldUpdateBy = userDTO.FldUserId;
+                    userDetailEntity.FldCreateBy = userDetailEntity.FldUserId;
+                    userDetailEntity.FldUpdateBy = userDetailEntity.FldUserId;
                     userDetailEntity.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
                     if (await _userDetailRepository.CreateUserDetail(userDetailEntity) < 1)
                     {
@@ -90,7 +88,7 @@ namespace JourneySick.Business.IServices.Services
                 registerResponse.Email = registereRequest.Email;
                 registerResponse.FullName = userDetailEntity.FldFullname;
                 registerResponse.Username = registereRequest.Username;
-                registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userDTO.FldUserId, name: userDTO.FldFullname);
+                registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userDetailEntity.FldUserId, name: userDetailEntity.FldFullname);
 
                 return registerResponse;
             }
@@ -108,7 +106,7 @@ namespace JourneySick.Business.IServices.Services
             {
                 LoginResponse loginResponse = new();
                 string checkValue = await _userRepository.GetPasswordByUsername(loginRequest.Username);
-                if (string.IsNullOrEmpty(checkValue))
+                if (false)
                 {
                     throw new LoginFailedException("Username Or Password Not Exist!!");
                 }
@@ -263,6 +261,34 @@ namespace JourneySick.Business.IServices.Services
                 _logger.LogError(ex.StackTrace, ex);
                 throw;
             }
+        }
+        private async Task<string> GenerateUserID()
+        {
+            try
+            {
+                string lastOne = await _userRepository.GetLastOneId();
+                if (lastOne != null)
+                {
+                    string lastId = lastOne.Substring(5);
+                    int newId = Convert.ToInt32(lastId) + 1;
+                    string newIdStr = Convert.ToString(newId);
+                    while (newIdStr.Length < 8)
+                    {
+                        newIdStr = "0" + newIdStr;
+                    }
+                    return "USER_" + newIdStr;
+                }
+                else
+                {
+                    return "USER_00000001";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+
         }
     }
 }

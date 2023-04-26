@@ -79,7 +79,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COALESCE(MAX(fldUserId), 0) FROM tbluser ";
+                var query = "SELECT COALESCE(MAX(fldUserId), null) FROM tbluser ";
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<string>(query);
             }
