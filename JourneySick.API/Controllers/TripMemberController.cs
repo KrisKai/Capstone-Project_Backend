@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using JourneySick.Business.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 
 namespace JourneySick.API.Controllers
 {
@@ -40,7 +41,7 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> GetTripMemberById([FromRoute] int id)
         {
-            TripMemberDTO result = await _tripMemberService.GetTripMemberById(id);
+            TripMemberVO result = await _tripMemberService.GetTripMemberById(id);
             return Ok(result);
         }
 

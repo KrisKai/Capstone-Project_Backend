@@ -29,16 +29,16 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<Tbltripmember> GetTripMemberById(int memberId)
+        public async Task<TbltripmemberVO> GetTripMemberById(int memberId)
         {
             try
             {
-                var query = "SELECT * FROM tbltripmember WHERE fldMemberId = @fldMemberId";
+                var query = "SELECT * FROM tbltripmember a INNER JOIN tbluserdetail b ON a.fldUserId = b.fldUserId WHERE fldMemberId = @fldMemberId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldMemberId", memberId, DbType.Int16);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tbltripmember>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<TbltripmemberVO>(query, parameters);
             }
             catch (Exception e)
             {

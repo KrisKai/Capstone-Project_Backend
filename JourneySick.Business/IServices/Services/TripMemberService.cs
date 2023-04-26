@@ -47,13 +47,13 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<TripMemberDTO> GetTripMemberById(int memberId)
+        public async Task<TripMemberVO> GetTripMemberById(int memberId)
         {
             try
             {
-                Tbltripmember tbltripmember = await _tripMemberRepository.GetTripMemberById(memberId);
+                TbltripmemberVO tbltripmember = await _tripMemberRepository.GetTripMemberById(memberId);
                 // convert entity to dto
-                TripMemberDTO tripMemberDTO = _mapper.Map<TripMemberDTO>(tbltripmember);
+                TripMemberVO tripMemberDTO = _mapper.Map<TripMemberVO>(tbltripmember);
 
                 return tripMemberDTO;
             }

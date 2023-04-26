@@ -14,7 +14,7 @@ namespace JourneySick.Data.IRepositories
         //SELECT ALL
         public Task<List<TbltripmemberVO>> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName);
         public Task<int> GetLastOneId();
-        public Task<Tbltripmember> GetTripMemberById(int planDetailId);
+        public Task<TbltripmemberVO> GetTripMemberById(int planDetailId);
         public Task<int> CountAllTripMembers(string? memberName);
         //CREATE
         public Task<int> CreateTripMember(Tbltripmember tbltripmember);

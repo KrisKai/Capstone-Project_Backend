@@ -1,6 +1,7 @@
 ﻿using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 
 namespace JourneySick.Business.IServices
 {
@@ -9,7 +10,7 @@ namespace JourneySick.Business.IServices
         //Select list w paging
         public Task<AllTripMemberDTO> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName);
         //Select Location
-        public Task<TripMemberDTO> GetTripMemberById(int memberId);
+        public Task<TripMemberVO> GetTripMemberById(int memberId);
         //insert
         public Task<int> CreateTripMember(TripMemberDTO tripMemberDTO, CurrentUserObj currentUser);
         //update
