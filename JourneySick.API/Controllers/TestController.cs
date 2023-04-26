@@ -8,6 +8,7 @@ using System.Net;
 using JourneySick.Business.Helpers;
 using JourneySick.Data.Models.Entities;
 using Org.BouncyCastle.Crmf;
+using System.Configuration;
 
 namespace JourneySick.API.Controllers
 {
@@ -26,10 +27,7 @@ namespace JourneySick.API.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUser(string nnn)
         {
-            Tbltrip trip = new();
-            string ok = checkok(trip);
-            
-            return Ok(ok);
+            return Ok("ok");
         }
 
         private string checkok(dynamic result)
