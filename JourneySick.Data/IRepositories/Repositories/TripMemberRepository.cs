@@ -137,7 +137,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "fldNickName = @fldNickName, " +
                     "fldStatus = @fldStatus, " +
                     "fldUpdateDate = @fldUpdateDate, " +
-                    "fldUpdateBy = @fldUpdateBy, " +
+                    "fldUpdateBy = @fldUpdateBy " +
                     "WHERE fldMemberId = @fldMemberId";
 
                 var parameters = new DynamicParameters();
