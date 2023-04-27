@@ -14,7 +14,7 @@ namespace JourneySick.Data.Models.DTOs
         public string? FldItemDescription { get; set; }
         public decimal? FldPriceMin { get; set; }
         public decimal? FldPriceMax { get; set; }
-        public string? FldItemCategory { get; set; }
+        public int? FldCategoryId { get; set; }
         public int? FldQuantity { get; set; }
         public DateTime? FldCreateDate { get; set; }
         public string? FldCreateBy { get; set; }
