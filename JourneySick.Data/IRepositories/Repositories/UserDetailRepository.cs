@@ -115,23 +115,6 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> DeleteUserDetail(string userId)
-        {
-            try
-            {
-                var query = "DELETE FROM tbluserdetail WHERE fldUserId = @fldUserId";
-
-                var parameters = new DynamicParameters();
-                parameters.Add("fldUserId", userId, DbType.String);
-                using var connection = CreateConnection();
-                return await connection.ExecuteAsync(query, parameters);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
         //SELECT
         public async Task<UserVO> GetUserDetailByUserName(string username)
         {
@@ -194,7 +177,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "fldFullname = @Fullname, " +
                     "fldPhone = @Phone, " +
                     "fldAddress = @Address, " +
-                    "fldActiveStatus = @Status, " +
                     "fldUpdateDate = @UpdateDate, " +
                     "fldUpdateBy = @UpdateBy " +
                     "WHERE fldUserId = @UserId";
@@ -206,7 +188,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("Fullname", userDetailEntity.FldFullname, DbType.String);
                 parameters.Add("Phone", userDetailEntity.FldPhone, DbType.String);
                 parameters.Add("Address", userDetailEntity.FldAddress, DbType.String);
-                parameters.Add("Status", userDetailEntity.FldActiveStatus, DbType.String);
                 parameters.Add("UpdateDate", userDetailEntity.FldUpdateDate, DbType.DateTime);
                 parameters.Add("UpdateBy", userDetailEntity.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
@@ -219,12 +200,32 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public async Task<int> UpdateAcitveStatus(TbluserVO userDetailEntity)
+        {
+            try
+            {
+                var query = "UPDATE tbluserdetail SET " +
+                    "fldActiveStatus = @fldActiveStatus " +
+                    "WHERE fldUserId = @UserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("UserId", userDetailEntity.FldUserId, DbType.String);
+                parameters.Add("fldActiveStatus", userDetailEntity.FldActiveStatus, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
         public async Task<int> UpdateTripQuantityCreated(TbluserVO userDetailEntity)
         {
             try
             {
                 var query = "UPDATE tbluserdetail SET " +
-                    "fldTripCreated = @fldTripCreated, " +
+                    "fldTripCreated = @fldTripCreated " +
                     "WHERE fldUserId = @UserId";
 
                 var parameters = new DynamicParameters();
@@ -232,7 +233,23 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldTripCreated", userDetailEntity.FldTripCreated, DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
 
+        public async Task<int> DeleteUserDetail(string userId)
+        {
+            try
+            {
+                var query = "DELETE FROM tbluserdetail WHERE fldUserId = @fldUserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUserId", userId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
             }
             catch (Exception e)
             {

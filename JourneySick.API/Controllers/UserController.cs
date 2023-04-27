@@ -95,7 +95,6 @@ namespace JourneySick.API.Controllers
 
         }
 
-
         //CHANGE PASSWORD
         [HttpPut]
         [Route("change-password")]
@@ -104,6 +103,18 @@ namespace JourneySick.API.Controllers
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.ChangePassword(changePasswordDTO);
+            return Ok(result);
+
+        }
+
+        //CHANGE STATUS
+        [HttpPut]
+        [Route("change-status")]
+        [Authorize]
+        public async Task<IActionResult> UpdateAcitveStatus(UserVO userVO)
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _userService.UpdateAcitveStatus(userVO, currentUser);
             return Ok(result);
 
         }

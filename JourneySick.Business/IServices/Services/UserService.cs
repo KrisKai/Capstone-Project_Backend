@@ -237,7 +237,28 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-            private async Task<int> ValidateUserCreate(UserVO userVO)
+        public async Task<int> UpdateAcitveStatus(UserVO userVO, CurrentUserObj currentUser)
+        {
+            if (currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
+            {
+                try
+                {
+                    TbluserVO tbluserVO = _mapper.Map<TbluserVO>(userVO);
+                    if (await _userDetailRepository.UpdateAcitveStatus(tbluserVO) > 0)
+                    {
+                        return 1;
+                    }
+                    return 0;
+                }
+                catch
+                {
+                    throw new UpdateException("Change status Failed!!");
+                }
+            }
+            throw new PermissionException("You do not have permission to access!!");
+        }
+
+        private async Task<int> ValidateUserCreate(UserVO userVO)
         {
             string username = await _userRepository.GetUsernameIfExist(userVO.FldUsername);
             string email = await _userDetailRepository.GetEmailIfExist(userVO.FldEmail);

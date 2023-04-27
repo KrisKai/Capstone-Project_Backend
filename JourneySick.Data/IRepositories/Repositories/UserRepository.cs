@@ -125,7 +125,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM tblUser a LEFT JOIN tblUserDetail b ON a.fldUserId = b.fldUserId WHERE fldUsername = @fldUsername";
+                var query = "SELECT * FROM tblUser a LEFT JOIN tblUserDetail b ON a.fldUserId = b.fldUserId WHERE fldUsername = @fldUsername AND fldActiveStatus = 'ACTIVE'";
                 var parameters = new DynamicParameters();
                 parameters.Add("fldUsername", username, DbType.String);
                 using var connection = CreateConnection();

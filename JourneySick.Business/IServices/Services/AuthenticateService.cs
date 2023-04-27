@@ -158,19 +158,27 @@ namespace JourneySick.Business.IServices.Services
                     if (encryptedPassword.Equals(checkValue))
                     {
                         TbluserVO tbluserVO = await _userRepository.GetUserByUsername(loginRequest.Username);
-                        if (tbluserVO.FldRole.Equals(UserRoleEnum.ADMIN.ToString()) || tbluserVO.FldRole.Equals(UserRoleEnum.EMPL.ToString()))
+                        if(tbluserVO != null)
                         {
-                            UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
-                            loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
-                            CurrentUserObj currentUser = new();
-                            currentUser.Name = userVO.FldFullname;
-                            currentUser.Role = userVO.FldRole;
-                            currentUser.UserId = userVO.FldUserId;
-                            loginResponse.CurrentUserObj = currentUser;
+                            if (tbluserVO.FldRole.Equals(UserRoleEnum.ADMIN.ToString()) || tbluserVO.FldRole.Equals(UserRoleEnum.EMPL.ToString()))
+                            {
+                                UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
+                                loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
+                                CurrentUserObj currentUser = new();
+                                currentUser.Name = userVO.FldFullname;
+                                currentUser.Role = userVO.FldRole;
+                                currentUser.UserId = userVO.FldUserId;
+                                loginResponse.CurrentUserObj = currentUser;
+                            }
+                            else
+                            {
+                                throw new LoginFailedException("You do not have permission to access!!");
+                            }
+
                         }
                         else
                         {
-                            throw new LoginFailedException("You do not have permission to access!!");
+                            throw new LoginFailedException("Your account may be not existed or be banned!!");
                         }
                     }
                     else
