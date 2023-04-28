@@ -7,7 +7,7 @@ namespace JourneySick.Business.IServices
     public interface ITripItemService
     {
         //Select list w paging
-        public Task<AllTripItemDTO> GetAllTripItemsWithPaging(int pageIndex, int pageSize, string? itemId);
+        public Task<AllTripItemDTO> GetAllTripItemsWithPaging(int pageIndex, int pageSize, string? itemId, int categoryId);
         //Select Item
         public Task<TripItemDTO> GetTripItemById(int itemId);
         //insert

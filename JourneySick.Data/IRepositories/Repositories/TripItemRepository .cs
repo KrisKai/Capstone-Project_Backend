@@ -14,19 +14,27 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<Tbltripitem>> GetAllTripItemsWithPaging(int pageIndex, int pageSize, string? itemId)
+        public async Task<List<Tbltripitem>> GetAllTripItemsWithPaging(int pageIndex, int pageSize, string? itemId, int categoryId)
         {
             try
             {
                 int firstIndex = (pageIndex) * pageSize;
                 int lastIndex = (pageIndex + 1) * pageSize;
                 var parameters = new DynamicParameters();
-                parameters.Add("firstIndex", firstIndex, DbType.Int16);
-                parameters.Add("lastIndex", lastIndex, DbType.Int16);
+                parameters.Add("firstIndex", firstIndex, DbType.Int32);
+                parameters.Add("lastIndex", lastIndex, DbType.Int32);
                 itemId ??= "";
                 parameters.Add("itemId", itemId, DbType.String);
-
-                var query = "SELECT * FROM tbltripitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%')  LIMIT @firstIndex, @lastIndex";
+                parameters.Add("categoryId", categoryId, DbType.Int32);
+                var query = "";
+                if (categoryId == 0)
+                {
+                    query = "SELECT * FROM tbltripitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%') LIMIT @firstIndex, @lastIndex";
+                }
+                else
+                {
+                    query = "SELECT * FROM tbltripitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%') AND fldCategoryId = @categoryId LIMIT @firstIndex, @lastIndex";
+                }
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<Tbltripitem>(query, parameters)).ToList();
@@ -54,15 +62,23 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountAllTripItems(string? itemId)
+        public async Task<int> CountAllTripItems(string? itemId, int categoryId)
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbltripitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%')";
-
+                var query = "";
+                if (categoryId == 0)
+                {
+                    query = "SELECT COUNT(*) FROM tbltripitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%')";
+                }
+                else
+                {
+                    query = "SELECT COUNT(*) FROM tbltripitem WHERE fldItemId LIKE CONCAT('%', @itemId, '%')";
+                }
                 itemId ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("itemId", itemId, DbType.String);
+                parameters.Add("categoryId", categoryId, DbType.Int32);
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query, parameters));
 
