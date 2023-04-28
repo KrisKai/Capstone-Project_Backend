@@ -176,5 +176,25 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        public async Task<int> UpdateMemberStatus(Tbltripmember tbltripmember)
+        {
+            try
+            {
+                var query = "UPDATE tbltripmember SET " +
+                    "fldStatus = @fldStatus " +
+                    "WHERE fldUserId = @UserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("UserId", tbltripmember.FldUserId, DbType.String);
+                parameters.Add("fldStatus", tbltripmember.FldStatus, DbType.Int32);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }

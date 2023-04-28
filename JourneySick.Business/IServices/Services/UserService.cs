@@ -21,14 +21,16 @@ namespace JourneySick.Business.IServices.Services
     {
         private readonly IUserRepository _userRepository;
         private readonly IUserDetailRepository _userDetailRepository;
+        private readonly ITripMemberRepository _tripMemberRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<UserService> _logger;
         private readonly AppSecrect _appSecrect;
 
-        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, IOptions<AppSecrect> appSecrect, IMapper mapper, ILogger<UserService> logger)
+        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, ITripMemberRepository tripMemberRepository, IOptions<AppSecrect> appSecrect, IMapper mapper, ILogger<UserService> logger)
         {
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
+            _tripMemberRepository = tripMemberRepository;
             _appSecrect = appSecrect.Value;
             _mapper = mapper;
             _logger = logger;
@@ -244,11 +246,23 @@ namespace JourneySick.Business.IServices.Services
                 try
                 {
                     TbluserVO tbluserVO = _mapper.Map<TbluserVO>(userVO);
-                    if (await _userDetailRepository.UpdateAcitveStatus(tbluserVO) > 0)
+                    TbluserVO getUser = await _userRepository.GetUserById(tbluserVO.FldUserId);
+                    if(getUser != null)
                     {
-                        return 1;
+                        if (getUser.FldActiveStatus.Equals("ACTIVE"))
+                        {
+                            TbltripmemberVO tbltripmemberVO = new();
+                            tbltripmemberVO.FldUserId = userVO.FldUserId;
+                            tbltripmemberVO.FldStatus = userVO.FldActiveStatus;
+                            await _tripMemberRepository.UpdateMemberStatus(tbltripmemberVO);
+                        }
+                        if (await _userDetailRepository.UpdateAcitveStatus(tbluserVO) > 0)
+                        {
+                            return 1;
+                        }
+                        return 0;
                     }
-                    return 0;
+                    
                 }
                 catch
                 {
