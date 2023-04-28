@@ -121,7 +121,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldItemDescription", tblitem.FldItemDescription, DbType.String);
                 parameters.Add("fldPriceMin", tblitem.FldPriceMin, DbType.Decimal);
                 parameters.Add("fldPriceMax", tblitem.FldPriceMax, DbType.Decimal);
-                parameters.Add("fldQuantity", tblitem.FldPriceMax, DbType.Int32);
+                parameters.Add("fldQuantity", tblitem.FldQuantity, DbType.Int32);
                 parameters.Add("fldCategoryId", tblitem.FldCategoryId, DbType.Int32);
                 parameters.Add("fldCreateDate", tblitem.FldCreateDate, DbType.DateTime);
                 parameters.Add("fldCreateBy", tblitem.FldCreateBy, DbType.String);
