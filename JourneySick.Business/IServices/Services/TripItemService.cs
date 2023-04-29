@@ -76,12 +76,12 @@ namespace JourneySick.Business.IServices.Services
                     Tblitem tblitem = await _itemRepository.GetItemByName(tbltripitem.FldItemName);
                     if(tblitem != null)
                     {
-                        tblitem.FldQuantity += tbltripitem.FldQuantity;
+                        tblitem.FldQuantity ++;
                         await _itemRepository.UpdateItem(tblitem);
                     } else
                     {
                         Tblitem tblnewitem = new();
-                        tblnewitem.FldQuantity = tbltripitem.FldQuantity;
+                        tblnewitem.FldQuantity = 1;
                         tblnewitem.FldItemName = tbltripitem.FldItemName;
                         tblnewitem.FldPriceMin = tbltripitem.FldPriceMin;
                         tblnewitem.FldPriceMax = tbltripitem.FldPriceMax;
