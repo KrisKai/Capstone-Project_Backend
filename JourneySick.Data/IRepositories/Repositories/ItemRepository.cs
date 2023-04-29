@@ -155,8 +155,9 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("fldItemDescription", tblitem.FldItemDescription, DbType.String);
                 parameters.Add("fldPriceMin", tblitem.FldPriceMin, DbType.Decimal);
                 parameters.Add("fldPriceMax", tblitem.FldPriceMax, DbType.Decimal);
+                parameters.Add("fldQuantity", tblitem.FldQuantity, DbType.Int32);
                 parameters.Add("fldCategoryId", tblitem.FldCategoryId, DbType.Int32);
-                parameters.Add("fldUpdateDate ", tblitem.FldUpdateDate, DbType.DateTime);
+                parameters.Add("fldUpdateDate", tblitem.FldUpdateDate, DbType.DateTime);
                 parameters.Add("fldUpdateBy", tblitem.FldUpdateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
