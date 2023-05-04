@@ -83,9 +83,6 @@ namespace JourneySick.Business.IServices.Services
                         Tblitem tblnewitem = new();
                         tblnewitem.FldQuantity = 1;
                         tblnewitem.FldItemName = tbltripitem.FldItemName;
-                        tblnewitem.FldPriceMin = tbltripitem.FldPriceMin;
-                        tblnewitem.FldPriceMax = tbltripitem.FldPriceMax;
-                        tblnewitem.FldItemDescription = tbltripitem.FldItemDescription;
                         tblnewitem.FldCategoryId = (int)tbltripitem.FldCategoryId;
                         tblnewitem.FldCreateBy = tbltripitem.FldCreateBy;
                         tblnewitem.FldCreateDate = tbltripitem.FldCreateDate;
