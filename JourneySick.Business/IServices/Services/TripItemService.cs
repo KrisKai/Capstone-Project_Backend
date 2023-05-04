@@ -17,10 +17,12 @@ namespace JourneySick.Business.IServices.Services
     {
         private readonly ITripItemRepository _tripItemRepository;
         private readonly IItemRepository _itemRepository;
+        private readonly ITripRepository _tripRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<TripItemService> _logger;
-        public TripItemService(ITripItemRepository tripItemRepository, IItemRepository itemRepository, IMapper mapper, ILogger<TripItemService> logger)
+        public TripItemService(ITripRepository tripRepository, ITripItemRepository tripItemRepository, IItemRepository itemRepository, IMapper mapper, ILogger<TripItemService> logger)
         {
+            _tripRepository = tripRepository;
             _tripItemRepository = tripItemRepository;
             _itemRepository = itemRepository;
             _mapper = mapper;
@@ -74,11 +76,12 @@ namespace JourneySick.Business.IServices.Services
                 if (id > 0)
                 {
                     Tblitem tblitem = await _itemRepository.GetItemByName(tbltripitem.FldItemName);
-                    if(tblitem != null)
+                    if (tblitem != null)
                     {
-                        tblitem.FldQuantity ++;
+                        tblitem.FldQuantity++;
                         await _itemRepository.UpdateItem(tblitem);
-                    } else
+                    }
+                    else
                     {
                         Tblitem tblnewitem = new();
                         tblnewitem.FldQuantity = 1;
@@ -88,6 +91,10 @@ namespace JourneySick.Business.IServices.Services
                         tblnewitem.FldCreateDate = tbltripitem.FldCreateDate;
                         await _itemRepository.CreateItem(tblnewitem);
                     }
+                    TbltripVO tbltrip = await _tripRepository.GetTripById(tripItemDTO.FldTripId);
+                    tbltrip.FldTripId = tbltripitem.FldTripId;
+                    tbltrip.FldTripBudget += (tbltripitem.FldQuantity * tbltripitem.FldPriceMin);
+                    await _tripRepository.UpdateTripBudget(tbltrip);
                     return id;
                 }
                 throw new InsertException("Create trip item failed!");
@@ -112,6 +119,12 @@ namespace JourneySick.Business.IServices.Services
                     Tbltripitem tbltripitem = _mapper.Map<Tbltripitem>(tripItemDTO);
                     if (await _tripItemRepository.UpdateTripItem(tbltripitem) > 0)
                     {
+                        if (getTrip.FldPriceMin != tripItemDTO.FldPriceMin || getTrip.FldQuantity != tripItemDTO.FldQuantity)
+                        {
+                            TbltripVO tbltripVO = await _tripRepository.GetTripById(tripItemDTO.FldTripId);
+                            tbltripVO.FldTripBudget = tbltripVO.FldTripBudget - (getTrip.FldQuantity * getTrip.FldPriceMin) + (tripItemDTO.FldQuantity * tripItemDTO.FldPriceMin);
+                            await _tripRepository.UpdateTripBudget(tbltripVO);
+                        }
                         return (int)tripItemDTO.FldItemId;
                     }
                     else

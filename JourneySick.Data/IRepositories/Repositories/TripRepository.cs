@@ -115,7 +115,6 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 var query = "UPDATE tbltrip SET"
                     + "         fldTripName = @fldTripName, "
-                    + "         fldTripBudget = @fldTripBudget, "
                     + "         fldTripDescription = @fldTripDescription, "
                     + "         fldEstimateStartTime = @fldEstimateStartTime, "
                     + "         fldEstimateArrivalTime = @fldEstimateArrivalTime, "
@@ -127,7 +126,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("fldTripId", tripEntity.FldTripId, DbType.String);
                 parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
-                parameters.Add("fldTripBudget", tripEntity.FldTripBudget, DbType.Decimal);
                 parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
                 parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
                 parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
@@ -171,6 +169,27 @@ namespace JourneySick.Data.IRepositories.Repositories
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query, parameters));
 
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> UpdateTripBudget(TbltripVO tbltrip)
+        {
+            try
+            {
+                var query = "UPDATE tbltrip SET"
+                    + "         fldTripBudget = @fldTripBudget, "
+                    + "      WHERE fldTripId = @fldTripId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldTripId", tbltrip.FldTripId, DbType.String);
+                parameters.Add("fldTripBudget", tbltrip.FldTripBudget, DbType.Decimal);
+
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
             }
             catch (Exception e)
             {

@@ -88,6 +88,7 @@ namespace JourneySick.Business.IServices.Services
             {
                 tripVO.FldTripId = await GenerateUserID(); ;
                 tripVO.FldTripStatus = "ACTIVE";
+                tripVO.FldTripBudget = 0;
                 tripVO.FldCreateBy = currentUser.UserId;
                 tripVO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
                 Tblmaplocation startmaplocation = new Tblmaplocation();
