@@ -181,7 +181,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "UPDATE tbltrip SET"
-                    + "         fldTripBudget = @fldTripBudget, "
+                    + "         fldTripBudget = @fldTripBudget"
                     + "      WHERE fldTripId = @fldTripId";
 
                 var parameters = new DynamicParameters();
