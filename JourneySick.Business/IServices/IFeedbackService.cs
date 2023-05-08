@@ -17,5 +17,6 @@ namespace JourneySick.Business.IServices
         public Task<int> UpdateFeedback(FeedbackDTO feedbackDTO, CurrentUserObj currentUser);
         //DELETE
         public Task<int> DeleteFeedback(int id);
+        public Task<AllFeedbackDTO> GetTopFeedback();
     }
 }

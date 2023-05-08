@@ -170,5 +170,19 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public async Task<List<TblfeedbackVO>> GetTopFeedback()
+        {
+            try
+            {
+                var query = "SELECT * FROM tblfeedback a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId INNER JOIN tbluserdetail c ON a.fldUserId = c.fldUserId INNER JOIN tbltrip d ON a.fldTripId = d.fldTripId ORDER BY fldLike LIMIT 10";
+
+                using var connection = CreateConnection();
+                return (await connection.QueryAsync<TblfeedbackVO>(query)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }

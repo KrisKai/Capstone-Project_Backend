@@ -21,6 +21,7 @@ namespace JourneySick.Data.IRepositories
 
         //DELETE
         public Task<int> DeleteFeedback(int userId);
+        public Task<List<TblfeedbackVO>> GetTopFeedback();
     }
 }
 

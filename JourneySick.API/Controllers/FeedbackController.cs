@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Business.IServices.Services;
 
 namespace JourneySick.API.Controllers
 {
@@ -75,6 +76,15 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> DeleteFeedback(int id)
         {
             var result = await _feedbackService.DeleteFeedback(id);
+            return Ok(result);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("get-top-feedback")]
+        public async Task<IActionResult> GetTopFeedback()
+        {
+            var result = await _feedbackService.GetTopFeedback();
             return Ok(result);
         }
     }

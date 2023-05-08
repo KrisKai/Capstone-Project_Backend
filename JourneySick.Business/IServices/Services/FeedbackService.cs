@@ -155,5 +155,24 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
+        public async Task<AllFeedbackDTO> GetTopFeedback()
+        {
+            AllFeedbackDTO result = new();
+            try
+            {
+                List<TblfeedbackVO> tblusers = await _feedbackRepository.GetTopFeedback();
+                // convert entity to dto
+                List<FeedbackVO> users = _mapper.Map<List<FeedbackVO>>(tblusers);
+                int count = await _feedbackRepository.CountAllFeedbacks(null);
+                result.ListOfFeedback = users;
+                result.NumOfFeedback = count;
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(message: ex.StackTrace, ex);
+                throw;
+            }
+        }
     }
 }
