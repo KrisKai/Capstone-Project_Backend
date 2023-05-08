@@ -22,6 +22,7 @@ namespace JourneySick.Data.IRepositories
         //DELETE
         public Task<int> DeleteFeedback(int userId);
         public Task<List<TblfeedbackVO>> GetTopFeedback();
+        public Task<int> IncreaseLike(Tblfeedback tblfeedbackDTO, string status);
     }
 }
 

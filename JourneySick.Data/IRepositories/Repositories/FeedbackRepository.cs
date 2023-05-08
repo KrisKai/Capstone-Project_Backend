@@ -137,7 +137,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "      WHERE fldFeedbackId = @fldFeedbackId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldFeedbackId", feedbackEntity.FldFeedbackId, DbType.String);
+                parameters.Add("fldFeedbackId", feedbackEntity.FldFeedbackId, DbType.Int32);
                 parameters.Add("fldFeedback", feedbackEntity.FldFeedback, DbType.String);
                 parameters.Add("fldRate", feedbackEntity.FldRate, DbType.Double);
                 parameters.Add("fldUpdateDate", feedbackEntity.FldUpdateDate, DbType.DateTime);
@@ -160,7 +160,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "DELETE FROM tblfeedback WHERE fldFeedbackId = @fldFeedbackId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldFeedbackId", tripId, DbType.String);
+                parameters.Add("fldFeedbackId", tripId, DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
@@ -178,6 +178,37 @@ namespace JourneySick.Data.IRepositories.Repositories
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TblfeedbackVO>(query)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> IncreaseLike(Tblfeedback tblfeedbackDTO, string status)
+        {
+            try
+            {
+                var query = "";
+                var parameters = new DynamicParameters();
+                if (status.Equals("L"))
+                {
+                    query = "UPDATE tblfeedback ("
+                    + "         fldLike = @fldLike, "
+                    + "      WHERE fldFeedbackId = @fldFeedbackId";
+                    parameters.Add("fldLike", tblfeedbackDTO.FldLike, DbType.Int32);
+                }
+                else if(status.Equals("D"))
+                {
+                    query = "UPDATE tblfeedback ("
+                    + "         fldDislike = @fldDislike, "
+                    + "      WHERE fldFeedbackId = @fldFeedbackId";
+                    parameters.Add("fldDislike", tblfeedbackDTO.FldDislike, DbType.Int32);
+                }
+                parameters.Add("fldFeedbackId", tblfeedbackDTO.FldFeedbackId, DbType.Int32);
+
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
             }
             catch (Exception e)
             {

@@ -18,5 +18,6 @@ namespace JourneySick.Business.IServices
         //DELETE
         public Task<int> DeleteFeedback(int id);
         public Task<AllFeedbackDTO> GetTopFeedback();
+        public Task<int> IncreaseLike(int feedbackId, string status);
     }
 }

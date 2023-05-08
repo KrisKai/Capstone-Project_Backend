@@ -87,6 +87,18 @@ namespace JourneySick.API.Controllers
             var result = await _feedbackService.GetTopFeedback();
             return Ok(result);
         }
+
+        //UPDATE
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("increase-like")]
+        public async Task<IActionResult> IncreaseLike([FromBody] int feedbackId, string status)
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _feedbackService.IncreaseLike(feedbackId, status);
+            return Ok(result);
+
+        }
     }
 
 }

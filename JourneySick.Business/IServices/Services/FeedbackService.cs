@@ -82,7 +82,7 @@ namespace JourneySick.Business.IServices.Services
                         return userEntity.FldFeedbackId;
                     }
                 
-                throw new InsertException("Create user failed!");
+                throw new InsertException("Create Feedback failed!");
 
             }
             catch (Exception ex)
@@ -110,7 +110,7 @@ namespace JourneySick.Business.IServices.Services
                     }
                     else
                     {
-                        throw new UpdateException("Update user failed!");
+                        throw new UpdateException("Update Feedback failed!");
                     }
                 }
                 else
@@ -171,6 +171,43 @@ namespace JourneySick.Business.IServices.Services
             catch (Exception ex)
             {
                 _logger.LogError(message: ex.StackTrace, ex);
+                throw;
+            }
+        }
+
+        public async Task<int> IncreaseLike(int feedbackId, string status)
+        {
+            try
+            {
+                FeedbackDTO getTrip = await GetFeedbackById(feedbackId);
+
+                if (getTrip != null)
+                {
+                    if(status.Equals("L")) {
+                        getTrip.FldLike++;
+                    }
+                    else if(status.Equals("D")) { 
+                        getTrip.FldDislike++;
+                    }
+                    Tblfeedback tblfeedbackDTO = _mapper.Map<Tblfeedback>(getTrip);
+                    int id = await _feedbackRepository.IncreaseLike(tblfeedbackDTO, status);
+                    if (id > 0)
+                    {
+                        return id;
+                    }
+                    else
+                    {
+                        throw new UpdateException("Update failed!");
+                    }
+                }
+                else
+                {
+                    throw new GetOneException("Feedback is not existed!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
                 throw;
             }
         }
