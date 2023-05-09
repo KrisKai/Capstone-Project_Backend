@@ -20,6 +20,8 @@ namespace JourneySick.Data.Models.DTOs
 
         public string? FldStatus { get; set; }
 
+        public string? FldConfirmation { get; set; }
+
         public DateTime? FldCreateDate { get; set; }
 
         public string? FldCreateBy { get; set; }

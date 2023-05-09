@@ -146,5 +146,35 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
         }
+
+        public async Task<int> ConfirmTrip(int id)
+        {
+            try
+            {
+                TripMemberDTO getTrip = await GetTripMemberById(id);
+
+                if (getTrip != null)
+                {
+                    Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(getTrip);
+                    if (await _tripMemberRepository.ConfirmTrip(tbltripmember) > 0)
+                    {
+                        return id;
+                    }
+                    else
+                    {
+                        throw new UpdateException("Confirm failed!");
+                    }
+                }
+                else
+                {
+                    throw new GetOneException("Trip member is not existed!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
     }
 }

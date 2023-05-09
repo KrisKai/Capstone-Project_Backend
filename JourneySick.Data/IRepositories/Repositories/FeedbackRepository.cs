@@ -174,7 +174,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM tblfeedback a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId INNER JOIN tbluserdetail c ON a.fldUserId = c.fldUserId INNER JOIN tbltrip d ON a.fldTripId = d.fldTripId ORDER BY fldLike LIMIT 10";
+                var query = "SELECT fldUsername, fldLike, fldDislike, fldLocationName, fldRate, fldFeedback FROM tblfeedback a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId INNER JOIN tbluserdetail c ON a.fldUserId = c.fldUserId INNER JOIN tbltrip d ON a.fldTripId = d.fldTripId ORDER BY fldLike LIMIT 10";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TblfeedbackVO>(query)).ToList();

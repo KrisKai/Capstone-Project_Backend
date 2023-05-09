@@ -9,14 +9,14 @@ namespace JourneySick.Business.IServices
     {
         //Select list w paging
         public Task<AllTripMemberDTO> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName);
-        //Select Location
+        //Select
         public Task<TripMemberVO> GetTripMemberById(int memberId);
         //insert
         public Task<int> CreateTripMember(TripMemberDTO tripMemberDTO, CurrentUserObj currentUser);
         //update
         public Task<int> UpdateTripMember(TripMemberDTO tripMemberDTO, CurrentUserObj currentUser);
-        //update
+        //delete
         public Task<int> DeleteTripMember(int memberId);
-
+        public Task<int> ConfirmTrip(int id);
     }
 }

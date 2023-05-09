@@ -77,5 +77,15 @@ namespace JourneySick.API.Controllers
             var result = await _tripMemberService.DeleteTripMember(id);
             return Ok(result);
         }
+
+        //DELETE BY ID
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("confirm-trip")]
+        public async Task<IActionResult> ConfirmTrip([FromRoute] int id)
+        {
+            var result = await _tripMemberService.ConfirmTrip(id);
+            return Ok(result);
+        }
     }
 }

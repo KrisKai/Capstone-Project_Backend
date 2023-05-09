@@ -80,7 +80,7 @@ namespace JourneySick.API.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [HttpGet]
         [Route("get-top-feedback")]
         public async Task<IActionResult> GetTopFeedback()
         {
