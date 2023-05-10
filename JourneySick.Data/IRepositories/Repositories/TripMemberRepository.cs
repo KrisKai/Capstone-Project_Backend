@@ -36,9 +36,27 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "SELECT * FROM tbltripmember a INNER JOIN tbluserdetail b ON a.fldUserId = b.fldUserId WHERE fldMemberId = @fldMemberId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldMemberId", memberId, DbType.Int16);
+                parameters.Add("fldMemberId", memberId, DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<TbltripmemberVO>(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> CountTripMemberByUserIdAndTripId(string userId, string tripId)
+        {
+            try
+            {
+                var query = "SELECT COUNT(*) FROM tbltripmember a INNER JOIN tbluserdetail b ON a.fldUserId = b.fldUserId WHERE a.fldUserId = @userId AND fldTripId = @tripId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("userId", userId, DbType.String);
+                parameters.Add("tripId", tripId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<int>(query, parameters);
             }
             catch (Exception e)
             {
@@ -68,6 +86,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
         public async Task<int> CountAllTripMembers(string? memberName)
         {
             try
@@ -158,7 +177,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
-
 
         public async Task<int> DeleteTripMember(int planDetailId)
         {

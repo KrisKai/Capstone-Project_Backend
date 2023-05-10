@@ -13,17 +13,23 @@ namespace JourneySick.Data.IRepositories
     {
         //SELECT ALL
         public Task<List<TbltripmemberVO>> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName);
+        //SELECT LAST ONE
         public Task<int> GetLastOneId();
-        public Task<TbltripmemberVO> GetTripMemberById(int planDetailId);
+        //SELECT BY ID
+        public Task<TbltripmemberVO> GetTripMemberById(int tripMemberId);
+        //COUNT BY USERNAME AND TRIP ID
+        public Task<int> CountTripMemberByUserIdAndTripId(string userId, string tripId);
+        //COUNT
         public Task<int> CountAllTripMembers(string? memberName);
         //CREATE
         public Task<int> CreateTripMember(Tbltripmember tbltripmember);
         //UPDATE
         public Task<int> UpdateTripMember(Tbltripmember tbltripmember);
         //DELETE
-        public Task<int> DeleteTripMember(int planDetailId);
-
+        public Task<int> DeleteTripMember(int tripMemberId);
+        //UPDATE STATUS
         public Task<int> UpdateMemberStatus(Tbltripmember tbltripmember);
+        //CONFIRM INVITATION
         public Task<int> ConfirmTrip(Tbltripmember tbltripmember);
     }
 }

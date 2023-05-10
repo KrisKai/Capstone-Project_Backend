@@ -68,15 +68,22 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                tripMemberDTO.FldCreateBy = currentUser.UserId;
-                tripMemberDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(tripMemberDTO);
-                int id = await _tripMemberRepository.CreateTripMember(tbltripmember);
-                if (id > 0)
+                if (await _tripMemberRepository.CountTripMemberByUserIdAndTripId(tripMemberDTO.FldUserId, tripMemberDTO.FldTripId) == 0)
                 {
-                    return id;
+                    tripMemberDTO.FldCreateBy = currentUser.UserId;
+                    tripMemberDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(tripMemberDTO);
+                    int id = await _tripMemberRepository.CreateTripMember(tbltripmember);
+                    if (id > 0)
+                    {
+                        return id;
+                    }
                 }
-                throw new InsertException("Create trip member failed!");
+                else
+                {
+                    throw new InsertException("Tài khoản này đã tồn tại trong chuyến đi");
+                }
+                throw new InsertException("Đăng kí thành viên thất bại!");
             }
             catch (Exception ex)
             {
@@ -93,21 +100,29 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    tripMemberDTO.FldUpdateBy = currentUser.UserId;
-                    tripMemberDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(tripMemberDTO);
-                    if (await _tripMemberRepository.UpdateTripMember(tbltripmember) > 0)
+                    if (await _tripMemberRepository.CountTripMemberByUserIdAndTripId(tripMemberDTO.FldUserId, tripMemberDTO.FldTripId) == 0)
                     {
-                        return (int)tripMemberDTO.FldMemberId;
+                        tripMemberDTO.FldUpdateBy = currentUser.UserId;
+                        tripMemberDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                        Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(tripMemberDTO);
+                        if (await _tripMemberRepository.UpdateTripMember(tbltripmember) > 0)
+                        {
+                            return (int)tripMemberDTO.FldMemberId;
+                        }
+                        else
+                        {
+                            throw new UpdateException("Cập nhật thành viên thất bại");
+                        }
                     }
                     else
                     {
-                        throw new UpdateException("Update trip member failed!");
+                        throw new InsertException("Tài khoản này đã tồn tại trong chuyến đi");
                     }
+                    throw new InsertException("Đăng kí thành viên thất bại!");
                 }
                 else
                 {
-                    throw new GetOneException("Trip member is not existed!");
+                    throw new GetOneException("Thành viên này không tồn tại trong chuyến đi");
                 }
             }
             catch (Exception ex)
@@ -131,13 +146,13 @@ namespace JourneySick.Business.IServices.Services
                     }
                     else
                     {
-                        throw new DeleteException("Delete trip member failed!");
+                        throw new DeleteException("Xoá thành viên thất bại!");
                     }
 
                 }
                 else
                 {
-                    throw new GetOneException("Trip member is not existed!");
+                    throw new GetOneException("Thành viên này không tồn tại trong chuyến đi!");
                 }
             }
             catch (Exception ex)
@@ -167,7 +182,7 @@ namespace JourneySick.Business.IServices.Services
                 }
                 else
                 {
-                    throw new GetOneException("Trip member is not existed!");
+                    throw new GetOneException("Thành viên này không tồn tại trong chuyến đi!");
                 }
             }
             catch (Exception ex)
