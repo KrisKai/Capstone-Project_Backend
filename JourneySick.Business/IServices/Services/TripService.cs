@@ -234,5 +234,18 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
+        public async Task<int> CountTripCreatedThisMonth()
+        {
+            try
+            {
+                int count = await _tripRepository.CountTripCreatedThisMonth();
+                return count;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
     }
 }
