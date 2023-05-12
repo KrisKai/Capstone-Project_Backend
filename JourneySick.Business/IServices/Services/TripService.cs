@@ -265,7 +265,7 @@ namespace JourneySick.Business.IServices.Services
                     if (countThisMonth == 0)
                     {
                         tripStatistic.countDiff = 100;
-                        tripStatistic.trendStatus = "R";
+                        tripStatistic.trendStatus = "L";
                     }
                     else
                     {
