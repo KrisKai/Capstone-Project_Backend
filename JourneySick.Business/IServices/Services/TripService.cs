@@ -242,9 +242,11 @@ namespace JourneySick.Business.IServices.Services
                 int countThisMonth = await _tripRepository.CountTripCreatedThisMonth();
                 int countPreviousMonth = await _tripRepository.CountTripCreatedPreviousMonth();
                 int countThisYear = await _tripRepository.CountTripCreatedThisYear();
-                TripStatisticResponse tripStatistic = new();
-                tripStatistic.tripCountThisMonth = countThisMonth;
-                tripStatistic.tripCountThisYear = countThisYear;
+                TripStatisticResponse tripStatistic = new()
+                {
+                    tripCountThisMonth = countThisMonth,
+                    tripCountThisYear = countThisYear
+                };
                 if (countThisMonth >= countPreviousMonth)
                 {
                     if(countPreviousMonth == 0)
