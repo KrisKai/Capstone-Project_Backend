@@ -574,6 +574,33 @@ namespace JourneySick.Data.Models.Entities
                     .HasColumnName("fldTripid");
             });
 
+            modelBuilder.Entity<Tbltriproute>(entity =>
+            {
+                entity.HasKey(e => e.FldRouteId)
+                    .HasName("PRIMARY");
+
+                entity.ToTable("tbltriproute");
+
+                entity.Property(e => e.FldRouteId).HasColumnName("fldRouteId");
+
+                entity.Property(e => e.FldDistance)
+                    .HasPrecision(12, 2)
+                    .HasColumnName("fldDistance");
+
+                entity.Property(e => e.FldEstimateTime)
+                    .HasPrecision(5, 2)
+                    .HasColumnName("fldEstimateTime")
+                    .HasDefaultValueSql("'0.00'");
+
+                entity.Property(e => e.FldMapId).HasColumnName("fldMapId");
+
+                entity.Property(e => e.FldPriority).HasColumnName("fldPriority");
+
+                entity.Property(e => e.FldTripid)
+                    .HasMaxLength(20)
+                    .HasColumnName("fldTripid");
+            });
+
             modelBuilder.Entity<Tbluser>(entity =>
             {
                 entity.HasKey(e => e.FldUserId)
