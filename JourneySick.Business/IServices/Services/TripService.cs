@@ -247,13 +247,29 @@ namespace JourneySick.Business.IServices.Services
                 tripStatistic.tripCountThisYear = countThisYear;
                 if (countThisMonth >= countPreviousMonth)
                 {
-                    tripStatistic.countDiff = countThisMonth - countPreviousMonth;
-                    tripStatistic.trendStatus = "R";
+                    if(countPreviousMonth == 0)
+                    {
+                        tripStatistic.countDiff = 100;
+                        tripStatistic.trendStatus = "R";
+                    }
+                    else
+                    {
+                        tripStatistic.countDiff = countThisMonth / countPreviousMonth * 100;
+                        tripStatistic.trendStatus = "R";
+                    }
                 }
                 else
                 {
-                    tripStatistic.countDiff = countPreviousMonth - countThisMonth;
-                    tripStatistic.trendStatus = "L";
+                    if (countThisMonth == 0)
+                    {
+                        tripStatistic.countDiff = 100;
+                        tripStatistic.trendStatus = "R";
+                    }
+                    else
+                    {
+                        tripStatistic.countDiff = countPreviousMonth / countThisMonth * 100;
+                        tripStatistic.trendStatus = "L";
+                    }
                 }
                 return tripStatistic;
             }

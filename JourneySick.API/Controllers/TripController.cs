@@ -81,12 +81,11 @@ namespace JourneySick.API.Controllers
 
         //TRIP STATISTIC
         [HttpGet]
-        [Authorize]
+        //[Authorize]
         [Route("trip-statistic")]
         public async Task<IActionResult> TripStatistic()
         {
-            var result = new TripStatisticResponse();
-            result = await _tripService.TripStatistic();
+            var result = await _tripService.TripStatistic();
             return Ok(result);
 
         }
