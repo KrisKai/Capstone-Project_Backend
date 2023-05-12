@@ -8,6 +8,7 @@ using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.Enums;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using Microsoft.AspNetCore.Authorization;
+using JourneySick.Data.Models.DTOs.CommonDTO;
 
 namespace JourneySick.API.Controllers
 {
@@ -78,13 +79,14 @@ namespace JourneySick.API.Controllers
             return Ok(result);
         }
 
-        //COUNT THE QUANTITY OF TRIP CREATED IN THIS MONTH
+        //TRIP STATISTIC
         [HttpGet]
         [Authorize]
-        [Route("count-this-month")]
-        public async Task<IActionResult> CountTripCreatedThisMonth()
+        [Route("trip-statistic")]
+        public async Task<IActionResult> TripStatistic()
         {
-            int result = await _tripService.CountTripCreatedThisMonth();
+            var result = new TripStatisticResponse();
+            result = await _tripService.TripStatistic();
             return Ok(result);
 
         }

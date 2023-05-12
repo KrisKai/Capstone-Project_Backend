@@ -211,5 +211,35 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        public async Task<int> CountTripCreatedPreviousMonth()
+        {
+            try
+            {
+                var query = "SELECT COUNT(*) FROM tbltripdetail WHERE MONTH(fldCreateDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and YEAR(fldCreateDate) = YEAR(now())";
+                using var connection = CreateConnection();
+                return ((int)(long)connection.ExecuteScalar(query));
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> CountTripCreatedThisYear()
+        {
+            try
+            {
+                var query = "SELECT COUNT(*) FROM tbltripdetail WHERE YEAR(fldCreateDate) = YEAR(now())";
+                using var connection = CreateConnection();
+                return ((int)(long)connection.ExecuteScalar(query));
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }

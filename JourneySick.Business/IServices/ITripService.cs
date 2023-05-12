@@ -1,5 +1,6 @@
 ﻿using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 
@@ -18,6 +19,6 @@ namespace JourneySick.Business.IServices
         //Delete
         public Task<int> DeleteTrip(string tripId);
         //Count this month
-        public Task<int> CountTripCreatedThisMonth();
+        public Task<TripStatisticResponse> TripStatistic();
     }
 }

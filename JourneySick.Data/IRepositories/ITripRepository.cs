@@ -21,7 +21,11 @@ namespace JourneySick.Data.IRepositories
         public Task<int> DeleteTrip(string tripId);
         //UPDATE BUDGET
         public Task<int> UpdateTripBudget(TbltripVO tbltripVO);
-        //COUNT THIS MONTH
+        //COUNT THE QUANTITY OF TRIP CREATED IN THIS MONTH
         public Task<int> CountTripCreatedThisMonth();
+        //COUNT PREVIOUS MONTH
+        public Task<int> CountTripCreatedPreviousMonth();
+        //COUNT THIS YEAR
+        public Task<int> CountTripCreatedThisYear();
     }
 }

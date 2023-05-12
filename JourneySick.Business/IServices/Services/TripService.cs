@@ -5,6 +5,7 @@ using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
@@ -59,7 +60,7 @@ namespace JourneySick.Business.IServices.Services
                 TbltripVO tbltrip = await _tripRepository.GetTripById(tripId);
                 TripVO tripVO = _mapper.Map<TripVO>(tbltrip);
                 Tblmaplocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.FldTripStartLocationId);
-                if(startmaplocation != null)
+                if (startmaplocation != null)
                 {
                     tripVO.FldStartLocationName = startmaplocation.FldLocationName;
                     tripVO.FldStartLatitude = startmaplocation.FldLatitude;
@@ -183,7 +184,7 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    if (await _tripRepository.DeleteTrip(tripId) > 0 && await _tripDetailRepository.DeleteTripDetail(tripId) > 0 
+                    if (await _tripRepository.DeleteTrip(tripId) > 0 && await _tripDetailRepository.DeleteTripDetail(tripId) > 0
                         && await _mapLocationRepository.DeleteMapLocation((int)getTrip.FldTripStartLocationId) > 0 && await _mapLocationRepository.DeleteMapLocation((int)getTrip.FldTripDestinationLocationId) > 0)
                     {
                         return 1;
@@ -234,12 +235,27 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<int> CountTripCreatedThisMonth()
+        public async Task<TripStatisticResponse> TripStatistic()
         {
             try
             {
-                int count = await _tripRepository.CountTripCreatedThisMonth();
-                return count;
+                int countThisMonth = await _tripRepository.CountTripCreatedThisMonth();
+                int countPreviousMonth = await _tripRepository.CountTripCreatedPreviousMonth();
+                int countThisYear = await _tripRepository.CountTripCreatedThisYear();
+                TripStatisticResponse tripStatistic = new();
+                tripStatistic.tripCountThisMonth = countThisMonth;
+                tripStatistic.tripCountThisYear = countThisYear;
+                if (countThisMonth >= countPreviousMonth)
+                {
+                    tripStatistic.countDiff = countThisMonth - countPreviousMonth;
+                    tripStatistic.trendStatus = "R";
+                }
+                else
+                {
+                    tripStatistic.countDiff = countPreviousMonth - countThisMonth;
+                    tripStatistic.trendStatus = "L";
+                }
+                return tripStatistic;
             }
             catch (Exception ex)
             {
