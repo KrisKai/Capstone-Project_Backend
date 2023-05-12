@@ -81,6 +81,7 @@ namespace JourneySick.API.Controllers
         //COUNT THE QUANTITY OF TRIP CREATED IN THIS MONTH
         [HttpGet]
         [Authorize]
+        [Route("count-this-month")]
         public async Task<IActionResult> CountTripCreatedThisMonth()
         {
             int result = await _tripService.CountTripCreatedThisMonth();
