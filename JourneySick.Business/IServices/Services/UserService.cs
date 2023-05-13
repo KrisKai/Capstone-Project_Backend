@@ -144,6 +144,7 @@ namespace JourneySick.Business.IServices.Services
                 {
                     if (await _userRepository.DeleteUser(userId) > 0 && await _userDetailRepository.DeleteUserDetail(userId) > 0)
                     {
+                        await _tripMemberRepository.DeleteTripMemberByUserId(userId);
                         return 1;
                     }
                     else

@@ -33,7 +33,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM tbltripmember a INNER JOIN tbluserdetail b ON a.fldUserId = b.fldUserId WHERE fldMemberId = @fldMemberId";
+                var query = "SELECT * FROM tbltripmember a LEFT JOIN tbluserdetail b ON a.fldUserId = b.fldUserId WHERE fldMemberId = @fldMemberId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("fldMemberId", memberId, DbType.Int32);
@@ -50,7 +50,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbltripmember a INNER JOIN tbluserdetail b ON a.fldUserId = b.fldUserId WHERE a.fldUserId = @userId AND fldTripId = @tripId";
+                var query = "SELECT COUNT(*) FROM tbltripmember a LEFT JOIN tbluserdetail b ON a.fldUserId = b.fldUserId WHERE a.fldUserId = @userId AND fldTripId = @tripId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("userId", userId, DbType.String);
@@ -76,7 +76,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 memberName ??= "";
                 parameters.Add("fldNickName", memberName, DbType.String);
 
-                var query = "SELECT * FROM tbltripmember a INNER JOIN tbluserdetail b ON a.fldUserId = b.fldUserId INNER JOIN tbltriprole c ON a.fldMemberRoleId = c.fldRoleId WHERE fldNickName LIKE CONCAT('%', @fldNickName, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM tbltripmember a LEFT JOIN tbluserdetail b ON a.fldUserId = b.fldUserId INNER JOIN tbltriprole c ON a.fldMemberRoleId = c.fldRoleId WHERE fldNickName LIKE CONCAT('%', @fldNickName, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TbltripmemberVO>(query, parameters)).ToList();
@@ -178,14 +178,14 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> DeleteTripMember(int planDetailId)
+        public async Task<int> DeleteTripMember(int memberId)
         {
             try
             {
                 var query = "DELETE FROM tbltripmember WHERE fldMemberId = @fldMemberId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldMemberId", planDetailId, DbType.Int32);
+                parameters.Add("fldMemberId", memberId, DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
@@ -206,6 +206,23 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("UserId", tbltripmember.FldUserId, DbType.String);
                 parameters.Add("fldStatus", tbltripmember.FldStatus, DbType.Int32);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> DeleteTripMemberByUserId(string userId)
+        {
+            try
+            {
+                var query = "DELETE FROM tbltripmember WHERE fldUserId = @UserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("UserId", userId, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
