@@ -15,10 +15,11 @@ namespace RevenueSharingInvest.Business.Services.Extensions.Email
         //private static readonly string App_Password = "hchr lwct gcor qtsr";
         private static readonly string APP_PASSWORD = "cxrdzurzsizgzaep";
         private static readonly string SENDER = "journeysick.noreply@gmail.com";
-        public static async Task SendEmail(string filePath, string receiver, string sender)
+        public static async Task SendEmail(string fullname, /*string filePath,*/ string receiver, string tripId)
         {
             string SendMailSubject = "JourneySick - Invitation To Another Journey!!!";
-            string SendMailBody = "ok";
+            string link = "";
+            string SendMailBody = "Bạn được mời tham gia chuyển đi của "+ fullname+ "\nNhấn  < a href = '"+link+"' > vào đây </ a > ' để chấp nhận tham gia";
 
             try
             {

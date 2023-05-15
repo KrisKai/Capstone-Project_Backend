@@ -10,6 +10,7 @@ using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Logging;
+using RevenueSharingInvest.Business.Services.Extensions.Email;
 using System.Numerics;
 
 namespace JourneySick.Business.IServices.Services
@@ -17,12 +18,14 @@ namespace JourneySick.Business.IServices.Services
     public class TripMemberService : ITripMemberService
     {
         private readonly ITripMemberRepository _tripMemberRepository;
+        private readonly IUserDetailRepository _userDetailRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<TripMemberService> _logger;
 
-        public TripMemberService(ITripMemberRepository tripMemberRepository, IMapper mapper, ILogger<TripMemberService> logger)
+        public TripMemberService(ITripMemberRepository tripMemberRepository, IUserDetailRepository userDetailRepository, IMapper mapper, ILogger<TripMemberService> logger)
         {
             _tripMemberRepository = tripMemberRepository;
+            _userDetailRepository = userDetailRepository;
             _mapper = mapper;
             _logger = logger;
         }
@@ -72,10 +75,14 @@ namespace JourneySick.Business.IServices.Services
                 {
                     tripMemberDTO.FldCreateBy = currentUser.UserId;
                     tripMemberDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    tripMemberDTO.FldConfirmation = "N";
                     Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(tripMemberDTO);
                     int id = await _tripMemberRepository.CreateTripMember(tbltripmember);
                     if (id > 0)
                     {
+                        TbluserVO tbluserdetail = await _userDetailRepository.GetUserDetailById(tripMemberDTO.FldUserId);
+                        TbluserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(tripMemberDTO.FldTripId);
+                        await EmailService.SendEmail(tripPresenter.FldFullname, tbluserdetail.FldEmail, tripMemberDTO.FldTripId);
                         return id;
                     }
                 }
@@ -170,14 +177,21 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(getTrip);
-                    if (await _tripMemberRepository.ConfirmTrip(tbltripmember) > 0)
+                    if(getTrip.FldConfirmation.Equals("N"))
                     {
-                        return id;
+                        Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(getTrip);
+                        if (await _tripMemberRepository.ConfirmTrip(tbltripmember) > 0)
+                        {
+                            return id;
+                        }
+                        else
+                        {
+                            throw new UpdateException("Confirm failed!");
+                        }
                     }
                     else
                     {
-                        throw new UpdateException("Confirm failed!");
+                        throw new UpdateException("Đường dẫn này không hợp lệ! Vui lòng thử lại sau");
                     }
                 }
                 else

@@ -68,50 +68,20 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CreateUserDetail(TbluserVO userDetail)
+        public async Task<TbluserVO> GetTripPresenterByTripId(string tripId)
         {
             try
             {
-                var query = "INSERT INTO tbluserdetail " +
-                    "(fldUserId, " +
-                    "fldRole, " +
-                    "fldBirthday, " +
-                    "fldActiveStatus, " +
-                    "fldEmail, " +
-                    "fldFullname, " +
-                    "fldPhone, " +
-                    "fldAddress, " +
-                    "fldCreateDate, " +
-                    "fldCreateBy) " +
-                    "VALUES " +
-                    "(@fldUserId, " +
-                    "@fldRole, " +
-                    "@fldBirthday, " +
-                    "@fldActiveStatus, " +
-                    "@fldEmail, " +
-                    "@fldFullname, " +
-                    "@fldPhone, " +
-                    "@fldAddress," +
-                    "@fldCreateDate, " +
-                    "@fldCreateBy);";
-
+                var query = "SELECT * FROM tbluserdetail a RIGHT JOIN tbltrip b ON a.fldUserId = b.fldTripPresenter WHERE fldTripId = @fldTripId";
                 var parameters = new DynamicParameters();
-                parameters.Add("fldUserId", userDetail.FldUserId, DbType.String);
-                parameters.Add("fldRole", userDetail.FldRole, DbType.String);
-                parameters.Add("fldBirthday", userDetail.FldBirthday, DbType.DateTime);
-                parameters.Add("fldActiveStatus", userDetail.FldActiveStatus, DbType.String);
-                parameters.Add("fldEmail", userDetail.FldEmail, DbType.String);
-                parameters.Add("fldFullname", userDetail.FldFullname, DbType.String);
-                parameters.Add("fldPhone", userDetail.FldPhone, DbType.String);
-                parameters.Add("fldAddress", userDetail.FldAddress, DbType.String);
-                parameters.Add("fldCreateDate", userDetail.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", userDetail.FldCreateBy, DbType.String);        
+                parameters.Add("fldTripId", tripId, DbType.String);
                 using var connection = CreateConnection();
-                return await connection.ExecuteAsync(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<TbluserVO>(query, parameters);
+
             }
-            catch(Exception ex)
+            catch (Exception e)
             {
-                throw new Exception(ex.Message, ex);
+                throw new Exception(e.Message, e);
             }
         }
 
@@ -164,6 +134,53 @@ namespace JourneySick.Data.IRepositories.Repositories
             catch (Exception e)
             {
                 throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> CreateUserDetail(TbluserVO userDetail)
+        {
+            try
+            {
+                var query = "INSERT INTO tbluserdetail " +
+                    "(fldUserId, " +
+                    "fldRole, " +
+                    "fldBirthday, " +
+                    "fldActiveStatus, " +
+                    "fldEmail, " +
+                    "fldFullname, " +
+                    "fldPhone, " +
+                    "fldAddress, " +
+                    "fldCreateDate, " +
+                    "fldCreateBy) " +
+                    "VALUES " +
+                    "(@fldUserId, " +
+                    "@fldRole, " +
+                    "@fldBirthday, " +
+                    "@fldActiveStatus, " +
+                    "@fldEmail, " +
+                    "@fldFullname, " +
+                    "@fldPhone, " +
+                    "@fldAddress," +
+                    "@fldCreateDate, " +
+                    "@fldCreateBy);";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldUserId", userDetail.FldUserId, DbType.String);
+                parameters.Add("fldRole", userDetail.FldRole, DbType.String);
+                parameters.Add("fldBirthday", userDetail.FldBirthday, DbType.DateTime);
+                parameters.Add("fldActiveStatus", userDetail.FldActiveStatus, DbType.String);
+                parameters.Add("fldEmail", userDetail.FldEmail, DbType.String);
+                parameters.Add("fldFullname", userDetail.FldFullname, DbType.String);
+                parameters.Add("fldPhone", userDetail.FldPhone, DbType.String);
+                parameters.Add("fldAddress", userDetail.FldAddress, DbType.String);
+                parameters.Add("fldCreateDate", userDetail.FldCreateDate, DbType.DateTime);
+                parameters.Add("fldCreateBy", userDetail.FldCreateBy, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
             }
         }
 

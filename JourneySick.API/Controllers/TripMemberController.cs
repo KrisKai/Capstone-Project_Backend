@@ -78,7 +78,7 @@ namespace JourneySick.API.Controllers
             return Ok(result);
         }
 
-        //DELETE BY ID
+        //CONFIRM TRIP
         [AllowAnonymous]
         [HttpPost]
         [Route("confirm-trip")]
