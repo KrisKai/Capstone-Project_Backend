@@ -19,7 +19,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COALESCE(MAX(fldUserId), 0) FROM tbltripmember ";
+                var query = "SELECT COALESCE(MAX(fldMemberId), 0) FROM tbltripmember ";
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<int>(query);
             }
@@ -232,17 +232,16 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> ConfirmTrip(Tbltripmember tbltripmember)
+        public async Task<int> ConfirmTrip(int tripMemberId)
         {
             try
             {
                 var query = "UPDATE tbltripmember SET " +
-                    "fldConfirmation = @fldConfirmation " +
-                    "WHERE fldUserId = @UserId";
+                    "fldConfirmation = 'Y' " +
+                    "WHERE fldMemberId = @fldMemberId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("UserId", tbltripmember.FldUserId, DbType.String);
-                parameters.Add("fldConfirmation", tbltripmember.FldConfirmation, DbType.Int32);
+                parameters.Add("fldMemberId", tripMemberId, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }

@@ -32,6 +32,6 @@ namespace JourneySick.Data.IRepositories
         //DELETE BY USER ID
         public Task<int> DeleteTripMemberByUserId(string userId);
         //CONFIRM INVITATION
-        public Task<int> ConfirmTrip(Tbltripmember tbltripmember);
+        public Task<int> ConfirmTrip(int tripMemberId);
     }
 }

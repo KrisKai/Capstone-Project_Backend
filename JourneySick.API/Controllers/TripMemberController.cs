@@ -80,9 +80,9 @@ namespace JourneySick.API.Controllers
 
         //CONFIRM TRIP
         [AllowAnonymous]
-        [HttpPost]
+        [HttpPut]
         [Route("confirm-trip")]
-        public async Task<IActionResult> ConfirmTrip([FromRoute] int id)
+        public async Task<IActionResult> ConfirmTrip([FromBody] int id)
         {
             var result = await _tripMemberService.ConfirmTrip(id);
             return Ok(result);
