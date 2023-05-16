@@ -57,7 +57,17 @@ namespace JourneySick.Business.IServices.Services
                 string checkNameExist = await _userRepository.GetUsernameIfExist(registereRequest.Username);
                 if (checkNameExist != null)
                 {
-                    throw new UserAlreadyExistException("User With This Username Already Exist!!");
+                    throw new UserAlreadyExistException("Tên đăng nhập này đã được sử dụng!!");
+                }
+                string checkEmailExist = await _userDetailRepository.GetEmailIfExist(registereRequest.Email);
+                if (checkEmailExist != null)
+                {
+                    throw new UserAlreadyExistException("Địa chỉ email này đã được sử dụng!!");
+                }
+                string checkPhoneExist = await _userDetailRepository.GetPhoneIfExist(registereRequest.Phone);
+                if (checkPhoneExist != null)
+                {
+                    throw new UserAlreadyExistException("Số điện thoại này đã được sử dụng!!");
                 }
                 userDetailEntity.FldUserId = await GenerateUserID();
                 userDetailEntity.FldUsername = registereRequest.Username;
@@ -81,7 +91,7 @@ namespace JourneySick.Business.IServices.Services
                     userDetailEntity.FldCreateBy = userDetailEntity.FldUserId;
                     if (await _userDetailRepository.CreateUserDetail(userDetailEntity) < 1)
                     {
-                        throw new RegisterUserException("Register Failed!!");
+                        throw new RegisterUserException("Đăng kí thất bại!!");
                     }
                     await EmailService.SendEmailRegister(userDetailEntity.FldEmail, userDetailEntity.FldFullname);
                 }
@@ -108,7 +118,7 @@ namespace JourneySick.Business.IServices.Services
                 string checkValue = await _userRepository.GetPasswordByUsername(loginRequest.Username);
                 if (false)
                 {
-                    throw new LoginFailedException("Username Or Password Not Exist!!");
+                    throw new LoginFailedException("Tài khoản hoặc mật khẩu không đúng!!");
                 }
                 else
                 {
@@ -127,7 +137,7 @@ namespace JourneySick.Business.IServices.Services
                     }
                     else
                     {
-                        throw new LoginFailedException("Username Or Password Not Exist!!");
+                        throw new LoginFailedException("Tài khoản hoặc mật khẩu không đúng!!");
                     }
                 }
 
@@ -149,7 +159,7 @@ namespace JourneySick.Business.IServices.Services
                 string checkValue = await _userRepository.GetPasswordByUsername(loginRequest.Username);
                 if (string.IsNullOrEmpty(checkValue))
                 {
-                    throw new LoginFailedException("Username Or Password Not Exist!!");
+                    throw new LoginFailedException("Tài khoản hoặc mật khẩu không đúng!!");
                 }
                 else
                 {
@@ -183,7 +193,7 @@ namespace JourneySick.Business.IServices.Services
                     }
                     else
                     {
-                        throw new LoginFailedException("Username Or Password Not Exist!!");
+                        throw new LoginFailedException("Tài khoản hoặc mật khẩu không đúng!!");
                     }
                 }
 

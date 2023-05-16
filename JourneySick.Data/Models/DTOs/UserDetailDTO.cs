@@ -33,6 +33,8 @@ namespace JourneySick.Data.Models.DTOs
         public int? FldTripCompleted { get; set; }
 
         public int? FldTripCancelled { get; set; }
+        public string? FldConfirmation { get; set; }
+        public DateTime? FldSendDate { get; set; }
 
         public DateTime? FldCreateDate { get; set; }
 

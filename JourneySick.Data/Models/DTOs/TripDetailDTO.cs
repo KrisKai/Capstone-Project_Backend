@@ -22,8 +22,6 @@ namespace JourneySick.Data.Models.DTOs
         /// </summary>
         public string? FldEstimateEndTime { get; set; }
         public decimal? FldDistance { get; set; }
-        public string? FldConfirmation { get; set; }
-        public DateTime? FldSendDate { get; set; }
         public DateTime? FldCreateDate { get; set; }
         public string? FldCreateBy { get; set; }
         public DateTime? FldUpdateDate { get; set; }

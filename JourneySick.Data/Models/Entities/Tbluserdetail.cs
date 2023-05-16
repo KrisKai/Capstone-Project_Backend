@@ -18,6 +18,8 @@ namespace JourneySick.Data.Models.Entities
         public int? FldTripJoined { get; set; }
         public int? FldTripCompleted { get; set; }
         public int? FldTripCancelled { get; set; }
+        public string? FldConfirmation { get; set; }
+        public DateTime? FldSendDate { get; set; }
         public DateTime? FldCreateDate { get; set; }
         public string? FldCreateBy { get; set; }
         public DateTime? FldUpdateDate { get; set; }
