@@ -87,5 +87,15 @@ namespace JourneySick.API.Controllers
             var result = await _tripMemberService.ConfirmTrip(id);
             return Ok(result);
         }
+
+        //SEND MAIL
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("send-mail")]
+        public async Task<IActionResult> SendMail([FromBody] int id)
+        {
+            var result = await _tripMemberService.SendMail(id);
+            return Ok(result);
+        }
     }
 }

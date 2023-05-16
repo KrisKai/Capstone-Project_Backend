@@ -241,7 +241,26 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "WHERE fldMemberId = @fldMemberId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldMemberId", tripMemberId, DbType.String);
+                parameters.Add("fldMemberId", tripMemberId, DbType.Int32);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> UpdateSendMailDate(int id)
+        {
+            try
+            {
+                var query = "UPDATE tbltripmember SET " +
+                    "fldSendDate = NOW() " +
+                    "WHERE fldMemberId = @fldMemberId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("fldMemberId", id,  DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }

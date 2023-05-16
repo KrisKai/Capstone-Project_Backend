@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Execution;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Models.DTOs;
@@ -84,6 +85,7 @@ namespace JourneySick.Business.IServices.Services
                         TbluserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(tripMemberDTO.FldTripId);
                         int memberId = await _tripMemberRepository.GetLastOneId();
                         await EmailService.SendEmail(tripPresenter.FldFullname, tbluserdetail.FldEmail, tbluserdetail.FldFullname, memberId);
+                        await _tripMemberRepository.UpdateSendMailDate(memberId);
                         return id;
                     }
                 }
@@ -170,7 +172,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> ConfirmTrip(int id)
+        public async Task<int> SendMail(int id)
         {
             try
             {
@@ -180,13 +182,47 @@ namespace JourneySick.Business.IServices.Services
                 {
                     if(getTrip.FldConfirmation.Equals("N"))
                     {
+                        TbluserVO tbluserdetail = await _userDetailRepository.GetUserDetailById(getTrip.FldUserId);
+                        TbluserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(getTrip.FldTripId);
+                        int memberId = await _tripMemberRepository.GetLastOneId();
+                        await EmailService.SendEmail(tripPresenter.FldFullname, tbluserdetail.FldEmail, tbluserdetail.FldFullname, memberId);
+                        await _tripMemberRepository.UpdateSendMailDate(id);
+                        return id;
+                    }
+                    else
+                    {
+                        throw new UpdateException("Thành viên này đã tham gia chuyến đi!");
+                    }
+                }
+                else
+                {
+                    throw new GetOneException("Thành viên này không tồn tại trong chuyến đi!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
+        public async Task<int> ConfirmTrip(int id)
+        {
+            try
+            {
+                TripMemberDTO getTrip = await GetTripMemberById(id);
+
+                if (getTrip != null)
+                {
+                    if (getTrip.FldConfirmation.Equals("N"))
+                    {
                         if (await _tripMemberRepository.ConfirmTrip(id) > 0)
                         {
                             return id;
                         }
                         else
                         {
-                            throw new UpdateException("Confirm failed!");
+                            throw new UpdateException("Xác thực thất bại!");
                         }
                     }
                     else

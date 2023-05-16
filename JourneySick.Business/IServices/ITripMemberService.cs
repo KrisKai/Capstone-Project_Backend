@@ -17,6 +17,9 @@ namespace JourneySick.Business.IServices
         public Task<int> UpdateTripMember(TripMemberDTO tripMemberDTO, CurrentUserObj currentUser);
         //delete
         public Task<int> DeleteTripMember(int memberId);
+        //Confirm mail
         public Task<int> ConfirmTrip(int id);
+        //Send mail
+        public Task<int> SendMail(int id);
     }
 }
