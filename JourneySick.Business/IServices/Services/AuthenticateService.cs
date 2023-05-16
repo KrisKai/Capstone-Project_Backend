@@ -127,6 +127,11 @@ namespace JourneySick.Business.IServices.Services
                     if (encryptedPassword.Equals(checkValue))
                     {
                         TbluserVO tbluserVO = await _userRepository.GetUserByUsername(loginRequest.Username);
+                        if (tbluserVO.FldConfirmation.Equals("N"))
+                        {
+                            // note: cheeck thêm đk sendDate
+                            throw new LoginFailedException("Vui lòng xác thực email của bạn!!");
+                        }
                         UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
                         loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
                         CurrentUserObj currentUser = new();
