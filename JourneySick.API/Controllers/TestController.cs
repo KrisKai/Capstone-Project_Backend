@@ -9,6 +9,7 @@ using JourneySick.Business.Helpers;
 using JourneySick.Data.Models.Entities;
 using Org.BouncyCastle.Crmf;
 using System.Configuration;
+using JourneySick.Business.Extensions.Firebase;
 
 namespace JourneySick.API.Controllers
 {
@@ -17,17 +18,20 @@ namespace JourneySick.API.Controllers
     [EnableCors]
     public class TestController : ControllerBase
     {
+        private readonly IFirebaseStorageService _storageService;
 
-        public TestController()
+        public TestController(IFirebaseStorageService firebaseStorageService)
         {
+            _storageService = firebaseStorageService;
         }
 
         //CREATE
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> RegisterUser(string nnn)
+        public async Task<IActionResult> RegisterUser(IFormFile ok, string dd)
         {
-            return Ok("ok");
+            string link = await _storageService.UploadTripThumbnail(ok, dd);
+            return Ok(link);
         }
 
         private string checkok(dynamic result)

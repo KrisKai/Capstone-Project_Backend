@@ -24,6 +24,8 @@ builder.Services.AddJWTServices(builder.Configuration);
 
 builder.Services.AddSettingObjects(builder.Configuration);
 
+builder.Services.AddFirebaseSDK(builder.Configuration);
+
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
