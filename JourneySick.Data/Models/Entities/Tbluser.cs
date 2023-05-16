@@ -8,5 +8,7 @@ namespace JourneySick.Data.Models.Entities
         public string FldUserId { get; set; } = null!;
         public string FldUsername { get; set; } = null!;
         public string FldPassword { get; set; } = null!;
+        public string? FldConfirmation { get; set; }
+        public DateTime? FldSendDate { get; set; }
     }
 }

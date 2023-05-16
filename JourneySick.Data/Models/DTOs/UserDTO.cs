@@ -11,5 +11,7 @@ namespace JourneySick.Data.Models.DTOs
         public String? FldUserId { get; set; }
         public String? FldUsername { get; set; }
         public String? FldPassword { get; set; }
+        public string? FldConfirmation { get; set; }
+        public DateTime? FldSendDate { get; set; }
     }
 }
