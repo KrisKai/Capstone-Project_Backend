@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Extensions.Firebase;
+using JourneySick.Business.Extensions.Firebase.Impl;
 using JourneySick.Business.Helpers;
+using JourneySick.Business.Helpers.SettingObject;
 using JourneySick.Business.IServices;
 using JourneySick.Business.IServices.Services;
 using JourneySick.Data.IRepositories;
@@ -55,6 +58,8 @@ namespace JourneySick.API.Startup
             services.AddTransient<ITripRouteService, TripRouteService>();
             services.AddTransient<ITripRouteRepository, TripRouteRepository>();
             services.AddTransient<IRoutePlanRepository, RoutePlanRepository>();
+
+            services.AddTransient<IFirebaseStorageService, FirebaseStorageService>();
 
             return services;
         }

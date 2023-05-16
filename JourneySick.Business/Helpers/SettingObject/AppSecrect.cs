@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JourneySick.Business.Helpers
+namespace JourneySick.Business.Helpers.SettingObject
 {
     public class AppSecrect
     {

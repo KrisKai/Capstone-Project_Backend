@@ -74,16 +74,19 @@ namespace RevenueSharingInvest.Business.Services.Extensions.Email
                     // START
                     From = new MailAddress(SENDER),
                     Subject = SendMailSubject,
-                    Body = SendMailBody
                 };
+                email.Body = emailHTML;
 
                 email.To.Add(receiver);
                 email.CC.Add(SENDER);
 
-                //END
+                email.IsBodyHtml = true;
 
                 SmtpServer.Send(email);
+
+                SmtpServer.Dispose();
                 email.Attachments.ToList().ForEach(x => x.Dispose());
+                return emailHTML;
             }
             catch (Exception e)
             {
@@ -91,5 +94,37 @@ namespace RevenueSharingInvest.Business.Services.Extensions.Email
             }
 
         }
+
+        private static string GetEmailTemplate()
+        {
+            try
+            {
+                var path = Environment.GetEnvironmentVariable("EmailTemplate_Path");
+                if (path == null)
+                {
+                    Environment.SetEnvironmentVariable("EmailTemplate_Path", "C:\\EmailTemplate\\EmailTemplate.html");
+                    path = Environment.GetEnvironmentVariable("EmailTemplate_Path");
+                    if (!Directory.Exists(path))
+                    {
+                        path = "C:\\EmailTemplate";
+                        Directory.CreateDirectory(path);
+                    }
+                }
+                else
+                {
+                    StreamReader stream = new(path);
+                    string mailTemp = stream.ReadToEnd();
+                    return mailTemp;
+                }
+                return path;
+            }
+            catch (Exception e)
+            {
+                LoggerService.Logger(e.ToString());
+                throw new Exception(e.Message);
+            }
+
+        }
     }
 }
+*/

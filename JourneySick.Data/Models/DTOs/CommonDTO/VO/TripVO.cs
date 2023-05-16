@@ -1,4 +1,6 @@
-﻿namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
+﻿using Microsoft.AspNetCore.Http;
+
+namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
     public class TripVO: TripDetailDTO
     {
@@ -14,5 +16,6 @@
         public string FldEndLongitude { get; set; } = null!;
         public string FldEndLatitude { get; set; } = null!;
         public string? FldEndLocationName { get; set; }
+        public IFormFile? FldThumbnail { get; set; }
     }
 }
