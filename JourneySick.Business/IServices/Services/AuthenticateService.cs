@@ -12,6 +12,7 @@ using JourneySick.Data.Models.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using RevenueSharingInvest.Business.Services.Extensions.Email;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -70,7 +71,6 @@ namespace JourneySick.Business.IServices.Services
                     userDetailEntity.FldFullname = registereRequest.FirstName + " " + registereRequest.LastName;
                     userDetailEntity.FldPhone = registereRequest.Phone;
                     userDetailEntity.FldAddress = registereRequest.Address;
-                    userDetailEntity.FldAddress = registereRequest.Address;
                     userDetailEntity.FldExperience = 0;
                     userDetailEntity.FldTripCreated = 0;
                     userDetailEntity.FldTripJoined = 0;
@@ -78,12 +78,11 @@ namespace JourneySick.Business.IServices.Services
                     userDetailEntity.FldTripCancelled = 0;
                     userDetailEntity.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
                     userDetailEntity.FldCreateBy = userDetailEntity.FldUserId;
-                    userDetailEntity.FldUpdateBy = userDetailEntity.FldUserId;
-                    userDetailEntity.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
                     if (await _userDetailRepository.CreateUserDetail(userDetailEntity) < 1)
                     {
                         throw new RegisterUserException("Register Failed!!");
                     }
+                    await EmailService.SendEmailRegister(userDetailEntity.FldEmail, userDetailEntity.FldFullname);
                 }
                 registerResponse.Email = registereRequest.Email;
                 registerResponse.FullName = userDetailEntity.FldFullname;
