@@ -1,9 +1,9 @@
 ﻿using JourneySick.Business.IServices;
-using JourneySick.Data.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using JourneySick.API.Extensions;
+using JourneySick.Data.Models.DTOs.CommonDTO;
 
 namespace JourneySick.API.Controllers
 {

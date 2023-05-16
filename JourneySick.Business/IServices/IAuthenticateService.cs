@@ -1,5 +1,5 @@
 ﻿using JourneySick.Business.Models.DTOs;
-using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 namespace JourneySick.Business.IServices
 {

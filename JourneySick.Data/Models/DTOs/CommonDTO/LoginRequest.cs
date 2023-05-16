@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JourneySick.Data.Models.DTOs
+namespace JourneySick.Data.Models.DTOs.CommonDTO
 {
     public class LoginRequest
     {
@@ -15,8 +15,8 @@ namespace JourneySick.Data.Models.DTOs
 
     public class LoginResponse
     {
-        public CurrentUserObj CurrentUserObj { get; set;}
+        public CurrentUserObj CurrentUserObj { get; set; }
 
-        public string Token { get; set;}
+        public string Token { get; set; }
     }
 }

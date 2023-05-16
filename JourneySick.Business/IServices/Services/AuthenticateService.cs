@@ -4,7 +4,7 @@ using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Models.DTOs;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -64,8 +64,8 @@ namespace JourneySick.Business.IServices.Services
                 if (await _userRepository.CreateUser(userDetailEntity) > 0)
                 {
                     userDetailEntity.FldRole = UserRoleEnum.USER.ToString();
-                    userDetailEntity.FldBirthday = Convert.ToDateTime(registereRequest.Birthdate, CultureInfo.InvariantCulture);
-                    userDetailEntity.FldActiveStatus = "Active";
+                    //userDetailEntity.FldBirthday = Convert.ToDateTime(registereRequest.Birthday, CultureInfo.InvariantCulture);
+                    userDetailEntity.FldActiveStatus = "ACTIVE";
                     userDetailEntity.FldEmail = registereRequest.Email;
                     userDetailEntity.FldFullname = registereRequest.FirstName + " " + registereRequest.LastName;
                     userDetailEntity.FldPhone = registereRequest.Phone;

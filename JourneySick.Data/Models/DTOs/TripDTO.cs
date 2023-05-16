@@ -15,5 +15,6 @@ namespace JourneySick.Data.Models.DTOs
         public string? FldTripStatus { get; set; }
         public int? FldTripMember { get; set; }
         public string FldTripPresenter { get; set; } = null!;
+        public string FldTripCompleted { get; set; } = null!;
     }
 }
