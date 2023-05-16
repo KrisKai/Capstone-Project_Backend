@@ -15,7 +15,7 @@ namespace RevenueSharingInvest.Business.Services.Extensions.Email
         //private static readonly string App_Password = "hchr lwct gcor qtsr";
         private static readonly string APP_PASSWORD = "ymvbgzvhhuzgiswo";
         private static readonly string SENDER = "journeysick.noreply@gmail.com";
-        public static async Task SendEmail(string fullname, /*string filePath,*/ string receiver, string receiverName, int memberId)
+        public static async Task SendEmailTrip(string fullname, /*string filePath,*/ string receiver, string receiverName, int memberId)
         {
             string SendMailSubject = "JourneySick - Invitation To Another Journey!!!";
             string link = "http://localhost:3000/confirmPage/" + memberId;

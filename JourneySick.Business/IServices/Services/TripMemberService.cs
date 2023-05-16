@@ -84,7 +84,7 @@ namespace JourneySick.Business.IServices.Services
                         TbluserVO tbluserdetail = await _userDetailRepository.GetUserDetailById(tripMemberDTO.FldUserId);
                         TbluserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(tripMemberDTO.FldTripId);
                         int memberId = await _tripMemberRepository.GetLastOneId();
-                        await EmailService.SendEmail(tripPresenter.FldFullname, tbluserdetail.FldEmail, tbluserdetail.FldFullname, memberId);
+                        await EmailService.SendEmailTrip(tripPresenter.FldFullname, tbluserdetail.FldEmail, tbluserdetail.FldFullname, memberId);
                         await _tripMemberRepository.UpdateSendMailDate(memberId);
                         return id;
                     }
@@ -185,7 +185,7 @@ namespace JourneySick.Business.IServices.Services
                         TbluserVO tbluserdetail = await _userDetailRepository.GetUserDetailById(getTrip.FldUserId);
                         TbluserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(getTrip.FldTripId);
                         int memberId = await _tripMemberRepository.GetLastOneId();
-                        await EmailService.SendEmail(tripPresenter.FldFullname, tbluserdetail.FldEmail, tbluserdetail.FldFullname, memberId);
+                        await EmailService.SendEmailTrip(tripPresenter.FldFullname, tbluserdetail.FldEmail, tbluserdetail.FldFullname, memberId);
                         await _tripMemberRepository.UpdateSendMailDate(id);
                         return id;
                     }
