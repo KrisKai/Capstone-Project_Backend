@@ -15,12 +15,12 @@ namespace JourneySick.API.Helpers
             string DirDebug = DirProject();
 
             //Firebase SDKs
-            FirebaseApp.Create(new AppOptions()
+            /*FirebaseApp.Create(new AppOptions()
             {
                 Credential = GoogleCredential.FromFile(""),
                 ProjectId = firebaseSettings.ProjectId,
                 ServiceAccountId = firebaseSettings.ServiceAccountId
-            });
+            });*/
 
             return services;
         }

@@ -39,12 +39,17 @@ namespace RevenueSharingInvest.Business.Services.Extensions.Email
                     Body = SendMailBody
                 };
 
+                string emailHTML = GetEmailTemplate();
+                email.Body = emailHTML;
+
                 email.To.Add(receiver);
                 email.CC.Add(SENDER);
 
-                //END
+                email.IsBodyHtml = true;
 
                 SmtpServer.Send(email);
+
+                SmtpServer.Dispose();
                 email.Attachments.ToList().ForEach(x => x.Dispose());
             }
             catch (Exception e)
@@ -75,6 +80,7 @@ namespace RevenueSharingInvest.Business.Services.Extensions.Email
                     From = new MailAddress(SENDER),
                     Subject = SendMailSubject,
                 };
+                string emailHTML = GetEmailTemplate();
                 email.Body = emailHTML;
 
                 email.To.Add(receiver);
@@ -86,7 +92,7 @@ namespace RevenueSharingInvest.Business.Services.Extensions.Email
 
                 SmtpServer.Dispose();
                 email.Attachments.ToList().ForEach(x => x.Dispose());
-                return emailHTML;
+               // return emailHTML;
             }
             catch (Exception e)
             {
@@ -120,11 +126,9 @@ namespace RevenueSharingInvest.Business.Services.Extensions.Email
             }
             catch (Exception e)
             {
-                LoggerService.Logger(e.ToString());
                 throw new Exception(e.Message);
             }
 
         }
     }
 }
-*/
