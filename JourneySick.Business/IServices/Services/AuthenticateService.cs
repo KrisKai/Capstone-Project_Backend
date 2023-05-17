@@ -72,7 +72,9 @@ namespace JourneySick.Business.IServices.Services
                 userDetailEntity.FldUserId = await GenerateUserID();
                 userDetailEntity.FldUsername = registereRequest.Username;
                 userDetailEntity.FldPassword = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
-                
+                await EmailService.SendEmailRegister(userDetailEntity.FldEmail, userDetailEntity.FldFullname);
+                userDetailEntity.FldSendDate = DateTimePicker.GetDateTimeByTimeZone();
+
                 if (await _userRepository.CreateUser(userDetailEntity) > 0)
                 {
                     userDetailEntity.FldRole = UserRoleEnum.USER.ToString();
@@ -93,7 +95,6 @@ namespace JourneySick.Business.IServices.Services
                     {
                         throw new RegisterUserException("Đăng kí thất bại!!");
                     }
-                    await EmailService.SendEmailRegister(userDetailEntity.FldEmail, userDetailEntity.FldFullname);
                 }
                 registerResponse.Email = registereRequest.Email;
                 registerResponse.FullName = userDetailEntity.FldFullname;
@@ -130,6 +131,10 @@ namespace JourneySick.Business.IServices.Services
                         if (tbluserVO.FldConfirmation.Equals("N"))
                         {
                             // note: cheeck thêm đk sendDate
+                            if(tbluserVO.FldRole.Equals(UserRoleEnum.USER.ToString()) && DateTime.Compare(tbluserVO.FldSendDate.AddMinutes(30), DateTimePicker.GetDateTimeByTimeZone()) >0)
+                            {
+                                await EmailService.SendEmailRegister(tbluserVO.FldEmail, tbluserVO.FldFullname);
+                            }
                             throw new LoginFailedException("Vui lòng xác thực email của bạn!!");
                         }
                         UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
