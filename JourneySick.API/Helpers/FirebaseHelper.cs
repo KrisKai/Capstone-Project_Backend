@@ -12,15 +12,17 @@ namespace JourneySick.API.Helpers
             var firebaseSettingSection = configuration.GetSection("FirebaseSettings");
             services.Configure<FirebaseSetting>(firebaseSettingSection);
             var firebaseSettings = firebaseSettingSection.Get<FirebaseSetting>();
-            
+            string firebaseDir = System.IO.Directory.GetCurrentDirectory();
+
+            firebaseDir += "\\Firebase\\journeysick-34101-firebase-adminsdk-dqbsf-754e3cf28e.json";
 
             //Firebase SDKs
-            /*FirebaseApp.Create(new AppOptions()
+            FirebaseApp.Create(new AppOptions()
             {
-                Credential = GoogleCredential.FromFile(""),
+                Credential = GoogleCredential.FromFile(firebaseDir),
                 ProjectId = firebaseSettings.ProjectId,
                 ServiceAccountId = firebaseSettings.ServiceAccountId
-            });*/
+            });
 
             return services;
         }
