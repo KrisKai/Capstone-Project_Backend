@@ -12,7 +12,7 @@ namespace JourneySick.API.Helpers
             var firebaseSettingSection = configuration.GetSection("FirebaseSettings");
             services.Configure<FirebaseSetting>(firebaseSettingSection);
             var firebaseSettings = firebaseSettingSection.Get<FirebaseSetting>();
-            string DirDebug = DirProject();
+            
 
             //Firebase SDKs
             /*FirebaseApp.Create(new AppOptions()
@@ -23,19 +23,6 @@ namespace JourneySick.API.Helpers
             });*/
 
             return services;
-        }
-
-        public static string DirProject()
-        {
-            string DirDebug = System.IO.Directory.GetCurrentDirectory();
-            string DirProject = DirDebug;
-
-            for (int counter_slash = 0; counter_slash < 4; counter_slash++)
-            {
-                DirProject = DirProject.Substring(0, DirProject.LastIndexOf(@"\"));
-            }
-
-            return DirProject;
         }
     }
 }
