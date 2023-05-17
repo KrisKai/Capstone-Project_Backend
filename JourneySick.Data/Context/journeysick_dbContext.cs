@@ -38,8 +38,7 @@ namespace JourneySick.Data.Models.Entities
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=localhost;user=root;database=journeysick_db", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.27-mysql"));
-                //optionsBuilder.UseMySql("Server=journeysick.mysql.database.azure.com;UserID=journeysick_root;Password=Adminkhaido1;Database=journeysick_db", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.27-mysql"));
+                optionsBuilder.UseMySql("server=journeysick.mysql.database.azure.com;user=journeysick_root;password=Adminkhaido1;database=journeysick_db", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.32-mysql"));
             }
         }
 
@@ -298,6 +297,12 @@ namespace JourneySick.Data.Models.Entities
                     .HasPrecision(15, 2)
                     .HasColumnName("fldTripBudget");
 
+                entity.Property(e => e.FldTripCompleted)
+                    .HasMaxLength(1)
+                    .HasColumnName("fldTripCompleted")
+                    .HasDefaultValueSql("'N'")
+                    .IsFixedLength();
+
                 entity.Property(e => e.FldTripDescription).HasColumnName("fldTripDescription");
 
                 entity.Property(e => e.FldTripMember).HasColumnName("fldTripMember");
@@ -305,8 +310,8 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.FldTripName)
                     .HasMaxLength(100)
                     .HasColumnName("fldTripName")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
+                    .UseCollation("utf8mb3_general_ci")
+                    .HasCharSet("utf8mb3");
 
                 entity.Property(e => e.FldTripPresenter)
                     .HasMaxLength(20)
@@ -315,8 +320,12 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.FldTripStatus)
                     .HasMaxLength(50)
                     .HasColumnName("fldTripStatus")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
+                    .UseCollation("utf8mb3_general_ci")
+                    .HasCharSet("utf8mb3");
+
+                entity.Property(e => e.FldTripThumbnail)
+                    .HasMaxLength(255)
+                    .HasColumnName("fldTripThumbnail");
             });
 
             modelBuilder.Entity<Tbltripdetail>(entity =>
@@ -442,6 +451,12 @@ namespace JourneySick.Data.Models.Entities
 
                 entity.Property(e => e.FldMemberId).HasColumnName("fldMemberId");
 
+                entity.Property(e => e.FldConfirmation)
+                    .HasMaxLength(10)
+                    .HasColumnName("fldConfirmation")
+                    .HasDefaultValueSql("'N'")
+                    .IsFixedLength();
+
                 entity.Property(e => e.FldCreateBy)
                     .HasMaxLength(20)
                     .HasColumnName("fldCreateBy");
@@ -457,6 +472,10 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.FldNickName)
                     .HasMaxLength(50)
                     .HasColumnName("fldNickName");
+
+                entity.Property(e => e.FldSendDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("fldSendDate");
 
                 entity.Property(e => e.FldStatus)
                     .HasMaxLength(10)
@@ -543,35 +562,8 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.FldType)
                     .HasMaxLength(20)
                     .HasColumnName("fldType")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
-            });
-
-            modelBuilder.Entity<Tbltriproute>(entity =>
-            {
-                entity.HasKey(e => e.FldRouteId)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("tbltriproute");
-
-                entity.Property(e => e.FldRouteId).HasColumnName("fldRouteId");
-
-                entity.Property(e => e.FldDistance)
-                    .HasPrecision(12, 2)
-                    .HasColumnName("fldDistance");
-
-                entity.Property(e => e.FldEstimateTime)
-                    .HasPrecision(5, 2)
-                    .HasColumnName("fldEstimateTime")
-                    .HasDefaultValueSql("'0.00'");
-
-                entity.Property(e => e.FldMapId).HasColumnName("fldMapId");
-
-                entity.Property(e => e.FldPriority).HasColumnName("fldPriority");
-
-                entity.Property(e => e.FldTripid)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldTripid");
+                    .UseCollation("utf8mb3_general_ci")
+                    .HasCharSet("utf8mb3");
             });
 
             modelBuilder.Entity<Tbltriproute>(entity =>
@@ -621,9 +613,19 @@ namespace JourneySick.Data.Models.Entities
                     .HasMaxLength(20)
                     .HasColumnName("fldUserId");
 
+                entity.Property(e => e.FldConfirmation)
+                    .HasMaxLength(1)
+                    .HasColumnName("fldConfirmation")
+                    .HasDefaultValueSql("'N'")
+                    .IsFixedLength();
+
                 entity.Property(e => e.FldPassword)
                     .HasMaxLength(1000)
                     .HasColumnName("fldPassword");
+
+                entity.Property(e => e.FldSendDate)
+                    .HasColumnType("datetime")
+                    .HasColumnName("fldSendDate");
 
                 entity.Property(e => e.FldUsername)
                     .HasMaxLength(45)
@@ -659,8 +661,8 @@ namespace JourneySick.Data.Models.Entities
 
                 entity.Property(e => e.FldAddress)
                     .HasColumnName("fldAddress")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
+                    .UseCollation("utf8mb3_general_ci")
+                    .HasCharSet("utf8mb3");
 
                 entity.Property(e => e.FldBirthday)
                     .HasColumnType("datetime")
@@ -677,8 +679,8 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.FldEmail)
                     .HasMaxLength(50)
                     .HasColumnName("fldEmail")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
+                    .UseCollation("utf8mb3_general_ci")
+                    .HasCharSet("utf8mb3");
 
                 entity.Property(e => e.FldExperience)
                     .HasColumnName("fldExperience")
@@ -687,8 +689,8 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.FldFullname)
                     .HasMaxLength(50)
                     .HasColumnName("fldFullname")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
+                    .UseCollation("utf8mb3_general_ci")
+                    .HasCharSet("utf8mb3");
 
                 entity.Property(e => e.FldPhone)
                     .HasMaxLength(20)
@@ -697,8 +699,8 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.FldRole)
                     .HasMaxLength(20)
                     .HasColumnName("fldRole")
-                    .UseCollation("utf8_general_ci")
-                    .HasCharSet("utf8");
+                    .UseCollation("utf8mb3_general_ci")
+                    .HasCharSet("utf8mb3");
 
                 entity.Property(e => e.FldTripCancelled)
                     .HasColumnName("fldTripCancelled")

@@ -12,5 +12,7 @@ namespace JourneySick.Data.Models.Entities
         public string? FldTripStatus { get; set; }
         public int? FldTripMember { get; set; }
         public string FldTripPresenter { get; set; } = null!;
+        public string? FldTripThumbnail { get; set; }
+        public string? FldTripCompleted { get; set; }
     }
 }
