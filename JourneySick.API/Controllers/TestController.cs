@@ -10,9 +10,10 @@ using JourneySick.Data.Models.Entities;
 using Org.BouncyCastle.Crmf;
 using System.Configuration;
 using JourneySick.Business.Extensions.Firebase;
+using System.Reflection;
 
 namespace JourneySick.API.Controllers
-{
+{ 
     [ApiController]
     [Route("api/v1.0/test")]
     [EnableCors]
@@ -28,10 +29,10 @@ namespace JourneySick.API.Controllers
         //CREATE
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> RegisterUser(IFormFile ok, string dd)
+        public async Task<IActionResult> RegisterUser()
         {
-            string link = await _storageService.UploadTripThumbnail(ok, dd);
-            return Ok(link);
+            var currentDirectory = System.IO.Directory.GetCurrentDirectory();
+            return Ok(currentDirectory);
         }
 
         private string checkok(dynamic result)
