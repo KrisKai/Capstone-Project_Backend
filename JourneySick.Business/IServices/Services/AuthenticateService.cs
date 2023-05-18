@@ -131,7 +131,7 @@ namespace JourneySick.Business.IServices.Services
                         if (tbluserVO.FldConfirmation.Equals("N"))
                         {
                             // note: cheeck thêm đk sendDate
-                            if(tbluserVO.FldRole.Equals(UserRoleEnum.USER.ToString()) && DateTime.Compare(tbluserVO.FldSendDate.AddMinutes(30), DateTimePicker.GetDateTimeByTimeZone()) >0)
+                            if(tbluserVO.FldRole.Equals(UserRoleEnum.USER.ToString()) && DateTime.Compare(tbluserVO.FldSendDate.AddMinutes(30), DateTimePicker.GetDateTimeByTimeZone()) < 0)
                             {
                                 await EmailService.SendEmailRegister(tbluserVO.FldEmail, tbluserVO.FldFullname);
                             }
