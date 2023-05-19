@@ -118,5 +118,15 @@ namespace JourneySick.API.Controllers
             return Ok(result);
 
         }
+
+        //CONFIRM TRIP
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("confirm-user")]
+        public async Task<IActionResult> ConfirmUser([FromBody] string id)
+        {
+            var result = await _userService.ConfirmUser(id);
+            return Ok(result);
+        }
     }
 }

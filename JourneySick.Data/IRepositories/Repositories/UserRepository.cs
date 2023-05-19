@@ -220,5 +220,24 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        public async Task<int> ConfirmUser(string id)
+        {
+            try
+            {
+                var query = "UPDATE tbluser SET " +
+                    "fldConfirmation = 'Y' " +
+                    "WHERE fldUserId = @userId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("userId", id, DbType.Int32);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }

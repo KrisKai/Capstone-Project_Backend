@@ -326,5 +326,40 @@ namespace JourneySick.Business.IServices.Services
             return 0;
         }
 
+        public async Task<string> ConfirmUser(string id)
+        {
+            try
+            {
+                UserVO userVO = await GetUserById(id);
+
+                if (userVO != null)
+                {
+                    if (userVO.FldConfirmation.Equals("N"))
+                    {
+                        if (await _userRepository.ConfirmUser(id) > 0)
+                        {
+                            return id;
+                        }
+                        else
+                        {
+                            throw new UpdateException("Xác thực thất bại!");
+                        }
+                    }
+                    else
+                    {
+                        throw new UpdateException("Đường dẫn này không hợp lệ! Vui lòng thử lại sau");
+                    }
+                }
+                else
+                {
+                    throw new GetOneException("Thành viên này không tồn tại trong chuyến đi!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
     }
 }
