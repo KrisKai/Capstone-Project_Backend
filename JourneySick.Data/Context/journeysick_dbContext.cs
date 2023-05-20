@@ -16,7 +16,6 @@ namespace JourneySick.Data.Models.Entities
         {
         }
 
-        public virtual DbSet<Efmigrationshistory> Efmigrationshistories { get; set; } = null!;
         public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
         public virtual DbSet<Item> Items { get; set; } = null!;
         public virtual DbSet<ItemCategory> ItemCategories { get; set; } = null!;
@@ -47,18 +46,6 @@ namespace JourneySick.Data.Models.Entities
             modelBuilder.UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
 
-            modelBuilder.Entity<Efmigrationshistory>(entity =>
-            {
-                entity.HasKey(e => e.MigrationId)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("__efmigrationshistory");
-
-                entity.Property(e => e.MigrationId).HasMaxLength(150);
-
-                entity.Property(e => e.ProductVersion).HasMaxLength(32);
-            });
-
             modelBuilder.Entity<Feedback>(entity =>
             {
                 entity.ToTable("feedback");
@@ -68,8 +55,6 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
                 entity.Property(e => e.Dislike).HasDefaultValueSql("'0'");
-
-                entity.Property(e => e.FeedbackDescription).HasColumnName("FeedbackDescription");
 
                 entity.Property(e => e.Like).HasDefaultValueSql("'0'");
 
@@ -187,7 +172,7 @@ namespace JourneySick.Data.Models.Entities
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.TripId, "TripId_UNIQUE")
+                entity.HasIndex(e => e.TripId, "fldTripId_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.TripId).HasMaxLength(20);
@@ -224,7 +209,7 @@ namespace JourneySick.Data.Models.Entities
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.TripId, "TripId_UNIQUE")
+                entity.HasIndex(e => e.TripId, "fldTripId_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.TripId).HasMaxLength(20);
@@ -328,7 +313,7 @@ namespace JourneySick.Data.Models.Entities
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.PlanId, "PlanId_UNIQUE")
+                entity.HasIndex(e => e.PlanId, "fldPlanId_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.CreateBy).HasMaxLength(20);
@@ -352,7 +337,7 @@ namespace JourneySick.Data.Models.Entities
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.RoleId, "RoleId_UNIQUE")
+                entity.HasIndex(e => e.RoleId, "fldRoleId_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.Description).HasColumnType("text");
@@ -388,10 +373,10 @@ namespace JourneySick.Data.Models.Entities
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.UserId, "UserId_UNIQUE")
+                entity.HasIndex(e => e.UserId, "fldUserId_UNIQUE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Username, "Username_UNIQUE")
+                entity.HasIndex(e => e.Username, "fldUsername_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.UserId).HasMaxLength(20);
@@ -418,13 +403,13 @@ namespace JourneySick.Data.Models.Entities
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.Email, "Email_UNIQUE")
+                entity.HasIndex(e => e.Email, "fldEmail_UNIQUE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Phone, "Phone_UNIQUE")
+                entity.HasIndex(e => e.Phone, "fldPhone_UNIQUE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.UserId, "UserId_UNIQUE")
+                entity.HasIndex(e => e.UserId, "fldUserId_UNIQUE")
                     .IsUnique();
 
                 entity.Property(e => e.UserId).HasMaxLength(20);
