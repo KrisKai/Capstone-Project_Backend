@@ -72,11 +72,11 @@ namespace JourneySick.Business.IServices.Services
                 userDetailEntity.FldUserId = await GenerateUserID();
                 userDetailEntity.FldUsername = registereRequest.Username;
                 userDetailEntity.FldPassword = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
-                await EmailService.SendEmailRegister(userDetailEntity.FldEmail, userDetailEntity.FldFullname);
                 userDetailEntity.FldSendDate = DateTimePicker.GetDateTimeByTimeZone();
 
                 if (await _userRepository.CreateUser(userDetailEntity) > 0)
                 {
+                    await EmailService.SendEmailRegister(userDetailEntity.FldEmail, userDetailEntity.FldFullname, await _userRepository.GetLastOneId());
                     userDetailEntity.FldRole = UserRoleEnum.USER.ToString();
                     //userDetailEntity.FldBirthday = Convert.ToDateTime(registereRequest.Birthday, CultureInfo.InvariantCulture);
                     userDetailEntity.FldActiveStatus = "ACTIVE";
@@ -133,9 +133,9 @@ namespace JourneySick.Business.IServices.Services
                             // note: cheeck thêm đk sendDate
                             if(tbluserVO.FldRole.Equals(UserRoleEnum.USER.ToString()) && DateTime.Compare(tbluserVO.FldSendDate.AddMinutes(30), DateTimePicker.GetDateTimeByTimeZone()) < 0)
                             {
-                                await EmailService.SendEmailRegister(tbluserVO.FldEmail, tbluserVO.FldFullname);
+                                await EmailService.SendEmailRegister(tbluserVO.FldEmail, tbluserVO.FldFullname, await _userRepository.GetLastOneId());
+                                throw new LoginFailedException("Vui lòng xác thực email của bạn!!");
                             }
-                            throw new LoginFailedException("Vui lòng xác thực email của bạn!!");
                         }
                         UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
                         loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
