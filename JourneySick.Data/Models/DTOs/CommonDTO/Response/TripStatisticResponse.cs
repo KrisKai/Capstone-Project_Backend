@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
+namespace JourneySick.Data.Models.DTOs.CommonDTO.Response
 {
     public class TripStatisticResponse
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
+namespace JourneySick.Data.Models.DTOs.CommonDTO.Response
 {
     public class ErrorResponse
     {

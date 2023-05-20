@@ -1,6 +1,7 @@
 ﻿using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.Request;
+using JourneySick.Data.Models.DTOs.CommonDTO.Response;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 
 namespace JourneySick.Business.IServices
