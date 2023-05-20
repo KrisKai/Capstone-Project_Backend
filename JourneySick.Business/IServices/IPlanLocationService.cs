@@ -1,5 +1,4 @@
-﻿using JourneySick.Business.Models.DTOs;
-using JourneySick.Data.Models.DTOs;
+﻿using JourneySick.Data.Models.DTOs;
 
 namespace JourneySick.Business.IServices
 {

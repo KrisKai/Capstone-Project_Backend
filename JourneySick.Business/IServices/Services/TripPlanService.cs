@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -29,11 +29,11 @@ namespace JourneySick.Business.IServices.Services
             AllTripPlanDTO result = new();
             try
             {
-                List<tripplan> trips = await _tripPlanRepository.GetAllTripPlansWithPaging(pageIndex, pageSize, planId);
+                List<TripPlan> tripPlans = await _tripPlanRepository.GetAllTripPlansWithPaging(pageIndex, pageSize, planId);
                 // convert entity to dto
-                List<TripPlanDTO> trips = _mapper.Map<List<TripPlanDTO>>(trips);
+                List<TripPlanDTO> tripPlanDTOs = _mapper.Map<List<TripPlanDTO>>(tripPlans);
                 int count = await _tripPlanRepository.CountAllTripPlans(planId);
-                result.ListOfPlan = trips;
+                result.ListOfPlan = tripPlanDTOs;
                 result.NumOfPlan = count;
                 return result;
             }
@@ -61,7 +61,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserObj currentUser)
+        public async Task<int> CreateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserObj currentUser)
+        public async Task<int> UpdateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserRequest currentUser)
         {
             try
             {

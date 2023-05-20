@@ -2,11 +2,11 @@
 using AutoMapper.Execution;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -38,7 +38,7 @@ namespace JourneySick.Business.IServices.Services
             {
                 List<TripmemberVO> tripmembers = await _tripMemberRepository.GetAllTripMembersWithPaging(pageIndex, pageSize, memberName);
                 // convert entity to dto
-                List<TripMemberVO> tripMemberDTOs = _mapper.Map<List<TripMemberVO>>(tripmembers);
+                List<TripMemberRequest> tripMemberDTOs = _mapper.Map<List<TripMemberRequest>>(tripmembers);
                 int count = await _tripMemberRepository.CountAllTripMembers(memberName);
                 result.ListOfMember = tripMemberDTOs;
                 result.NumOfMember = count;
@@ -51,13 +51,13 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<TripMemberVO> GetTripMemberById(int memberId)
+        public async Task<TripMemberRequest> GetTripMemberById(int memberId)
         {
             try
             {
                 TripmemberVO tripmember = await _tripMemberRepository.GetTripMemberById(memberId);
                 // convert entity to dto
-                TripMemberVO tripMemberDTO = _mapper.Map<TripMemberVO>(tripmember);
+                TripMemberRequest tripMemberDTO = _mapper.Map<TripMemberRequest>(tripmember);
 
                 return tripMemberDTO;
             }
@@ -68,7 +68,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateTripMember(TripMemberDTO tripMemberDTO, CurrentUserObj currentUser)
+        public async Task<int> CreateTripMember(TripMemberDTO tripMemberDTO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -81,8 +81,8 @@ namespace JourneySick.Business.IServices.Services
                     int id = await _tripMemberRepository.CreateTripMember(tripmember);
                     if (id > 0)
                     {
-                        Data.Models.Entities.VO.UserVO userdetail = await _userDetailRepository.GetUserDetailById(tripMemberDTO.UserId);
-                        Data.Models.Entities.VO.UserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(tripMemberDTO.TripId);
+                        UserVO userdetail = await _userDetailRepository.GetUserDetailById(tripMemberDTO.UserId);
+                        UserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(tripMemberDTO.TripId);
                         int memberId = await _tripMemberRepository.GetLastOneId();
                         await EmailService.SendEmailTrip(tripPresenter.Fullname, userdetail.Email, userdetail.Fullname, memberId);
                         await _tripMemberRepository.UpdateSendMailDate(memberId);
@@ -102,7 +102,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateTripMember(TripMemberDTO tripMemberDTO, CurrentUserObj currentUser)
+        public async Task<int> UpdateTripMember(TripMemberDTO tripMemberDTO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -182,8 +182,8 @@ namespace JourneySick.Business.IServices.Services
                 {
                     if(getTrip.Confirmation.Equals("N"))
                     {
-                        Data.Models.Entities.VO.UserVO userdetail = await _userDetailRepository.GetUserDetailById(getTrip.UserId);
-                        Data.Models.Entities.VO.UserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(getTrip.TripId);
+                        UserVO userdetail = await _userDetailRepository.GetUserDetailById(getTrip.UserId);
+                        UserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(getTrip.TripId);
                         int memberId = await _tripMemberRepository.GetLastOneId();
                         await EmailService.SendEmailTrip(tripPresenter.Fullname, userdetail.Email, userdetail.Fullname, memberId);
                         await _tripMemberRepository.UpdateSendMailDate(id);

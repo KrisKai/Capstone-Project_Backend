@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
-    public class UserVO : UserDetailDTO
+    public class UserRequest : UserDetailDTO
     {
         public string? Username { get; set; }
         public string? Password { get; set; }

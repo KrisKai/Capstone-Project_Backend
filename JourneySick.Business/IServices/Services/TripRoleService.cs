@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers.Exceptions;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
-using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
-using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Logging;
-using System.Numerics;
 
 namespace JourneySick.Business.IServices.Services
 {
@@ -32,7 +27,7 @@ namespace JourneySick.Business.IServices.Services
             AllTripRoleDTO result = new();
             try
             {
-                List<triprole> triproles = await _tripRoleRepository.GetAllTripRolesWithPaging(pageIndex, pageSize, roleName);
+                List<TripRole> triproles = await _tripRoleRepository.GetAllTripRolesWithPaging(pageIndex, pageSize, roleName);
                 // convert entity to dto
                 List<TripRoleDTO> users = _mapper.Map<List<TripRoleDTO>>(triproles);
                 int count = await _tripRoleRepository.CountAllTripRoles(roleName);

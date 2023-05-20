@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -29,7 +29,7 @@ namespace JourneySick.Business.IServices.Services
             AllItemCategoryDTO result = new();
             try
             {
-                List<itemcategory> ItemDTO = await _itemCategoryRepository.GetAllItemCategorysWithPaging(pageIndex, pageSize, itemCategoryId);
+                List<ItemCategory> ItemDTO = await _itemCategoryRepository.GetAllItemCategorysWithPaging(pageIndex, pageSize, itemCategoryId);
                 // convert entity to dto
                 List<ItemCategoryDTO> itemCategoryDTOs = _mapper.Map<List<ItemCategoryDTO>>(ItemDTO);
                 int count = await _itemCategoryRepository.CountAllItemCategorys(itemCategoryId);
@@ -48,7 +48,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                itemcategory itemCategory = await _itemCategoryRepository.GetItemCategoryById(itemCategoryId);
+                ItemCategory itemCategory = await _itemCategoryRepository.GetItemCategoryById(itemCategoryId);
                 // convert entity to dto
                 ItemCategoryDTO itemCategoryDTO = _mapper.Map<ItemCategoryDTO>(itemCategory);
 
@@ -61,13 +61,13 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateItemCategory(ItemCategoryDTO itemCategoryDTO, CurrentUserObj currentUser)
+        public async Task<int> CreateItemCategory(ItemCategoryDTO itemCategoryDTO, CurrentUserRequest currentUser)
         {
             try
             {
                 itemCategoryDTO.CreateBy = currentUser.UserId;
                 itemCategoryDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                itemcategory itemCategory = _mapper.Map<itemcategory>(itemCategoryDTO);
+                ItemCategory itemCategory = _mapper.Map<ItemCategory>(itemCategoryDTO);
                 int id = await _itemCategoryRepository.CreateItemCategory(itemCategory);
                 if (id > 0)
                 {
@@ -82,7 +82,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateItemCategory(ItemCategoryDTO itemCategoryDTO, CurrentUserObj currentUser)
+        public async Task<int> UpdateItemCategory(ItemCategoryDTO itemCategoryDTO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace JourneySick.Business.IServices.Services
                 {
                     itemCategoryDTO.UpdateBy = currentUser.UserId;
                     itemCategoryDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    itemcategory itemCategory = _mapper.Map<itemcategory>(itemCategoryDTO);
+                    ItemCategory itemCategory = _mapper.Map<ItemCategory>(itemCategoryDTO);
                     if (await _itemCategoryRepository.UpdateItemCategory(itemCategory) > 0)
                     {
                         return (int)itemCategoryDTO.CategoryId;

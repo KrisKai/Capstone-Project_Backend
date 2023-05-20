@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
-    public class TripMemberVO: TripMemberDTO
+    public class TripMemberRequest: TripMemberDTO
     {
         public string? Fullname { get; set; }
 

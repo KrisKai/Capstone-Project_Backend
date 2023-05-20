@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers.Exceptions;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -30,11 +29,11 @@ namespace JourneySick.Business.IServices.Services
             AllTripRouteDTO result = new();
             try
             {
-                List<TriprouteVO> trips = await _tripRouteRepository.GetAllTripRoutesWithPaging(pageIndex, pageSize, routeId);
+                List<TriprouteVO> triprouteVOs = await _tripRouteRepository.GetAllTripRoutesWithPaging(pageIndex, pageSize, routeId);
                 // convert entity to dto
-                List<TripRouteVO> trips = _mapper.Map<List<TripRouteVO>>(trips);
+                List<TripRouteRequest> tripRouteRequests = _mapper.Map<List<TripRouteRequest>>(triprouteVOs);
                 int count = await _tripRouteRepository.CountAllTripRoutes(routeId);
-                result.ListOfRoute = trips;
+                result.ListOfRoute = tripRouteRequests;
                 result.NumOfRoute = count;
                 return result;
             }
@@ -62,7 +61,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateTripRoute(TripRouteVO tripRouteDTO, CurrentUserObj currentUser)
+        public async Task<int> CreateTripRoute(TripRouteRequest tripRouteDTO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -90,7 +89,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateTripRoute(TripRouteVO tripRouteDTO, CurrentUserObj currentUser)
+        public async Task<int> UpdateTripRoute(TripRouteRequest tripRouteDTO, CurrentUserRequest currentUser)
         {
             try
             {

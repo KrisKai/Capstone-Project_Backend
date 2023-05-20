@@ -2,10 +2,9 @@
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Helpers.SettingObject;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.Models.DTOs.CommonDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -52,7 +51,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Data.Models.Entities.VO.UserVO userDetailEntity = new();
+                UserVO userDetailEntity = new();
                 RegisterResponse registerResponse = new();
                 string checkNameExist = await _userRepository.GetUsernameIfExist(registereRequest.Username);
                 if (checkNameExist != null)
@@ -127,7 +126,7 @@ namespace JourneySick.Business.IServices.Services
                     string encryptedPassword = PasswordEncryption.Encrypt(loginRequest.Password, _appSecrect.SecrectKey);
                     if (encryptedPassword.Equals(checkValue))
                     {
-                        Data.Models.Entities.VO.UserVO userVO = await _userRepository.GetUserByUsername(loginRequest.Username);
+                        UserVO userVO = await _userRepository.GetUserByUsername(loginRequest.Username);
                         if (userVO.Confirmation.Equals("N"))
                         {
                             // note: cheeck thêm đk sendDate
@@ -137,12 +136,12 @@ namespace JourneySick.Business.IServices.Services
                             }
                             throw new LoginFailedException("Vui lòng xác thực email của bạn!!");
                         }
-                        Data.Models.DTOs.CommonDTO.VO.UserVO userVO = _mapper.Map<Data.Models.DTOs.CommonDTO.VO.UserVO>(userVO);
+                        UserRequest userRequest = _mapper.Map<UserRequest>(userVO);
                         loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname);
-                        CurrentUserObj currentUser = new();
-                        currentUser.Name = userVO.Fullname;
-                        currentUser.Role = userVO.Role;
-                        currentUser.UserId = userVO.UserId;
+                        CurrentUserRequest currentUser = new();
+                        currentUser.Name = userRequest.Fullname;
+                        currentUser.Role = userRequest.Role;
+                        currentUser.UserId = userRequest.UserId;
                         loginResponse.CurrentUserObj = currentUser;
                     }
                     else
@@ -177,17 +176,17 @@ namespace JourneySick.Business.IServices.Services
                     string encryptedPassword = PasswordEncryption.Encrypt(loginRequest.Password, _appSecrect.SecrectKey);
                     if (encryptedPassword.Equals(checkValue))
                     {
-                        Data.Models.Entities.VO.UserVO userVO = await _userRepository.GetUserByUsername(loginRequest.Username);
+                        UserVO userVO = await _userRepository.GetUserByUsername(loginRequest.Username);
                         if(userVO != null)
                         {
                             if (userVO.Role.Equals(UserRoleEnum.ADMIN.ToString()) || userVO.Role.Equals(UserRoleEnum.EMPL.ToString()))
                             {
-                                Data.Models.DTOs.CommonDTO.VO.UserVO userVO = _mapper.Map<Data.Models.DTOs.CommonDTO.VO.UserVO>(userVO);
+                                UserRequest userRequest = _mapper.Map<UserRequest>(userVO);
                                 loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname);
-                                CurrentUserObj currentUser = new();
-                                currentUser.Name = userVO.Fullname;
-                                currentUser.Role = userVO.Role;
-                                currentUser.UserId = userVO.UserId;
+                                CurrentUserRequest currentUser = new();
+                                currentUser.Name = userRequest.Fullname;
+                                currentUser.Role = userRequest.Role;
+                                currentUser.UserId = userRequest.UserId;
                                 loginResponse.CurrentUserObj = currentUser;
                             }
                             else
@@ -217,13 +216,13 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<Data.Models.DTOs.CommonDTO.VO.UserVO> GetCurrentInfo(CurrentUserObj currentUser)
+        public async Task<UserRequest> GetCurrentInfo(CurrentUserRequest currentUser)
         {
             try
             {
-                Data.Models.Entities.VO.UserVO UserVO = await _userRepository.GetUserById(currentUser.UserId);
+                UserVO UserVO = await _userRepository.GetUserById(currentUser.UserId);
                 // convert entity to dto
-                Data.Models.DTOs.CommonDTO.VO.UserVO userVO = _mapper.Map<Data.Models.DTOs.CommonDTO.VO.UserVO>(UserVO);
+                UserRequest userVO = _mapper.Map<UserRequest>(UserVO);
 
                 return userVO;
             }

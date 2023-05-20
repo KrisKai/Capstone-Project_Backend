@@ -2,13 +2,13 @@
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Helpers.SettingObject;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -38,11 +38,11 @@ namespace JourneySick.Business.IServices.Services
             AllFeedbackDTO result = new();
             try
             {
-                List<Data.Models.Entities.VO.FeedbackVO> users = await _feedbackRepository.GetAllFeedbacksWithPaging(pageIndex, pageSize, tripId);
+                List<FeedbackVO> feedbacks = await _feedbackRepository.GetAllFeedbacksWithPaging(pageIndex, pageSize, tripId);
                 // convert entity to dto
-                List<Data.Models.DTOs.CommonDTO.VO.FeedbackVO> users = _mapper.Map<List<Data.Models.DTOs.CommonDTO.VO.FeedbackVO>>(users);
+                List<FeedbackRequest> feedbackRequests = _mapper.Map<List<FeedbackRequest>>(feedbacks);
                 int count = await _feedbackRepository.CountAllFeedbacks(tripId);
-                result.ListOfFeedback = users;
+                result.ListOfFeedback = feedbackRequests;
                 result.NumOfFeedback = count;
                 return result;
             }
@@ -71,7 +71,7 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<int> CreateFeedback(FeedbackDTO feedbackDTO, CurrentUserObj currentUser)
+        public async Task<int> CreateFeedback(FeedbackDTO feedbackDTO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateFeedback(FeedbackDTO feedbackDTO, CurrentUserObj currentUser)
+        public async Task<int> UpdateFeedback(FeedbackDTO feedbackDTO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -103,8 +103,8 @@ namespace JourneySick.Business.IServices.Services
                 {
                     feedbackDTO.UpdateBy = currentUser.UserId;
                     feedbackDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Feedback feedbackDTO = _mapper.Map<Feedback>(feedbackDTO);
-                    int id = await _feedbackRepository.UpdateFeedback(feedbackDTO);
+                    Feedback feedback = _mapper.Map<Feedback>(feedbackDTO);
+                    int id = await _feedbackRepository.UpdateFeedback(feedback);
                     if (id > 0)
                     {
                         return id;
@@ -161,11 +161,11 @@ namespace JourneySick.Business.IServices.Services
             AllFeedbackDTO result = new();
             try
             {
-                List<Data.Models.Entities.VO.FeedbackVO> users = await _feedbackRepository.GetTopFeedback();
+                List<FeedbackVO> feedbacks = await _feedbackRepository.GetTopFeedback();
                 // convert entity to dto
-                List<Data.Models.DTOs.CommonDTO.VO.FeedbackVO> users = _mapper.Map<List<Data.Models.DTOs.CommonDTO.VO.FeedbackVO>>(users);
+                List<FeedbackRequest> feedbackRequests = _mapper.Map<List<FeedbackRequest>>(feedbacks);
                 int count = await _feedbackRepository.CountAllFeedbacks(null);
-                result.ListOfFeedback = users;
+                result.ListOfFeedback = feedbackRequests;
                 result.NumOfFeedback = count;
                 return result;
             }

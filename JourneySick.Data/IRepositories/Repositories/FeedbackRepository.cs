@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;

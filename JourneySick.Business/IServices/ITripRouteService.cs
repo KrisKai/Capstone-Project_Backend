@@ -1,6 +1,6 @@
-﻿using JourneySick.Business.Models.DTOs;
-using JourneySick.Data.Models.DTOs;
+﻿using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 
 namespace JourneySick.Business.IServices
@@ -12,9 +12,9 @@ namespace JourneySick.Business.IServices
         //Select Route
         public Task<TripRouteDTO> GetTripRouteById(int routeId);
         //insert
-        public Task<int> CreateTripRoute(TripRouteVO tripRouteDTO, CurrentUserObj currentUser);
+        public Task<int> CreateTripRoute(TripRouteRequest tripRouteDTO, CurrentUserRequest currentUser);
         //update
-        public Task<int> UpdateTripRoute(TripRouteVO tripRouteDTO, CurrentUserObj currentUser);
+        public Task<int> UpdateTripRoute(TripRouteRequest tripRouteDTO, CurrentUserRequest currentUser);
         //update
         public Task<int> DeleteTripRoute(int routeId);
 

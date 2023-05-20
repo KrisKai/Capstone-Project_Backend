@@ -1,6 +1,6 @@
-﻿using JourneySick.Business.Models.DTOs;
-using JourneySick.Data.Models.DTOs;
+﻿using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 
 namespace JourneySick.Business.IServices
 {
@@ -11,9 +11,9 @@ namespace JourneySick.Business.IServices
         //Select Item
         public Task<ItemDTO> GetItemById(int itemId);
         //insert
-        public Task<int> CreateItem(ItemDTO tripItemDTO, CurrentUserObj currentUser);
+        public Task<int> CreateItem(ItemDTO tripItemDTO, CurrentUserRequest currentUser);
         //update
-        public Task<int> UpdateItem(ItemDTO tripItemDTO, CurrentUserObj currentUser);
+        public Task<int> UpdateItem(ItemDTO tripItemDTO, CurrentUserRequest currentUser);
         //update
         public Task<int> DeleteItem(int itemId);
 

@@ -1,6 +1,6 @@
 ﻿using JourneySick.Business.IServices;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -13,9 +13,9 @@ namespace JourneySick.API.Extensions
 {
     public static class GetCurrentUserInfo
     {
-        public static async Task<CurrentUserObj> GetThisUserInfo(HttpContext httpContext)
+        public static async Task<CurrentUserRequest> GetThisUserInfo(HttpContext httpContext)
         {
-            CurrentUserObj currentUser = new();
+            CurrentUserRequest currentUser = new();
 
             var checkUser = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.SerialNumber);
             if (checkUser != null)

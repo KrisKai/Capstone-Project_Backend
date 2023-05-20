@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
-using JourneySick.Data.Models.DTOs.CommonDTO.VO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Logging;
@@ -33,11 +31,11 @@ namespace JourneySick.Business.IServices.Services
             AllTripItemDTO result = new();
             try
             {
-                List<tripitem> trips = await _tripItemRepository.GetAllTripItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
+                List<TripItem> tripItems = await _tripItemRepository.GetAllTripItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
                 // convert entity to dto
-                List<TripItemDTO> trips = _mapper.Map<List<TripItemDTO>>(trips);
+                List<TripItemDTO> tripItemsDTO = _mapper.Map<List<TripItemDTO>>(tripItems);
                 int count = await _tripItemRepository.CountAllTripItems(itemId, categoryId);
-                result.ListOfItem = trips;
+                result.ListOfItem = tripItemsDTO;
                 result.NumOfItem = count;
                 return result;
             }
@@ -65,7 +63,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateTripItem(TripItemDTO tripItemDTO, CurrentUserObj currentUser)
+        public async Task<int> CreateTripItem(TripItemDTO tripItemDTO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -93,7 +91,7 @@ namespace JourneySick.Business.IServices.Services
                         };
                         await _itemRepository.CreateItem(newitem);
                     }
-                    Data.Models.Entities.VO.TripVO trip = await _tripRepository.GetTripById(tripItemDTO.TripId);
+                    TripVO trip = await _tripRepository.GetTripById(tripItemDTO.TripId);
                     trip.TripId = tripitem.TripId;
                     trip.TripBudget += (tripitem.Quantity * tripitem.PriceMin);
                     await _tripRepository.UpdateTripBudget(trip);
@@ -108,7 +106,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateTripItem(TripItemDTO tripItemDTO, CurrentUserObj currentUser)
+        public async Task<int> UpdateTripItem(TripItemDTO tripItemDTO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -123,7 +121,7 @@ namespace JourneySick.Business.IServices.Services
                     {
                         if (getTrip.PriceMin != tripItemDTO.PriceMin || getTrip.Quantity != tripItemDTO.Quantity)
                         {
-                            Data.Models.Entities.VO.TripVO tripVO = await _tripRepository.GetTripById(tripItemDTO.TripId);
+                            TripVO tripVO = await _tripRepository.GetTripById(tripItemDTO.TripId);
                             tripVO.TripBudget = tripVO.TripBudget - (getTrip.Quantity * getTrip.PriceMin) + (tripItemDTO.Quantity * tripItemDTO.PriceMin);
                             await _tripRepository.UpdateTripBudget(tripVO);
                         }

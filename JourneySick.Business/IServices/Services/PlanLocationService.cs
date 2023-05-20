@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
 using Microsoft.Extensions.Logging;
@@ -25,7 +23,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                List<planlocation> planlocations = await _planLocationRepository.GetAllLocationsWithPaging(pageIndex, pageSize);
+                List<PlanLocation> planlocations = await _planLocationRepository.GetAllLocationsWithPaging(pageIndex, pageSize);
                 // convert entity to dto
                 List<PlanLocationDTO> planLocations = _mapper.Map<List<PlanLocationDTO>>(planlocations);
                 return planLocations;

@@ -2,15 +2,11 @@
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Helpers.SettingObject;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.IRepositories.Repositories;
-using JourneySick.Data.Models.DTOs;
-using JourneySick.Data.Models.DTOs.CommonDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
-using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using JourneySick.Data.Models.Enums;
 using Microsoft.Extensions.Logging;
@@ -37,16 +33,16 @@ namespace JourneySick.Business.IServices.Services
             _logger = logger;
         }
 
-        public async Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, CurrentUserObj currentUser)
+        public async Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, CurrentUserRequest currentUser)
         {
             AllUserDTO result = new();
             try
             {
-                List<Data.Models.Entities.VO.UserVO> users = await _userRepository.GetAllUsersWithPaging(pageIndex, pageSize, userName, currentUser.Role);
+                List<UserVO> users = await _userRepository.GetAllUsersWithPaging(pageIndex, pageSize, userName, currentUser.Role);
                 // convert entity to dto
-                List<Data.Models.DTOs.CommonDTO.VO.UserVO> users = _mapper.Map<List<Data.Models.DTOs.CommonDTO.VO.UserVO>>(users);
+                List<UserRequest> userRequest = _mapper.Map<List<UserRequest>>(users);
                 int count = await _userRepository.CountAllUsers(userName, currentUser.Role);
-                result.ListOfUser = users;
+                result.ListOfUser = userRequest;
                 result.NumOfUser = count;
                 return result;
             }
@@ -56,13 +52,13 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<Data.Models.DTOs.CommonDTO.VO.UserVO> GetUserById(string userId)
+        public async Task<UserRequest> GetUserById(string userId)
         {
             try
             {
-                Data.Models.Entities.VO.UserVO UserVO = await _userRepository.GetUserById(userId);
+                UserVO UserVO = await _userRepository.GetUserById(userId);
                 // convert entity to dto
-                Data.Models.DTOs.CommonDTO.VO.UserVO userVO = _mapper.Map<Data.Models.DTOs.CommonDTO.VO.UserVO>(UserVO);
+                UserRequest userVO = _mapper.Map<UserRequest>(UserVO);
 
                 return userVO;
             }
@@ -74,7 +70,7 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> CreateUser(Data.Models.DTOs.CommonDTO.VO.UserVO userVO, CurrentUserObj currentUser)
+        public async Task<string> CreateUser(UserRequest userVO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -87,7 +83,7 @@ namespace JourneySick.Business.IServices.Services
                     userVO.ActiveStatus = "ACTIVE";
                     userVO.CreateBy = currentUser.UserId;
                     userVO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Data.Models.Entities.VO.UserVO userEntity = _mapper.Map<Data.Models.Entities.VO.UserVO>(userVO);
+                    UserVO userEntity = _mapper.Map<UserVO>(userVO);
                     if (await _userRepository.CreateUser(userEntity) > 0 && await _userDetailRepository.CreateUserDetail(userEntity) > 0)
                     {
                         return userEntity.UserId;
@@ -103,17 +99,17 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<string> UpdateUser(Data.Models.DTOs.CommonDTO.VO.UserVO userVO, CurrentUserObj currentUser)
+        public async Task<string> UpdateUser(UserRequest userRequest, CurrentUserRequest currentUser)
         {
             try
             {
-                Data.Models.DTOs.CommonDTO.VO.UserVO getTrip = await GetUserById(userId: userVO.UserId);
+                UserRequest getTrip = await GetUserById(userId: userRequest.UserId);
 
-                if (getTrip != null && await ValidateUserUpdate(getTrip, userVO) == 0)
+                if (getTrip != null && await ValidateUserUpdate(getTrip, userRequest) == 0)
                 {
-                    userVO.UpdateBy = currentUser.UserId;
-                    userVO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Data.Models.Entities.VO.UserVO userVO = _mapper.Map<Data.Models.Entities.VO.UserVO>(userVO);
+                    userRequest.UpdateBy = currentUser.UserId;
+                    userRequest.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    UserVO userVO = _mapper.Map<UserVO>(userRequest);
                     if (await _userDetailRepository.UpdateUserDetail(userVO) > 0)
                     {
                         return userVO.UserId;
@@ -139,7 +135,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Data.Models.DTOs.CommonDTO.VO.UserVO getTrip = await GetUserById(userId);
+                UserRequest getTrip = await GetUserById(userId);
 
                 if (getTrip != null)
                 {
@@ -195,7 +191,7 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<int> ResetPassword(string? id, CurrentUserObj currentUser)
+        public async Task<int> ResetPassword(string? id, CurrentUserRequest currentUser)
         {
             if (currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
             {
@@ -217,13 +213,13 @@ namespace JourneySick.Business.IServices.Services
             throw new PermissionException("You do not have permission to access!!");
         }
 
-        public async Task<int> ChangePassword(ChangePasswordDTO changePasswordDTO)
+        public async Task<int> ChangePassword(ChangePasswordRequest changePasswordDTO)
         {
             try
             {
-                Data.Models.Entities.VO.UserVO userVO = await _userRepository.GetUserById(changePasswordDTO.UserId);
-                Data.Models.DTOs.CommonDTO.VO.UserVO userVO = _mapper.Map<Data.Models.DTOs.CommonDTO.VO.UserVO>(userVO);
-                if (userVO != null && userVO.Password.Equals(PasswordEncryption.Encrypt(changePasswordDTO.OldPassword, _appSecrect.SecrectKey)))
+                UserVO userVO = await _userRepository.GetUserById(changePasswordDTO.UserId);
+                UserRequest userRequest = _mapper.Map<UserRequest>(userVO);
+                if (userRequest != null && userRequest.Password.Equals(PasswordEncryption.Encrypt(changePasswordDTO.OldPassword, _appSecrect.SecrectKey)))
                 {
                     string newPassword = PasswordEncryption.Encrypt(changePasswordDTO.Password, _appSecrect.SecrectKey);
                     if (await _userRepository.ChangePassword(changePasswordDTO.UserId, newPassword) > 0)
@@ -241,14 +237,14 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateAcitveStatus(Data.Models.DTOs.CommonDTO.VO.UserVO userVO, CurrentUserObj currentUser)
+        public async Task<int> UpdateAcitveStatus(UserRequest userRequest, CurrentUserRequest currentUser)
         {
             if (currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
             {
                 try
                 {
-                    Data.Models.Entities.VO.UserVO userVO = _mapper.Map<Data.Models.Entities.VO.UserVO>(userVO);
-                    Data.Models.Entities.VO.UserVO getUser = await _userRepository.GetUserById(userVO.UserId);
+                    UserVO userVO = _mapper.Map<UserVO>(userRequest);
+                    UserVO getUser = await _userRepository.GetUserById(userVO.UserId);
                     if(getUser != null)
                     {
                         if (getUser.ActiveStatus.Equals("ACTIVE"))
@@ -274,7 +270,7 @@ namespace JourneySick.Business.IServices.Services
             throw new PermissionException("You do not have permission to access!!");
         }
 
-        private async Task<int> ValidateUserCreate(Data.Models.DTOs.CommonDTO.VO.UserVO userVO)
+        private async Task<int> ValidateUserCreate(UserRequest userVO)
         {
             string username = await _userRepository.GetUsernameIfExist(userVO.Username);
             string email = await _userDetailRepository.GetEmailIfExist(userVO.Email);
@@ -294,7 +290,7 @@ namespace JourneySick.Business.IServices.Services
             return 0;
         }
 
-        private async Task<int> ValidateUserUpdate(Data.Models.DTOs.CommonDTO.VO.UserVO oldUser, Data.Models.DTOs.CommonDTO.VO.UserVO newUser)
+        private async Task<int> ValidateUserUpdate(UserRequest oldUser, UserRequest newUser)
         {
             if (!oldUser.Username.Equals(newUser.Username))
             {

@@ -2,7 +2,7 @@
 
 namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
-    public class TripVO: TripDetailDTO
+    public class TripRequest: TripDetailDTO
     {
         public string? TripName { get; set; }
         public decimal? TripBudget { get; set; }
@@ -18,7 +18,7 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
         public string? EndLocationName { get; set; }
     }
 
-    public class CreateTripRequest : TripVO
+    public class CreateTripRequest : TripRequest
     {
         public IFormFile? Thumbnail { get; set; }
     }

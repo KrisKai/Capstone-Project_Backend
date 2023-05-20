@@ -86,7 +86,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<Models.DTOs.CommonDTO.VO.UserVO> GetUserDetailByUserName(string username)
+        public async Task<Models.DTOs.CommonDTO.VO.UserRequest> GetUserDetailByUserName(string username)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("Username", username, DbType.String);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryFirstOrDefaultAsync<Models.DTOs.CommonDTO.VO.UserVO>(query));
+                return (await connection.QueryFirstOrDefaultAsync<Models.DTOs.CommonDTO.VO.UserRequest>(query));
             }
             catch (Exception e)
             {

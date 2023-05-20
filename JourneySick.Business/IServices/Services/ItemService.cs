@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -30,11 +29,11 @@ namespace JourneySick.Business.IServices.Services
             AllItemDTO result = new();
             try
             {
-                List<Data.Models.Entities.VO.ItemVO> trips = await _itemRepository.GetAllItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
+                List<ItemVO> items = await _itemRepository.GetAllItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
                 // convert entity to dto
-                List<Data.Models.DTOs.CommonDTO.VO.ItemVO> trips = _mapper.Map<List<Data.Models.DTOs.CommonDTO.VO.ItemVO>>(trips);
+                List<ItemRequest> itemRequests = _mapper.Map<List<ItemRequest>>(items);
                 int count = await _itemRepository.CountAllItems(itemId, categoryId);
-                result.ListOfItem = trips;
+                result.ListOfItem = itemRequests;
                 result.NumOfItem = count;
                 return result;
             }
@@ -62,7 +61,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateItem(ItemDTO itemDTO, CurrentUserObj currentUser)
+        public async Task<int> CreateItem(ItemDTO itemDTO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -83,7 +82,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateItem(ItemDTO itemDTO, CurrentUserObj currentUser)
+        public async Task<int> UpdateItem(ItemDTO itemDTO, CurrentUserRequest currentUser)
         {
             try
             {

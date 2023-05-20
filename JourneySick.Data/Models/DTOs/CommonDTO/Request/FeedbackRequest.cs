@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
-    public class FeedbackVO:FeedbackDTO
+    public class FeedbackRequest:FeedbackDTO
     {
         public string Username { get; set; } = null!;
         public string Email { get; set; }

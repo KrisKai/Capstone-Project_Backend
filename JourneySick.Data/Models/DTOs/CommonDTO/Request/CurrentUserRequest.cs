@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JourneySick.Business.Models.DTOs
+namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
 {
-    public class CurrentUserObj
+    public class CurrentUserRequest
     {
         public string UserId { get; set; }
         public string Name { get; set; }

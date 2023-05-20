@@ -1,5 +1,6 @@
 ﻿using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Data.Models.DTOs.CommonDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
