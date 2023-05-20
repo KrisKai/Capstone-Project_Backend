@@ -8,8 +8,8 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class RoutePlanDTO
     {
-        public int FldPlanId { get; set; }
-        public int? FldRouteId { get; set; }
-        public string? FldPlanDescription { get; set; }
+        public int PlanId { get; set; }
+        public int? RouteId { get; set; }
+        public string? PlanDescription { get; set; }
     }
 }

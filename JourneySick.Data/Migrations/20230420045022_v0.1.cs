@@ -9,8 +9,8 @@ namespace JourneySick.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "fldQuantity",
-                table: "tbltripitem",
+                name: "Quantity",
+                table: "tripitem",
                 type: "int",
                 nullable: true,
                 defaultValueSql: "'0'");
@@ -38,8 +38,8 @@ namespace JourneySick.Data.Migrations
                 name: "__efmigrationshistory");
 
             migrationBuilder.DropColumn(
-                name: "fldQuantity",
-                table: "tbltripitem");
+                name: "Quantity",
+                table: "tripitem");
         }
     }
 }

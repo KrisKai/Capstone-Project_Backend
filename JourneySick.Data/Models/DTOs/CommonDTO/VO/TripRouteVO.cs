@@ -8,8 +8,8 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
     public class TripRouteVO:TripRouteDTO
     {
-        public string FldLongitude { get; set; } = null!;
-        public string FldLatitude { get; set; } = null!;
-        public string? FldLocationName { get; set; }
+        public string Longitude { get; set; } = null!;
+        public string Latitude { get; set; } = null!;
+        public string? LocationName { get; set; }
     }
 }

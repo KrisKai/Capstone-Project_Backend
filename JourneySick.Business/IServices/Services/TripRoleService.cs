@@ -32,9 +32,9 @@ namespace JourneySick.Business.IServices.Services
             AllTripRoleDTO result = new();
             try
             {
-                List<Tbltriprole> tbltriproles = await _tripRoleRepository.GetAllTripRolesWithPaging(pageIndex, pageSize, roleName);
+                List<triprole> triproles = await _tripRoleRepository.GetAllTripRolesWithPaging(pageIndex, pageSize, roleName);
                 // convert entity to dto
-                List<TripRoleDTO> users = _mapper.Map<List<TripRoleDTO>>(tbltriproles);
+                List<TripRoleDTO> users = _mapper.Map<List<TripRoleDTO>>(triproles);
                 int count = await _tripRoleRepository.CountAllTripRoles(roleName);
                 result.ListOfRole = users;
                 result.NumOfRole = count;
@@ -50,9 +50,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tbltriprole tbltriprole = await _tripRoleRepository.GetTripRoleById(roleId);
+                TripRole triprole = await _tripRoleRepository.GetTripRoleById(roleId);
                 // convert entity to dto
-                TripRoleDTO tripRoleDTO = _mapper.Map<TripRoleDTO>(tbltriprole);
+                TripRoleDTO tripRoleDTO = _mapper.Map<TripRoleDTO>(triprole);
 
                 return tripRoleDTO;
             }
@@ -67,8 +67,8 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tbltriprole tbltriprole = _mapper.Map<Tbltriprole>(tripRoleDTO);
-                int id = await _tripRoleRepository.CreateTripRole(tbltriprole);
+                TripRole triprole = _mapper.Map<TripRole>(tripRoleDTO);
+                int id = await _tripRoleRepository.CreateTripRole(triprole);
                 if (id > 0)
                 {
                     return id;
@@ -86,14 +86,14 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                TripRoleDTO getTrip = await GetTripRoleById((int)tripRoleDTO.FldRoleId);
+                TripRoleDTO getTrip = await GetTripRoleById((int)tripRoleDTO.RoleId);
 
                 if (getTrip != null)
                 {
-                    Tbltriprole tbltriprole = _mapper.Map<Tbltriprole>(tripRoleDTO);
-                    if (await _tripRoleRepository.UpdateTripRole(tbltriprole) > 0)
+                    TripRole triprole = _mapper.Map<TripRole>(tripRoleDTO);
+                    if (await _tripRoleRepository.UpdateTripRole(triprole) > 0)
                     {
-                        return (int)tripRoleDTO.FldRoleId;
+                        return (int)tripRoleDTO.RoleId;
                     }
                     else
                     {

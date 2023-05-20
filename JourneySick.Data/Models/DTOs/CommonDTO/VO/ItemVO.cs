@@ -8,6 +8,6 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
     public class ItemVO: ItemDTO
     {
-        public string fldCategoryName { get; set; }
+        public string CategoryName { get; set; }
     }
 }

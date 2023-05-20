@@ -11,32 +11,32 @@ namespace JourneySick.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "fldTripDestinationLocationAddress",
-                table: "tbltripdetail");
+                name: "TripDestinationLocationAddress",
+                table: "tripdetail");
 
             migrationBuilder.DropColumn(
-                name: "fldTripDestinationLocationName",
-                table: "tbltripdetail");
+                name: "TripDestinationLocationName",
+                table: "tripdetail");
 
             migrationBuilder.DropColumn(
-                name: "fldTripStartLocationAddress",
-                table: "tbltripdetail");
+                name: "TripStartLocationAddress",
+                table: "tripdetail");
 
             migrationBuilder.DropColumn(
-                name: "fldTripStartLocationName",
-                table: "tbltripdetail");
+                name: "TripStartLocationName",
+                table: "tripdetail");
 
             migrationBuilder.DropColumn(
-                name: "fldEstimateArrivalTime",
-                table: "tbltrip");
+                name: "EstimateArrivalTime",
+                table: "trip");
 
             migrationBuilder.DropColumn(
-                name: "fldEstimateStartTime",
-                table: "tbltrip");
+                name: "EstimateStartTime",
+                table: "trip");
 
             migrationBuilder.AddColumn<decimal>(
-                name: "fldDistance",
-                table: "tbltripdetail",
+                name: "Distance",
+                table: "tripdetail",
                 type: "decimal(12,2)",
                 precision: 12,
                 scale: 2,
@@ -44,14 +44,14 @@ namespace JourneySick.Data.Migrations
                 defaultValueSql: "'0.00'");
 
             migrationBuilder.AddColumn<DateOnly>(
-                name: "fldEstimateEndDate",
-                table: "tbltripdetail",
+                name: "EstimateEndDate",
+                table: "tripdetail",
                 type: "date",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "fldEstimateEndTime",
-                table: "tbltripdetail",
+                name: "EstimateEndTime",
+                table: "tripdetail",
                 type: "varchar(10)",
                 maxLength: 10,
                 nullable: true,
@@ -60,14 +60,14 @@ namespace JourneySick.Data.Migrations
                 .Annotation("MySql:CharSet", "latin1");
 
             migrationBuilder.AddColumn<DateOnly>(
-                name: "fldEstimateStartDate",
-                table: "tbltripdetail",
+                name: "EstimateStartDate",
+                table: "tripdetail",
                 type: "date",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "fldEstimateStartTime",
-                table: "tbltripdetail",
+                name: "EstimateStartTime",
+                table: "tripdetail",
                 type: "varchar(10)",
                 maxLength: 10,
                 nullable: true,
@@ -76,20 +76,20 @@ namespace JourneySick.Data.Migrations
                 .Annotation("MySql:CharSet", "latin1");
 
             migrationBuilder.AddColumn<int>(
-                name: "fldTripDestinationLocationId",
-                table: "tbltripdetail",
+                name: "TripDestinationLocationId",
+                table: "tripdetail",
                 type: "int",
                 nullable: true);
 
             migrationBuilder.AddColumn<int>(
-                name: "fldTripStartLocationId",
-                table: "tbltripdetail",
+                name: "TripStartLocationId",
+                table: "tripdetail",
                 type: "int",
                 nullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldTripPresenter",
-                table: "tbltrip",
+                name: "TripPresenter",
+                table: "trip",
                 type: "varchar(20)",
                 maxLength: 20,
                 nullable: false,
@@ -102,8 +102,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("Relational:Collation", "latin1_swedish_ci");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldTripName",
-                table: "tbltrip",
+                name: "TripName",
+                table: "trip",
                 type: "varchar(100)",
                 maxLength: 100,
                 nullable: true,
@@ -117,8 +117,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldTripId",
-                table: "tbltrip",
+                name: "TripId",
+                table: "trip",
                 type: "varchar(20)",
                 maxLength: 20,
                 nullable: false,
@@ -131,38 +131,38 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("Relational:Collation", "latin1_swedish_ci");
 
             migrationBuilder.CreateTable(
-                name: "tblrouteplan",
+                name: "routeplan",
                 columns: table => new
                 {
-                    fldPlanId = table.Column<int>(type: "int", nullable: false)
+                    PlanId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    fldRouteId = table.Column<int>(type: "int", nullable: true),
-                    fldPlanDescription = table.Column<string>(type: "tinytext", nullable: true, collation: "utf8mb4_0900_ai_ci")
+                    RouteId = table.Column<int>(type: "int", nullable: true),
+                    PlanDescription = table.Column<string>(type: "tinytext", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => x.fldPlanId);
+                    table.PrimaryKey("PRIMARY", x => x.PlanId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
 
             migrationBuilder.CreateTable(
-                name: "tbltriproute",
+                name: "triproute",
                 columns: table => new
                 {
-                    fldRouteId = table.Column<int>(type: "int", nullable: false)
+                    RouteId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    fldTripid = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true, collation: "utf8mb4_0900_ai_ci")
+                    Tripid = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    fldMapId = table.Column<int>(type: "int", nullable: true),
-                    fldPriority = table.Column<int>(type: "int", nullable: true),
-                    fldEstimateTime = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: true, defaultValueSql: "'0.00'"),
-                    fldDistance = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: true)
+                    MapId = table.Column<int>(type: "int", nullable: true),
+                    Priority = table.Column<int>(type: "int", nullable: true),
+                    EstimateTime = table.Column<decimal>(type: "decimal(5,2)", precision: 5, scale: 2, nullable: true, defaultValueSql: "'0.00'"),
+                    Distance = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PRIMARY", x => x.fldRouteId);
+                    table.PrimaryKey("PRIMARY", x => x.RouteId);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4")
                 .Annotation("Relational:Collation", "utf8mb4_0900_ai_ci");
@@ -171,42 +171,42 @@ namespace JourneySick.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "tblrouteplan");
+                name: "routeplan");
 
             migrationBuilder.DropTable(
-                name: "tbltriproute");
+                name: "triproute");
 
             migrationBuilder.DropColumn(
-                name: "fldDistance",
-                table: "tbltripdetail");
+                name: "Distance",
+                table: "tripdetail");
 
             migrationBuilder.DropColumn(
-                name: "fldEstimateEndDate",
-                table: "tbltripdetail");
+                name: "EstimateEndDate",
+                table: "tripdetail");
 
             migrationBuilder.DropColumn(
-                name: "fldEstimateEndTime",
-                table: "tbltripdetail");
+                name: "EstimateEndTime",
+                table: "tripdetail");
 
             migrationBuilder.DropColumn(
-                name: "fldEstimateStartDate",
-                table: "tbltripdetail");
+                name: "EstimateStartDate",
+                table: "tripdetail");
 
             migrationBuilder.DropColumn(
-                name: "fldEstimateStartTime",
-                table: "tbltripdetail");
+                name: "EstimateStartTime",
+                table: "tripdetail");
 
             migrationBuilder.DropColumn(
-                name: "fldTripDestinationLocationId",
-                table: "tbltripdetail");
+                name: "TripDestinationLocationId",
+                table: "tripdetail");
 
             migrationBuilder.DropColumn(
-                name: "fldTripStartLocationId",
-                table: "tbltripdetail");
+                name: "TripStartLocationId",
+                table: "tripdetail");
 
             migrationBuilder.AddColumn<string>(
-                name: "fldTripDestinationLocationAddress",
-                table: "tbltripdetail",
+                name: "TripDestinationLocationAddress",
+                table: "tripdetail",
                 type: "varchar(150)",
                 maxLength: 150,
                 nullable: true,
@@ -214,8 +214,8 @@ namespace JourneySick.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8");
 
             migrationBuilder.AddColumn<string>(
-                name: "fldTripDestinationLocationName",
-                table: "tbltripdetail",
+                name: "TripDestinationLocationName",
+                table: "tripdetail",
                 type: "varchar(150)",
                 maxLength: 150,
                 nullable: true,
@@ -223,8 +223,8 @@ namespace JourneySick.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8");
 
             migrationBuilder.AddColumn<string>(
-                name: "fldTripStartLocationAddress",
-                table: "tbltripdetail",
+                name: "TripStartLocationAddress",
+                table: "tripdetail",
                 type: "varchar(150)",
                 maxLength: 150,
                 nullable: true,
@@ -232,8 +232,8 @@ namespace JourneySick.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8");
 
             migrationBuilder.AddColumn<string>(
-                name: "fldTripStartLocationName",
-                table: "tbltripdetail",
+                name: "TripStartLocationName",
+                table: "tripdetail",
                 type: "varchar(150)",
                 maxLength: 150,
                 nullable: true,
@@ -241,8 +241,8 @@ namespace JourneySick.Data.Migrations
                 .Annotation("MySql:CharSet", "latin1");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldTripPresenter",
-                table: "tbltrip",
+                name: "TripPresenter",
+                table: "trip",
                 type: "varchar(50)",
                 maxLength: 50,
                 nullable: false,
@@ -255,8 +255,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("Relational:Collation", "latin1_swedish_ci");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldTripName",
-                table: "tbltrip",
+                name: "TripName",
+                table: "trip",
                 type: "varchar(50)",
                 maxLength: 50,
                 nullable: true,
@@ -270,8 +270,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldTripId",
-                table: "tbltrip",
+                name: "TripId",
+                table: "trip",
                 type: "varchar(50)",
                 maxLength: 50,
                 nullable: false,
@@ -284,14 +284,14 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("Relational:Collation", "latin1_swedish_ci");
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "fldEstimateArrivalTime",
-                table: "tbltrip",
+                name: "EstimateArrivalTime",
+                table: "trip",
                 type: "datetime",
                 nullable: true);
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "fldEstimateStartTime",
-                table: "tbltrip",
+                name: "EstimateStartTime",
+                table: "trip",
                 type: "datetime",
                 nullable: true);
         }

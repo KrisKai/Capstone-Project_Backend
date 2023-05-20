@@ -38,9 +38,9 @@ namespace JourneySick.Business.IServices.Services
             AllFeedbackDTO result = new();
             try
             {
-                List<TblfeedbackVO> tblusers = await _feedbackRepository.GetAllFeedbacksWithPaging(pageIndex, pageSize, tripId);
+                List<Data.Models.Entities.VO.FeedbackVO> users = await _feedbackRepository.GetAllFeedbacksWithPaging(pageIndex, pageSize, tripId);
                 // convert entity to dto
-                List<FeedbackVO> users = _mapper.Map<List<FeedbackVO>>(tblusers);
+                List<Data.Models.DTOs.CommonDTO.VO.FeedbackVO> users = _mapper.Map<List<Data.Models.DTOs.CommonDTO.VO.FeedbackVO>>(users);
                 int count = await _feedbackRepository.CountAllFeedbacks(tripId);
                 result.ListOfFeedback = users;
                 result.NumOfFeedback = count;
@@ -57,9 +57,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tblfeedback tblFeedbackDTO = await _feedbackRepository.GetFeedbackById(feedbackId);
+                Feedback FeedbackDTO = await _feedbackRepository.GetFeedbackById(feedbackId);
                 // convert entity to dto
-                FeedbackDTO feedbackDTO = _mapper.Map<FeedbackDTO>(tblFeedbackDTO);
+                FeedbackDTO feedbackDTO = _mapper.Map<FeedbackDTO>(FeedbackDTO);
 
                 return feedbackDTO;
             }
@@ -75,12 +75,12 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                    feedbackDTO.FldCreateBy = currentUser.UserId;
-                    feedbackDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Tblfeedback userEntity = _mapper.Map<Tblfeedback>(feedbackDTO);
+                    feedbackDTO.CreateBy = currentUser.UserId;
+                    feedbackDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    Feedback userEntity = _mapper.Map<Feedback>(feedbackDTO);
                     if (await _feedbackRepository.CreateFeedback(userEntity) > 0)
                     {
-                        return userEntity.FldFeedbackId;
+                        return userEntity.FeedbackId;
                     }
                 
                 throw new InsertException("Create Feedback failed!");
@@ -97,14 +97,14 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                FeedbackDTO getTrip = await GetFeedbackById((int)feedbackDTO.FldFeedbackId);
+                FeedbackDTO getTrip = await GetFeedbackById((int)feedbackDTO.FeedbackId);
 
                 if (getTrip != null)
                 {
-                    feedbackDTO.FldUpdateBy = currentUser.UserId;
-                    feedbackDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Tblfeedback tblfeedbackDTO = _mapper.Map<Tblfeedback>(feedbackDTO);
-                    int id = await _feedbackRepository.UpdateFeedback(tblfeedbackDTO);
+                    feedbackDTO.UpdateBy = currentUser.UserId;
+                    feedbackDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    Feedback feedbackDTO = _mapper.Map<Feedback>(feedbackDTO);
+                    int id = await _feedbackRepository.UpdateFeedback(feedbackDTO);
                     if (id > 0)
                     {
                         return id;
@@ -161,9 +161,9 @@ namespace JourneySick.Business.IServices.Services
             AllFeedbackDTO result = new();
             try
             {
-                List<TblfeedbackVO> tblusers = await _feedbackRepository.GetTopFeedback();
+                List<Data.Models.Entities.VO.FeedbackVO> users = await _feedbackRepository.GetTopFeedback();
                 // convert entity to dto
-                List<FeedbackVO> users = _mapper.Map<List<FeedbackVO>>(tblusers);
+                List<Data.Models.DTOs.CommonDTO.VO.FeedbackVO> users = _mapper.Map<List<Data.Models.DTOs.CommonDTO.VO.FeedbackVO>>(users);
                 int count = await _feedbackRepository.CountAllFeedbacks(null);
                 result.ListOfFeedback = users;
                 result.NumOfFeedback = count;
@@ -185,13 +185,13 @@ namespace JourneySick.Business.IServices.Services
                 if (getTrip != null)
                 {
                     if(status.Equals("L")) {
-                        getTrip.FldLike++;
+                        getTrip.Like++;
                     }
                     else if(status.Equals("D")) { 
-                        getTrip.FldDislike++;
+                        getTrip.Dislike++;
                     }
-                    Tblfeedback tblfeedbackDTO = _mapper.Map<Tblfeedback>(getTrip);
-                    int id = await _feedbackRepository.IncreaseLike(tblfeedbackDTO, status);
+                    Feedback feedbackDTO = _mapper.Map<Feedback>(getTrip);
+                    int id = await _feedbackRepository.IncreaseLike(feedbackDTO, status);
                     if (id > 0)
                     {
                         return id;

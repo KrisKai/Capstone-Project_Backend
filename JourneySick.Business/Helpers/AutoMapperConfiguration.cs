@@ -16,45 +16,45 @@ namespace JourneySick.Business.Helpers
     {
         public AutoMapperConfiguration()
         {
-            CreateMap<UserDTO, Tbluser>()
+            CreateMap<UserDTO, User>()
                 .ReverseMap(); //reverse so the both direction{
-            CreateMap<TripPlanDTO, Tbltripplan>()
+            CreateMap<TripPlanDTO, TripPlan>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<TripMemberDTO, Tbltripmember>()
+            CreateMap<TripMemberDTO, TripMember>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<TripRoleDTO, Tbltriprole>()
+            CreateMap<TripRoleDTO, TripRole>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<TripItemDTO, Tbltripitem>()
+            CreateMap<TripItemDTO, TripItem>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<TripDTO, Tbltrip>()
+            CreateMap<TripDTO, Trip>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<TripDetailDTO, Tbltripdetail>()
+            CreateMap<TripDetailDTO, TripDetail>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<UserDetailDTO, Tbluserdetail>()
+            CreateMap<UserDetailDTO, UserDetail>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<PlanLocationDTO, Tblplanlocation>()
+            CreateMap<PlanLocationDTO, PlanLocation>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<UserVO, TbluserVO>()
+            CreateMap<Data.Models.DTOs.CommonDTO.VO.UserVO, Data.Models.Entities.VO.UserVO>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<TripVO, TbltripVO>()
+            CreateMap<Data.Models.DTOs.CommonDTO.VO.TripVO, Data.Models.Entities.VO.TripVO>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<TripMemberVO, TbltripmemberVO>()
+            CreateMap<TripMemberVO, TripmemberVO>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<FeedbackVO, TblfeedbackVO>()
+            CreateMap<Data.Models.DTOs.CommonDTO.VO.FeedbackVO, Data.Models.Entities.VO.FeedbackVO>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<ItemDTO, Tblitem>()
+            CreateMap<ItemDTO, Item>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<ItemCategoryDTO, Tblitemcategory>()
+            CreateMap<ItemCategoryDTO, ItemCategory>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<ItemVO, TblitemVO>()
+            CreateMap<Data.Models.DTOs.CommonDTO.VO.ItemVO, Data.Models.Entities.VO.ItemVO>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<MapLocationDTO, Tblmaplocation>()
+            CreateMap<MapLocationDTO, MapLocation>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<TripRouteVO, TbltriprouteVO>()
+            CreateMap<TripRouteVO, TriprouteVO>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<TripRouteDTO, Tbltriproute>()
+            CreateMap<TripRouteDTO, TripRoute>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<RoutePlanDTO, Tblrouteplan>()
+            CreateMap<RoutePlanDTO, RoutePlan>()
                 .ReverseMap(); //reverse so the both direction
         }
     }

@@ -11,13 +11,13 @@ namespace JourneySick.Data.IRepositories
     public interface IMapLocationRepository
     {
         //SELECT ALL
-        public Task<List<Tblmaplocation>> GetAllLocationsWithPaging(int pageIndex, int pageSize);
-        public Task<Tblmaplocation> GetMapLocationById(int locationId);
+        public Task<List<MapLocation>> GetAllLocationsWithPaging(int pageIndex, int pageSize);
+        public Task<MapLocation> GetMapLocationById(int locationId);
         public Task<int> GetLastOne();
         //CREATE
-        public Task<int> CreateMapLocation(Tblmaplocation tblmaplocation);
+        public Task<int> CreateMapLocation(MapLocation maplocation);
         //UPDATE
-        public Task<int> UpdateMapLocation(Tblmaplocation tblmaplocation);
+        public Task<int> UpdateMapLocation(MapLocation maplocation);
         //DELETE
         public Task<int> DeleteMapLocation(int locationId);
 

@@ -25,9 +25,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                List<Tblplanlocation> tblplanlocations = await _planLocationRepository.GetAllLocationsWithPaging(pageIndex, pageSize);
+                List<planlocation> planlocations = await _planLocationRepository.GetAllLocationsWithPaging(pageIndex, pageSize);
                 // convert entity to dto
-                List<PlanLocationDTO> planLocations = _mapper.Map<List<PlanLocationDTO>>(tblplanlocations);
+                List<PlanLocationDTO> planLocations = _mapper.Map<List<PlanLocationDTO>>(planlocations);
                 return planLocations;
             }
             catch (Exception ex)
@@ -42,11 +42,11 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tblplanlocation tblplanlocation = await _planLocationRepository.GetPlanLocationById(locationId);
-                if (tblplanlocation == null)
+                PlanLocation planlocation = await _planLocationRepository.GetPlanLocationById(locationId);
+                if (planlocation == null)
                     throw new NotFoundException("No DailyReport Object Found!!!");
                 // convert entity to dto
-                PlanLocationDTO planLocationDTO = _mapper.Map<PlanLocationDTO>(tblplanlocation);
+                PlanLocationDTO planLocationDTO = _mapper.Map<PlanLocationDTO>(planlocation);
                 return planLocationDTO;
             }
             catch (Exception ex)
@@ -60,8 +60,8 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 // convert dto to entity
-                Tblplanlocation tblplanlocation = _mapper.Map<Tblplanlocation>(planLocationDTO);
-                int id = await _planLocationRepository.CreatePlanLocation(tblplanlocation);
+                PlanLocation planlocation = _mapper.Map<PlanLocation>(planLocationDTO);
+                int id = await _planLocationRepository.CreatePlanLocation(planlocation);
                 if(id > 0) 
                 { 
                     return "Ok"; 
@@ -84,8 +84,8 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 // convert dto to entity
-                Tblplanlocation tblplanlocation = _mapper.Map<Tblplanlocation>(planLocationDTO);
-                int id = await _planLocationRepository.UpdatePlanLocation(tblplanlocation);
+                PlanLocation planlocation = _mapper.Map<PlanLocation>(planLocationDTO);
+                int id = await _planLocationRepository.UpdatePlanLocation(planlocation);
                 if (id > 0)
                 {
                     return "Ok";

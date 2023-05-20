@@ -8,8 +8,8 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO
 {
     public class ChangePasswordDTO
     {
-        public string? FldUserId { get; set; }
-        public string? FldOldPassword { get; set; }
-        public string? FldPassword { get; set; }
+        public string? UserId { get; set; }
+        public string? OldPassword { get; set; }
+        public string? Password { get; set; }
     }
 }

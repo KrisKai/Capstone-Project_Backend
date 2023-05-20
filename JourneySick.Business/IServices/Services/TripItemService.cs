@@ -33,9 +33,9 @@ namespace JourneySick.Business.IServices.Services
             AllTripItemDTO result = new();
             try
             {
-                List<Tbltripitem> tbltrips = await _tripItemRepository.GetAllTripItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
+                List<tripitem> trips = await _tripItemRepository.GetAllTripItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
                 // convert entity to dto
-                List<TripItemDTO> trips = _mapper.Map<List<TripItemDTO>>(tbltrips);
+                List<TripItemDTO> trips = _mapper.Map<List<TripItemDTO>>(trips);
                 int count = await _tripItemRepository.CountAllTripItems(itemId, categoryId);
                 result.ListOfItem = trips;
                 result.NumOfItem = count;
@@ -52,9 +52,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tbltripitem tbltripitem = await _tripItemRepository.GetTripItemById(itemId);
+                TripItem tripitem = await _tripItemRepository.GetTripItemById(itemId);
                 // convert entity to dto
-                TripItemDTO tripItemDTO = _mapper.Map<TripItemDTO>(tbltripitem);
+                TripItemDTO tripItemDTO = _mapper.Map<TripItemDTO>(tripitem);
 
                 return tripItemDTO;
             }
@@ -69,32 +69,34 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                tripItemDTO.FldCreateBy = currentUser.UserId;
-                tripItemDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                Tbltripitem tbltripitem = _mapper.Map<Tbltripitem>(tripItemDTO);
-                int id = await _tripItemRepository.CreateTripItem(tbltripitem);
+                tripItemDTO.CreateBy = currentUser.UserId;
+                tripItemDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                TripItem tripitem = _mapper.Map<TripItem>(tripItemDTO);
+                int id = await _tripItemRepository.CreateTripItem(tripitem);
                 if (id > 0)
                 {
-                    Tblitem tblitem = await _itemRepository.GetItemByName(tbltripitem.FldItemName);
-                    if (tblitem != null)
+                    Item item = await _itemRepository.GetItemByName(tripitem.ItemName);
+                    if (item != null)
                     {
-                        tblitem.FldQuantity++;
-                        await _itemRepository.UpdateItem(tblitem);
+                        item.Quantity++;
+                        await _itemRepository.UpdateItem(item);
                     }
                     else
                     {
-                        Tblitem tblnewitem = new();
-                        tblnewitem.FldQuantity = 1;
-                        tblnewitem.FldItemName = tbltripitem.FldItemName;
-                        tblnewitem.FldCategoryId = (int)tbltripitem.FldCategoryId;
-                        tblnewitem.FldCreateBy = tbltripitem.FldCreateBy;
-                        tblnewitem.FldCreateDate = tbltripitem.FldCreateDate;
-                        await _itemRepository.CreateItem(tblnewitem);
+                        Item newitem = new()
+                        {
+                            Quantity = 1,
+                            ItemName = tripitem.ItemName,
+                            CategoryId = (int)tripitem.CategoryId,
+                            CreateBy = tripitem.CreateBy,
+                            CreateDate = tripitem.CreateDate
+                        };
+                        await _itemRepository.CreateItem(newitem);
                     }
-                    TbltripVO tbltrip = await _tripRepository.GetTripById(tripItemDTO.FldTripId);
-                    tbltrip.FldTripId = tbltripitem.FldTripId;
-                    tbltrip.FldTripBudget += (tbltripitem.FldQuantity * tbltripitem.FldPriceMin);
-                    await _tripRepository.UpdateTripBudget(tbltrip);
+                    Data.Models.Entities.VO.TripVO trip = await _tripRepository.GetTripById(tripItemDTO.TripId);
+                    trip.TripId = tripitem.TripId;
+                    trip.TripBudget += (tripitem.Quantity * tripitem.PriceMin);
+                    await _tripRepository.UpdateTripBudget(trip);
                     return id;
                 }
                 throw new InsertException("Create trip item failed!");
@@ -110,22 +112,22 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                TripItemDTO getTrip = await GetTripItemById((int)tripItemDTO.FldItemId);
+                TripItemDTO getTrip = await GetTripItemById((int)tripItemDTO.ItemId);
 
                 if (getTrip != null)
                 {
-                    tripItemDTO.FldUpdateBy = currentUser.UserId;
-                    tripItemDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Tbltripitem tbltripitem = _mapper.Map<Tbltripitem>(tripItemDTO);
-                    if (await _tripItemRepository.UpdateTripItem(tbltripitem) > 0)
+                    tripItemDTO.UpdateBy = currentUser.UserId;
+                    tripItemDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    TripItem tripitem = _mapper.Map<TripItem>(tripItemDTO);
+                    if (await _tripItemRepository.UpdateTripItem(tripitem) > 0)
                     {
-                        if (getTrip.FldPriceMin != tripItemDTO.FldPriceMin || getTrip.FldQuantity != tripItemDTO.FldQuantity)
+                        if (getTrip.PriceMin != tripItemDTO.PriceMin || getTrip.Quantity != tripItemDTO.Quantity)
                         {
-                            TbltripVO tbltripVO = await _tripRepository.GetTripById(tripItemDTO.FldTripId);
-                            tbltripVO.FldTripBudget = tbltripVO.FldTripBudget - (getTrip.FldQuantity * getTrip.FldPriceMin) + (tripItemDTO.FldQuantity * tripItemDTO.FldPriceMin);
-                            await _tripRepository.UpdateTripBudget(tbltripVO);
+                            Data.Models.Entities.VO.TripVO tripVO = await _tripRepository.GetTripById(tripItemDTO.TripId);
+                            tripVO.TripBudget = tripVO.TripBudget - (getTrip.Quantity * getTrip.PriceMin) + (tripItemDTO.Quantity * tripItemDTO.PriceMin);
+                            await _tripRepository.UpdateTripBudget(tripVO);
                         }
-                        return (int)tripItemDTO.FldItemId;
+                        return (int)tripItemDTO.ItemId;
                     }
                     else
                     {

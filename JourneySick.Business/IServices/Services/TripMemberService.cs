@@ -36,9 +36,9 @@ namespace JourneySick.Business.IServices.Services
             AllTripMemberDTO result = new();
             try
             {
-                List<TbltripmemberVO> tbltripmembers = await _tripMemberRepository.GetAllTripMembersWithPaging(pageIndex, pageSize, memberName);
+                List<TripmemberVO> tripmembers = await _tripMemberRepository.GetAllTripMembersWithPaging(pageIndex, pageSize, memberName);
                 // convert entity to dto
-                List<TripMemberVO> tripMemberDTOs = _mapper.Map<List<TripMemberVO>>(tbltripmembers);
+                List<TripMemberVO> tripMemberDTOs = _mapper.Map<List<TripMemberVO>>(tripmembers);
                 int count = await _tripMemberRepository.CountAllTripMembers(memberName);
                 result.ListOfMember = tripMemberDTOs;
                 result.NumOfMember = count;
@@ -55,9 +55,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                TbltripmemberVO tbltripmember = await _tripMemberRepository.GetTripMemberById(memberId);
+                TripmemberVO tripmember = await _tripMemberRepository.GetTripMemberById(memberId);
                 // convert entity to dto
-                TripMemberVO tripMemberDTO = _mapper.Map<TripMemberVO>(tbltripmember);
+                TripMemberVO tripMemberDTO = _mapper.Map<TripMemberVO>(tripmember);
 
                 return tripMemberDTO;
             }
@@ -72,19 +72,19 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                if (await _tripMemberRepository.CountTripMemberByUserIdAndTripId(tripMemberDTO.FldUserId, tripMemberDTO.FldTripId) == 0)
+                if (await _tripMemberRepository.CountTripMemberByUserIdAndTripId(tripMemberDTO.UserId, tripMemberDTO.TripId) == 0)
                 {
-                    tripMemberDTO.FldCreateBy = currentUser.UserId;
-                    tripMemberDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    tripMemberDTO.FldConfirmation = "N";
-                    Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(tripMemberDTO);
-                    int id = await _tripMemberRepository.CreateTripMember(tbltripmember);
+                    tripMemberDTO.CreateBy = currentUser.UserId;
+                    tripMemberDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    tripMemberDTO.Confirmation = "N";
+                    TripMember tripmember = _mapper.Map<TripMember>(tripMemberDTO);
+                    int id = await _tripMemberRepository.CreateTripMember(tripmember);
                     if (id > 0)
                     {
-                        TbluserVO tbluserdetail = await _userDetailRepository.GetUserDetailById(tripMemberDTO.FldUserId);
-                        TbluserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(tripMemberDTO.FldTripId);
+                        Data.Models.Entities.VO.UserVO userdetail = await _userDetailRepository.GetUserDetailById(tripMemberDTO.UserId);
+                        Data.Models.Entities.VO.UserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(tripMemberDTO.TripId);
                         int memberId = await _tripMemberRepository.GetLastOneId();
-                        await EmailService.SendEmailTrip(tripPresenter.FldFullname, tbluserdetail.FldEmail, tbluserdetail.FldFullname, memberId);
+                        await EmailService.SendEmailTrip(tripPresenter.Fullname, userdetail.Email, userdetail.Fullname, memberId);
                         await _tripMemberRepository.UpdateSendMailDate(memberId);
                         return id;
                     }
@@ -106,18 +106,18 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                TripMemberDTO getTrip = await GetTripMemberById((int)tripMemberDTO.FldMemberId);
+                TripMemberDTO getTrip = await GetTripMemberById((int)tripMemberDTO.MemberId);
 
                 if (getTrip != null)
                 {
-                    if (await _tripMemberRepository.CountTripMemberByUserIdAndTripId(tripMemberDTO.FldUserId, tripMemberDTO.FldTripId) == 0)
+                    if (await _tripMemberRepository.CountTripMemberByUserIdAndTripId(tripMemberDTO.UserId, tripMemberDTO.TripId) == 0)
                     {
-                        tripMemberDTO.FldUpdateBy = currentUser.UserId;
-                        tripMemberDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                        Tbltripmember tbltripmember = _mapper.Map<Tbltripmember>(tripMemberDTO);
-                        if (await _tripMemberRepository.UpdateTripMember(tbltripmember) > 0)
+                        tripMemberDTO.UpdateBy = currentUser.UserId;
+                        tripMemberDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                        TripMember tripmember = _mapper.Map<TripMember>(tripMemberDTO);
+                        if (await _tripMemberRepository.UpdateTripMember(tripmember) > 0)
                         {
-                            return (int)tripMemberDTO.FldMemberId;
+                            return (int)tripMemberDTO.MemberId;
                         }
                         else
                         {
@@ -180,12 +180,12 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    if(getTrip.FldConfirmation.Equals("N"))
+                    if(getTrip.Confirmation.Equals("N"))
                     {
-                        TbluserVO tbluserdetail = await _userDetailRepository.GetUserDetailById(getTrip.FldUserId);
-                        TbluserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(getTrip.FldTripId);
+                        Data.Models.Entities.VO.UserVO userdetail = await _userDetailRepository.GetUserDetailById(getTrip.UserId);
+                        Data.Models.Entities.VO.UserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(getTrip.TripId);
                         int memberId = await _tripMemberRepository.GetLastOneId();
-                        await EmailService.SendEmailTrip(tripPresenter.FldFullname, tbluserdetail.FldEmail, tbluserdetail.FldFullname, memberId);
+                        await EmailService.SendEmailTrip(tripPresenter.Fullname, userdetail.Email, userdetail.Fullname, memberId);
                         await _tripMemberRepository.UpdateSendMailDate(id);
                         return id;
                     }
@@ -214,7 +214,7 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    if (getTrip.FldConfirmation.Equals("N"))
+                    if (getTrip.Confirmation.Equals("N"))
                     {
                         if (await _tripMemberRepository.ConfirmTrip(id) > 0)
                         {

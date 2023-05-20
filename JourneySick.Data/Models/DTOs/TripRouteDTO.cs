@@ -8,11 +8,11 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class TripRouteDTO
     {
-        public int? FldRouteId { get; set; }
-        public string? FldTripid { get; set; }
-        public int? FldMapId { get; set; }
-        public int? FldPriority { get; set; }
-        public decimal? FldEstimateTime { get; set; }
-        public decimal? FldDistance { get; set; }
+        public int? RouteId { get; set; }
+        public string? Tripid { get; set; }
+        public int? MapId { get; set; }
+        public int? Priority { get; set; }
+        public decimal? EstimateTime { get; set; }
+        public decimal? Distance { get; set; }
     }
 }

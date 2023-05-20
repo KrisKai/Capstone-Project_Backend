@@ -13,7 +13,7 @@ namespace JourneySick.Data.Helpers
 
         protected IDbConnection CreateConnection()
         {
-            return new MySql.Data.MySqlClient.MySqlConnection(_configuration.GetConnectionString("DEV"));
+            return new MySql.Data.MySqlClient.MySqlConnection(_configuration.GetConnectionString("DEV_PHAT"));
             //return new MySql.Data.MySqlClient.MySqlConnection(_configuration.GetConnectionString("PROD"));
         }
     }

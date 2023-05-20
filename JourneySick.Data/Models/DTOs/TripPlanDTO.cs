@@ -8,18 +8,18 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class TripPlanDTO
     {
-        public int? FldPlanId { get; set; }
+        public int? PlanId { get; set; }
 
-        public string? FldTripId { get; set; }
+        public string? TripId { get; set; }
 
-        public string? FldPlanDescription { get; set; }
+        public string? PlanDescription { get; set; }
 
-        public DateTime? FldCreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
 
-        public string? FldCreateBy { get; set; }
+        public string? CreateBy { get; set; }
 
-        public DateTime? FldUpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
-        public string? FldUpdateBy { get; set; }
+        public string? UpdateBy { get; set; }
     }
 }

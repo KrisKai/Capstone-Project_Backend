@@ -13,16 +13,16 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<Tblplanlocation> GetPlanLocationById(int locationId)
+        public async Task<PlanLocation> GetPlanLocationById(int locationId)
         {
             try
             {
-                var query = "SELECT * FROM tblplanlocation WHERE fldPlanId = @fldPlanId";
+                var query = "SELECT * FROM planlocation WHERE PlanId = @PlanId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldPlanId", locationId, DbType.Int16);
+                parameters.Add("PlanId", locationId, DbType.Int16);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tblplanlocation>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<PlanLocation>(query, parameters);
             }
             catch (Exception e)
             {
@@ -30,20 +30,20 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<List<Tblplanlocation>> GetAllLocationsWithPaging(int pageIndex, int pageSize)
+        public async Task<List<PlanLocation>> GetAllLocationsWithPaging(int pageIndex, int pageSize)
         {
             try
             {
                 int firstIndex = (pageIndex - 1) * pageSize;
                 int lastIndex = pageIndex * pageSize;
-                var query = "SELECT * FROM tblplanlocation LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM planlocation LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
                 parameters.Add("lastIndex", lastIndex, DbType.Int16);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tblplanlocation>(query, parameters)).ToList();
+                return (await connection.QueryAsync<PlanLocation>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -51,33 +51,33 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CreatePlanLocation(Tblplanlocation tblplanlocation)
+        public async Task<int> CreatePlanLocation(PlanLocation planlocation)
         {
 
             try
             {
-                var query = "INSERT INTO tblplanlocation ("
-                    + "         fldMapId, "
-                    + "         fldPlanLocationId, "
-                    + "         fldPlanLocationDescription, "
-                    + "         fldLocationArrivalTime, "
-                    + "         fldCreateDate, "
-                    + "         fldCreateBy) "
+                var query = "INSERT INTO planlocation ("
+                    + "         MapId, "
+                    + "         PlanLocationId, "
+                    + "         PlanLocationDescription, "
+                    + "         LocationArrivalTime, "
+                    + "         CreateDate, "
+                    + "         CreateBy) "
                     + "     VALUES ( "
-                    + "         @fldMapId, "
-                    + "         @fldPlanLocationId, "
-                    + "         @fldPlanLocationDescription, "
-                    + "         @fldLocationArrivalTime, "
-                    + "         @fldCreateDate, "
-                    + "         @fldCreateBy)";
+                    + "         @MapId, "
+                    + "         @PlanLocationId, "
+                    + "         @PlanLocationDescription, "
+                    + "         @LocationArrivalTime, "
+                    + "         @CreateDate, "
+                    + "         @CreateBy)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldMapId", tblplanlocation.FldMapId, DbType.Int32);
-                parameters.Add("fldPlanLocationId", tblplanlocation.FldPlanLocationId, DbType.String);
-                parameters.Add("fldPlanLocationDescription", tblplanlocation.FldPlanLocationDescription, DbType.String);
-                parameters.Add("fldLocationArrivalTime", tblplanlocation.FldLocationArrivalTime, DbType.String);
-                parameters.Add("fldCreateDate", tblplanlocation.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", tblplanlocation.FldCreateBy, DbType.String);
+                parameters.Add("MapId", planlocation.MapId, DbType.Int32);
+                parameters.Add("PlanLocationId", planlocation.PlanLocationId, DbType.String);
+                parameters.Add("PlanLocationDescription", planlocation.PlanLocationDescription, DbType.String);
+                parameters.Add("LocationArrivalTime", planlocation.LocationArrivalTime, DbType.String);
+                parameters.Add("CreateDate", planlocation.CreateDate, DbType.DateTime);
+                parameters.Add("CreateBy", planlocation.CreateBy, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -87,26 +87,26 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
-        public async Task<int> UpdatePlanLocation(Tblplanlocation tblplanlocation)
+        public async Task<int> UpdatePlanLocation(PlanLocation planlocation)
         {
 
             try
             {
-                var query = "UPDATE tblplanlocation SET"
-                    + "         fldPlanLocationId = @fldPlanLocationId, "
-                    + "         fldPlanLocationDescription = @fldPlanLocationDescription, "
-                    + "         fldLocationArrivalTime = @fldLocationArrivalTime, "
-                    + "         fldUpdateDate = @fldUpdateDate, "
-                    + "         fldUpdateBy = @fldUpdateBy"
-                    + "     WHERE fldPlanId = @fldPlanId";
+                var query = "UPDATE planlocation SET"
+                    + "         PlanLocationId = @PlanLocationId, "
+                    + "         PlanLocationDescription = @PlanLocationDescription, "
+                    + "         LocationArrivalTime = @LocationArrivalTime, "
+                    + "         UpdateDate = @UpdateDate, "
+                    + "         UpdateBy = @UpdateBy"
+                    + "     WHERE PlanId = @PlanId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldPlanId", tblplanlocation.FldPlanId, DbType.Int16);
-                parameters.Add("fldPlanLocationId", tblplanlocation.FldPlanLocationId, DbType.String);
-                parameters.Add("fldPlanLocationDescription", tblplanlocation.FldPlanLocationDescription, DbType.String);
-                parameters.Add("fldLocationArrivalTime", tblplanlocation.FldLocationArrivalTime, DbType.String);
-                parameters.Add("fldUpdateDate", tblplanlocation.FldUpdateDate, DbType.DateTime);
-                parameters.Add("fldUpdateBy", tblplanlocation.FldUpdateBy, DbType.String);
+                parameters.Add("PlanId", planlocation.PlanId, DbType.Int16);
+                parameters.Add("PlanLocationId", planlocation.PlanLocationId, DbType.String);
+                parameters.Add("PlanLocationDescription", planlocation.PlanLocationDescription, DbType.String);
+                parameters.Add("LocationArrivalTime", planlocation.LocationArrivalTime, DbType.String);
+                parameters.Add("UpdateDate", planlocation.UpdateDate, DbType.DateTime);
+                parameters.Add("UpdateBy", planlocation.UpdateBy, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -121,10 +121,10 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tblplanlocation WHERE locationId = @locationId";
+                var query = "DELETE FROM planlocation WHERE locationId = @locationId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", locationId, DbType.Int16);
+                parameters.Add("TripId", locationId, DbType.Int16);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }

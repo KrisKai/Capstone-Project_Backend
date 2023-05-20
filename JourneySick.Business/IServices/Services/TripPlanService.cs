@@ -29,9 +29,9 @@ namespace JourneySick.Business.IServices.Services
             AllTripPlanDTO result = new();
             try
             {
-                List<Tbltripplan> tbltrips = await _tripPlanRepository.GetAllTripPlansWithPaging(pageIndex, pageSize, planId);
+                List<tripplan> trips = await _tripPlanRepository.GetAllTripPlansWithPaging(pageIndex, pageSize, planId);
                 // convert entity to dto
-                List<TripPlanDTO> trips = _mapper.Map<List<TripPlanDTO>>(tbltrips);
+                List<TripPlanDTO> trips = _mapper.Map<List<TripPlanDTO>>(trips);
                 int count = await _tripPlanRepository.CountAllTripPlans(planId);
                 result.ListOfPlan = trips;
                 result.NumOfPlan = count;
@@ -48,9 +48,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tbltripplan tbltripplan = await _tripPlanRepository.GetTripPlanById(planId);
+                TripPlan tripplan = await _tripPlanRepository.GetTripPlanById(planId);
                 // convert entity to dto
-                TripPlanDTO tripPlanDTO = _mapper.Map<TripPlanDTO>(tbltripplan);
+                TripPlanDTO tripPlanDTO = _mapper.Map<TripPlanDTO>(tripplan);
 
                 return tripPlanDTO;
             }
@@ -65,10 +65,10 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                tripPlanDTO.FldCreateBy = currentUser.UserId;
-                tripPlanDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                Tbltripplan tbltripplan = _mapper.Map<Tbltripplan>(tripPlanDTO);
-                int id = await _tripPlanRepository.CreateTripPlan(tbltripplan);
+                tripPlanDTO.CreateBy = currentUser.UserId;
+                tripPlanDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                TripPlan tripplan = _mapper.Map<TripPlan>(tripPlanDTO);
+                int id = await _tripPlanRepository.CreateTripPlan(tripplan);
                 if (id > 0)
                 {
                     return id;
@@ -86,16 +86,16 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                TripPlanDTO getTrip = await GetTripPlanById((int)tripPlanDTO.FldPlanId);
+                TripPlanDTO getTrip = await GetTripPlanById((int)tripPlanDTO.PlanId);
 
                 if (getTrip != null)
                 {
-                    tripPlanDTO.FldUpdateBy = currentUser.UserId;
-                    tripPlanDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Tbltripplan tbltripplan = _mapper.Map<Tbltripplan>(tripPlanDTO);
-                    if (await _tripPlanRepository.UpdateTripPlan(tbltripplan) > 0)
+                    tripPlanDTO.UpdateBy = currentUser.UserId;
+                    tripPlanDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    TripPlan tripplan = _mapper.Map<TripPlan>(tripPlanDTO);
+                    if (await _tripPlanRepository.UpdateTripPlan(tripplan) > 0)
                     {
-                        return (int)tripPlanDTO.FldPlanId;
+                        return (int)tripPlanDTO.PlanId;
                     }
                     else
                     {

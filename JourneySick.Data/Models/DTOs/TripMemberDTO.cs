@@ -8,28 +8,28 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class TripMemberDTO
     {
-        public int? FldMemberId { get; set; } = null!;
+        public int? MemberId { get; set; } = null!;
 
-        public string? FldUserId { get; set; }
+        public string? UserId { get; set; }
 
-        public string? FldTripId { get; set; }
+        public string? TripId { get; set; }
 
-        public int? FldMemberRoleId { get; set; }
+        public int? MemberRoleId { get; set; }
 
-        public string? FldNickName { get; set; }
+        public string? NickName { get; set; }
 
-        public string? FldStatus { get; set; }
+        public string? Status { get; set; }
 
-        public string? FldConfirmation { get; set; }
+        public string? Confirmation { get; set; }
 
-        public DateTime? FldSendDate { get; set; }
+        public DateTime? SendDate { get; set; }
 
-        public DateTime? FldCreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
 
-        public string? FldCreateBy { get; set; }
+        public string? CreateBy { get; set; }
 
-        public DateTime? FldUpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
-        public string? FldUpdateBy { get; set; }
+        public string? UpdateBy { get; set; }
     }
 }

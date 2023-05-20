@@ -9,9 +9,9 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
     public class UserVO : UserDetailDTO
     {
-        public string? FldUsername { get; set; }
-        public string? FldPassword { get; set; }
-        public string? FldConfirmation { get; set; }
-        public DateTime FldSendDate { get; set; }
+        public string? Username { get; set; }
+        public string? Password { get; set; }
+        public string? Confirmation { get; set; }
+        public DateTime SendDate { get; set; }
     }
 }

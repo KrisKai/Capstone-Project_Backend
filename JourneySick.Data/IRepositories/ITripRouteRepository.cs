@@ -12,12 +12,12 @@ namespace JourneySick.Data.IRepositories
     public interface ITripRouteRepository
     {
         //SELECT ALL
-        public Task<List<TbltriprouteVO>> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId);
+        public Task<List<TriprouteVO>> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId);
         public Task<int> CountAllTripRoutes(string? tripName);
-        public Task<Tbltriproute> GetTripRouteById(int tripRouteId);
+        public Task<TripRoute> GetTripRouteById(int tripRouteId);
         //CREATE
-        public Task<int> CreateTripRoute(Tbltriproute tbltriproute);
-        public Task<int> UpdateTripRoute(Tbltriproute tbltriproute);
+        public Task<int> CreateTripRoute(TripRoute triproute);
+        public Task<int> UpdateTripRoute(TripRoute triproute);
         public Task<int> DeleteTripRoute(int tripRouteId);
     }
 }

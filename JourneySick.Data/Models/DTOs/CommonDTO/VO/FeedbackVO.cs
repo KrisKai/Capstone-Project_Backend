@@ -8,8 +8,8 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
     public class FeedbackVO:FeedbackDTO
     {
-        public string FldUsername { get; set; } = null!;
-        public string FldEmail { get; set; }
-        public string FldTripName { get; set; }
+        public string Username { get; set; } = null!;
+        public string Email { get; set; }
+        public string TripName { get; set; }
     }
 }

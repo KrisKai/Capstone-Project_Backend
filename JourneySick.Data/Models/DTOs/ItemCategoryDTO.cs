@@ -8,12 +8,12 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class ItemCategoryDTO
     {
-        public int? FldCategoryId { get; set; }
-        public string FldCategoryName { get; set; } = null!;
-        public string? FldCategoryDescription { get; set; }
-        public DateTime? FldCreateDate { get; set; }
-        public string? FldCreateBy { get; set; } = null!;
-        public DateTime? FldUpdateDate { get; set; }
-        public string? FldUpdateBy { get; set; }
+        public int? CategoryId { get; set; }
+        public string CategoryName { get; set; } = null!;
+        public string? CategoryDescription { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public string? CreateBy { get; set; } = null!;
+        public DateTime? UpdateDate { get; set; }
+        public string? UpdateBy { get; set; }
     }
 }

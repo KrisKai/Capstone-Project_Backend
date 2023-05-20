@@ -19,14 +19,14 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<TblfeedbackVO>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? tripId)
+        public async Task<List<Models.Entities.VO.FeedbackVO>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? tripId)
         {
             try
             {
                 int firstIndex = pageIndex * pageSize;
                 int lastIndex = (pageIndex + 1) * pageSize;
                 tripId ??= "";
-                var query = "SELECT * FROM tblfeedback a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId INNER JOIN tbluserdetail c ON a.fldUserId = c.fldUserId INNER JOIN tbltrip d ON a.fldTripId = d.fldTripId  WHERE a.fldTripId LIKE CONCAT('%', @tripId, '%') LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM Feedback a INNER JOIN User b ON a.UserId = b.UserId INNER JOIN User_Detail c ON a.UserId = c.UserId INNER JOIN Trip d ON a.TripId = d.TripId  WHERE a.TripId LIKE CONCAT('%', @tripId, '%') LIMIT @firstIndex, @lastIndex";
                 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
@@ -34,7 +34,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("tripId", tripId, DbType.String);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<TblfeedbackVO>(query, parameters)).ToList();
+                return (await connection.QueryAsync<Models.Entities.VO.FeedbackVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -46,7 +46,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tblfeedback WHERE fldTripId LIKE CONCAT('%', @tripId, '%')";
+                var query = "SELECT COUNT(*) FROM Feedback WHERE TripId LIKE CONCAT('%', @tripId, '%')";
                 tripId ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("tripId", tripId, DbType.String);
@@ -61,17 +61,17 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<Tblfeedback> GetFeedbackById(int tripId)
+        public async Task<Feedback> GetFeedbackById(int tripId)
         {
             try
             {
-                var query = "SELECT * FROM tblfeedback WHERE fldFeedbackId = @fldFeedbackId";
+                var query = "SELECT * FROM Feedback WHERE FeedbackId = @FeedbackId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldFeedbackId", tripId, DbType.String);
+                parameters.Add("FeedbackId", tripId, DbType.String);
 
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tblfeedback>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<Feedback>(query, parameters);
             }
             catch (Exception e)
             {
@@ -80,41 +80,41 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //CREATE
-        public async Task<int> CreateFeedback(Tblfeedback feedbackEntity)
+        public async Task<int> CreateFeedback(Feedback feedbackEntity)
         {
             try
             {
-                var query = "INSERT INTO tblfeedback ("
-                    + "         fldTripId, "
-                    + "         fldUserId, "
-                    + "         fldFeedback, "
-                    + "         fldRate, "
-                    + "         fldLike, "
-                    + "         fldDislike, "
-                    + "         fldLocationName, "
-                    + "         fldCreateDate, "
-                    + "         fldCreateBy) "
+                var query = "INSERT INTO Feedback ("
+                    + "         TripId, "
+                    + "         UserId, "
+                    + "         Feedback, "
+                    + "         Rate, "
+                    + "         Like, "
+                    + "         Dislike, "
+                    + "         LocationName, "
+                    + "         CreateDate, "
+                    + "         CreateBy) "
                     + "     VALUES ( "
-                    + "         @fldTripId, "
-                    + "         @fldUserId, "
-                    + "         @fldFeedback, "
-                    + "         @fldRate, "
-                    + "         @fldLike, "
-                    + "         @fldDislike, "
-                    + "         @fldLocationName, "
-                    + "         @fldCreateDate, "
-                    + "         @fldCreateBy)";
+                    + "         @TripId, "
+                    + "         @UserId, "
+                    + "         @Feedback, "
+                    + "         @Rate, "
+                    + "         @Like, "
+                    + "         @Dislike, "
+                    + "         @LocationName, "
+                    + "         @CreateDate, "
+                    + "         @CreateBy)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", feedbackEntity.FldTripId, DbType.String);
-                parameters.Add("fldUserId", feedbackEntity.FldUserId, DbType.String);
-                parameters.Add("fldFeedback", feedbackEntity.FldFeedback, DbType.String);
-                parameters.Add("fldRate", feedbackEntity.FldRate, DbType.Double);
-                parameters.Add("fldLike", feedbackEntity.FldLike, DbType.Int32);
-                parameters.Add("fldDislike", feedbackEntity.FldDislike, DbType.Int32);
-                parameters.Add("fldLocationName", feedbackEntity.FldLocationName, DbType.String);
-                parameters.Add("fldCreateDate", feedbackEntity.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", feedbackEntity.FldCreateBy, DbType.String);
+                parameters.Add("TripId", feedbackEntity.TripId, DbType.String);
+                parameters.Add("UserId", feedbackEntity.UserId, DbType.String);
+                parameters.Add("Feedback", feedbackEntity.FeedbackDescription, DbType.String);
+                parameters.Add("Rate", feedbackEntity.Rate, DbType.Double);
+                parameters.Add("Like", feedbackEntity.Like, DbType.Int32);
+                parameters.Add("Dislike", feedbackEntity.Dislike, DbType.Int32);
+                parameters.Add("LocationName", feedbackEntity.LocationName, DbType.String);
+                parameters.Add("CreateDate", feedbackEntity.CreateDate, DbType.DateTime);
+                parameters.Add("CreateBy", feedbackEntity.CreateBy, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -125,23 +125,23 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateFeedback(Tblfeedback feedbackEntity)
+        public async Task<int> UpdateFeedback(Feedback feedbackEntity)
         {
             try
             {
-                var query = "UPDATE tblfeedback ("
-                    + "         fldFeedback = @fldFeedback, "
-                    + "         fldRate = @fldRate, "
-                    + "         fldUpdateDate = @fldUpdateDate, "
-                    + "         fldUpdateBy = @fldUpdateBy "
-                    + "      WHERE fldFeedbackId = @fldFeedbackId";
+                var query = "UPDATE Feedback ("
+                    + "         Feedback = @Feedback, "
+                    + "         Rate = @Rate, "
+                    + "         UpdateDate = @UpdateDate, "
+                    + "         UpdateBy = @UpdateBy "
+                    + "      WHERE FeedbackId = @FeedbackId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldFeedbackId", feedbackEntity.FldFeedbackId, DbType.Int32);
-                parameters.Add("fldFeedback", feedbackEntity.FldFeedback, DbType.String);
-                parameters.Add("fldRate", feedbackEntity.FldRate, DbType.Double);
-                parameters.Add("fldUpdateDate", feedbackEntity.FldUpdateDate, DbType.DateTime);
-                parameters.Add("fldUpdateBy", feedbackEntity.FldUpdateBy, DbType.String);
+                parameters.Add("FeedbackId", feedbackEntity.FeedbackId, DbType.Int32);
+                parameters.Add("Feedback", feedbackEntity.FeedbackDescription, DbType.String);
+                parameters.Add("Rate", feedbackEntity.Rate, DbType.Double);
+                parameters.Add("UpdateDate", feedbackEntity.UpdateDate, DbType.DateTime);
+                parameters.Add("UpdateBy", feedbackEntity.UpdateBy, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -157,10 +157,10 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tblfeedback WHERE fldFeedbackId = @fldFeedbackId";
+                var query = "DELETE FROM Feedback WHERE FeedbackId = @FeedbackId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldFeedbackId", tripId, DbType.Int32);
+                parameters.Add("FeedbackId", tripId, DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
@@ -170,14 +170,14 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<List<TblfeedbackVO>> GetTopFeedback()
+        public async Task<List<Models.Entities.VO.FeedbackVO>> GetTopFeedback()
         {
             try
             {
-                var query = "SELECT fldUsername, fldLike, fldDislike, fldLocationName, fldRate, fldFeedback FROM tblfeedback a INNER JOIN tbluser b ON a.fldUserId = b.fldUserId INNER JOIN tbluserdetail c ON a.fldUserId = c.fldUserId INNER JOIN tbltrip d ON a.fldTripId = d.fldTripId ORDER BY fldLike LIMIT 10";
+                var query = "SELECT Username, Like, Dislike, LocationName, Rate, Feedback FROM Feedback a INNER JOIN user b ON a.UserId = b.UserId INNER JOIN userdetail c ON a.UserId = c.UserId INNER JOIN trip d ON a.TripId = d.TripId ORDER BY Like LIMIT 10";
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<TblfeedbackVO>(query)).ToList();
+                return (await connection.QueryAsync<Models.Entities.VO.FeedbackVO>(query)).ToList();
             }
             catch (Exception e)
             {
@@ -185,7 +185,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> IncreaseLike(Tblfeedback tblfeedbackDTO, string status)
+        public async Task<int> IncreaseLike(Feedback feedbackDTO, string status)
         {
             try
             {
@@ -193,19 +193,19 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 if (status.Equals("L"))
                 {
-                    query = "UPDATE tblfeedback ("
-                    + "         fldLike = @fldLike, "
-                    + "      WHERE fldFeedbackId = @fldFeedbackId";
-                    parameters.Add("fldLike", tblfeedbackDTO.FldLike, DbType.Int32);
+                    query = "UPDATE Feedback ("
+                    + "         Like = @Like, "
+                    + "      WHERE FeedbackId = @FeedbackId";
+                    parameters.Add("Like", feedbackDTO.Like, DbType.Int32);
                 }
                 else if(status.Equals("D"))
                 {
-                    query = "UPDATE tblfeedback ("
-                    + "         fldDislike = @fldDislike, "
-                    + "      WHERE fldFeedbackId = @fldFeedbackId";
-                    parameters.Add("fldDislike", tblfeedbackDTO.FldDislike, DbType.Int32);
+                    query = "UPDATE Feedback ("
+                    + "         Dislike = @Dislike, "
+                    + "      WHERE FeedbackId = @FeedbackId";
+                    parameters.Add("Dislike", feedbackDTO.Dislike, DbType.Int32);
                 }
-                parameters.Add("fldFeedbackId", tblfeedbackDTO.FldFeedbackId, DbType.Int32);
+                parameters.Add("FeedbackId", feedbackDTO.FeedbackId, DbType.Int32);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);

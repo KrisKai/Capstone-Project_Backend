@@ -8,12 +8,12 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
     public class TripMemberVO: TripMemberDTO
     {
-        public string? FldFullname { get; set; }
+        public string? Fullname { get; set; }
 
-        public string? FldEmail { get; set; }
+        public string? Email { get; set; }
 
-        public string? FldPhone { get; set; }
+        public string? Phone { get; set; }
 
-        public string? fldRoleName { get; set; }
+        public string? RoleName { get; set; }
     }
 }

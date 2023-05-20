@@ -10,8 +10,8 @@ namespace JourneySick.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "fldRole",
-                table: "tbluserdetail",
+                name: "Role",
+                table: "userdetail",
                 type: "varchar(20)",
                 maxLength: 20,
                 nullable: true,
@@ -25,8 +25,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldFullname",
-                table: "tbluserdetail",
+                name: "Fullname",
+                table: "userdetail",
                 type: "varchar(50)",
                 maxLength: 50,
                 nullable: true,
@@ -40,8 +40,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldEmail",
-                table: "tbluserdetail",
+                name: "Email",
+                table: "userdetail",
                 type: "varchar(50)",
                 maxLength: 50,
                 nullable: true,
@@ -55,8 +55,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldAddress",
-                table: "tbluserdetail",
+                name: "Address",
+                table: "userdetail",
                 type: "longtext",
                 nullable: true,
                 collation: "utf8mb3_general_ci",
@@ -68,8 +68,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldType",
-                table: "tbltriprole",
+                name: "Type",
+                table: "triprole",
                 type: "varchar(20)",
                 maxLength: 20,
                 nullable: true,
@@ -83,8 +83,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8");
 
             migrationBuilder.AddColumn<string>(
-                name: "fldConfirmation",
-                table: "tbltripmember",
+                name: "Confirmation",
+                table: "tripmember",
                 type: "char(10)",
                 fixedLength: true,
                 maxLength: 10,
@@ -94,14 +94,14 @@ namespace JourneySick.Data.Migrations
                 .Annotation("MySql:CharSet", "latin1");
 
             migrationBuilder.AddColumn<DateTime>(
-                name: "fldSendDate",
-                table: "tbltripmember",
+                name: "SendDate",
+                table: "tripmember",
                 type: "datetime",
                 nullable: true);
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldTripStatus",
-                table: "tbltrip",
+                name: "TripStatus",
+                table: "trip",
                 type: "varchar(50)",
                 maxLength: 50,
                 nullable: true,
@@ -115,8 +115,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldTripName",
-                table: "tbltrip",
+                name: "TripName",
+                table: "trip",
                 type: "varchar(100)",
                 maxLength: 100,
                 nullable: true,
@@ -133,16 +133,16 @@ namespace JourneySick.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "fldConfirmation",
-                table: "tbltripmember");
+                name: "Confirmation",
+                table: "tripmember");
 
             migrationBuilder.DropColumn(
-                name: "fldSendDate",
-                table: "tbltripmember");
+                name: "SendDate",
+                table: "tripmember");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldRole",
-                table: "tbluserdetail",
+                name: "Role",
+                table: "userdetail",
                 type: "varchar(20)",
                 maxLength: 20,
                 nullable: true,
@@ -156,8 +156,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8mb3");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldFullname",
-                table: "tbluserdetail",
+                name: "Fullname",
+                table: "userdetail",
                 type: "varchar(50)",
                 maxLength: 50,
                 nullable: true,
@@ -171,8 +171,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8mb3");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldEmail",
-                table: "tbluserdetail",
+                name: "Email",
+                table: "userdetail",
                 type: "varchar(50)",
                 maxLength: 50,
                 nullable: true,
@@ -186,8 +186,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8mb3");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldAddress",
-                table: "tbluserdetail",
+                name: "Address",
+                table: "userdetail",
                 type: "longtext",
                 nullable: true,
                 collation: "utf8_general_ci",
@@ -199,8 +199,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8mb3");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldType",
-                table: "tbltriprole",
+                name: "Type",
+                table: "triprole",
                 type: "varchar(20)",
                 maxLength: 20,
                 nullable: true,
@@ -214,8 +214,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8mb3");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldTripStatus",
-                table: "tbltrip",
+                name: "TripStatus",
+                table: "trip",
                 type: "varchar(50)",
                 maxLength: 50,
                 nullable: true,
@@ -229,8 +229,8 @@ namespace JourneySick.Data.Migrations
                 .OldAnnotation("MySql:CharSet", "utf8mb3");
 
             migrationBuilder.AlterColumn<string>(
-                name: "fldTripName",
-                table: "tbltrip",
+                name: "TripName",
+                table: "trip",
                 type: "varchar(100)",
                 maxLength: 100,
                 nullable: true,

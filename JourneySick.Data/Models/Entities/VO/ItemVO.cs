@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Data.Models.Entities.VO
 {
-    public class TblitemVO: Tblitem
+    public class ItemVO: Item
     {
-        public string fldCategoryName { get; set; }
+        public string CategoryName { get; set; }
     }
 }

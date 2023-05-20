@@ -29,7 +29,7 @@ namespace JourneySick.Business.IServices.Services
             AllItemCategoryDTO result = new();
             try
             {
-                List<Tblitemcategory> ItemDTO = await _itemCategoryRepository.GetAllItemCategorysWithPaging(pageIndex, pageSize, itemCategoryId);
+                List<itemcategory> ItemDTO = await _itemCategoryRepository.GetAllItemCategorysWithPaging(pageIndex, pageSize, itemCategoryId);
                 // convert entity to dto
                 List<ItemCategoryDTO> itemCategoryDTOs = _mapper.Map<List<ItemCategoryDTO>>(ItemDTO);
                 int count = await _itemCategoryRepository.CountAllItemCategorys(itemCategoryId);
@@ -48,9 +48,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tblitemcategory tblitemCategory = await _itemCategoryRepository.GetItemCategoryById(itemCategoryId);
+                itemcategory itemCategory = await _itemCategoryRepository.GetItemCategoryById(itemCategoryId);
                 // convert entity to dto
-                ItemCategoryDTO itemCategoryDTO = _mapper.Map<ItemCategoryDTO>(tblitemCategory);
+                ItemCategoryDTO itemCategoryDTO = _mapper.Map<ItemCategoryDTO>(itemCategory);
 
                 return itemCategoryDTO;
             }
@@ -65,10 +65,10 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                itemCategoryDTO.FldCreateBy = currentUser.UserId;
-                itemCategoryDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                Tblitemcategory tblitemCategory = _mapper.Map<Tblitemcategory>(itemCategoryDTO);
-                int id = await _itemCategoryRepository.CreateItemCategory(tblitemCategory);
+                itemCategoryDTO.CreateBy = currentUser.UserId;
+                itemCategoryDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                itemcategory itemCategory = _mapper.Map<itemcategory>(itemCategoryDTO);
+                int id = await _itemCategoryRepository.CreateItemCategory(itemCategory);
                 if (id > 0)
                 {
                     return id;
@@ -86,16 +86,16 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                ItemCategoryDTO getTrip = await GetItemCategoryById((int)itemCategoryDTO.FldCategoryId);
+                ItemCategoryDTO getTrip = await GetItemCategoryById((int)itemCategoryDTO.CategoryId);
 
                 if (getTrip != null)
                 {
-                    itemCategoryDTO.FldUpdateBy = currentUser.UserId;
-                    itemCategoryDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Tblitemcategory tblitemCategory = _mapper.Map<Tblitemcategory>(itemCategoryDTO);
-                    if (await _itemCategoryRepository.UpdateItemCategory(tblitemCategory) > 0)
+                    itemCategoryDTO.UpdateBy = currentUser.UserId;
+                    itemCategoryDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    itemcategory itemCategory = _mapper.Map<itemcategory>(itemCategoryDTO);
+                    if (await _itemCategoryRepository.UpdateItemCategory(itemCategory) > 0)
                     {
-                        return (int)itemCategoryDTO.FldCategoryId;
+                        return (int)itemCategoryDTO.CategoryId;
                     }
                     else
                     {

@@ -52,7 +52,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                TbluserVO userDetailEntity = new();
+                Data.Models.Entities.VO.UserVO userDetailEntity = new();
                 RegisterResponse registerResponse = new();
                 string checkNameExist = await _userRepository.GetUsernameIfExist(registereRequest.Username);
                 if (checkNameExist != null)
@@ -69,37 +69,37 @@ namespace JourneySick.Business.IServices.Services
                 {
                     throw new UserAlreadyExistException("Số điện thoại này đã được sử dụng!!");
                 }
-                userDetailEntity.FldUserId = await GenerateUserID();
-                userDetailEntity.FldUsername = registereRequest.Username;
-                userDetailEntity.FldPassword = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
-                await EmailService.SendEmailRegister(userDetailEntity.FldEmail, userDetailEntity.FldFullname);
-                userDetailEntity.FldSendDate = DateTimePicker.GetDateTimeByTimeZone();
+                userDetailEntity.UserId = await GenerateUserID();
+                userDetailEntity.Username = registereRequest.Username;
+                userDetailEntity.Password = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
+                await EmailService.SendEmailRegister(userDetailEntity.Email, userDetailEntity.Fullname);
+                userDetailEntity.SendDate = DateTimePicker.GetDateTimeByTimeZone();
 
                 if (await _userRepository.CreateUser(userDetailEntity) > 0)
                 {
-                    userDetailEntity.FldRole = UserRoleEnum.USER.ToString();
-                    //userDetailEntity.FldBirthday = Convert.ToDateTime(registereRequest.Birthday, CultureInfo.InvariantCulture);
-                    userDetailEntity.FldActiveStatus = "ACTIVE";
-                    userDetailEntity.FldEmail = registereRequest.Email;
-                    userDetailEntity.FldFullname = registereRequest.FirstName + " " + registereRequest.LastName;
-                    userDetailEntity.FldPhone = registereRequest.Phone;
-                    userDetailEntity.FldAddress = registereRequest.Address;
-                    userDetailEntity.FldExperience = 0;
-                    userDetailEntity.FldTripCreated = 0;
-                    userDetailEntity.FldTripJoined = 0;
-                    userDetailEntity.FldTripCompleted = 0;
-                    userDetailEntity.FldTripCancelled = 0;
-                    userDetailEntity.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    userDetailEntity.FldCreateBy = userDetailEntity.FldUserId;
+                    userDetailEntity.Role = UserRoleEnum.USER.ToString();
+                    //userDetailEntity.Birthday = Convert.ToDateTime(registereRequest.Birthday, CultureInfo.InvariantCulture);
+                    userDetailEntity.ActiveStatus = "ACTIVE";
+                    userDetailEntity.Email = registereRequest.Email;
+                    userDetailEntity.Fullname = registereRequest.FirstName + " " + registereRequest.LastName;
+                    userDetailEntity.Phone = registereRequest.Phone;
+                    userDetailEntity.Address = registereRequest.Address;
+                    userDetailEntity.Experience = 0;
+                    userDetailEntity.TripCreated = 0;
+                    userDetailEntity.TripJoined = 0;
+                    userDetailEntity.TripCompleted = 0;
+                    userDetailEntity.TripCancelled = 0;
+                    userDetailEntity.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    userDetailEntity.CreateBy = userDetailEntity.UserId;
                     if (await _userDetailRepository.CreateUserDetail(userDetailEntity) < 1)
                     {
                         throw new RegisterUserException("Đăng kí thất bại!!");
                     }
                 }
                 registerResponse.Email = registereRequest.Email;
-                registerResponse.FullName = userDetailEntity.FldFullname;
+                registerResponse.FullName = userDetailEntity.Fullname;
                 registerResponse.Username = registereRequest.Username;
-                registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userDetailEntity.FldUserId, name: userDetailEntity.FldFullname);
+                registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userDetailEntity.UserId, name: userDetailEntity.Fullname);
 
                 return registerResponse;
             }
@@ -127,22 +127,22 @@ namespace JourneySick.Business.IServices.Services
                     string encryptedPassword = PasswordEncryption.Encrypt(loginRequest.Password, _appSecrect.SecrectKey);
                     if (encryptedPassword.Equals(checkValue))
                     {
-                        TbluserVO tbluserVO = await _userRepository.GetUserByUsername(loginRequest.Username);
-                        if (tbluserVO.FldConfirmation.Equals("N"))
+                        Data.Models.Entities.VO.UserVO userVO = await _userRepository.GetUserByUsername(loginRequest.Username);
+                        if (userVO.Confirmation.Equals("N"))
                         {
                             // note: cheeck thêm đk sendDate
-                            if(tbluserVO.FldRole.Equals(UserRoleEnum.USER.ToString()) && DateTime.Compare(tbluserVO.FldSendDate.AddMinutes(30), DateTimePicker.GetDateTimeByTimeZone()) < 0)
+                            if(userVO.Role.Equals(UserRoleEnum.USER.ToString()) && DateTime.Compare(userVO.SendDate.AddMinutes(30), DateTimePicker.GetDateTimeByTimeZone()) < 0)
                             {
-                                await EmailService.SendEmailRegister(tbluserVO.FldEmail, tbluserVO.FldFullname);
+                                await EmailService.SendEmailRegister(userVO.Email, userVO.Fullname);
                             }
                             throw new LoginFailedException("Vui lòng xác thực email của bạn!!");
                         }
-                        UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
-                        loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
+                        Data.Models.DTOs.CommonDTO.VO.UserVO userVO = _mapper.Map<Data.Models.DTOs.CommonDTO.VO.UserVO>(userVO);
+                        loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname);
                         CurrentUserObj currentUser = new();
-                        currentUser.Name = userVO.FldFullname;
-                        currentUser.Role = userVO.FldRole;
-                        currentUser.UserId = userVO.FldUserId;
+                        currentUser.Name = userVO.Fullname;
+                        currentUser.Role = userVO.Role;
+                        currentUser.UserId = userVO.UserId;
                         loginResponse.CurrentUserObj = currentUser;
                     }
                     else
@@ -177,17 +177,17 @@ namespace JourneySick.Business.IServices.Services
                     string encryptedPassword = PasswordEncryption.Encrypt(loginRequest.Password, _appSecrect.SecrectKey);
                     if (encryptedPassword.Equals(checkValue))
                     {
-                        TbluserVO tbluserVO = await _userRepository.GetUserByUsername(loginRequest.Username);
-                        if(tbluserVO != null)
+                        Data.Models.Entities.VO.UserVO userVO = await _userRepository.GetUserByUsername(loginRequest.Username);
+                        if(userVO != null)
                         {
-                            if (tbluserVO.FldRole.Equals(UserRoleEnum.ADMIN.ToString()) || tbluserVO.FldRole.Equals(UserRoleEnum.EMPL.ToString()))
+                            if (userVO.Role.Equals(UserRoleEnum.ADMIN.ToString()) || userVO.Role.Equals(UserRoleEnum.EMPL.ToString()))
                             {
-                                UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
-                                loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.FldRole, userId: userVO.FldUserId, name: userVO.FldFullname);
+                                Data.Models.DTOs.CommonDTO.VO.UserVO userVO = _mapper.Map<Data.Models.DTOs.CommonDTO.VO.UserVO>(userVO);
+                                loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname);
                                 CurrentUserObj currentUser = new();
-                                currentUser.Name = userVO.FldFullname;
-                                currentUser.Role = userVO.FldRole;
-                                currentUser.UserId = userVO.FldUserId;
+                                currentUser.Name = userVO.Fullname;
+                                currentUser.Role = userVO.Role;
+                                currentUser.UserId = userVO.UserId;
                                 loginResponse.CurrentUserObj = currentUser;
                             }
                             else
@@ -217,13 +217,13 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<UserVO> GetCurrentInfo(CurrentUserObj currentUser)
+        public async Task<Data.Models.DTOs.CommonDTO.VO.UserVO> GetCurrentInfo(CurrentUserObj currentUser)
         {
             try
             {
-                TbluserVO tblUserVO = await _userRepository.GetUserById(currentUser.UserId);
+                Data.Models.Entities.VO.UserVO UserVO = await _userRepository.GetUserById(currentUser.UserId);
                 // convert entity to dto
-                UserVO userVO = _mapper.Map<UserVO>(tblUserVO);
+                Data.Models.DTOs.CommonDTO.VO.UserVO userVO = _mapper.Map<Data.Models.DTOs.CommonDTO.VO.UserVO>(UserVO);
 
                 return userVO;
             }
