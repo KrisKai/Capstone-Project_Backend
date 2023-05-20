@@ -11,9 +11,9 @@ namespace JourneySick.Data.IRepositories
     public interface ITripDetailRepository
     {
         //CREATE
-        public Task<int> CreateTripDetail(Tbltripdetail tbltripdetail);
+        public Task<int> CreateTripDetail(TripDetail tripdetail);
         //UPDATE
-        public Task<int> UpdateTripDetail(Tbltripdetail tbltripdetail);
+        public Task<int> UpdateTripDetail(TripDetail tripdetail);
         //DELETE
         public Task<int> DeleteTripDetail(string tripDetailId);
 

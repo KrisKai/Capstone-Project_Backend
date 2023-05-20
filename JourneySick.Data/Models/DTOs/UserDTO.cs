@@ -8,10 +8,10 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class UserDTO
     {
-        public String? FldUserId { get; set; }
-        public String? FldUsername { get; set; }
-        public String? FldPassword { get; set; }
-        public string? FldConfirmation { get; set; }
-        public DateTime FldSendDate { get; set; }
+        public String? UserId { get; set; }
+        public String? Username { get; set; }
+        public String? Password { get; set; }
+        public string? Confirmation { get; set; }
+        public DateTime SendDate { get; set; }
     }
 }

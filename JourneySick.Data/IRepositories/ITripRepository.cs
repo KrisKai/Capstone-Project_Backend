@@ -6,21 +6,21 @@ namespace JourneySick.Data.IRepositories
     public interface ITripRepository
     { 
         //SELECT ALL
-        public Task<List<TbltripVO>> GetAllTripsWithPaging(int pageIndex, int pageSize, string? tripName);
+        public Task<List<TripVO>> GetAllTripsWithPaging(int pageIndex, int pageSize, string? tripName);
         //COUNT
         public Task<int> CountAllTrips(string? tripName);
         //SELECT LAST ONE
         public Task<string> GetLastOneId();
         //SELECT BY ID
-        public Task<TbltripVO> GetTripById(string tripId);
+        public Task<TripVO> GetTripById(string tripId);
         //CREATE
-        public Task<int> CreateTrip(TbltripVO tbltripVO);
+        public Task<int> CreateTrip(TripVO tripVO);
         //UPDATE
-        public Task<int> UpdateTrip(TbltripVO tbltripVO);
+        public Task<int> UpdateTrip(TripVO tripVO);
         //DELETE
         public Task<int> DeleteTrip(string tripId);
         //UPDATE BUDGET
-        public Task<int> UpdateTripBudget(TbltripVO tbltripVO);
+        public Task<int> UpdateTripBudget(TripVO tripVO);
         //COUNT THE QUANTITY OF TRIP CREATED IN THIS MONTH
         public Task<int> CountTripCreatedThisMonth();
         //COUNT PREVIOUS MONTH

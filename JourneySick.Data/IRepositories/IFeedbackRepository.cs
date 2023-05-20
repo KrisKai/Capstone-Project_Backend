@@ -7,22 +7,22 @@ namespace JourneySick.Data.IRepositories
     public interface IFeedbackRepository
     {
 
-        public Task<List<TblfeedbackVO>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? userName);
+        public Task<List<Models.Entities.VO.FeedbackVO>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? userName);
 
         public Task<int> CountAllFeedbacks(string? userName);
 
-        public Task<Tblfeedback> GetFeedbackById(int feedbackId);
+        public Task<Feedback> GetFeedbackById(int feedbackId);
 
         //CREATE
-        public Task<int> CreateFeedback(Tblfeedback tblfeedback);
+        public Task<int> CreateFeedback(Feedback feedback);
 
         //UPDATE
-        public Task<int> UpdateFeedback(Tblfeedback tblfeedback);
+        public Task<int> UpdateFeedback(Feedback feedback);
 
         //DELETE
         public Task<int> DeleteFeedback(int userId);
-        public Task<List<TblfeedbackVO>> GetTopFeedback();
-        public Task<int> IncreaseLike(Tblfeedback tblfeedbackDTO, string status);
+        public Task<List<Models.Entities.VO.FeedbackVO>> GetTopFeedback();
+        public Task<int> IncreaseLike(Feedback feedbackDTO, string status);
     }
 }
 

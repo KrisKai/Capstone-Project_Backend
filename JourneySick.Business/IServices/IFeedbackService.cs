@@ -1,7 +1,7 @@
-﻿using JourneySick.Business.Models.DTOs;
-using JourneySick.Data.Models.DTOs;
+﻿using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 
 namespace JourneySick.Business.IServices
@@ -12,9 +12,9 @@ namespace JourneySick.Business.IServices
         //SELECT BY ID
         public Task<FeedbackDTO> GetFeedbackById(int id);
         //CREATE
-        public Task<int> CreateFeedback(FeedbackDTO feedbackDTO, CurrentUserObj currentUser);
+        public Task<int> CreateFeedback(FeedbackDTO feedbackDTO, CurrentUserRequest currentUser);
         //UPDATE
-        public Task<int> UpdateFeedback(FeedbackDTO feedbackDTO, CurrentUserObj currentUser);
+        public Task<int> UpdateFeedback(FeedbackDTO feedbackDTO, CurrentUserRequest currentUser);
         //DELETE
         public Task<int> DeleteFeedback(int id);
         public Task<AllFeedbackDTO> GetTopFeedback();

@@ -14,16 +14,16 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<Tblmaplocation> GetMapLocationById(int locationId)
+        public async Task<MapLocation> GetMapLocationById(int locationId)
         {
             try
             {
-                var query = "SELECT * FROM tblmaplocation WHERE fldMapId = @fldMapId";
+                var query = "SELECT * FROM maplocation WHERE MapId = @MapId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldMapId", locationId, DbType.Int16);
+                parameters.Add("MapId", locationId, DbType.Int16);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tblmaplocation>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<MapLocation>(query, parameters);
             }
             catch (Exception e)
             {
@@ -31,20 +31,20 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<List<Tblmaplocation>> GetAllLocationsWithPaging(int pageIndex, int pageSize)
+        public async Task<List<MapLocation>> GetAllLocationsWithPaging(int pageIndex, int pageSize)
         {
             try
             {
                 int firstIndex = (pageIndex - 1) * pageSize;
                 int lastIndex = pageIndex * pageSize;
-                var query = "SELECT * FROM tblmaplocation LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM maplocation LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
                 parameters.Add("lastIndex", lastIndex, DbType.Int16);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tblmaplocation>(query, parameters)).ToList();
+                return (await connection.QueryAsync<MapLocation>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -56,7 +56,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COALESCE(MAX(fldMapId), 0) FROM tblmaplocation";
+                var query = "SELECT COALESCE(MAX(MapId), 0) FROM maplocation";
 
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<int>(query);
@@ -67,24 +67,24 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CreateMapLocation(Tblmaplocation tblmaplocation)
+        public async Task<int> CreateMapLocation(MapLocation maplocation)
         {
 
             try
             {
-                var query = "INSERT INTO tblmaplocation ("
-                    + "         fldLongitude, "
-                    + "         fldLatitude, "
-                    + "         fldLocationName) "
+                var query = "INSERT INTO maplocation ("
+                    + "         Longitude, "
+                    + "         Latitude, "
+                    + "         LocationName) "
                     + "     VALUES ( "
-                    + "         @fldLongitude, "
-                    + "         @fldLatitude, "
-                    + "         @fldLocationName)";
+                    + "         @Longitude, "
+                    + "         @Latitude, "
+                    + "         @LocationName)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldLongitude", tblmaplocation.FldLongitude, DbType.String);
-                parameters.Add("fldLatitude", tblmaplocation.FldLatitude, DbType.String);
-                parameters.Add("fldLocationName", tblmaplocation.FldLocationName, DbType.String);
+                parameters.Add("Longitude", maplocation.Longitude, DbType.String);
+                parameters.Add("Latitude", maplocation.Latitude, DbType.String);
+                parameters.Add("LocationName", maplocation.LocationName, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -94,22 +94,22 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
-        public async Task<int> UpdateMapLocation(Tblmaplocation tblmaplocation)
+        public async Task<int> UpdateMapLocation(MapLocation maplocation)
         {
 
             try
             {
-                var query = "UPDATE tblmaplocation SET"
-                    + "         fldLongitude = @fldLongitude, "
-                    + "         fldLatitude = @fldLatitude, "
-                    + "         fldLocationName = @fldLocationName, "
-                    + "     WHERE fldMapId = @fldMapId";
+                var query = "UPDATE maplocation SET"
+                    + "         Longitude = @Longitude, "
+                    + "         Latitude = @Latitude, "
+                    + "         LocationName = @LocationName, "
+                    + "     WHERE MapId = @MapId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldMapId", tblmaplocation.FldMapId, DbType.Int32);
-                parameters.Add("fldLongitude", tblmaplocation.FldLongitude, DbType.String);
-                parameters.Add("fldLatitude", tblmaplocation.FldLatitude, DbType.String);
-                parameters.Add("fldLocationName", tblmaplocation.FldLocationName, DbType.String);
+                parameters.Add("MapId", maplocation.MapId, DbType.Int32);
+                parameters.Add("Longitude", maplocation.Longitude, DbType.String);
+                parameters.Add("Latitude", maplocation.Latitude, DbType.String);
+                parameters.Add("LocationName", maplocation.LocationName, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -124,10 +124,10 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tblmaplocation WHERE fldMapId = @fldMapId";
+                var query = "DELETE FROM maplocation WHERE MapId = @MapId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldMapId", locationId, DbType.Int32);
+                parameters.Add("MapId", locationId, DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }

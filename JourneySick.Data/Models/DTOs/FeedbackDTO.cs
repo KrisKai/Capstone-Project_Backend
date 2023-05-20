@@ -8,17 +8,17 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class FeedbackDTO
     {
-        public int? FldFeedbackId { get; set; }
-        public string FldTripId { get; set; }
-        public string FldUserId { get; set; }
-        public string? FldFeedback { get; set; }
-        public float? FldRate { get; set; }
-        public int? FldLike { get; set; }
-        public int? FldDislike { get; set; }
-        public string? FldLocationName { get; set; }
-        public DateTime? FldCreateDate { get; set; }
-        public string? FldCreateBy { get; set; }
-        public DateTime? FldUpdateDate { get; set; }
-        public string? FldUpdateBy { get; set; }
+        public int? FeedbackId { get; set; }
+        public string TripId { get; set; }
+        public string UserId { get; set; }
+        public string? Feedback { get; set; }
+        public float? Rate { get; set; }
+        public int? Like { get; set; }
+        public int? Dislike { get; set; }
+        public string? LocationName { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public string? CreateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public string? UpdateBy { get; set; }
     }
 }

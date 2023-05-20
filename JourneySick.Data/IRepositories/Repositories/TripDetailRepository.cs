@@ -13,43 +13,43 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
         
-        public async Task<int> CreateTripDetail(Tbltripdetail tbltripdetail)
+        public async Task<int> CreateTripDetail(TripDetail tripdetail)
         {
             try
             {
-                var query = "INSERT INTO tbltripdetail ("
-                    + "         fldTripId, "
-                    + "         fldTripStartLocationId, "
-                    + "         fldTripDestinationLocationId, "
-                    + "         fldEstimateStartDate, "
-                    + "         fldEstimateStartTime, "
-                    + "         fldEstimateEndDate, "
-                    + "         fldEstimateEndTime, "
-                    + "         fldDistance, "
-                    + "         fldCreateDate, "
-                    + "         fldCreateBy) "
+                var query = "INSERT INTO tripdetail ("
+                    + "         TripId, "
+                    + "         TripStartLocationId, "
+                    + "         TripDestinationLocationId, "
+                    + "         EstimateStartDate, "
+                    + "         EstimateStartTime, "
+                    + "         EstimateEndDate, "
+                    + "         EstimateEndTime, "
+                    + "         Distance, "
+                    + "         CreateDate, "
+                    + "         CreateBy) "
                     + "     VALUES ( "
-                    + "         @fldTripId, "
-                    + "         @fldTripStartLocationId, "
-                    + "         @fldTripDestinationLocationId, "
-                    + "         @fldEstimateStartDate, "
-                    + "         @fldEstimateStartTime, "
-                    + "         @fldEstimateEndDate, "
-                    + "         @fldEstimateEndTime, "
-                    + "         @fldDistance, "
-                    + "         @fldCreateDate, "
-                    + "         @fldCreateBy)";
+                    + "         @TripId, "
+                    + "         @TripStartLocationId, "
+                    + "         @TripDestinationLocationId, "
+                    + "         @EstimateStartDate, "
+                    + "         @EstimateStartTime, "
+                    + "         @EstimateEndDate, "
+                    + "         @EstimateEndTime, "
+                    + "         @Distance, "
+                    + "         @CreateDate, "
+                    + "         @CreateBy)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tbltripdetail.FldTripId, DbType.String);
-                parameters.Add("fldTripStartLocationId", tbltripdetail.FldTripStartLocationId, DbType.Int32);
-                parameters.Add("fldEstimateStartDate", tbltripdetail.FldEstimateStartDate, DbType.Date);
-                parameters.Add("fldEstimateStartTime", tbltripdetail.FldEstimateStartTime, DbType.String);
-                parameters.Add("fldEstimateEndDate", tbltripdetail.FldEstimateEndDate, DbType.Date);
-                parameters.Add("fldEstimateEndTime", tbltripdetail.FldEstimateEndTime, DbType.Single);
-                parameters.Add("fldDistance", tbltripdetail.FldDistance, DbType.Decimal);
-                parameters.Add("fldCreateDate", tbltripdetail.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", tbltripdetail.FldCreateBy, DbType.String);
+                parameters.Add("TripId", tripdetail.TripId, DbType.String);
+                parameters.Add("TripStartLocationId", tripdetail.TripStartLocationId, DbType.Int32);
+                parameters.Add("EstimateStartDate", tripdetail.EstimateStartDate, DbType.Date);
+                parameters.Add("EstimateStartTime", tripdetail.EstimateStartTime, DbType.String);
+                parameters.Add("EstimateEndDate", tripdetail.EstimateEndDate, DbType.Date);
+                parameters.Add("EstimateEndTime", tripdetail.EstimateEndTime, DbType.Single);
+                parameters.Add("Distance", tripdetail.Distance, DbType.Decimal);
+                parameters.Add("CreateDate", tripdetail.CreateDate, DbType.DateTime);
+                parameters.Add("CreateBy", tripdetail.CreateBy, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -60,32 +60,32 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateTripDetail(Tbltripdetail tbltripdetail)
+        public async Task<int> UpdateTripDetail(TripDetail tripdetail)
         {
             try
             {
-                var query = "UPDATE tbltripdetail SET"
-                    + "         fldTripStartLocationId = @fldTripStartLocationId, "
-                    + "         fldTripDestinationLocationId = @fldTripDestinationLocationId, "
-                    + "         fldEstimateStartDate = @fldEstimateStartDate, "
-                    + "         fldEstimateStartTime = @fldEstimateStartTime, "
-                    + "         fldEstimateEndDate = @fldEstimateEndDate, "
-                    + "         fldEstimateEndTime = @fldEstimateEndTime, "
-                    + "         fldDistance = @fldDistance, "
-                    + "         fldUpdateDate = @fldUpdateDate, "
-                    + "         fldUpdateBy = @fldUpdateBy"
-                    + "     WHERE fldTripId = @fldTripId"; ;
+                var query = "UPDATE tripdetail SET"
+                    + "         TripStartLocationId = @TripStartLocationId, "
+                    + "         TripDestinationLocationId = @TripDestinationLocationId, "
+                    + "         EstimateStartDate = @EstimateStartDate, "
+                    + "         EstimateStartTime = @EstimateStartTime, "
+                    + "         EstimateEndDate = @EstimateEndDate, "
+                    + "         EstimateEndTime = @EstimateEndTime, "
+                    + "         Distance = @Distance, "
+                    + "         UpdateDate = @UpdateDate, "
+                    + "         UpdateBy = @UpdateBy"
+                    + "     WHERE TripId = @TripId"; ;
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tbltripdetail.FldTripId, DbType.String);
-                parameters.Add("fldTripStartLocationId", tbltripdetail.FldTripStartLocationId, DbType.Int32);
-                parameters.Add("fldEstimateStartDate", tbltripdetail.FldEstimateStartDate, DbType.Date);
-                parameters.Add("fldEstimateStartTime", tbltripdetail.FldEstimateStartTime, DbType.String);
-                parameters.Add("fldEstimateEndDate", tbltripdetail.FldEstimateEndDate, DbType.Date);
-                parameters.Add("fldEstimateEndTime", tbltripdetail.FldEstimateEndTime, DbType.Single);
-                parameters.Add("fldDistance", tbltripdetail.FldDistance, DbType.Decimal);
-                parameters.Add("fldUpdateDate", tbltripdetail.FldUpdateDate, DbType.DateTime);
-                parameters.Add("fldUpdateBy", tbltripdetail.FldUpdateBy, DbType.String);
+                parameters.Add("TripId", tripdetail.TripId, DbType.String);
+                parameters.Add("TripStartLocationId", tripdetail.TripStartLocationId, DbType.Int32);
+                parameters.Add("EstimateStartDate", tripdetail.EstimateStartDate, DbType.Date);
+                parameters.Add("EstimateStartTime", tripdetail.EstimateStartTime, DbType.String);
+                parameters.Add("EstimateEndDate", tripdetail.EstimateEndDate, DbType.Date);
+                parameters.Add("EstimateEndTime", tripdetail.EstimateEndTime, DbType.Single);
+                parameters.Add("Distance", tripdetail.Distance, DbType.Decimal);
+                parameters.Add("UpdateDate", tripdetail.UpdateDate, DbType.DateTime);
+                parameters.Add("UpdateBy", tripdetail.UpdateBy, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -99,10 +99,10 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tbltripdetail WHERE fldTripId = @fldTripId";
+                var query = "DELETE FROM tripdetail WHERE TripId = @TripId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", planDetailId, DbType.String);
+                parameters.Add("TripId", planDetailId, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using JourneySick.API.Extensions;
-using JourneySick.Data.Models.DTOs.CommonDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 
 namespace JourneySick.API.Controllers
 {

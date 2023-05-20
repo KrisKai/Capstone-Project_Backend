@@ -13,7 +13,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<TbltripVO>> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName)
+        public async Task<List<TripVO>> GetAllTripsWithPaging(int pageIndex, int pageSize, String? tripName)
         {
             try
             {
@@ -25,10 +25,10 @@ namespace JourneySick.Data.IRepositories.Repositories
                 tripName ??= "";
                 parameters.Add("tripName", tripName, DbType.String);
 
-                var query = "SELECT * FROM tbltrip a INNER JOIN tbltripdetail b ON a.fldTripId = b.fldTripId WHERE a.fldTripName LIKE CONCAT('%', @tripName, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM trip a INNER JOIN tripdetail b ON a.TripId = b.TripId WHERE a.TripName LIKE CONCAT('%', @tripName, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<TbltripVO>(query, parameters)).ToList();
+                return (await connection.QueryAsync<TripVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -40,7 +40,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COALESCE(MAX(fldTripId), 0) FROM tbltrip ";
+                var query = "SELECT COALESCE(MAX(TripId), 0) FROM trip ";
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<string>(query);
             }
@@ -50,17 +50,17 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<TbltripVO> GetTripById(string tripId)
+        public async Task<TripVO> GetTripById(string tripId)
         {
             try
             {
-                var query = "SELECT * FROM tbltrip a INNER JOIN tbltripdetail b ON a.fldTripId = b.fldTripId WHERE a.fldTripId = @tripId";
+                var query = "SELECT * FROM trip a INNER JOIN tripdetail b ON a.TripId = b.TripId WHERE a.TripId = @tripId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("tripId", tripId, DbType.String);
 
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<TbltripVO>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<TripVO>(query, parameters);
             }
             catch (Exception e)
             {
@@ -70,35 +70,35 @@ namespace JourneySick.Data.IRepositories.Repositories
 
 
         //CREATE
-        public async Task<int> CreateTrip(TbltripVO tripEntity)
+        public async Task<int> CreateTrip(TripVO tripEntity)
         {
             try
             {
-                var query = "INSERT INTO tbltrip ("
-                    + "         fldTripId, "
-                    + "         fldTripName, "
-                    + "         fldTripBudget, "
-                    + "         fldTripDescription, "
-                    + "         fldTripStatus, "
-                    + "         fldTripPresenter, "
-                    + "         fldTripMember) "
+                var query = "INSERT INTO trip ("
+                    + "         TripId, "
+                    + "         TripName, "
+                    + "         TripBudget, "
+                    + "         TripDescription, "
+                    + "         TripStatus, "
+                    + "         TripPresenter, "
+                    + "         TripMember) "
                     + "     VALUES ( "
-                    + "         @fldTripId, "
-                    + "         @fldTripName, "
-                    + "         @fldTripBudget, "
-                    + "         @fldTripDescription, "
-                    + "         @fldTripStatus, "
-                    + "         @fldTripPresenter, "
-                    + "         @fldTripMember) ";
+                    + "         @TripId, "
+                    + "         @TripName, "
+                    + "         @TripBudget, "
+                    + "         @TripDescription, "
+                    + "         @TripStatus, "
+                    + "         @TripPresenter, "
+                    + "         @TripMember) ";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripEntity.FldTripId, DbType.String);
-                parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
-                parameters.Add("fldTripBudget", tripEntity.FldTripBudget, DbType.Decimal);
-                parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
-                parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
-                parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
-                parameters.Add("fldTripPresenter", tripEntity.FldTripPresenter, DbType.String);
+                parameters.Add("TripId", tripEntity.TripId, DbType.String);
+                parameters.Add("TripName", tripEntity.TripName, DbType.String);
+                parameters.Add("TripBudget", tripEntity.TripBudget, DbType.Decimal);
+                parameters.Add("TripDescription", tripEntity.TripDescription, DbType.String);
+                parameters.Add("TripStatus", tripEntity.TripStatus, DbType.String);
+                parameters.Add("TripMember", tripEntity.TripMember, DbType.String);
+                parameters.Add("TripPresenter", tripEntity.TripPresenter, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -109,27 +109,27 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateTrip(TbltripVO tripEntity)
+        public async Task<int> UpdateTrip(TripVO tripEntity)
         {
             try
             {
-                var query = "UPDATE tbltrip SET"
-                    + "         fldTripName = @fldTripName, "
-                    + "         fldTripDescription = @fldTripDescription, "
-                    + "         fldEstimateStartTime = @fldEstimateStartTime, "
-                    + "         fldEstimateArrivalTime = @fldEstimateArrivalTime, "
-                    + "         fldTripStatus = @fldTripStatus, "
-                    + "         fldTripMember = @fldTripMember,"
-                    + "         fldTripPresenter = @fldTripPresenter"
-                    + "      WHERE fldTripId = @fldTripId";
+                var query = "UPDATE trip SET"
+                    + "         TripName = @TripName, "
+                    + "         TripDescription = @TripDescription, "
+                    + "         EstimateStartTime = @EstimateStartTime, "
+                    + "         EstimateArrivalTime = @EstimateArrivalTime, "
+                    + "         TripStatus = @TripStatus, "
+                    + "         TripMember = @TripMember,"
+                    + "         TripPresenter = @TripPresenter"
+                    + "      WHERE TripId = @TripId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripEntity.FldTripId, DbType.String);
-                parameters.Add("fldTripName", tripEntity.FldTripName, DbType.String);
-                parameters.Add("fldTripDescription", tripEntity.FldTripDescription, DbType.String);
-                parameters.Add("fldTripStatus", tripEntity.FldTripStatus, DbType.String);
-                parameters.Add("fldTripMember", tripEntity.FldTripMember, DbType.String);
-                parameters.Add("fldTripPresenter", tripEntity.FldTripPresenter, DbType.String);
+                parameters.Add("TripId", tripEntity.TripId, DbType.String);
+                parameters.Add("TripName", tripEntity.TripName, DbType.String);
+                parameters.Add("TripDescription", tripEntity.TripDescription, DbType.String);
+                parameters.Add("TripStatus", tripEntity.TripStatus, DbType.String);
+                parameters.Add("TripMember", tripEntity.TripMember, DbType.String);
+                parameters.Add("TripPresenter", tripEntity.TripPresenter, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -144,10 +144,10 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tbltrip WHERE fldTripId = @fldTripId";
+                var query = "DELETE FROM trip WHERE TripId = @TripId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripId, DbType.String);
+                parameters.Add("TripId", tripId, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
@@ -161,7 +161,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbltrip WHERE fldTripName LIKE CONCAT('%', @tripName, '%')";
+                var query = "SELECT COUNT(*) FROM trip WHERE TripName LIKE CONCAT('%', @tripName, '%')";
 
                 tripName ??= "";
                 var parameters = new DynamicParameters();
@@ -176,17 +176,17 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateTripBudget(TbltripVO tbltrip)
+        public async Task<int> UpdateTripBudget(TripVO trip)
         {
             try
             {
-                var query = "UPDATE tbltrip SET"
-                    + "         fldTripBudget = @fldTripBudget"
-                    + "      WHERE fldTripId = @fldTripId";
+                var query = "UPDATE trip SET"
+                    + "         TripBudget = @TripBudget"
+                    + "      WHERE TripId = @TripId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tbltrip.FldTripId, DbType.String);
-                parameters.Add("fldTripBudget", tbltrip.FldTripBudget, DbType.Decimal);
+                parameters.Add("TripId", trip.TripId, DbType.String);
+                parameters.Add("TripBudget", trip.TripBudget, DbType.Decimal);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -201,7 +201,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbltripdetail WHERE MONTH(fldCreateDate) = MONTH(now()) and YEAR(fldCreateDate) = YEAR(now())";
+                var query = "SELECT COUNT(*) FROM tripdetail WHERE MONTH(CreateDate) = MONTH(now()) and YEAR(CreateDate) = YEAR(now())";
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query));
 
@@ -216,7 +216,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbltripdetail WHERE MONTH(fldCreateDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and YEAR(fldCreateDate) = YEAR(now())";
+                var query = "SELECT COUNT(*) FROM tripdetail WHERE MONTH(CreateDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and YEAR(CreateDate) = YEAR(now())";
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query));
 
@@ -231,7 +231,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbltripdetail WHERE YEAR(fldCreateDate) = YEAR(now())";
+                var query = "SELECT COUNT(*) FROM tripdetail WHERE YEAR(CreateDate) = YEAR(now())";
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query));
 

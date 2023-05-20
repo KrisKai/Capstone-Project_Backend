@@ -8,17 +8,17 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class TripItemDTO
     {
-        public int FldItemId { get; set; }
-        public string FldTripId { get; set; } = null!;
-        public string? FldItemName { get; set; }
-        public string? FldItemDescription { get; set; }
-        public decimal? FldPriceMin { get; set; }
-        public decimal? FldPriceMax { get; set; }
-        public int? FldCategoryId { get; set; }
-        public int? FldQuantity { get; set; }
-        public DateTime? FldCreateDate { get; set; }
-        public string? FldCreateBy { get; set; }
-        public DateTime? FldUpdateDate { get; set; }
-        public string? FldUpdateBy { get; set; }
+        public int ItemId { get; set; }
+        public string TripId { get; set; } = null!;
+        public string? ItemName { get; set; }
+        public string? ItemDescription { get; set; }
+        public decimal? PriceMin { get; set; }
+        public decimal? PriceMax { get; set; }
+        public int? CategoryId { get; set; }
+        public int? Quantity { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public string? CreateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public string? UpdateBy { get; set; }
     }
 }

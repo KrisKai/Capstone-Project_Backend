@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -30,11 +29,11 @@ namespace JourneySick.Business.IServices.Services
             AllItemDTO result = new();
             try
             {
-                List<TblitemVO> tbltrips = await _itemRepository.GetAllItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
+                List<ItemVO> items = await _itemRepository.GetAllItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
                 // convert entity to dto
-                List<ItemVO> trips = _mapper.Map<List<ItemVO>>(tbltrips);
+                List<ItemRequest> itemRequests = _mapper.Map<List<ItemRequest>>(items);
                 int count = await _itemRepository.CountAllItems(itemId, categoryId);
-                result.ListOfItem = trips;
+                result.ListOfItem = itemRequests;
                 result.NumOfItem = count;
                 return result;
             }
@@ -49,9 +48,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tblitem tblitem = await _itemRepository.GetItemById(itemId);
+                Item item = await _itemRepository.GetItemById(itemId);
                 // convert entity to dto
-                ItemDTO itemDTO = _mapper.Map<ItemDTO>(tblitem);
+                ItemDTO itemDTO = _mapper.Map<ItemDTO>(item);
 
                 return itemDTO;
             }
@@ -62,14 +61,14 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateItem(ItemDTO itemDTO, CurrentUserObj currentUser)
+        public async Task<int> CreateItem(ItemDTO itemDTO, CurrentUserRequest currentUser)
         {
             try
             {
-                itemDTO.FldCreateBy = currentUser.UserId;
-                itemDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                Tblitem tblitem = _mapper.Map<Tblitem>(itemDTO);
-                int id = await _itemRepository.CreateItem(tblitem);
+                itemDTO.CreateBy = currentUser.UserId;
+                itemDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                Item item = _mapper.Map<Item>(itemDTO);
+                int id = await _itemRepository.CreateItem(item);
                 if (id > 0)
                 {
                     return id;
@@ -83,20 +82,20 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateItem(ItemDTO itemDTO, CurrentUserObj currentUser)
+        public async Task<int> UpdateItem(ItemDTO itemDTO, CurrentUserRequest currentUser)
         {
             try
             {
-                ItemDTO getTrip = await GetItemById((int)itemDTO.FldItemId);
+                ItemDTO getTrip = await GetItemById((int)itemDTO.ItemId);
 
                 if (getTrip != null)
                 {
-                    itemDTO.FldUpdateBy = currentUser.UserId;
-                    itemDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Tblitem tblitem = _mapper.Map<Tblitem>(itemDTO);
-                    if (await _itemRepository.UpdateItem(tblitem) > 0)
+                    itemDTO.UpdateBy = currentUser.UserId;
+                    itemDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    Item item = _mapper.Map<Item>(itemDTO);
+                    if (await _itemRepository.UpdateItem(item) > 0)
                     {
-                        return (int)itemDTO.FldItemId;
+                        return (int)itemDTO.ItemId;
                     }
                     else
                     {

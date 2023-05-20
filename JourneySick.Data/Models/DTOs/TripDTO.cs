@@ -8,13 +8,13 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class TripDTO
     {
-        public string? FldTripId { get; set; } = null!;
-        public string? FldTripName { get; set; }
-        public decimal? FldTripBudget { get; set; }
-        public string? FldTripDescription { get; set; }
-        public string? FldTripStatus { get; set; }
-        public int? FldTripMember { get; set; }
-        public string FldTripPresenter { get; set; } = null!;
-        public string FldTripCompleted { get; set; } = null!;
+        public string? TripId { get; set; } = null!;
+        public string? TripName { get; set; }
+        public decimal? TripBudget { get; set; }
+        public string? TripDescription { get; set; }
+        public string? TripStatus { get; set; }
+        public int? TripMember { get; set; }
+        public string TripPresenter { get; set; } = null!;
+        public string TripCompleted { get; set; } = null!;
     }
 }

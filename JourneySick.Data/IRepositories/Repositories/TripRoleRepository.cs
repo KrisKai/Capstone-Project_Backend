@@ -13,14 +13,14 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<Tbltriprole>> GetAllTripRolesWithPaging(int pageIndex, int pageSize, string? roleName)
+        public async Task<List<TripRole>> GetAllTripRolesWithPaging(int pageIndex, int pageSize, string? roleName)
         {
             try
             {
                 int firstIndex = pageIndex * pageSize;
                 int lastIndex = (pageIndex + 1) * pageSize;
                 roleName ??= "";
-                var query = "SELECT * FROM tbltriprole WHERE fldRoleName LIKE CONCAT('%', @roleName, '%') LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM triprole WHERE RoleName LIKE CONCAT('%', @roleName, '%') LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
@@ -28,7 +28,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("roleName", roleName, DbType.String);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Tbltriprole>(query, parameters)).ToList();
+                return (await connection.QueryAsync<TripRole>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -40,7 +40,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tbltriprole WHERE fldRoleName LIKE CONCAT('%', @roleName, '%')";
+                var query = "SELECT COUNT(*) FROM triprole WHERE RoleName LIKE CONCAT('%', @roleName, '%')";
                 roleName ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("roleName", roleName, DbType.String);
@@ -54,16 +54,16 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<Tbltriprole> GetTripRoleById(int roleId)
+        public async Task<TripRole> GetTripRoleById(int roleId)
         {
             try
             {
-                var query = "SELECT * FROM tbltriprole WHERE fldRoleId = @fldRoleId";
+                var query = "SELECT * FROM triprole WHERE RoleId = @RoleId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldRoleId", roleId, DbType.Int32);
+                parameters.Add("RoleId", roleId, DbType.Int32);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Tbltriprole>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<TripRole>(query, parameters);
             }
             catch (Exception e)
             {
@@ -72,24 +72,24 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //CREATE
-        public async Task<int> CreateTripRole(Tbltriprole tbltriprole)
+        public async Task<int> CreateTripRole(TripRole triprole)
         {
             try
             {
-                var query = "INSERT INTO tbltriprole ("
-                    + "         fldRoleName, "
-                    + "         fldType, "
-                    + "         fldDescription) "
+                var query = "INSERT INTO triprole ("
+                    + "         RoleName, "
+                    + "         Type, "
+                    + "         Description) "
                     + "     VALUES ( "
-                    + "         @fldRoleName, "
-                    + "         @fldType, "
-                    + "         @fldDescription) ";
+                    + "         @RoleName, "
+                    + "         @Type, "
+                    + "         @Description) ";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldRoleId", tbltriprole.FldRoleId, DbType.Int32);
-                parameters.Add("fldRoleName", tbltriprole.FldRoleName, DbType.String);
-                parameters.Add("fldType", tbltriprole.FldType, DbType.String);
-                parameters.Add("fldDescription", tbltriprole.FldDescription, DbType.String);
+                parameters.Add("RoleId", triprole.RoleId, DbType.Int32);
+                parameters.Add("RoleName", triprole.RoleName, DbType.String);
+                parameters.Add("Type", triprole.Type, DbType.String);
+                parameters.Add("Description", triprole.Description, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query,parameters);
@@ -100,21 +100,21 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateTripRole(Tbltriprole tbltriprole)
+        public async Task<int> UpdateTripRole(TripRole triprole)
         {
             try
             {
-                var query = "UPDATE tbltriprole SET"
-                    + "         fldRoleName = @fldRoleName, "
-                    + "         fldType = @fldType, "
-                    + "         fldDescription = @fldDescription"
-                    + "     WHERE fldRoleId = @fldRoleId"; ;
+                var query = "UPDATE triprole SET"
+                    + "         RoleName = @RoleName, "
+                    + "         Type = @Type, "
+                    + "         Description = @Description"
+                    + "     WHERE RoleId = @RoleId"; ;
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldRoleId", tbltriprole.FldRoleId, DbType.Int32);
-                parameters.Add("fldRoleName", tbltriprole.FldRoleName, DbType.String);
-                parameters.Add("fldType", tbltriprole.FldType, DbType.String);
-                parameters.Add("fldDescription", tbltriprole.FldDescription, DbType.String);
+                parameters.Add("RoleId", triprole.RoleId, DbType.Int32);
+                parameters.Add("RoleName", triprole.RoleName, DbType.String);
+                parameters.Add("Type", triprole.Type, DbType.String);
+                parameters.Add("Description", triprole.Description, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -129,10 +129,10 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tbltriprole WHERE fldRoleId = @fldRoleId";
+                var query = "DELETE FROM triprole WHERE RoleId = @RoleId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldRoleId", roleId, DbType.Int32);
+                parameters.Add("RoleId", roleId, DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }

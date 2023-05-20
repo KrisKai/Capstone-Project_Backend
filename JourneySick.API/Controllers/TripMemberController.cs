@@ -3,10 +3,10 @@ using JourneySick.Data.Models.DTOs;
 using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using JourneySick.Business.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 
 namespace JourneySick.API.Controllers
 {
@@ -30,7 +30,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName)
         {
             var result = new AllTripMemberDTO();
-            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             result = await _tripMemberService.GetAllTripMembersWithPaging(pageIndex, pageSize, memberName);
             return Ok(result);
 
@@ -41,7 +41,7 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> GetTripMemberById([FromRoute] int id)
         {
-            TripMemberVO result = await _tripMemberService.GetTripMemberById(id);
+            TripMemberRequest result = await _tripMemberService.GetTripMemberById(id);
             return Ok(result);
         }
 

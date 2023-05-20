@@ -3,14 +3,13 @@ using JourneySick.Data.Models.DTOs;
 using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Business.IServices.Services;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
-using JourneySick.Data.Models.DTOs.CommonDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 
 namespace JourneySick.API.Controllers
 {
@@ -31,7 +30,7 @@ namespace JourneySick.API.Controllers
         [HttpPost]
         //[Route("create-admin")]
         [Authorize]
-        public async Task<IActionResult> CreateUser([FromBody] UserVO userVO)
+        public async Task<IActionResult> CreateUser([FromBody] UserRequest userVO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.CreateUser(userVO, currentUser);
@@ -42,7 +41,7 @@ namespace JourneySick.API.Controllers
         //UPDATE
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdateUser([FromBody] UserVO userVO)
+        public async Task<IActionResult> UpdateUser([FromBody] UserRequest userVO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.UpdateUser(userVO, currentUser);
@@ -56,7 +55,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName)
         {
             var result = new AllUserDTO();
-            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, userName, currentUser);
             return Ok(result);
 
@@ -67,7 +66,7 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserById([FromRoute] string id)
         {
-            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.GetUserById(id);
             return Ok(result);
         }
@@ -99,7 +98,7 @@ namespace JourneySick.API.Controllers
         [HttpPut]
         [Route("change-password")]
         [Authorize]
-        public async Task<IActionResult> ChangePassword(ChangePasswordDTO changePasswordDTO)
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequest changePasswordDTO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.ChangePassword(changePasswordDTO);
@@ -111,7 +110,7 @@ namespace JourneySick.API.Controllers
         [HttpPut]
         [Route("change-status")]
         [Authorize]
-        public async Task<IActionResult> UpdateAcitveStatus(UserVO userVO)
+        public async Task<IActionResult> UpdateAcitveStatus(UserRequest userVO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.UpdateAcitveStatus(userVO, currentUser);

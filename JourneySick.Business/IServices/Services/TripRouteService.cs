@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers.Exceptions;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -30,11 +29,11 @@ namespace JourneySick.Business.IServices.Services
             AllTripRouteDTO result = new();
             try
             {
-                List<TbltriprouteVO> tbltrips = await _tripRouteRepository.GetAllTripRoutesWithPaging(pageIndex, pageSize, routeId);
+                List<TriprouteVO> triprouteVOs = await _tripRouteRepository.GetAllTripRoutesWithPaging(pageIndex, pageSize, routeId);
                 // convert entity to dto
-                List<TripRouteVO> trips = _mapper.Map<List<TripRouteVO>>(tbltrips);
+                List<TripRouteRequest> tripRouteRequests = _mapper.Map<List<TripRouteRequest>>(triprouteVOs);
                 int count = await _tripRouteRepository.CountAllTripRoutes(routeId);
-                result.ListOfRoute = trips;
+                result.ListOfRoute = tripRouteRequests;
                 result.NumOfRoute = count;
                 return result;
             }
@@ -49,9 +48,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tbltriproute tbltriproute = await _tripRouteRepository.GetTripRouteById(routeId);
+                TripRoute triproute = await _tripRouteRepository.GetTripRouteById(routeId);
                 // convert entity to dto
-                TripRouteDTO tripRouteDTO = _mapper.Map<TripRouteDTO>(tbltriproute);
+                TripRouteDTO tripRouteDTO = _mapper.Map<TripRouteDTO>(triproute);
 
                 return tripRouteDTO;
             }
@@ -62,19 +61,21 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateTripRoute(TripRouteVO tripRouteDTO, CurrentUserObj currentUser)
+        public async Task<int> CreateTripRoute(TripRouteRequest tripRouteDTO, CurrentUserRequest currentUser)
         {
             try
             {
-                Tblmaplocation tblmaplocation = new Tblmaplocation();
-                tblmaplocation.FldLatitude = tripRouteDTO.FldLatitude;
-                tblmaplocation.FldLongitude = tripRouteDTO.FldLongitude;
-                tblmaplocation.FldLocationName = tripRouteDTO.FldLocationName;
-                await _mapLocationRepository.CreateMapLocation(tblmaplocation);
+                MapLocation maplocation = new()
+                {
+                    Latitude = tripRouteDTO.Latitude,
+                    Longitude = tripRouteDTO.Longitude,
+                    LocationName = tripRouteDTO.LocationName
+                };
+                await _mapLocationRepository.CreateMapLocation(maplocation);
                 int mapId = await _mapLocationRepository.GetLastOne();
-                tripRouteDTO.FldMapId = mapId;
-                Tbltriproute tbltriproute = _mapper.Map<Tbltriproute>(tripRouteDTO);
-                int id = await _tripRouteRepository.CreateTripRoute(tbltriproute);
+                tripRouteDTO.MapId = mapId;
+                TripRoute triproute = _mapper.Map<TripRoute>(tripRouteDTO);
+                int id = await _tripRouteRepository.CreateTripRoute(triproute);
                 if (id > 0)
                 {
                     return id;
@@ -88,26 +89,26 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateTripRoute(TripRouteVO tripRouteDTO, CurrentUserObj currentUser)
+        public async Task<int> UpdateTripRoute(TripRouteRequest tripRouteDTO, CurrentUserRequest currentUser)
         {
             try
             {
-                TripRouteDTO getTrip = await GetTripRouteById((int)tripRouteDTO.FldRouteId);
+                TripRouteDTO getTrip = await GetTripRouteById((int)tripRouteDTO.RouteId);
 
                 if (getTrip != null)
                 {
-                    Tbltriproute tbltriproute = _mapper.Map<Tbltriproute>(tripRouteDTO);
-                    if (await _tripRouteRepository.UpdateTripRoute(tbltriproute) > 0)
+                    TripRoute triproute = _mapper.Map<TripRoute>(tripRouteDTO);
+                    if (await _tripRouteRepository.UpdateTripRoute(triproute) > 0)
                     {
-                        Tblmaplocation getMap = await _mapLocationRepository.GetMapLocationById((int)tripRouteDTO.FldMapId);
+                        MapLocation getMap = await _mapLocationRepository.GetMapLocationById((int)tripRouteDTO.MapId);
                         if (getMap != null)
                         {
-                            getMap.FldLatitude = tripRouteDTO.FldLatitude;
-                            getMap.FldLongitude = tripRouteDTO.FldLongitude;
-                            getMap.FldLocationName = tripRouteDTO.FldLocationName;
+                            getMap.Latitude = tripRouteDTO.Latitude;
+                            getMap.Longitude = tripRouteDTO.Longitude;
+                            getMap.LocationName = tripRouteDTO.LocationName;
                             await _mapLocationRepository.UpdateMapLocation(getMap);
                         }
-                        return (int)tripRouteDTO.FldRouteId;
+                        return (int)tripRouteDTO.RouteId;
                     }
                     else
                     {
@@ -134,7 +135,7 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    if (await _tripRouteRepository.DeleteTripRoute(routeId) > 0 && await _mapLocationRepository.DeleteMapLocation((int)getTrip.FldRouteId) > 0)
+                    if (await _tripRouteRepository.DeleteTripRoute(routeId) > 0 && await _mapLocationRepository.DeleteMapLocation((int)getTrip.RouteId) > 0)
                     {
                         return 1;
                     }

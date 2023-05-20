@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -29,11 +29,11 @@ namespace JourneySick.Business.IServices.Services
             AllTripPlanDTO result = new();
             try
             {
-                List<Tbltripplan> tbltrips = await _tripPlanRepository.GetAllTripPlansWithPaging(pageIndex, pageSize, planId);
+                List<TripPlan> tripPlans = await _tripPlanRepository.GetAllTripPlansWithPaging(pageIndex, pageSize, planId);
                 // convert entity to dto
-                List<TripPlanDTO> trips = _mapper.Map<List<TripPlanDTO>>(tbltrips);
+                List<TripPlanDTO> tripPlanDTOs = _mapper.Map<List<TripPlanDTO>>(tripPlans);
                 int count = await _tripPlanRepository.CountAllTripPlans(planId);
-                result.ListOfPlan = trips;
+                result.ListOfPlan = tripPlanDTOs;
                 result.NumOfPlan = count;
                 return result;
             }
@@ -48,9 +48,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Tbltripplan tbltripplan = await _tripPlanRepository.GetTripPlanById(planId);
+                TripPlan tripplan = await _tripPlanRepository.GetTripPlanById(planId);
                 // convert entity to dto
-                TripPlanDTO tripPlanDTO = _mapper.Map<TripPlanDTO>(tbltripplan);
+                TripPlanDTO tripPlanDTO = _mapper.Map<TripPlanDTO>(tripplan);
 
                 return tripPlanDTO;
             }
@@ -61,14 +61,14 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserObj currentUser)
+        public async Task<int> CreateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserRequest currentUser)
         {
             try
             {
-                tripPlanDTO.FldCreateBy = currentUser.UserId;
-                tripPlanDTO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                Tbltripplan tbltripplan = _mapper.Map<Tbltripplan>(tripPlanDTO);
-                int id = await _tripPlanRepository.CreateTripPlan(tbltripplan);
+                tripPlanDTO.CreateBy = currentUser.UserId;
+                tripPlanDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                TripPlan tripplan = _mapper.Map<TripPlan>(tripPlanDTO);
+                int id = await _tripPlanRepository.CreateTripPlan(tripplan);
                 if (id > 0)
                 {
                     return id;
@@ -82,20 +82,20 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserObj currentUser)
+        public async Task<int> UpdateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserRequest currentUser)
         {
             try
             {
-                TripPlanDTO getTrip = await GetTripPlanById((int)tripPlanDTO.FldPlanId);
+                TripPlanDTO getTrip = await GetTripPlanById((int)tripPlanDTO.PlanId);
 
                 if (getTrip != null)
                 {
-                    tripPlanDTO.FldUpdateBy = currentUser.UserId;
-                    tripPlanDTO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Tbltripplan tbltripplan = _mapper.Map<Tbltripplan>(tripPlanDTO);
-                    if (await _tripPlanRepository.UpdateTripPlan(tbltripplan) > 0)
+                    tripPlanDTO.UpdateBy = currentUser.UserId;
+                    tripPlanDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    TripPlan tripplan = _mapper.Map<TripPlan>(tripPlanDTO);
+                    if (await _tripPlanRepository.UpdateTripPlan(tripplan) > 0)
                     {
-                        return (int)tripPlanDTO.FldPlanId;
+                        return (int)tripPlanDTO.PlanId;
                     }
                     else
                     {

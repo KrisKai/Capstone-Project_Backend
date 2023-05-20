@@ -11,12 +11,12 @@ namespace JourneySick.Data.IRepositories
     public interface IPlanLocationRepository
     {
         //SELECT ALL
-        public Task<List<Tblplanlocation>> GetAllLocationsWithPaging(int pageIndex, int pageSize);
+        public Task<List<PlanLocation>> GetAllLocationsWithPaging(int pageIndex, int pageSize);
         //CREATE
-        public Task<int> CreatePlanLocation(Tblplanlocation tblplanlocation);
-        public Task<Tblplanlocation> GetPlanLocationById(int locationId);
+        public Task<int> CreatePlanLocation(PlanLocation planlocation);
+        public Task<PlanLocation> GetPlanLocationById(int locationId);
         //UPDATE
-        public Task<int> UpdatePlanLocation(Tblplanlocation tblplanlocation);
+        public Task<int> UpdatePlanLocation(PlanLocation planlocation);
         //DELETE
         public Task<int> DeletePlanLocation(int locationId);
 

@@ -23,9 +23,9 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT fldEmail FROM tbluserdetail WHERE fldEmail = @fldEmail";
+                var query = "SELECT Email FROM userdetail WHERE Email = @Email";
                 var parameters = new DynamicParameters();
-                parameters.Add("fldEmail", email, DbType.String);
+                parameters.Add("Email", email, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
             }
@@ -39,9 +39,9 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT fldPhone FROM tbluserdetail WHERE fldPhone = @fldPhone";
+                var query = "SELECT Phone FROM userdetail WHERE Phone = @Phone";
                 var parameters = new DynamicParameters();
-                parameters.Add("fldPhone", phone, DbType.String);
+                parameters.Add("Phone", phone, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
             }
@@ -51,15 +51,15 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<TbluserVO> GetUserDetailById(string userId)
+        public async Task<Models.Entities.VO.UserVO> GetUserDetailById(string userId)
         {
             try
             {
-                var query = "SELECT * FROM tbluserdetail WHERE fldUserId = @fldUserId";
+                var query = "SELECT * FROM userdetail WHERE UserId = @UserId";
                 var parameters = new DynamicParameters();
-                parameters.Add("fldUserId", userId, DbType.String);
+                parameters.Add("UserId", userId, DbType.String);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<TbluserVO>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<Models.Entities.VO.UserVO>(query, parameters);
 
             }
             catch (Exception e)
@@ -68,49 +68,16 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<TbluserVO> GetTripPresenterByTripId(string tripId)
+        public async Task<Models.Entities.VO.UserVO> GetTripPresenterByTripId(string tripId)
         {
             try
             {
-                var query = "SELECT * FROM tbluserdetail a RIGHT JOIN tbltrip b ON a.fldUserId = b.fldTripPresenter WHERE fldTripId = @fldTripId";
+                var query = "SELECT * FROM userdetail a RIGHT JOIN trip b ON a.UserId = b.TripPresenter WHERE TripId = @TripId";
                 var parameters = new DynamicParameters();
-                parameters.Add("fldTripId", tripId, DbType.String);
+                parameters.Add("TripId", tripId, DbType.String);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<TbluserVO>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<Models.Entities.VO.UserVO>(query, parameters);
 
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
-        //SELECT
-        public async Task<UserVO> GetUserDetailByUserName(string username)
-        {
-            try
-            {
-                var query = "SELECT a.fldBirthday, " +
-                    "a.fldActiveStatus, " +
-                    "a.fldEmail, " +
-                    "a.fldFullname, " +
-                    "a.fldPhone, " +
-                    "a.fldAddress, " +
-                    "a.fldExperience, " +
-                    "a.fldTripCreated, " +
-                    "a.fldTripJoined, " +
-                    "a.fldTripCompleted, " +
-                    "a.fldTripCancelled, " +
-                    "a.fldCreateDate, " +
-                    "a.fldCreateBy, " +
-                    "a.fldUpdateDate, " +
-                    "a.fldUpdateBy  FROM tbluserdetail a JOIN tbluser b ON a.fldUserId = b.fldUserId WHERE fldUsername = @fldUsername";
-
-                var parameters = new DynamicParameters();
-                parameters.Add("fldUsername", username, DbType.String);
-
-                using var connection = CreateConnection();
-                return (await connection.QueryFirstOrDefaultAsync<UserVO>(query));
             }
             catch (Exception e)
             {
@@ -119,17 +86,31 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<List<TbluserVO>> GetUserList(TbluserVO userEntity)
+        public async Task<Models.DTOs.CommonDTO.VO.UserRequest> GetUserDetailByUserName(string username)
         {
             try
             {
-                var query = "SELECT * FROM tbluser WHERE fldUserId = @fldUserId";
+                var query = "SELECT a.Birthday, " +
+                    "a.ActiveStatus, " +
+                    "a.Email, " +
+                    "a.Fullname, " +
+                    "a.Phone, " +
+                    "a.Address, " +
+                    "a.Experience, " +
+                    "a.TripCreated, " +
+                    "a.TripJoined, " +
+                    "a.TripCompleted, " +
+                    "a.TripCancelled, " +
+                    "a.CreateDate, " +
+                    "a.CreateBy, " +
+                    "a.UpdateDate, " +
+                    "a.UpdateBy  FROM userdetail a JOIN user b ON a.UserId = b.UserId WHERE Username = @Username";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldUserId", userEntity.FldUserId, DbType.String);
+                parameters.Add("Username", username, DbType.String);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<TbluserVO>(query, parameters)).ToList();
+                return (await connection.QueryFirstOrDefaultAsync<Models.DTOs.CommonDTO.VO.UserRequest>(query));
             }
             catch (Exception e)
             {
@@ -137,44 +118,63 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CreateUserDetail(TbluserVO userDetail)
+        //SELECT
+        public async Task<List<Models.Entities.VO.UserVO>> GetUserList(Models.Entities.VO.UserVO userEntity)
         {
             try
             {
-                var query = "INSERT INTO tbluserdetail " +
-                    "(fldUserId, " +
-                    "fldRole, " +
-                    "fldBirthday, " +
-                    "fldActiveStatus, " +
-                    "fldEmail, " +
-                    "fldFullname, " +
-                    "fldPhone, " +
-                    "fldAddress, " +
-                    "fldCreateDate, " +
-                    "fldCreateBy) " +
+                var query = "SELECT * FROM user WHERE UserId = @UserId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("UserId", userEntity.UserId, DbType.String);
+
+                using var connection = CreateConnection();
+                return (await connection.QueryAsync<Models.Entities.VO.UserVO>(query, parameters)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> CreateUserDetail(Models.Entities.VO.UserVO userDetail)
+        {
+            try
+            {
+                var query = "INSERT INTO userdetail " +
+                    "(UserId, " +
+                    "Role, " +
+                    "Birthday, " +
+                    "ActiveStatus, " +
+                    "Email, " +
+                    "Fullname, " +
+                    "Phone, " +
+                    "Address, " +
+                    "CreateDate, " +
+                    "CreateBy) " +
                     "VALUES " +
-                    "(@fldUserId, " +
-                    "@fldRole, " +
-                    "@fldBirthday, " +
-                    "@fldActiveStatus, " +
-                    "@fldEmail, " +
-                    "@fldFullname, " +
-                    "@fldPhone, " +
-                    "@fldAddress," +
-                    "@fldCreateDate, " +
-                    "@fldCreateBy);";
+                    "(@UserId, " +
+                    "@Role, " +
+                    "@Birthday, " +
+                    "@ActiveStatus, " +
+                    "@Email, " +
+                    "@Fullname, " +
+                    "@Phone, " +
+                    "@Address," +
+                    "@CreateDate, " +
+                    "@CreateBy);";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldUserId", userDetail.FldUserId, DbType.String);
-                parameters.Add("fldRole", userDetail.FldRole, DbType.String);
-                parameters.Add("fldBirthday", userDetail.FldBirthday, DbType.DateTime);
-                parameters.Add("fldActiveStatus", userDetail.FldActiveStatus, DbType.String);
-                parameters.Add("fldEmail", userDetail.FldEmail, DbType.String);
-                parameters.Add("fldFullname", userDetail.FldFullname, DbType.String);
-                parameters.Add("fldPhone", userDetail.FldPhone, DbType.String);
-                parameters.Add("fldAddress", userDetail.FldAddress, DbType.String);
-                parameters.Add("fldCreateDate", userDetail.FldCreateDate, DbType.DateTime);
-                parameters.Add("fldCreateBy", userDetail.FldCreateBy, DbType.String);
+                parameters.Add("UserId", userDetail.UserId, DbType.String);
+                parameters.Add("Role", userDetail.Role, DbType.String);
+                parameters.Add("Birthday", userDetail.Birthday, DbType.DateTime);
+                parameters.Add("ActiveStatus", userDetail.ActiveStatus, DbType.String);
+                parameters.Add("Email", userDetail.Email, DbType.String);
+                parameters.Add("Fullname", userDetail.Fullname, DbType.String);
+                parameters.Add("Phone", userDetail.Phone, DbType.String);
+                parameters.Add("Address", userDetail.Address, DbType.String);
+                parameters.Add("CreateDate", userDetail.CreateDate, DbType.DateTime);
+                parameters.Add("CreateBy", userDetail.CreateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
@@ -184,29 +184,29 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateUserDetail(TbluserVO userDetailEntity)
+        public async Task<int> UpdateUserDetail(Models.Entities.VO.UserVO userDetailEntity)
         {
             try
             {
-                var query = "UPDATE tbluserdetail SET " +
-                    "fldBirthday = @Birthday, " +
-                    "fldEmail = @Email, " +
-                    "fldFullname = @Fullname, " +
-                    "fldPhone = @Phone, " +
-                    "fldAddress = @Address, " +
-                    "fldUpdateDate = @UpdateDate, " +
-                    "fldUpdateBy = @UpdateBy " +
-                    "WHERE fldUserId = @UserId";
+                var query = "UPDATE userdetail SET " +
+                    "Birthday = @Birthday, " +
+                    "Email = @Email, " +
+                    "Fullname = @Fullname, " +
+                    "Phone = @Phone, " +
+                    "Address = @Address, " +
+                    "UpdateDate = @UpdateDate, " +
+                    "UpdateBy = @UpdateBy " +
+                    "WHERE UserId = @UserId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("UserId", userDetailEntity.FldUserId, DbType.String);
-                parameters.Add("Birthday", userDetailEntity.FldBirthday, DbType.DateTime);
-                parameters.Add("Email", userDetailEntity.FldEmail, DbType.String);
-                parameters.Add("Fullname", userDetailEntity.FldFullname, DbType.String);
-                parameters.Add("Phone", userDetailEntity.FldPhone, DbType.String);
-                parameters.Add("Address", userDetailEntity.FldAddress, DbType.String);
-                parameters.Add("UpdateDate", userDetailEntity.FldUpdateDate, DbType.DateTime);
-                parameters.Add("UpdateBy", userDetailEntity.FldUpdateBy, DbType.String);
+                parameters.Add("UserId", userDetailEntity.UserId, DbType.String);
+                parameters.Add("Birthday", userDetailEntity.Birthday, DbType.DateTime);
+                parameters.Add("Email", userDetailEntity.Email, DbType.String);
+                parameters.Add("Fullname", userDetailEntity.Fullname, DbType.String);
+                parameters.Add("Phone", userDetailEntity.Phone, DbType.String);
+                parameters.Add("Address", userDetailEntity.Address, DbType.String);
+                parameters.Add("UpdateDate", userDetailEntity.UpdateDate, DbType.DateTime);
+                parameters.Add("UpdateBy", userDetailEntity.UpdateBy, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
 
@@ -217,17 +217,17 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateAcitveStatus(TbluserVO userDetailEntity)
+        public async Task<int> UpdateAcitveStatus(Models.Entities.VO.UserVO userDetailEntity)
         {
             try
             {
-                var query = "UPDATE tbluserdetail SET " +
-                    "fldActiveStatus = @fldActiveStatus " +
-                    "WHERE fldUserId = @UserId";
+                var query = "UPDATE userdetail SET " +
+                    "ActiveStatus = @ActiveStatus " +
+                    "WHERE UserId = @UserId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("UserId", userDetailEntity.FldUserId, DbType.String);
-                parameters.Add("fldActiveStatus", userDetailEntity.FldActiveStatus, DbType.String);
+                parameters.Add("UserId", userDetailEntity.UserId, DbType.String);
+                parameters.Add("ActiveStatus", userDetailEntity.ActiveStatus, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
@@ -237,17 +237,17 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateTripQuantityCreated(TbluserVO userDetailEntity)
+        public async Task<int> UpdateTripQuantityCreated(Models.Entities.VO.UserVO userDetailEntity)
         {
             try
             {
-                var query = "UPDATE tbluserdetail SET " +
-                    "fldTripCreated = @fldTripCreated " +
-                    "WHERE fldUserId = @UserId";
+                var query = "UPDATE userdetail SET " +
+                    "TripCreated = @TripCreated " +
+                    "WHERE UserId = @UserId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("UserId", userDetailEntity.FldUserId, DbType.String);
-                parameters.Add("fldTripCreated", userDetailEntity.FldTripCreated, DbType.Int32);
+                parameters.Add("UserId", userDetailEntity.UserId, DbType.String);
+                parameters.Add("TripCreated", userDetailEntity.TripCreated, DbType.Int32);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
@@ -261,10 +261,10 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tbluserdetail WHERE fldUserId = @fldUserId";
+                var query = "DELETE FROM userdetail WHERE UserId = @UserId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("fldUserId", userId, DbType.String);
+                parameters.Add("UserId", userId, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }

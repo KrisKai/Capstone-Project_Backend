@@ -8,23 +8,23 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class TripDetailDTO
     {
-        public string FldTripId { get; set; } = null!;
-        public int? FldTripStartLocationId { get; set; }
-        public int? FldTripDestinationLocationId { get; set; }
-        public DateOnly? FldEstimateStartDate { get; set; }
+        public string TripId { get; set; } = null!;
+        public int? TripStartLocationId { get; set; }
+        public int? TripDestinationLocationId { get; set; }
+        public DateOnly? EstimateStartDate { get; set; }
         /// <summary>
         /// &apos;HH:MM&apos;
         /// </summary>
-        public string? FldEstimateStartTime { get; set; }
-        public DateOnly? FldEstimateEndDate { get; set; }
+        public string? EstimateStartTime { get; set; }
+        public DateOnly? EstimateEndDate { get; set; }
         /// <summary>
         /// &apos;HH:MM&apos;
         /// </summary>
-        public string? FldEstimateEndTime { get; set; }
-        public decimal? FldDistance { get; set; }
-        public DateTime? FldCreateDate { get; set; }
-        public string? FldCreateBy { get; set; }
-        public DateTime? FldUpdateDate { get; set; }
-        public string? FldUpdateBy { get; set; }
+        public string? EstimateEndTime { get; set; }
+        public decimal? Distance { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public string? CreateBy { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public string? UpdateBy { get; set; }
     }
 }

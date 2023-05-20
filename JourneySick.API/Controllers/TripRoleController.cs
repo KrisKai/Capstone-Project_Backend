@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Net;
 using JourneySick.Business.IServices.Services;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 
 namespace JourneySick.API.Controllers
 {
@@ -31,7 +31,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllTripRolesWithPaging(int pageIndex, int pageSize, string? roleName)
         {
             var result = new AllTripRoleDTO();
-            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             result = await _tripRoleService.GetAllTripRolesWithPaging(pageIndex, pageSize, roleName);
             return Ok(result);
 

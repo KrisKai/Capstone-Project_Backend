@@ -2,15 +2,11 @@
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Helpers.SettingObject;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.IRepositories.Repositories;
-using JourneySick.Data.Models.DTOs;
-using JourneySick.Data.Models.DTOs.CommonDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
-using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using JourneySick.Data.Models.Enums;
 using Microsoft.Extensions.Logging;
@@ -37,16 +33,16 @@ namespace JourneySick.Business.IServices.Services
             _logger = logger;
         }
 
-        public async Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, CurrentUserObj currentUser)
+        public async Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, CurrentUserRequest currentUser)
         {
             AllUserDTO result = new();
             try
             {
-                List<TbluserVO> tblusers = await _userRepository.GetAllUsersWithPaging(pageIndex, pageSize, userName, currentUser.Role);
+                List<UserVO> users = await _userRepository.GetAllUsersWithPaging(pageIndex, pageSize, userName, currentUser.Role);
                 // convert entity to dto
-                List<UserVO> users = _mapper.Map<List<UserVO>>(tblusers);
+                List<UserRequest> userRequest = _mapper.Map<List<UserRequest>>(users);
                 int count = await _userRepository.CountAllUsers(userName, currentUser.Role);
-                result.ListOfUser = users;
+                result.ListOfUser = userRequest;
                 result.NumOfUser = count;
                 return result;
             }
@@ -56,13 +52,13 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<UserVO> GetUserById(string userId)
+        public async Task<UserRequest> GetUserById(string userId)
         {
             try
             {
-                TbluserVO tblUserVO = await _userRepository.GetUserById(userId);
+                UserVO UserVO = await _userRepository.GetUserById(userId);
                 // convert entity to dto
-                UserVO userVO = _mapper.Map<UserVO>(tblUserVO);
+                UserRequest userVO = _mapper.Map<UserRequest>(UserVO);
 
                 return userVO;
             }
@@ -74,7 +70,7 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> CreateUser(UserVO userVO, CurrentUserObj currentUser)
+        public async Task<string> CreateUser(UserRequest userVO, CurrentUserRequest currentUser)
         {
             try
             {
@@ -82,15 +78,15 @@ namespace JourneySick.Business.IServices.Services
                 if (await ValidateUserCreate(userVO) == 0)
                 {
                     // generate ID (format: USER00000000)
-                    userVO.FldUserId = await GenerateUserID();
-                    userVO.FldPassword = PasswordEncryption.Encrypt(userVO.FldPassword, _appSecrect.SecrectKey);
-                    userVO.FldActiveStatus = "ACTIVE";
-                    userVO.FldCreateBy = currentUser.UserId;
-                    userVO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    TbluserVO userEntity = _mapper.Map<TbluserVO>(userVO);
+                    userVO.UserId = await GenerateUserID();
+                    userVO.Password = PasswordEncryption.Encrypt(userVO.Password, _appSecrect.SecrectKey);
+                    userVO.ActiveStatus = "ACTIVE";
+                    userVO.CreateBy = currentUser.UserId;
+                    userVO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    UserVO userEntity = _mapper.Map<UserVO>(userVO);
                     if (await _userRepository.CreateUser(userEntity) > 0 && await _userDetailRepository.CreateUserDetail(userEntity) > 0)
                     {
-                        return userEntity.FldUserId;
+                        return userEntity.UserId;
                     }
                 }
                 throw new InsertException("Create user failed!");
@@ -103,20 +99,20 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<string> UpdateUser(UserVO userVO, CurrentUserObj currentUser)
+        public async Task<string> UpdateUser(UserRequest userRequest, CurrentUserRequest currentUser)
         {
             try
             {
-                UserVO getTrip = await GetUserById(userId: userVO.FldUserId);
+                UserRequest getTrip = await GetUserById(userId: userRequest.UserId);
 
-                if (getTrip != null && await ValidateUserUpdate(getTrip, userVO) == 0)
+                if (getTrip != null && await ValidateUserUpdate(getTrip, userRequest) == 0)
                 {
-                    userVO.FldUpdateBy = currentUser.UserId;
-                    userVO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    TbluserVO tbluserVO = _mapper.Map<TbluserVO>(userVO);
-                    if (await _userDetailRepository.UpdateUserDetail(tbluserVO) > 0)
+                    userRequest.UpdateBy = currentUser.UserId;
+                    userRequest.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    UserVO userVO = _mapper.Map<UserVO>(userRequest);
+                    if (await _userDetailRepository.UpdateUserDetail(userVO) > 0)
                     {
-                        return userVO.FldUserId;
+                        return userVO.UserId;
                     }
                     else
                     {
@@ -139,7 +135,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                UserVO getTrip = await GetUserById(userId);
+                UserRequest getTrip = await GetUserById(userId);
 
                 if (getTrip != null)
                 {
@@ -195,7 +191,7 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<int> ResetPassword(string? id, CurrentUserObj currentUser)
+        public async Task<int> ResetPassword(string? id, CurrentUserRequest currentUser)
         {
             if (currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
             {
@@ -217,16 +213,16 @@ namespace JourneySick.Business.IServices.Services
             throw new PermissionException("You do not have permission to access!!");
         }
 
-        public async Task<int> ChangePassword(ChangePasswordDTO changePasswordDTO)
+        public async Task<int> ChangePassword(ChangePasswordRequest changePasswordDTO)
         {
             try
             {
-                TbluserVO tbluserVO = await _userRepository.GetUserById(changePasswordDTO.FldUserId);
-                UserVO userVO = _mapper.Map<UserVO>(tbluserVO);
-                if (userVO != null && userVO.FldPassword.Equals(PasswordEncryption.Encrypt(changePasswordDTO.FldOldPassword, _appSecrect.SecrectKey)))
+                UserVO userVO = await _userRepository.GetUserById(changePasswordDTO.UserId);
+                UserRequest userRequest = _mapper.Map<UserRequest>(userVO);
+                if (userRequest != null && userRequest.Password.Equals(PasswordEncryption.Encrypt(changePasswordDTO.OldPassword, _appSecrect.SecrectKey)))
                 {
-                    string newPassword = PasswordEncryption.Encrypt(changePasswordDTO.FldPassword, _appSecrect.SecrectKey);
-                    if (await _userRepository.ChangePassword(changePasswordDTO.FldUserId, newPassword) > 0)
+                    string newPassword = PasswordEncryption.Encrypt(changePasswordDTO.Password, _appSecrect.SecrectKey);
+                    if (await _userRepository.ChangePassword(changePasswordDTO.UserId, newPassword) > 0)
                     {
                         return 1;
                     }
@@ -241,24 +237,24 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateAcitveStatus(UserVO userVO, CurrentUserObj currentUser)
+        public async Task<int> UpdateAcitveStatus(UserRequest userRequest, CurrentUserRequest currentUser)
         {
             if (currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
             {
                 try
                 {
-                    TbluserVO tbluserVO = _mapper.Map<TbluserVO>(userVO);
-                    TbluserVO getUser = await _userRepository.GetUserById(tbluserVO.FldUserId);
+                    UserVO userVO = _mapper.Map<UserVO>(userRequest);
+                    UserVO getUser = await _userRepository.GetUserById(userVO.UserId);
                     if(getUser != null)
                     {
-                        if (getUser.FldActiveStatus.Equals("ACTIVE"))
+                        if (getUser.ActiveStatus.Equals("ACTIVE"))
                         {
-                            TbltripmemberVO tbltripmemberVO = new();
-                            tbltripmemberVO.FldUserId = userVO.FldUserId;
-                            tbltripmemberVO.FldStatus = userVO.FldActiveStatus;
-                            await _tripMemberRepository.UpdateMemberStatus(tbltripmemberVO);
+                            TripmemberVO tripmemberVO = new();
+                            tripmemberVO.UserId = userVO.UserId;
+                            tripmemberVO.Status = userVO.ActiveStatus;
+                            await _tripMemberRepository.UpdateMemberStatus(tripmemberVO);
                         }
-                        if (await _userDetailRepository.UpdateAcitveStatus(tbluserVO) > 0)
+                        if (await _userDetailRepository.UpdateAcitveStatus(userVO) > 0)
                         {
                             return 1;
                         }
@@ -274,11 +270,11 @@ namespace JourneySick.Business.IServices.Services
             throw new PermissionException("You do not have permission to access!!");
         }
 
-        private async Task<int> ValidateUserCreate(UserVO userVO)
+        private async Task<int> ValidateUserCreate(UserRequest userVO)
         {
-            string username = await _userRepository.GetUsernameIfExist(userVO.FldUsername);
-            string email = await _userDetailRepository.GetEmailIfExist(userVO.FldEmail);
-            string phone = await _userDetailRepository.GetPhoneIfExist(userVO.FldPhone);
+            string username = await _userRepository.GetUsernameIfExist(userVO.Username);
+            string email = await _userDetailRepository.GetEmailIfExist(userVO.Email);
+            string phone = await _userDetailRepository.GetPhoneIfExist(userVO.Phone);
             if (!string.IsNullOrEmpty(username))
             {
                 throw new ValidateException("Username is Existed!");
@@ -294,19 +290,19 @@ namespace JourneySick.Business.IServices.Services
             return 0;
         }
 
-        private async Task<int> ValidateUserUpdate(UserVO oldUser, UserVO newUser)
+        private async Task<int> ValidateUserUpdate(UserRequest oldUser, UserRequest newUser)
         {
-            if (!oldUser.FldUsername.Equals(newUser.FldUsername))
+            if (!oldUser.Username.Equals(newUser.Username))
             {
-                string username = await _userRepository.GetUsernameIfExist(newUser.FldUsername);
+                string username = await _userRepository.GetUsernameIfExist(newUser.Username);
                 if (!string.IsNullOrEmpty(username))
                 {
                     throw new ValidateException("Username is Existed!");
                 }
             }
-            if (!oldUser.FldEmail.Equals(newUser.FldEmail))
+            if (!oldUser.Email.Equals(newUser.Email))
             {
-                string email = await _userDetailRepository.GetEmailIfExist(newUser.FldEmail);
+                string email = await _userDetailRepository.GetEmailIfExist(newUser.Email);
 
 
                 if (!string.IsNullOrEmpty(email))
@@ -314,9 +310,9 @@ namespace JourneySick.Business.IServices.Services
                     throw new ValidateException("Email is Existed!");
                 }
             }
-            if (!oldUser.FldPhone.Equals(newUser.FldPhone))
+            if (!oldUser.Phone.Equals(newUser.Phone))
             {
-                string phone = await _userDetailRepository.GetPhoneIfExist(newUser.FldPhone);
+                string phone = await _userDetailRepository.GetPhoneIfExist(newUser.Phone);
                 if (!string.IsNullOrEmpty(phone))
                 {
                     throw new ValidateException("Phone is is Existed!");

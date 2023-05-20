@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.IRepositories;
-using JourneySick.Data.IRepositories.Repositories;
-using JourneySick.Data.Models.DTOs;
-using JourneySick.Data.Models.DTOs.CommonDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
+using JourneySick.Data.Models.DTOs.CommonDTO.Response;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -38,11 +36,11 @@ namespace JourneySick.Business.IServices.Services
             AllTripDTO result = new();
             try
             {
-                List<TbltripVO> tbltrips = await _tripRepository.GetAllTripsWithPaging(pageIndex, pageSize, tripName);
+                List<TripVO> trips = await _tripRepository.GetAllTripsWithPaging(pageIndex, pageSize, tripName);
                 // convert entity to dto
-                List<TripVO> trips = _mapper.Map<List<TripVO>>(tbltrips);
+                List<TripRequest> tripsDTOs = _mapper.Map<List<TripRequest>>(trips);
                 int count = await _tripRepository.CountAllTrips(tripName);
-                result.ListOfTrip = trips;
+                result.ListOfTrip = tripsDTOs;
                 result.NumOfTrip = count;
                 return result;
             }
@@ -53,25 +51,25 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<TripVO> GetTripById(string tripId)
+        public async Task<TripRequest> GetTripById(string tripId)
         {
             try
             {
-                TbltripVO tbltrip = await _tripRepository.GetTripById(tripId);
-                TripVO tripVO = _mapper.Map<TripVO>(tbltrip);
-                Tblmaplocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.FldTripStartLocationId);
+                TripVO trip = await _tripRepository.GetTripById(tripId);
+                TripRequest tripVO = _mapper.Map<TripRequest>(trip);
+                MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripStartLocationId);
                 if (startmaplocation != null)
                 {
-                    tripVO.FldStartLocationName = startmaplocation.FldLocationName;
-                    tripVO.FldStartLatitude = startmaplocation.FldLatitude;
-                    tripVO.FldStartLongitude = startmaplocation.FldLongitude;
+                    tripVO.StartLocationName = startmaplocation.LocationName;
+                    tripVO.StartLatitude = startmaplocation.Latitude;
+                    tripVO.StartLongitude = startmaplocation.Longitude;
                 }
-                Tblmaplocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.FldTripDestinationLocationId);
+                MapLocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripDestinationLocationId);
                 if (endmaplocation != null)
                 {
-                    tripVO.FldEndLocationName = endmaplocation.FldLocationName;
-                    tripVO.FldEndLatitude = endmaplocation.FldLatitude;
-                    tripVO.FldEndLongitude = endmaplocation.FldLongitude;
+                    tripVO.EndLocationName = endmaplocation.LocationName;
+                    tripVO.EndLatitude = endmaplocation.Latitude;
+                    tripVO.EndLongitude = endmaplocation.Longitude;
                 }
                 return tripVO;
             }
@@ -83,36 +81,42 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> CreateTrip(TripVO tripVO, CurrentUserObj currentUser)
+        public async Task<string> CreateTrip(CreateTripRequest tripVO, CurrentUserRequest currentUser)
         {
             try
             {
-                tripVO.FldTripId = await GenerateUserID(); ;
-                tripVO.FldTripStatus = "ACTIVE";
-                tripVO.FldTripBudget = 0;
-                tripVO.FldCreateBy = currentUser.UserId;
-                tripVO.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                Tblmaplocation startmaplocation = new Tblmaplocation();
-                startmaplocation.FldLatitude = tripVO.FldStartLatitude;
-                startmaplocation.FldLongitude = tripVO.FldStartLongitude;
-                startmaplocation.FldLocationName = tripVO.FldStartLocationName;
+                tripVO.TripId = await GenerateUserID();
+                tripVO.TripStatus = "ACTIVE";
+                tripVO.TripBudget = tripVO.TripBudget;
+                tripVO.CreateBy = tripVO.CreateBy;
+                tripVO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                MapLocation startmaplocation = new()
+                {
+                    Latitude = tripVO.StartLatitude,
+                    Longitude = tripVO.StartLongitude,
+                    LocationName = tripVO.StartLocationName
+                };
                 await _mapLocationRepository.CreateMapLocation(startmaplocation);
                 int startMapId = await _mapLocationRepository.GetLastOne();
-                tripVO.FldTripStartLocationId = startMapId;
-                Tblmaplocation endmaplocation = new Tblmaplocation();
-                endmaplocation.FldLatitude = tripVO.FldEndLatitude;
-                endmaplocation.FldLongitude = tripVO.FldEndLongitude;
-                endmaplocation.FldLocationName = tripVO.FldEndLocationName;
+                tripVO.TripStartLocationId = startMapId;
+
+                MapLocation endmaplocation = new()
+                {
+                    Latitude = tripVO.EndLatitude,
+                    Longitude = tripVO.EndLongitude,
+                    LocationName = tripVO.EndLocationName
+                };
                 await _mapLocationRepository.CreateMapLocation(endmaplocation);
                 int endMapId = await _mapLocationRepository.GetLastOne();
-                tripVO.FldTripDestinationLocationId = endMapId;
+                tripVO.TripDestinationLocationId = endMapId;
 
-                TbltripVO tbltrip = _mapper.Map<TbltripVO>(tripVO);
-                if (await _tripRepository.CreateTrip(tbltrip) > 0 && await _tripDetailRepository.CreateTripDetail(tbltrip) > 0)
+                TripVO trip = _mapper.Map<TripVO>(tripVO);
+                long check = await _tripRepository.CreateTrip(trip);
+                if (await _tripDetailRepository.CreateTripDetail(trip) > 0)
                 {
-                    TbluserVO tbluserVO = await _userDetailRepository.GetUserDetailById(tripVO.FldCreateBy);
-                    tbluserVO.FldTripCreated++;
-                    if (await _userDetailRepository.UpdateTripQuantityCreated(tbluserVO) > 0)
+                    UserVO userVO = await _userDetailRepository.GetUserDetailById(tripVO.CreateBy);
+                    userVO.TripCreated++;
+                    if (await _userDetailRepository.UpdateTripQuantityCreated(userVO) > 0)
                     {
                         return "1";
                     }
@@ -130,32 +134,32 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<string> UpdateTrip(TripVO tripVO, CurrentUserObj currentUser)
+        public async Task<string> UpdateTrip(TripRequest tripRequest, CurrentUserRequest currentUser)
         {
             try
             {
-                TripVO getTrip = await GetTripById(tripVO.FldTripId);
+                TripRequest getTrip = await GetTripById(tripRequest.TripId);
 
                 if (getTrip != null)
                 {
-                    tripVO.FldUpdateBy = currentUser.UserId;
-                    tripVO.FldUpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    TbltripVO tbltripVO = _mapper.Map<TbltripVO>(tripVO);
-                    if (await _tripRepository.UpdateTrip(tbltripVO) > 0 && await _tripDetailRepository.UpdateTripDetail(tbltripVO) > 0)
+                    tripRequest.UpdateBy = currentUser.UserId;
+                    tripRequest.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    TripVO tripVO = _mapper.Map<TripVO>(tripRequest);
+                    if (await _tripRepository.UpdateTrip(tripVO) > 0 && await _tripDetailRepository.UpdateTripDetail(tripVO) > 0)
                     {
-                        Tblmaplocation startmaplocation = new Tblmaplocation();
-                        startmaplocation.FldLatitude = tripVO.FldStartLatitude;
-                        startmaplocation.FldLongitude = tripVO.FldStartLongitude;
-                        startmaplocation.FldLocationName = tripVO.FldStartLocationName;
-                        startmaplocation.FldMapId = (int)tripVO.FldTripStartLocationId;
+                        MapLocation startmaplocation = new MapLocation();
+                        startmaplocation.Latitude = tripRequest.StartLatitude;
+                        startmaplocation.Longitude = tripRequest.StartLongitude;
+                        startmaplocation.LocationName = tripRequest.StartLocationName;
+                        startmaplocation.MapId = (int)tripRequest.TripStartLocationId;
                         await _mapLocationRepository.UpdateMapLocation(startmaplocation);
-                        Tblmaplocation endmaplocation = new Tblmaplocation();
-                        endmaplocation.FldLatitude = tripVO.FldEndLatitude;
-                        endmaplocation.FldLongitude = tripVO.FldEndLongitude;
-                        endmaplocation.FldLocationName = tripVO.FldEndLocationName;
-                        endmaplocation.FldMapId = (int)tripVO.FldTripDestinationLocationId;
+                        MapLocation endmaplocation = new MapLocation();
+                        endmaplocation.Latitude = tripRequest.EndLatitude;
+                        endmaplocation.Longitude = tripRequest.EndLongitude;
+                        endmaplocation.LocationName = tripRequest.EndLocationName;
+                        endmaplocation.MapId = (int)tripRequest.TripDestinationLocationId;
                         await _mapLocationRepository.UpdateMapLocation(endmaplocation);
-                        return tripVO.FldTripId;
+                        return tripRequest.TripId;
                     }
                     else
                     {
@@ -180,12 +184,12 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                TripVO getTrip = await GetTripById(tripId);
+                TripRequest getTrip = await GetTripById(tripId);
 
                 if (getTrip != null)
                 {
                     if (await _tripRepository.DeleteTrip(tripId) > 0 && await _tripDetailRepository.DeleteTripDetail(tripId) > 0
-                        && await _mapLocationRepository.DeleteMapLocation((int)getTrip.FldTripStartLocationId) > 0 && await _mapLocationRepository.DeleteMapLocation((int)getTrip.FldTripDestinationLocationId) > 0)
+                        && await _mapLocationRepository.DeleteMapLocation((int)getTrip.TripStartLocationId) > 0 && await _mapLocationRepository.DeleteMapLocation((int)getTrip.TripDestinationLocationId) > 0)
                     {
                         return 1;
                     }

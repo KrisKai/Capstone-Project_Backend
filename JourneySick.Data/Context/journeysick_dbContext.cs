@@ -16,22 +16,21 @@ namespace JourneySick.Data.Models.Entities
         {
         }
 
-        public virtual DbSet<Efmigrationshistory> Efmigrationshistories { get; set; } = null!;
-        public virtual DbSet<Tblfeedback> Tblfeedbacks { get; set; } = null!;
-        public virtual DbSet<Tblitem> Tblitems { get; set; } = null!;
-        public virtual DbSet<Tblitemcategory> Tblitemcategories { get; set; } = null!;
-        public virtual DbSet<Tblmaplocation> Tblmaplocations { get; set; } = null!;
-        public virtual DbSet<Tblplanlocation> Tblplanlocations { get; set; } = null!;
-        public virtual DbSet<Tblrouteplan> Tblrouteplans { get; set; } = null!;
-        public virtual DbSet<Tbltrip> Tbltrips { get; set; } = null!;
-        public virtual DbSet<Tbltripdetail> Tbltripdetails { get; set; } = null!;
-        public virtual DbSet<Tbltripitem> Tbltripitems { get; set; } = null!;
-        public virtual DbSet<Tbltripmember> Tbltripmembers { get; set; } = null!;
-        public virtual DbSet<Tbltripplan> Tbltripplans { get; set; } = null!;
-        public virtual DbSet<Tbltriprole> Tbltriproles { get; set; } = null!;
-        public virtual DbSet<Tbltriproute> Tbltriproutes { get; set; } = null!;
-        public virtual DbSet<Tbluser> Tblusers { get; set; } = null!;
-        public virtual DbSet<Tbluserdetail> Tbluserdetails { get; set; } = null!;
+        public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
+        public virtual DbSet<Item> Items { get; set; } = null!;
+        public virtual DbSet<ItemCategory> ItemCategories { get; set; } = null!;
+        public virtual DbSet<MapLocation> MapLocations { get; set; } = null!;
+        public virtual DbSet<PlanLocation> PlanLocations { get; set; } = null!;
+        public virtual DbSet<RoutePlan> RoutePlans { get; set; } = null!;
+        public virtual DbSet<Trip> Trips { get; set; } = null!;
+        public virtual DbSet<TripDetail> TripDetails { get; set; } = null!;
+        public virtual DbSet<TripItem> TripItems { get; set; } = null!;
+        public virtual DbSet<TripMember> TripMembers { get; set; } = null!;
+        public virtual DbSet<TripPlan> TripPlans { get; set; } = null!;
+        public virtual DbSet<TripRole> TripRoles { get; set; } = null!;
+        public virtual DbSet<TripRoute> TripRoutes { get; set; } = null!;
+        public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<UserDetail> UserDetails { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -47,684 +46,416 @@ namespace JourneySick.Data.Models.Entities
             modelBuilder.UseCollation("utf8mb4_0900_ai_ci")
                 .HasCharSet("utf8mb4");
 
-            modelBuilder.Entity<Efmigrationshistory>(entity =>
+            modelBuilder.Entity<Feedback>(entity =>
             {
-                entity.HasKey(e => e.MigrationId)
-                    .HasName("PRIMARY");
+                entity.ToTable("feedback");
 
-                entity.ToTable("__efmigrationshistory");
+                entity.Property(e => e.CreateBy).HasMaxLength(20);
 
-                entity.Property(e => e.MigrationId).HasMaxLength(150);
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.ProductVersion).HasMaxLength(32);
+                entity.Property(e => e.Dislike).HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.Like).HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.LocationName).HasMaxLength(100);
+
+                entity.Property(e => e.Rate).HasDefaultValueSql("'0'");
+
+                entity.Property(e => e.TripId).HasMaxLength(20);
+
+                entity.Property(e => e.UpdateBy).HasMaxLength(20);
+
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
+
+                entity.Property(e => e.UserId).HasMaxLength(20);
             });
 
-            modelBuilder.Entity<Tblfeedback>(entity =>
+            modelBuilder.Entity<Item>(entity =>
             {
-                entity.HasKey(e => e.FldFeedbackId)
-                    .HasName("PRIMARY");
+                entity.ToTable("item");
 
-                entity.ToTable("tblfeedback");
+                entity.Property(e => e.CreateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldFeedbackId).HasColumnName("fldFeedbackId");
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldCreateBy");
+                entity.Property(e => e.ItemName).HasMaxLength(150);
 
-                entity.Property(e => e.FldCreateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldCreateDate");
-
-                entity.Property(e => e.FldDislike)
-                    .HasColumnName("fldDislike")
-                    .HasDefaultValueSql("'0'");
-
-                entity.Property(e => e.FldFeedback).HasColumnName("fldFeedback");
-
-                entity.Property(e => e.FldLike)
-                    .HasColumnName("fldLike")
-                    .HasDefaultValueSql("'0'");
-
-                entity.Property(e => e.FldLocationName)
-                    .HasMaxLength(100)
-                    .HasColumnName("fldLocationName");
-
-                entity.Property(e => e.FldRate)
-                    .HasColumnName("fldRate")
-                    .HasDefaultValueSql("'0'");
-
-                entity.Property(e => e.FldTripId)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldTripId");
-
-                entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUpdateBy");
-
-                entity.Property(e => e.FldUpdateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldUpdateDate");
-
-                entity.Property(e => e.FldUserId)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUserId");
-            });
-
-            modelBuilder.Entity<Tblitem>(entity =>
-            {
-                entity.HasKey(e => e.FldItemId)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("tblitem");
-
-                entity.Property(e => e.FldItemId).HasColumnName("fldItemId");
-
-                entity.Property(e => e.FldCategoryId).HasColumnName("fldCategoryId");
-
-                entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldCreateBy");
-
-                entity.Property(e => e.FldCreateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldCreateDate");
-
-                entity.Property(e => e.FldItemDescription).HasColumnName("fldItemDescription");
-
-                entity.Property(e => e.FldItemName)
-                    .HasMaxLength(150)
-                    .HasColumnName("fldItemName");
-
-                entity.Property(e => e.FldItemUsage).HasColumnName("fldItemUsage");
-
-                entity.Property(e => e.FldPriceMax)
+                entity.Property(e => e.PriceMax)
                     .HasPrecision(12, 2)
-                    .HasColumnName("fldPriceMax")
                     .HasDefaultValueSql("'0.00'");
 
-                entity.Property(e => e.FldPriceMin)
+                entity.Property(e => e.PriceMin)
                     .HasPrecision(12, 2)
-                    .HasColumnName("fldPriceMin")
                     .HasDefaultValueSql("'0.00'");
 
-                entity.Property(e => e.FldQuantity)
-                    .HasColumnName("fldQuantity")
-                    .HasDefaultValueSql("'0'");
+                entity.Property(e => e.Quantity).HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUpdateBy");
+                entity.Property(e => e.UpdateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldUpdateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldUpdateDate");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<Tblitemcategory>(entity =>
+            modelBuilder.Entity<ItemCategory>(entity =>
             {
-                entity.HasKey(e => e.FldCategoryId)
+                entity.HasKey(e => e.CategoryId)
                     .HasName("PRIMARY");
 
-                entity.ToTable("tblitemcategory");
+                entity.ToTable("item_category");
 
-                entity.Property(e => e.FldCategoryId).HasColumnName("fldCategoryId");
+                entity.Property(e => e.CategoryDescription).HasColumnType("tinytext");
 
-                entity.Property(e => e.FldCategoryDescription)
-                    .HasColumnType("tinytext")
-                    .HasColumnName("fldCategoryDescription");
+                entity.Property(e => e.CategoryName).HasMaxLength(150);
 
-                entity.Property(e => e.FldCategoryName)
-                    .HasMaxLength(150)
-                    .HasColumnName("fldCategoryName");
+                entity.Property(e => e.CreateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldCreateBy");
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FldCreateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldCreateDate");
+                entity.Property(e => e.UpdateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUpdateBy");
-
-                entity.Property(e => e.FldUpdateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldUpdateDate");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<Tblmaplocation>(entity =>
+            modelBuilder.Entity<MapLocation>(entity =>
             {
-                entity.HasKey(e => e.FldMapId)
+                entity.HasKey(e => e.MapId)
                     .HasName("PRIMARY");
 
-                entity.ToTable("tblmaplocation");
+                entity.ToTable("map_location");
 
-                entity.Property(e => e.FldMapId).HasColumnName("fldMapId");
+                entity.Property(e => e.Latitude).HasMaxLength(200);
 
-                entity.Property(e => e.FldLatitude)
-                    .HasMaxLength(200)
-                    .HasColumnName("fldLatitude");
+                entity.Property(e => e.LocationName).HasMaxLength(200);
 
-                entity.Property(e => e.FldLocationName)
-                    .HasMaxLength(200)
-                    .HasColumnName("fldLocationName");
-
-                entity.Property(e => e.FldLongitude)
-                    .HasMaxLength(200)
-                    .HasColumnName("fldLongitude");
+                entity.Property(e => e.Longitude).HasMaxLength(200);
             });
 
-            modelBuilder.Entity<Tblplanlocation>(entity =>
+            modelBuilder.Entity<PlanLocation>(entity =>
             {
-                entity.HasKey(e => e.FldPlanId)
+                entity.HasKey(e => e.PlanId)
                     .HasName("PRIMARY");
 
-                entity.ToTable("tblplanlocation");
+                entity.ToTable("plan_location");
 
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.Property(e => e.FldPlanId).HasColumnName("fldPlanId");
+                entity.Property(e => e.CreateBy).HasMaxLength(50);
 
-                entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldCreateBy");
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FldCreateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldCreateDate");
+                entity.Property(e => e.LocationArrivalTime).HasColumnType("datetime");
 
-                entity.Property(e => e.FldLocationArrivalTime)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldLocationArrivalTime");
+                entity.Property(e => e.PlanLocationDescription).HasColumnType("text");
 
-                entity.Property(e => e.FldMapId).HasColumnName("fldMapId");
+                entity.Property(e => e.PlanLocationId).HasMaxLength(50);
 
-                entity.Property(e => e.FldPlanLocationDescription)
-                    .HasColumnType("text")
-                    .HasColumnName("fldPlanLocationDescription");
+                entity.Property(e => e.UpdateBy).HasMaxLength(50);
 
-                entity.Property(e => e.FldPlanLocationId)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldPlanLocationId");
-
-                entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldUpdateBy");
-
-                entity.Property(e => e.FldUpdateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldUpdateDate");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<Tblrouteplan>(entity =>
+            modelBuilder.Entity<RoutePlan>(entity =>
             {
-                entity.HasKey(e => e.FldPlanId)
+                entity.HasKey(e => e.PlanId)
                     .HasName("PRIMARY");
 
-                entity.ToTable("tblrouteplan");
+                entity.ToTable("route_plan");
 
-                entity.Property(e => e.FldPlanId).HasColumnName("fldPlanId");
-
-                entity.Property(e => e.FldPlanDescription)
-                    .HasColumnType("tinytext")
-                    .HasColumnName("fldPlanDescription");
-
-                entity.Property(e => e.FldRouteId).HasColumnName("fldRouteId");
+                entity.Property(e => e.PlanDescription).HasColumnType("tinytext");
             });
 
-            modelBuilder.Entity<Tbltrip>(entity =>
+            modelBuilder.Entity<Trip>(entity =>
             {
-                entity.HasKey(e => e.FldTripId)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("tbltrip");
+                entity.ToTable("trip");
 
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.FldTripId, "fldTripId_UNIQUE")
+                entity.HasIndex(e => e.TripId, "fldTripId_UNIQUE")
                     .IsUnique();
 
-                entity.Property(e => e.FldTripId)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldTripId");
+                entity.Property(e => e.TripId).HasMaxLength(20);
 
-                entity.Property(e => e.FldTripBudget)
-                    .HasPrecision(15, 2)
-                    .HasColumnName("fldTripBudget");
+                entity.Property(e => e.TripBudget).HasPrecision(15, 2);
 
-                entity.Property(e => e.FldTripCompleted)
+                entity.Property(e => e.TripCompleted)
                     .HasMaxLength(1)
-                    .HasColumnName("fldTripCompleted")
                     .HasDefaultValueSql("'N'")
                     .IsFixedLength();
 
-                entity.Property(e => e.FldTripDescription).HasColumnName("fldTripDescription");
-
-                entity.Property(e => e.FldTripMember).HasColumnName("fldTripMember");
-
-                entity.Property(e => e.FldTripName)
+                entity.Property(e => e.TripName)
                     .HasMaxLength(100)
-                    .HasColumnName("fldTripName")
                     .UseCollation("utf8mb3_general_ci")
                     .HasCharSet("utf8mb3");
 
-                entity.Property(e => e.FldTripPresenter)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldTripPresenter");
+                entity.Property(e => e.TripPresenter).HasMaxLength(20);
 
-                entity.Property(e => e.FldTripStatus)
+                entity.Property(e => e.TripStatus)
                     .HasMaxLength(50)
-                    .HasColumnName("fldTripStatus")
                     .UseCollation("utf8mb3_general_ci")
                     .HasCharSet("utf8mb3");
 
-                entity.Property(e => e.FldTripThumbnail)
-                    .HasMaxLength(255)
-                    .HasColumnName("fldTripThumbnail");
+                entity.Property(e => e.TripThumbnail).HasMaxLength(255);
             });
 
-            modelBuilder.Entity<Tbltripdetail>(entity =>
+            modelBuilder.Entity<TripDetail>(entity =>
             {
-                entity.HasKey(e => e.FldTripId)
+                entity.HasKey(e => e.TripId)
                     .HasName("PRIMARY");
 
-                entity.ToTable("tbltripdetail");
+                entity.ToTable("trip_detail");
 
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.FldTripId, "fldTripId_UNIQUE")
+                entity.HasIndex(e => e.TripId, "fldTripId_UNIQUE")
                     .IsUnique();
 
-                entity.Property(e => e.FldTripId)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldTripId");
+                entity.Property(e => e.TripId).HasMaxLength(20);
 
-                entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldCreateBy");
+                entity.Property(e => e.CreateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldCreateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldCreateDate");
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FldDistance)
+                entity.Property(e => e.Distance)
                     .HasPrecision(12, 2)
-                    .HasColumnName("fldDistance")
                     .HasDefaultValueSql("'0.00'");
 
-                entity.Property(e => e.FldEstimateEndDate).HasColumnName("fldEstimateEndDate");
-
-                entity.Property(e => e.FldEstimateEndTime)
+                entity.Property(e => e.EstimateEndTime)
                     .HasMaxLength(10)
-                    .HasColumnName("fldEstimateEndTime")
                     .HasComment("'HH:MM'");
 
-                entity.Property(e => e.FldEstimateStartDate).HasColumnName("fldEstimateStartDate");
-
-                entity.Property(e => e.FldEstimateStartTime)
+                entity.Property(e => e.EstimateStartTime)
                     .HasMaxLength(10)
-                    .HasColumnName("fldEstimateStartTime")
                     .HasComment("'HH:MM'");
 
-                entity.Property(e => e.FldTripDestinationLocationId).HasColumnName("fldTripDestinationLocationId");
+                entity.Property(e => e.UpdateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldTripStartLocationId).HasColumnName("fldTripStartLocationId");
-
-                entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUpdateBy");
-
-                entity.Property(e => e.FldUpdateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldUpdateDate");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<Tbltripitem>(entity =>
+            modelBuilder.Entity<TripItem>(entity =>
             {
-                entity.HasKey(e => e.FldItemId)
+                entity.HasKey(e => e.ItemId)
                     .HasName("PRIMARY");
 
-                entity.ToTable("tbltripitem");
+                entity.ToTable("trip_item");
 
-                entity.Property(e => e.FldItemId).HasColumnName("fldItemId");
+                entity.Property(e => e.CreateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldCategoryId).HasColumnName("fldCategoryId");
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldCreateBy");
+                entity.Property(e => e.ItemDescription).HasColumnType("mediumtext");
 
-                entity.Property(e => e.FldCreateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldCreateDate");
+                entity.Property(e => e.ItemName).HasMaxLength(150);
 
-                entity.Property(e => e.FldItemDescription)
-                    .HasColumnType("mediumtext")
-                    .HasColumnName("fldItemDescription");
-
-                entity.Property(e => e.FldItemName)
-                    .HasMaxLength(150)
-                    .HasColumnName("fldItemName");
-
-                entity.Property(e => e.FldPriceMax)
+                entity.Property(e => e.PriceMax)
                     .HasPrecision(12, 2)
-                    .HasColumnName("fldPriceMax")
                     .HasDefaultValueSql("'0.00'");
 
-                entity.Property(e => e.FldPriceMin)
+                entity.Property(e => e.PriceMin)
                     .HasPrecision(12, 2)
-                    .HasColumnName("fldPriceMin")
                     .HasDefaultValueSql("'0.00'");
 
-                entity.Property(e => e.FldQuantity)
-                    .HasColumnName("fldQuantity")
-                    .HasDefaultValueSql("'0'");
+                entity.Property(e => e.Quantity).HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.FldTripId)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldTripId");
+                entity.Property(e => e.TripId).HasMaxLength(20);
 
-                entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUpdateBy");
+                entity.Property(e => e.UpdateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldUpdateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldUpdateDate");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<Tbltripmember>(entity =>
+            modelBuilder.Entity<TripMember>(entity =>
             {
-                entity.HasKey(e => e.FldMemberId)
+                entity.HasKey(e => e.MemberId)
                     .HasName("PRIMARY");
 
-                entity.ToTable("tbltripmember");
+                entity.ToTable("trip_member");
 
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.Property(e => e.FldMemberId).HasColumnName("fldMemberId");
-
-                entity.Property(e => e.FldConfirmation)
+                entity.Property(e => e.Confirmation)
                     .HasMaxLength(10)
-                    .HasColumnName("fldConfirmation")
                     .HasDefaultValueSql("'N'")
                     .IsFixedLength();
 
-                entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldCreateBy");
+                entity.Property(e => e.CreateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldCreateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldCreateDate");
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FldMemberRoleId)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldMemberRoleId");
+                entity.Property(e => e.MemberRoleId).HasMaxLength(50);
 
-                entity.Property(e => e.FldNickName)
-                    .HasMaxLength(50)
-                    .HasColumnName("fldNickName");
+                entity.Property(e => e.NickName).HasMaxLength(50);
 
-                entity.Property(e => e.FldSendDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldSendDate");
+                entity.Property(e => e.SendDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FldStatus)
-                    .HasMaxLength(10)
-                    .HasColumnName("fldStatus");
+                entity.Property(e => e.Status).HasMaxLength(10);
 
-                entity.Property(e => e.FldTripId)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldTripId");
+                entity.Property(e => e.TripId).HasMaxLength(20);
 
-                entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUpdateBy");
+                entity.Property(e => e.UpdateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldUpdateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldUpdateDate");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FldUserId)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUserId");
+                entity.Property(e => e.UserId).HasMaxLength(20);
             });
 
-            modelBuilder.Entity<Tbltripplan>(entity =>
+            modelBuilder.Entity<TripPlan>(entity =>
             {
-                entity.HasKey(e => e.FldPlanId)
+                entity.HasKey(e => e.PlanId)
                     .HasName("PRIMARY");
 
-                entity.ToTable("tbltripplan");
+                entity.ToTable("trip_plan");
 
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.FldPlanId, "fldPlanId_UNIQUE")
+                entity.HasIndex(e => e.PlanId, "fldPlanId_UNIQUE")
                     .IsUnique();
 
-                entity.Property(e => e.FldPlanId).HasColumnName("fldPlanId");
+                entity.Property(e => e.CreateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldCreateBy");
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FldCreateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldCreateDate");
+                entity.Property(e => e.TripId).HasMaxLength(20);
 
-                entity.Property(e => e.FldPlanDescription).HasColumnName("fldPlanDescription");
+                entity.Property(e => e.UpdateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldTripId)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldTripId");
-
-                entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUpdateBy");
-
-                entity.Property(e => e.FldUpdateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldUpdateDate");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
-            modelBuilder.Entity<Tbltriprole>(entity =>
+            modelBuilder.Entity<TripRole>(entity =>
             {
-                entity.HasKey(e => e.FldRoleId)
+                entity.HasKey(e => e.RoleId)
                     .HasName("PRIMARY");
 
-                entity.ToTable("tbltriprole");
+                entity.ToTable("trip_role");
 
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.FldRoleId, "fldRoleId_UNIQUE")
+                entity.HasIndex(e => e.RoleId, "fldRoleId_UNIQUE")
                     .IsUnique();
 
-                entity.Property(e => e.FldRoleId).HasColumnName("fldRoleId");
+                entity.Property(e => e.Description).HasColumnType("text");
 
-                entity.Property(e => e.FldDescription)
-                    .HasColumnType("text")
-                    .HasColumnName("fldDescription");
+                entity.Property(e => e.RoleName).HasMaxLength(150);
 
-                entity.Property(e => e.FldRoleName)
-                    .HasMaxLength(150)
-                    .HasColumnName("fldRoleName");
-
-                entity.Property(e => e.FldType)
+                entity.Property(e => e.Type)
                     .HasMaxLength(20)
-                    .HasColumnName("fldType")
                     .UseCollation("utf8mb3_general_ci")
                     .HasCharSet("utf8mb3");
             });
 
-            modelBuilder.Entity<Tbltriproute>(entity =>
+            modelBuilder.Entity<TripRoute>(entity =>
             {
-                entity.HasKey(e => e.FldRouteId)
+                entity.HasKey(e => e.RouteId)
                     .HasName("PRIMARY");
 
-                entity.ToTable("tbltriproute");
+                entity.ToTable("trip_route");
 
-                entity.Property(e => e.FldRouteId).HasColumnName("fldRouteId");
+                entity.Property(e => e.Distance).HasPrecision(12, 2);
 
-                entity.Property(e => e.FldDistance)
-                    .HasPrecision(12, 2)
-                    .HasColumnName("fldDistance");
-
-                entity.Property(e => e.FldEstimateTime)
+                entity.Property(e => e.EstimateTime)
                     .HasPrecision(5, 2)
-                    .HasColumnName("fldEstimateTime")
                     .HasDefaultValueSql("'0.00'");
 
-                entity.Property(e => e.FldMapId).HasColumnName("fldMapId");
-
-                entity.Property(e => e.FldPriority).HasColumnName("fldPriority");
-
-                entity.Property(e => e.FldTripid)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldTripid");
+                entity.Property(e => e.Tripid).HasMaxLength(20);
             });
 
-            modelBuilder.Entity<Tbluser>(entity =>
+            modelBuilder.Entity<User>(entity =>
             {
-                entity.HasKey(e => e.FldUserId)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("tbluser");
+                entity.ToTable("user");
 
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.FldUserId, "fldUserId_UNIQUE")
+                entity.HasIndex(e => e.UserId, "fldUserId_UNIQUE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.FldUsername, "fldUsername_UNIQUE")
+                entity.HasIndex(e => e.Username, "fldUsername_UNIQUE")
                     .IsUnique();
 
-                entity.Property(e => e.FldUserId)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUserId");
+                entity.Property(e => e.UserId).HasMaxLength(20);
 
-                entity.Property(e => e.FldConfirmation)
+                entity.Property(e => e.Confirmation)
                     .HasMaxLength(1)
-                    .HasColumnName("fldConfirmation")
                     .HasDefaultValueSql("'N'")
                     .IsFixedLength();
 
-                entity.Property(e => e.FldPassword)
-                    .HasMaxLength(1000)
-                    .HasColumnName("fldPassword");
+                entity.Property(e => e.Password).HasMaxLength(1000);
 
-                entity.Property(e => e.FldSendDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldSendDate");
+                entity.Property(e => e.SendDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FldUsername)
-                    .HasMaxLength(45)
-                    .HasColumnName("fldUsername");
+                entity.Property(e => e.Username).HasMaxLength(45);
             });
 
-            modelBuilder.Entity<Tbluserdetail>(entity =>
+            modelBuilder.Entity<UserDetail>(entity =>
             {
-                entity.HasKey(e => e.FldUserId)
+                entity.HasKey(e => e.UserId)
                     .HasName("PRIMARY");
 
-                entity.ToTable("tbluserdetail");
+                entity.ToTable("user_detail");
 
                 entity.HasCharSet("latin1")
                     .UseCollation("latin1_swedish_ci");
 
-                entity.HasIndex(e => e.FldEmail, "fldEmail_UNIQUE")
+                entity.HasIndex(e => e.Email, "fldEmail_UNIQUE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.FldPhone, "fldPhone_UNIQUE")
+                entity.HasIndex(e => e.Phone, "fldPhone_UNIQUE")
                     .IsUnique();
 
-                entity.HasIndex(e => e.FldUserId, "fldUserId_UNIQUE")
+                entity.HasIndex(e => e.UserId, "fldUserId_UNIQUE")
                     .IsUnique();
 
-                entity.Property(e => e.FldUserId)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUserId");
+                entity.Property(e => e.UserId).HasMaxLength(20);
 
-                entity.Property(e => e.FldActiveStatus)
-                    .HasMaxLength(10)
-                    .HasColumnName("fldActiveStatus");
+                entity.Property(e => e.ActiveStatus).HasMaxLength(10);
 
-                entity.Property(e => e.FldAddress)
-                    .HasColumnName("fldAddress")
+                entity.Property(e => e.Address)
                     .UseCollation("utf8mb3_general_ci")
                     .HasCharSet("utf8mb3");
 
-                entity.Property(e => e.FldBirthday)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldBirthday");
+                entity.Property(e => e.Birthday).HasColumnType("datetime");
 
-                entity.Property(e => e.FldCreateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldCreateBy");
+                entity.Property(e => e.CreateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldCreateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldCreateDate");
+                entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.FldEmail)
+                entity.Property(e => e.Email)
                     .HasMaxLength(50)
-                    .HasColumnName("fldEmail")
                     .UseCollation("utf8mb3_general_ci")
                     .HasCharSet("utf8mb3");
 
-                entity.Property(e => e.FldExperience)
-                    .HasColumnName("fldExperience")
-                    .HasDefaultValueSql("'0'");
+                entity.Property(e => e.Experience).HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.FldFullname)
+                entity.Property(e => e.Fullname)
                     .HasMaxLength(50)
-                    .HasColumnName("fldFullname")
                     .UseCollation("utf8mb3_general_ci")
                     .HasCharSet("utf8mb3");
 
-                entity.Property(e => e.FldPhone)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldPhone");
+                entity.Property(e => e.Phone).HasMaxLength(20);
 
-                entity.Property(e => e.FldRole)
+                entity.Property(e => e.Role)
                     .HasMaxLength(20)
-                    .HasColumnName("fldRole")
                     .UseCollation("utf8mb3_general_ci")
                     .HasCharSet("utf8mb3");
 
-                entity.Property(e => e.FldTripCancelled)
-                    .HasColumnName("fldTripCancelled")
-                    .HasDefaultValueSql("'0'");
+                entity.Property(e => e.TripCancelled).HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.FldTripCompleted)
-                    .HasColumnName("fldTripCompleted")
-                    .HasDefaultValueSql("'0'");
+                entity.Property(e => e.TripCompleted).HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.FldTripCreated)
-                    .HasColumnName("fldTripCreated")
-                    .HasDefaultValueSql("'0'");
+                entity.Property(e => e.TripCreated).HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.FldTripJoined)
-                    .HasColumnName("fldTripJoined")
-                    .HasDefaultValueSql("'0'");
+                entity.Property(e => e.TripJoined).HasDefaultValueSql("'0'");
 
-                entity.Property(e => e.FldUpdateBy)
-                    .HasMaxLength(20)
-                    .HasColumnName("fldUpdateBy");
+                entity.Property(e => e.UpdateBy).HasMaxLength(20);
 
-                entity.Property(e => e.FldUpdateDate)
-                    .HasColumnType("datetime")
-                    .HasColumnName("fldUpdateDate");
+                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
             });
 
             OnModelCreatingPartial(modelBuilder);

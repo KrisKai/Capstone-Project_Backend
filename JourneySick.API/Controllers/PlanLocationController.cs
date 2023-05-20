@@ -3,8 +3,8 @@ using JourneySick.Data.Models.DTOs;
 using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using JourneySick.Business.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 
 namespace JourneySick.API.Controllers
 {
@@ -28,7 +28,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllLocationsWithPaging(int pageIndex, int pageSize)
         {
             var result = new List<PlanLocationDTO>();
-            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             result = await _planLocationService.GetAllLocationsWithPaging(pageIndex, pageSize);
             return Ok(result);
 
@@ -72,7 +72,7 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteLocation(int id)
         {
-            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
 
             var result = await _planLocationService.DeletePlanLocation(id);
             return Ok(result);

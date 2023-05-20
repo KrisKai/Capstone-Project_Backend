@@ -11,11 +11,11 @@ namespace JourneySick.Data.IRepositories
     public interface IItemCategoryRepository
     {
         //SELECT ALL
-        public Task<List<Tblitemcategory>> GetAllItemCategorysWithPaging(int pageIndex, int pageSize, string? itemCategoryId);
+        public Task<List<ItemCategory>> GetAllItemCategorysWithPaging(int pageIndex, int pageSize, string? itemCategoryId);
         //CREATE
-        public Task<int> CreateItemCategory(Tblitemcategory tblitemCategory);
-        public Task<Tblitemcategory> GetItemCategoryById(int itemCategoryId);
-        public Task<int> UpdateItemCategory(Tblitemcategory tblitemCategory);
+        public Task<int> CreateItemCategory(ItemCategory itemCategory);
+        public Task<ItemCategory> GetItemCategoryById(int itemCategoryId);
+        public Task<int> UpdateItemCategory(ItemCategory itemCategory);
         public Task<int> DeleteItemCategory(int itemCategoryId);
         public Task<int> CountAllItemCategorys(string? tripName);
     }

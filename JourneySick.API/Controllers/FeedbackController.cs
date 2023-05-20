@@ -1,14 +1,10 @@
 ﻿using JourneySick.API.Extensions;
 using JourneySick.Business.IServices;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
-using JourneySick.Data.Models.DTOs.CommonDTO.VO;
-using JourneySick.Data.Models.DTOs.CommonDTO;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using JourneySick.Data.Models.DTOs;
-using JourneySick.Business.IServices.Services;
 
 namespace JourneySick.API.Controllers
 {

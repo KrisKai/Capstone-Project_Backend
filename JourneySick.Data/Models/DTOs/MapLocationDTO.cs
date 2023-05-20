@@ -8,9 +8,9 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class MapLocationDTO
     {
-        public int? FldMapId { get; set; }
-        public string FldLongitude { get; set; } = null!;
-        public string FldLatitude { get; set; } = null!;
-        public string? FldLocationName { get; set; }
+        public int? MapId { get; set; }
+        public string Longitude { get; set; } = null!;
+        public string Latitude { get; set; } = null!;
+        public string? LocationName { get; set; }
     }
 }

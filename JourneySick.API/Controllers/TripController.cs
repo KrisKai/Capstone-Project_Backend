@@ -1,14 +1,10 @@
 ﻿using JourneySick.Business.IServices;
-using JourneySick.Data.Models.DTOs;
 using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
-using JourneySick.Business.Models.DTOs;
-using JourneySick.Data.Models.Enums;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using Microsoft.AspNetCore.Authorization;
-using JourneySick.Data.Models.DTOs.CommonDTO;
 
 namespace JourneySick.API.Controllers
 {
@@ -27,11 +23,10 @@ namespace JourneySick.API.Controllers
 
         //CREATE
         [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> CreateTrip([FromBody] TripVO tripVO)
+        public async Task<IActionResult> CreateTrip([FromForm] CreateTripRequest tripRequest)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            var result = await _tripService.CreateTrip(tripVO, currentUser);
+            var result = await _tripService.CreateTrip(tripRequest, currentUser);
             return Ok(result);
 
         }
@@ -39,7 +34,7 @@ namespace JourneySick.API.Controllers
         //UPDATE
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdateTrip([FromBody] TripVO tripVO)
+        public async Task<IActionResult> UpdateTrip([FromBody] TripRequest tripVO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _tripService.UpdateTrip(tripVO, currentUser);
@@ -64,7 +59,7 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> GetTripById([FromRoute] string id)
         {
-            TripVO result = await _tripService.GetTripById(id);
+            TripRequest result = await _tripService.GetTripById(id);
             return Ok(result);
 
         }

@@ -8,12 +8,12 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class TripRoleDTO
     {
-        public int? FldRoleId { get; set; } = null!;
+        public int? RoleId { get; set; } = null!;
 
-        public string? FldRoleName { get; set; }
+        public string? RoleName { get; set; }
 
-        public string? FldType { get; set; }
+        public string? Type { get; set; }
 
-        public string? FldDescription { get; set; }
+        public string? Description { get; set; }
     }
 }

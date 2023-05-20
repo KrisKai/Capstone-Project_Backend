@@ -3,10 +3,10 @@ using JourneySick.Data.Models.DTOs;
 using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using JourneySick.Business.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using Microsoft.AspNetCore.Authorization;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 
 namespace JourneySick.API.Controllers
 {
@@ -29,7 +29,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId)
         {
             var result = new AllTripRouteDTO();
-            CurrentUserObj currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             result = await _tripRouteService.GetAllTripRoutesWithPaging(pageIndex, pageSize, routeId);
             return Ok(result);
 
@@ -49,7 +49,7 @@ namespace JourneySick.API.Controllers
         //CREATE
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateTripRoute([FromBody] TripRouteVO tripRouteDTO)
+        public async Task<IActionResult> CreateTripRoute([FromBody] TripRouteRequest tripRouteDTO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _tripRouteService.CreateTripRoute(tripRouteDTO, currentUser);
@@ -60,7 +60,7 @@ namespace JourneySick.API.Controllers
         //UPDATE
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdateTripRoute([FromBody] TripRouteVO tripRouteDTO)
+        public async Task<IActionResult> UpdateTripRoute([FromBody] TripRouteRequest tripRouteDTO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _tripRouteService.UpdateTripRoute(tripRouteDTO, currentUser);
