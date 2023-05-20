@@ -18,7 +18,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM maplocation WHERE MapId = @MapId";
+                var query = "SELECT * FROM map_location WHERE MapId = @MapId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("MapId", locationId, DbType.Int16);
@@ -37,7 +37,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 int firstIndex = (pageIndex - 1) * pageSize;
                 int lastIndex = pageIndex * pageSize;
-                var query = "SELECT * FROM maplocation LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM map_location LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
@@ -72,7 +72,7 @@ namespace JourneySick.Data.IRepositories.Repositories
 
             try
             {
-                var query = "INSERT INTO maplocation ("
+                var query = "INSERT INTO map_location ("
                     + "         Longitude, "
                     + "         Latitude, "
                     + "         LocationName) "
@@ -99,7 +99,7 @@ namespace JourneySick.Data.IRepositories.Repositories
 
             try
             {
-                var query = "UPDATE maplocation SET"
+                var query = "UPDATE map_location SET"
                     + "         Longitude = @Longitude, "
                     + "         Latitude = @Latitude, "
                     + "         LocationName = @LocationName, "
@@ -124,7 +124,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM maplocation WHERE MapId = @MapId";
+                var query = "DELETE FROM map_location WHERE MapId = @MapId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("MapId", locationId, DbType.Int32);

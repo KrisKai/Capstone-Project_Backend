@@ -14,7 +14,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<Models.Entities.VO.ItemVO>> GetAllItemsWithPaging(int pageIndex, int pageSize, string? itemId, int categoryId)
+        public async Task<List<ItemVO>> GetAllItemsWithPaging(int pageIndex, int pageSize, string? itemId, int categoryId)
         {
             try
             {
@@ -29,15 +29,15 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "";
                 if (categoryId == 0)
                 {
-                    query = "SELECT * FROM item a INNER JOIN itemcategory b ON a.CategoryId = b.CategoryId WHERE ItemId LIKE CONCAT('%', @itemId, '%')  LIMIT @firstIndex, @lastIndex";
+                    query = "SELECT * FROM item a INNER JOIN item_category b ON a.CategoryId = b.CategoryId WHERE ItemId LIKE CONCAT('%', @itemId, '%')  LIMIT @firstIndex, @lastIndex";
                 }
                 else
                 {
-                    query = "SELECT * FROM item a INNER JOIN itemcategory b ON a.CategoryId = b.CategoryId WHERE ItemId LIKE CONCAT('%', @itemId, '%') AND a.CategoryId = @categoryId LIMIT @firstIndex, @lastIndex";
+                    query = "SELECT * FROM item a INNER JOIN item_category b ON a.CategoryId = b.CategoryId WHERE ItemId LIKE CONCAT('%', @itemId, '%') AND a.CategoryId = @categoryId LIMIT @firstIndex, @lastIndex";
                 }
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Models.Entities.VO.ItemVO>(query, parameters)).ToList();
+                return (await connection.QueryAsync<ItemVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {

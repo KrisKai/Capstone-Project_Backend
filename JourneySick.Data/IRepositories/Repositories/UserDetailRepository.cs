@@ -23,7 +23,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT Email FROM userdetail WHERE Email = @Email";
+                var query = "SELECT Email FROM user_detail WHERE Email = @Email";
                 var parameters = new DynamicParameters();
                 parameters.Add("Email", email, DbType.String);
                 using var connection = CreateConnection();
@@ -39,7 +39,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT Phone FROM userdetail WHERE Phone = @Phone";
+                var query = "SELECT Phone FROM user_detail WHERE Phone = @Phone";
                 var parameters = new DynamicParameters();
                 parameters.Add("Phone", phone, DbType.String);
                 using var connection = CreateConnection();
@@ -51,15 +51,15 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<Models.Entities.VO.UserVO> GetUserDetailById(string userId)
+        public async Task<UserVO> GetUserDetailById(string userId)
         {
             try
             {
-                var query = "SELECT * FROM userdetail WHERE UserId = @UserId";
+                var query = "SELECT * FROM user_detail WHERE UserId = @UserId";
                 var parameters = new DynamicParameters();
                 parameters.Add("UserId", userId, DbType.String);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Models.Entities.VO.UserVO>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<UserVO>(query, parameters);
 
             }
             catch (Exception e)
@@ -68,15 +68,15 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<Models.Entities.VO.UserVO> GetTripPresenterByTripId(string tripId)
+        public async Task<UserVO> GetTripPresenterByTripId(string tripId)
         {
             try
             {
-                var query = "SELECT * FROM userdetail a RIGHT JOIN trip b ON a.UserId = b.TripPresenter WHERE TripId = @TripId";
+                var query = "SELECT * FROM user_detail a RIGHT JOIN trip b ON a.UserId = b.TripPresenter WHERE TripId = @TripId";
                 var parameters = new DynamicParameters();
                 parameters.Add("TripId", tripId, DbType.String);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Models.Entities.VO.UserVO>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<UserVO>(query, parameters);
 
             }
             catch (Exception e)
@@ -104,7 +104,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "a.CreateDate, " +
                     "a.CreateBy, " +
                     "a.UpdateDate, " +
-                    "a.UpdateBy  FROM userdetail a JOIN user b ON a.UserId = b.UserId WHERE Username = @Username";
+                    "a.UpdateBy  FROM user_detail a JOIN user b ON a.UserId = b.UserId WHERE Username = @Username";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("Username", username, DbType.String);
@@ -119,7 +119,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<List<Models.Entities.VO.UserVO>> GetUserList(Models.Entities.VO.UserVO userEntity)
+        public async Task<List<UserVO>> GetUserList(UserVO userEntity)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("UserId", userEntity.UserId, DbType.String);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Models.Entities.VO.UserVO>(query, parameters)).ToList();
+                return (await connection.QueryAsync<UserVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -137,11 +137,11 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CreateUserDetail(Models.Entities.VO.UserVO userDetail)
+        public async Task<int> CreateUserDetail(UserVO userDetail)
         {
             try
             {
-                var query = "INSERT INTO userdetail " +
+                var query = "INSERT INTO user_detail " +
                     "(UserId, " +
                     "Role, " +
                     "Birthday, " +
@@ -184,11 +184,11 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateUserDetail(Models.Entities.VO.UserVO userDetailEntity)
+        public async Task<int> UpdateUserDetail(UserVO userDetailEntity)
         {
             try
             {
-                var query = "UPDATE userdetail SET " +
+                var query = "UPDATE user_detail SET " +
                     "Birthday = @Birthday, " +
                     "Email = @Email, " +
                     "Fullname = @Fullname, " +
@@ -217,11 +217,11 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateAcitveStatus(Models.Entities.VO.UserVO userDetailEntity)
+        public async Task<int> UpdateAcitveStatus(UserVO userDetailEntity)
         {
             try
             {
-                var query = "UPDATE userdetail SET " +
+                var query = "UPDATE user_detail SET " +
                     "ActiveStatus = @ActiveStatus " +
                     "WHERE UserId = @UserId";
 
@@ -237,11 +237,11 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> UpdateTripQuantityCreated(Models.Entities.VO.UserVO userDetailEntity)
+        public async Task<int> UpdateTripQuantityCreated(UserVO userDetailEntity)
         {
             try
             {
-                var query = "UPDATE userdetail SET " +
+                var query = "UPDATE user_detail SET " +
                     "TripCreated = @TripCreated " +
                     "WHERE UserId = @UserId";
 
@@ -261,7 +261,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM userdetail WHERE UserId = @UserId";
+                var query = "DELETE FROM user_detail WHERE UserId = @UserId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("UserId", userId, DbType.String);

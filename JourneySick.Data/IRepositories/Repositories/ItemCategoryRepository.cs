@@ -26,7 +26,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 itemCategoryId ??= "";
                 parameters.Add("itemCategoryId", itemCategoryId, DbType.String);
 
-                var query = "SELECT * FROM itemcategory WHERE CategoryId LIKE CONCAT('%', @itemCategoryId, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM item_category WHERE CategoryId LIKE CONCAT('%', @itemCategoryId, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<ItemCategory>(query, parameters)).ToList();
@@ -41,7 +41,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM itemcategory WHERE CategoryId = @CategoryId";
+                var query = "SELECT * FROM item_category WHERE CategoryId = @CategoryId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("CategoryId", itemCategoryId, DbType.Int16);
@@ -58,7 +58,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM itemcategory WHERE CategoryId LIKE CONCAT('%', @itemCategoryId, '%')";
+                var query = "SELECT COUNT(*) FROM item_category WHERE CategoryId LIKE CONCAT('%', @itemCategoryId, '%')";
 
                 itemCategoryId ??= "";
                 var parameters = new DynamicParameters();
@@ -77,7 +77,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "INSERT INTO ItemCategory ("
+                var query = "INSERT INTO item_category ("
                     + "         CategoryName, "
                     + "         CategoryDescription, "
                     + "         CreateDate, "
@@ -106,7 +106,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE ItemCategory SET " +
+                var query = "UPDATE item_category SET " +
                     "CategoryName = @CategoryName, " +
                     "CategoryDescription = @CategoryDescription, " +
                     "UpdateDate = @UpdateDate, " +
@@ -133,7 +133,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM itemcategory WHERE CategoryId = @CategoryId";
+                var query = "DELETE FROM item_category WHERE CategoryId = @CategoryId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("CategoryId", itemCategoryId, DbType.String);

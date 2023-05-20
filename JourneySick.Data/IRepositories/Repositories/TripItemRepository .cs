@@ -29,11 +29,11 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "";
                 if (categoryId == 0)
                 {
-                    query = "SELECT * FROM tripitem WHERE ItemId LIKE CONCAT('%', @itemId, '%') LIMIT @firstIndex, @lastIndex";
+                    query = "SELECT * FROM trip_item WHERE ItemId LIKE CONCAT('%', @itemId, '%') LIMIT @firstIndex, @lastIndex";
                 }
                 else
                 {
-                    query = "SELECT * FROM tripitem WHERE ItemId LIKE CONCAT('%', @itemId, '%') AND CategoryId = @categoryId LIMIT @firstIndex, @lastIndex";
+                    query = "SELECT * FROM trip_item WHERE ItemId LIKE CONCAT('%', @itemId, '%') AND CategoryId = @categoryId LIMIT @firstIndex, @lastIndex";
                 }
 
                 using var connection = CreateConnection();
@@ -49,7 +49,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM tripitem WHERE ItemId = @ItemId";
+                var query = "SELECT * FROM trip_item WHERE ItemId = @ItemId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("ItemId", tripItemId, DbType.Int16);
@@ -69,11 +69,11 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "";
                 if (categoryId == 0)
                 {
-                    query = "SELECT COUNT(*) FROM tripitem WHERE ItemId LIKE CONCAT('%', @itemId, '%')";
+                    query = "SELECT COUNT(*) FROM trip_item WHERE ItemId LIKE CONCAT('%', @itemId, '%')";
                 }
                 else
                 {
-                    query = "SELECT COUNT(*) FROM tripitem WHERE ItemId LIKE CONCAT('%', @itemId, '%')";
+                    query = "SELECT COUNT(*) FROM trip_item WHERE ItemId LIKE CONCAT('%', @itemId, '%')";
                 }
                 itemId ??= "";
                 var parameters = new DynamicParameters();
@@ -93,7 +93,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "INSERT INTO tripitem ("
+                var query = "INSERT INTO trip_item ("
                     + "         TripId, "
                     + "         ItemName, "
                     + "         ItemDescription, "
@@ -137,7 +137,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE tripitem SET " +
+                var query = "UPDATE trip_item SET " +
                     "ItemName = @ItemName, " +
                     "ItemDescription = @ItemDescription, " +
                     "PriceMin = @PriceMin, " +
@@ -172,7 +172,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tripitem WHERE ItemId = @ItemId";
+                var query = "DELETE FROM trip_item WHERE ItemId = @ItemId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("ItemId", tripItemId, DbType.String);

@@ -9,12 +9,12 @@ namespace JourneySick.Data.IRepositories
     {
         public Task<string> GetEmailIfExist(string email);
         public Task<string> GetPhoneIfExist(string phone);
-        public Task<Models.Entities.VO.UserVO> GetUserDetailById(string userId);
-        public Task<Models.Entities.VO.UserVO> GetTripPresenterByTripId(string tripId);
-        public Task<int> CreateUserDetail(Models.Entities.VO.UserVO userDetail);
-        public Task<int> UpdateUserDetail(Models.Entities.VO.UserVO userDetailEntity);
+        public Task<UserVO> GetUserDetailById(string userId);
+        public Task<UserVO> GetTripPresenterByTripId(string tripId);
+        public Task<int> CreateUserDetail(UserVO userDetail);
+        public Task<int> UpdateUserDetail(UserVO userDetailEntity);
         public Task<int> DeleteUserDetail(string userId);
-        public Task<int> UpdateTripQuantityCreated(Models.Entities.VO.UserVO userDetailEntity);
-        public Task<int> UpdateAcitveStatus(Models.Entities.VO.UserVO userDetailEntity);
+        public Task<int> UpdateTripQuantityCreated(UserVO userDetailEntity);
+        public Task<int> UpdateAcitveStatus(UserVO userDetailEntity);
     }
 }

@@ -68,28 +68,28 @@ namespace JourneySick.Business.IServices.Services
                 {
                     throw new UserAlreadyExistException("Số điện thoại này đã được sử dụng!!");
                 }
-                userDetailEntity.FldUserId = await GenerateUserID();
-                userDetailEntity.FldUsername = registereRequest.Username;
-                userDetailEntity.FldPassword = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
-                userDetailEntity.FldSendDate = DateTimePicker.GetDateTimeByTimeZone();
+                userDetailEntity.UserId = await GenerateUserID();
+                userDetailEntity.Username = registereRequest.Username;
+                userDetailEntity.Password = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
+                userDetailEntity.SendDate = DateTimePicker.GetDateTimeByTimeZone();
 
                 if (await _userRepository.CreateUser(userDetailEntity) > 0)
                 {
-                    await EmailService.SendEmailRegister(userDetailEntity.FldEmail, userDetailEntity.FldFullname, await _userRepository.GetLastOneId());
-                    userDetailEntity.FldRole = UserRoleEnum.USER.ToString();
-                    //userDetailEntity.FldBirthday = Convert.ToDateTime(registereRequest.Birthday, CultureInfo.InvariantCulture);
-                    userDetailEntity.FldActiveStatus = "ACTIVE";
-                    userDetailEntity.FldEmail = registereRequest.Email;
-                    userDetailEntity.FldFullname = registereRequest.FirstName + " " + registereRequest.LastName;
-                    userDetailEntity.FldPhone = registereRequest.Phone;
-                    userDetailEntity.FldAddress = registereRequest.Address;
-                    userDetailEntity.FldExperience = 0;
-                    userDetailEntity.FldTripCreated = 0;
-                    userDetailEntity.FldTripJoined = 0;
-                    userDetailEntity.FldTripCompleted = 0;
-                    userDetailEntity.FldTripCancelled = 0;
-                    userDetailEntity.FldCreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    userDetailEntity.FldCreateBy = userDetailEntity.FldUserId;
+                    await EmailService.SendEmailRegister(userDetailEntity.Email, userDetailEntity.Fullname, await _userRepository.GetLastOneId());
+                    userDetailEntity.Role = UserRoleEnum.USER.ToString();
+                    //userDetailEntity.Birthday = Convert.ToDateTime(registereRequest.Birthday, CultureInfo.InvariantCulture);
+                    userDetailEntity.ActiveStatus = "ACTIVE";
+                    userDetailEntity.Email = registereRequest.Email;
+                    userDetailEntity.Fullname = registereRequest.FirstName + " " + registereRequest.LastName;
+                    userDetailEntity.Phone = registereRequest.Phone;
+                    userDetailEntity.Address = registereRequest.Address;
+                    userDetailEntity.Experience = 0;
+                    userDetailEntity.TripCreated = 0;
+                    userDetailEntity.TripJoined = 0;
+                    userDetailEntity.TripCompleted = 0;
+                    userDetailEntity.TripCancelled = 0;
+                    userDetailEntity.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    userDetailEntity.CreateBy = userDetailEntity.UserId;
                     if (await _userDetailRepository.CreateUserDetail(userDetailEntity) < 1)
                     {
                         throw new RegisterUserException("Đăng kí thất bại!!");
@@ -132,7 +132,7 @@ namespace JourneySick.Business.IServices.Services
                             // note: cheeck thêm đk sendDate
                             if(userVO.Role.Equals(UserRoleEnum.USER.ToString()) && DateTime.Compare(userVO.SendDate.AddMinutes(30), DateTimePicker.GetDateTimeByTimeZone()) < 0)
                             {
-                                await EmailService.SendEmailRegister(tbluserVO.FldEmail, tbluserVO.FldFullname, await _userRepository.GetLastOneId());
+                                await EmailService.SendEmailRegister(userVO.Email, userVO.Fullname, await _userRepository.GetLastOneId());
                                 throw new LoginFailedException("Vui lòng xác thực email của bạn!!");
                             }
                         }

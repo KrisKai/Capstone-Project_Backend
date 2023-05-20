@@ -26,7 +26,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 routeId ??= "";
                 parameters.Add("routeId", routeId, DbType.String);
 
-                var query = "SELECT * FROM triproute a INNER JOIN maplocation b ON a.MapId = b.MapId WHERE RouteId LIKE CONCAT('%', @routeId, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM trip_route a INNER JOIN map_location b ON a.MapId = b.MapId WHERE RouteId LIKE CONCAT('%', @routeId, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TriprouteVO>(query, parameters)).ToList();
@@ -41,7 +41,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM triproute WHERE RouteId = @RouteId";
+                var query = "SELECT * FROM trip_route WHERE RouteId = @RouteId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("RouteId", tripRouteId, DbType.Int16);
@@ -58,7 +58,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM triproute WHERE RouteId LIKE CONCAT('%', @routeId, '%')";
+                var query = "SELECT COUNT(*) FROM trip_route WHERE RouteId LIKE CONCAT('%', @routeId, '%')";
 
                 routeId ??= "";
                 var parameters = new DynamicParameters();
@@ -77,7 +77,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "INSERT INTO triproute ("
+                var query = "INSERT INTO trip_route ("
                     + "         TripId, "
                     + "         MapId, "
                     + "         Priority, "
@@ -109,7 +109,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE triproute SET " +
+                var query = "UPDATE trip_route SET " +
                     "Priority = @Priority, " +
                     "EstimateTime = @EstimateTime, " +
                     "Distance = @Distance, " +
@@ -134,7 +134,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM triproute WHERE RouteId = @RouteId";
+                var query = "DELETE FROM trip_route WHERE RouteId = @RouteId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("RouteId", tripRouteId, DbType.String);

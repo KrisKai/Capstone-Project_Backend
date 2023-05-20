@@ -17,7 +17,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "INSERT INTO tripdetail ("
+                var query = "INSERT INTO trip_detail ("
                     + "         TripId, "
                     + "         TripStartLocationId, "
                     + "         TripDestinationLocationId, "
@@ -64,7 +64,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE tripdetail SET"
+                var query = "UPDATE trip_detail SET"
                     + "         TripStartLocationId = @TripStartLocationId, "
                     + "         TripDestinationLocationId = @TripDestinationLocationId, "
                     + "         EstimateStartDate = @EstimateStartDate, "
@@ -99,7 +99,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tripdetail WHERE TripId = @TripId";
+                var query = "DELETE FROM trip_detail WHERE TripId = @TripId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("TripId", planDetailId, DbType.String);

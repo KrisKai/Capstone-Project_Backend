@@ -326,11 +326,11 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                UserVO userVO = await GetUserById(id);
+                UserRequest userRequest = await GetUserById(id);
 
-                if (userVO != null)
+                if (userRequest != null)
                 {
-                    if (userVO.FldConfirmation.Equals("N"))
+                    if (userRequest.Confirmation.Equals("N"))
                     {
                         if (await _userRepository.ConfirmUser(id) > 0)
                         {

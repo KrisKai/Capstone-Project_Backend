@@ -7,7 +7,7 @@ namespace JourneySick.Data.IRepositories
     public interface IFeedbackRepository
     {
 
-        public Task<List<Models.Entities.VO.FeedbackVO>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? userName);
+        public Task<List<FeedbackVO>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? userName);
 
         public Task<int> CountAllFeedbacks(string? userName);
 
@@ -21,7 +21,7 @@ namespace JourneySick.Data.IRepositories
 
         //DELETE
         public Task<int> DeleteFeedback(int userId);
-        public Task<List<Models.Entities.VO.FeedbackVO>> GetTopFeedback();
+        public Task<List<FeedbackVO>> GetTopFeedback();
         public Task<int> IncreaseLike(Feedback feedbackDTO, string status);
     }
 }

@@ -19,7 +19,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COALESCE(MAX(MemberId), 0) FROM tripmember ";
+                var query = "SELECT COALESCE(MAX(MemberId), 0) FROM trip_member ";
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<int>(query);
             }
@@ -33,7 +33,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM tripmember a LEFT JOIN userdetail b ON a.UserId = b.UserId WHERE MemberId = @MemberId";
+                var query = "SELECT * FROM trip_member a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE MemberId = @MemberId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("MemberId", memberId, DbType.Int32);
@@ -50,7 +50,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tripmember a LEFT JOIN userdetail b ON a.UserId = b.UserId WHERE a.UserId = @userId AND TripId = @tripId";
+                var query = "SELECT COUNT(*) FROM trip_member a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE a.UserId = @userId AND TripId = @tripId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("userId", userId, DbType.String);
@@ -76,7 +76,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 memberName ??= "";
                 parameters.Add("NickName", memberName, DbType.String);
 
-                var query = "SELECT * FROM tripmember a LEFT JOIN userdetail b ON a.UserId = b.UserId INNER JOIN triprole c ON a.MemberRoleId = c.RoleId WHERE NickName LIKE CONCAT('%', @NickName, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM trip_member a LEFT JOIN user_detail b ON a.UserId = b.UserId INNER JOIN trip_role c ON a.MemberRoleId = c.RoleId WHERE NickName LIKE CONCAT('%', @NickName, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TripmemberVO>(query, parameters)).ToList();
@@ -91,7 +91,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tripmember WHERE NickName LIKE CONCAT('%', @NickName, '%')";
+                var query = "SELECT COUNT(*) FROM trip_member WHERE NickName LIKE CONCAT('%', @NickName, '%')";
 
                 memberName ??= "";
                 var parameters = new DynamicParameters();
@@ -110,7 +110,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "INSERT INTO tripmember ("
+                var query = "INSERT INTO trip_member ("
                     + "         UserId, "
                     + "         TripId, "
                     + "         MemberRoleId, "
@@ -149,7 +149,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE tripmember SET " +
+                var query = "UPDATE trip_member SET " +
                     "UserId = @UserId, " +
                     "TripId = @TripId, " +
                     "MemberRoleId = @MemberRoleId, " +
@@ -182,7 +182,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tripmember WHERE MemberId = @MemberId";
+                var query = "DELETE FROM trip_member WHERE MemberId = @MemberId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("MemberId", memberId, DbType.Int32);
@@ -199,7 +199,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE tripmember SET " +
+                var query = "UPDATE trip_member SET " +
                     "Status = @Status " +
                     "WHERE UserId = @UserId";
 
@@ -219,7 +219,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tripmember WHERE UserId = @UserId";
+                var query = "DELETE FROM trip_member WHERE UserId = @UserId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("UserId", userId, DbType.String);
@@ -236,7 +236,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE tripmember SET " +
+                var query = "UPDATE trip_member SET " +
                     "Confirmation = 'Y' " +
                     "WHERE MemberId = @MemberId";
 
@@ -255,7 +255,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE tripmember SET " +
+                var query = "UPDATE trip_member SET " +
                     "SendDate = NOW() " +
                     "WHERE MemberId = @MemberId";
 

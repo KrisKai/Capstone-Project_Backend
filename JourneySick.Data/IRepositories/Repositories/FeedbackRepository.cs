@@ -18,14 +18,14 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<Models.Entities.VO.FeedbackVO>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? tripId)
+        public async Task<List<FeedbackVO>> GetAllFeedbacksWithPaging(int pageIndex, int pageSize, string? tripId)
         {
             try
             {
                 int firstIndex = pageIndex * pageSize;
                 int lastIndex = (pageIndex + 1) * pageSize;
                 tripId ??= "";
-                var query = "SELECT * FROM Feedback a INNER JOIN User b ON a.UserId = b.UserId INNER JOIN User_Detail c ON a.UserId = c.UserId INNER JOIN Trip d ON a.TripId = d.TripId  WHERE a.TripId LIKE CONCAT('%', @tripId, '%') LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM feedback a INNER JOIN User b ON a.UserId = b.UserId INNER JOIN user_detail c ON a.UserId = c.UserId INNER JOIN Trip d ON a.TripId = d.TripId  WHERE a.TripId LIKE CONCAT('%', @tripId, '%') LIMIT @firstIndex, @lastIndex";
                 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
@@ -33,7 +33,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("tripId", tripId, DbType.String);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Models.Entities.VO.FeedbackVO>(query, parameters)).ToList();
+                return (await connection.QueryAsync<FeedbackVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -45,7 +45,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM Feedback WHERE TripId LIKE CONCAT('%', @tripId, '%')";
+                var query = "SELECT COUNT(*) FROM feedback WHERE TripId LIKE CONCAT('%', @tripId, '%')";
                 tripId ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("tripId", tripId, DbType.String);
@@ -64,7 +64,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM Feedback WHERE FeedbackId = @FeedbackId";
+                var query = "SELECT * FROM feedback WHERE FeedbackId = @FeedbackId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("FeedbackId", tripId, DbType.String);
@@ -83,10 +83,10 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "INSERT INTO Feedback ("
+                var query = "INSERT INTO feedback ("
                     + "         TripId, "
                     + "         UserId, "
-                    + "         Feedback, "
+                    + "         FeedbackDescription, "
                     + "         Rate, "
                     + "         Like, "
                     + "         Dislike, "
@@ -128,8 +128,8 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE Feedback ("
-                    + "         Feedback = @Feedback, "
+                var query = "UPDATE feedback ("
+                    + "         FeedbackDescription = @Feedback, "
                     + "         Rate = @Rate, "
                     + "         UpdateDate = @UpdateDate, "
                     + "         UpdateBy = @UpdateBy "
@@ -156,7 +156,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM Feedback WHERE FeedbackId = @FeedbackId";
+                var query = "DELETE FROM feedback WHERE FeedbackId = @FeedbackId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("FeedbackId", tripId, DbType.Int32);
@@ -169,14 +169,14 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<List<Models.Entities.VO.FeedbackVO>> GetTopFeedback()
+        public async Task<List<FeedbackVO>> GetTopFeedback()
         {
             try
             {
-                var query = "SELECT Username, Like, Dislike, LocationName, Rate, Feedback FROM Feedback a INNER JOIN user b ON a.UserId = b.UserId INNER JOIN userdetail c ON a.UserId = c.UserId INNER JOIN trip d ON a.TripId = d.TripId ORDER BY Like LIMIT 10";
+                var query = "SELECT Username, `Like`, Dislike, LocationName, Rate, FeedbackDescription FROM feedback a INNER JOIN user b ON a.UserId = b.UserId INNER JOIN user_detail c ON a.UserId = c.UserId INNER JOIN trip d ON a.TripId = d.TripId ORDER BY `Like` LIMIT 10";
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Models.Entities.VO.FeedbackVO>(query)).ToList();
+                return (await connection.QueryAsync<FeedbackVO>(query)).ToList();
             }
             catch (Exception e)
             {
@@ -192,14 +192,14 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 if (status.Equals("L"))
                 {
-                    query = "UPDATE Feedback ("
+                    query = "UPDATE feedback ("
                     + "         Like = @Like, "
                     + "      WHERE FeedbackId = @FeedbackId";
                     parameters.Add("Like", feedbackDTO.Like, DbType.Int32);
                 }
                 else if(status.Equals("D"))
                 {
-                    query = "UPDATE Feedback ("
+                    query = "UPDATE feedback ("
                     + "         Dislike = @Dislike, "
                     + "      WHERE FeedbackId = @FeedbackId";
                     parameters.Add("Dislike", feedbackDTO.Dislike, DbType.Int32);

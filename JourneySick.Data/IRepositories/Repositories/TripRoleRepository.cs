@@ -20,7 +20,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 int firstIndex = pageIndex * pageSize;
                 int lastIndex = (pageIndex + 1) * pageSize;
                 roleName ??= "";
-                var query = "SELECT * FROM triprole WHERE RoleName LIKE CONCAT('%', @roleName, '%') LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM trip_role WHERE RoleName LIKE CONCAT('%', @roleName, '%') LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
@@ -40,7 +40,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM triprole WHERE RoleName LIKE CONCAT('%', @roleName, '%')";
+                var query = "SELECT COUNT(*) FROM trip_role WHERE RoleName LIKE CONCAT('%', @roleName, '%')";
                 roleName ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("roleName", roleName, DbType.String);
@@ -58,7 +58,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM triprole WHERE RoleId = @RoleId";
+                var query = "SELECT * FROM trip_role WHERE RoleId = @RoleId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("RoleId", roleId, DbType.Int32);
@@ -76,7 +76,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "INSERT INTO triprole ("
+                var query = "INSERT INTO trip_role ("
                     + "         RoleName, "
                     + "         Type, "
                     + "         Description) "
@@ -104,7 +104,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE triprole SET"
+                var query = "UPDATE trip_role SET"
                     + "         RoleName = @RoleName, "
                     + "         Type = @Type, "
                     + "         Description = @Description"
@@ -129,7 +129,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM triprole WHERE RoleId = @RoleId";
+                var query = "DELETE FROM trip_role WHERE RoleId = @RoleId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("RoleId", roleId, DbType.Int32);

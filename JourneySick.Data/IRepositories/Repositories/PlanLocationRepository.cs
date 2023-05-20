@@ -17,7 +17,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM planlocation WHERE PlanId = @PlanId";
+                var query = "SELECT * FROM plan_location WHERE PlanId = @PlanId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("PlanId", locationId, DbType.Int16);
@@ -36,7 +36,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 int firstIndex = (pageIndex - 1) * pageSize;
                 int lastIndex = pageIndex * pageSize;
-                var query = "SELECT * FROM planlocation LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM plan_location LIMIT @firstIndex, @lastIndex";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
@@ -56,7 +56,7 @@ namespace JourneySick.Data.IRepositories.Repositories
 
             try
             {
-                var query = "INSERT INTO planlocation ("
+                var query = "INSERT INTO plan_location ("
                     + "         MapId, "
                     + "         PlanLocationId, "
                     + "         PlanLocationDescription, "
@@ -92,7 +92,7 @@ namespace JourneySick.Data.IRepositories.Repositories
 
             try
             {
-                var query = "UPDATE planlocation SET"
+                var query = "UPDATE plan_location SET"
                     + "         PlanLocationId = @PlanLocationId, "
                     + "         PlanLocationDescription = @PlanLocationDescription, "
                     + "         LocationArrivalTime = @LocationArrivalTime, "
@@ -121,7 +121,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM planlocation WHERE locationId = @locationId";
+                var query = "DELETE FROM plan_location WHERE locationId = @locationId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("TripId", locationId, DbType.Int16);

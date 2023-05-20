@@ -26,7 +26,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 planId ??= "";
                 parameters.Add("planId", planId, DbType.String);
 
-                var query = "SELECT * FROM tripplan WHERE PlanId LIKE CONCAT('%', @planId, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM trip_plan WHERE PlanId LIKE CONCAT('%', @planId, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TripPlan>(query, parameters)).ToList();
@@ -41,7 +41,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM tripplan WHERE PlanId = @PlanId";
+                var query = "SELECT * FROM trip_plan WHERE PlanId = @PlanId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("PlanId", tripPlanId, DbType.Int16);
@@ -58,7 +58,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tripplan WHERE PlanId LIKE CONCAT('%', @planId, '%')";
+                var query = "SELECT COUNT(*) FROM trip_plan WHERE PlanId LIKE CONCAT('%', @planId, '%')";
 
                 planId ??= "";
                 var parameters = new DynamicParameters();
@@ -77,7 +77,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "INSERT INTO tripplan ("
+                var query = "INSERT INTO trip_plan ("
                     + "         TripId, "
                     + "         PlanDescription, "
                     + "         CreateDate, "
@@ -107,7 +107,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE tripplan SET " +
+                var query = "UPDATE trip_plan SET " +
                     "PlanDescription = @PlanDescription, " +
                     "UpdateDate = @UpdateDate, " +
                     "UpdateBy = @UpdateBy " +
@@ -132,7 +132,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM tripplan WHERE PlanId = @PlanId";
+                var query = "DELETE FROM trip_plan WHERE PlanId = @PlanId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("PlanId", tripPlanId, DbType.String);

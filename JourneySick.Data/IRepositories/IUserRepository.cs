@@ -7,7 +7,7 @@ namespace JourneySick.Data.IRepositories
     public interface IUserRepository
     {
 
-        public Task<List<Models.Entities.VO.UserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, string role);
+        public Task<List<UserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, string role);
 
         public Task<int> CountAllUsers(string? userName, string role);
 
@@ -17,12 +17,12 @@ namespace JourneySick.Data.IRepositories
 
         public Task<string> GetPasswordByUsername(string username);
 
-        public Task<Models.Entities.VO.UserVO> GetUserByUsername(string username);
+        public Task<UserVO> GetUserByUsername(string username);
 
-        public Task<Models.Entities.VO.UserVO> GetUserById(string userId);
+        public Task<UserVO> GetUserById(string userId);
 
         //CREATE
-        public Task<int> CreateUser(Models.Entities.VO.UserVO userEntity);
+        public Task<int> CreateUser(UserVO userEntity);
 
         //DELETE
         public Task<int> DeleteUser(string userId);

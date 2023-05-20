@@ -18,7 +18,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<Models.Entities.VO.UserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, string role)
+        public async Task<List<UserVO>> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, string role)
         {
             try
             {
@@ -28,11 +28,11 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "";
                 if (role.Equals(UserRoleEnum.EMPL.ToString()))
                 {
-                    query = "SELECT a.UserId, Username, Fullname, Role, Email, ActiveStatus FROM userdetail a INNER JOIN user b ON a.UserId = b.UserId WHERE Role IN ('EMPL', 'USER') AND b.Username LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
+                    query = "SELECT a.UserId, Username, Fullname, Role, Email, ActiveStatus FROM user_detail a INNER JOIN user b ON a.UserId = b.UserId WHERE Role IN ('EMPL', 'USER') AND b.Username LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
                 }
                 else if (role.Equals(UserRoleEnum.ADMIN.ToString()))
                 {
-                    query = "SELECT a.UserId, Username, Fullname, Role, Email, ActiveStatus FROM userdetail a INNER JOIN user b ON a.UserId = b.UserId WHERE b.Username LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
+                    query = "SELECT a.UserId, Username, Fullname, Role, Email, ActiveStatus FROM user_detail a INNER JOIN user b ON a.UserId = b.UserId WHERE b.Username LIKE CONCAT('%', @userName, '%') LIMIT @firstIndex, @lastIndex";
                 }
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
@@ -40,7 +40,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("userName", userName, DbType.String);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryAsync<Models.Entities.VO.UserVO>(query, parameters)).ToList();
+                return (await connection.QueryAsync<UserVO>(query, parameters)).ToList();
             }
             catch (Exception e)
             {
@@ -55,7 +55,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "";
                 if (role.Equals(UserRoleEnum.EMPL.ToString()))
                 {
-                    query = "SELECT COUNT(*) FROM userdetail a INNER JOIN user b ON a.UserId = b.UserId WHERE Role IN ('EMPL', 'USER') AND b.Username LIKE CONCAT('%', @userName, '%')";
+                    query = "SELECT COUNT(*) FROM user_detail a INNER JOIN user b ON a.UserId = b.UserId WHERE Role IN ('EMPL', 'USER') AND b.Username LIKE CONCAT('%', @userName, '%')";
                 }
                 else if (role.Equals(UserRoleEnum.ADMIN.ToString()))
                 {
@@ -120,15 +120,15 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<Models.Entities.VO.UserVO> GetUserByUsername(string username)
+        public async Task<UserVO> GetUserByUsername(string username)
         {
             try
             {
-                var query = "SELECT * FROM User a LEFT JOIN UserDetail b ON a.UserId = b.UserId WHERE Username = @Username AND ActiveStatus = 'ACTIVE'";
+                var query = "SELECT * FROM User a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE Username = @Username AND ActiveStatus = 'ACTIVE'";
                 var parameters = new DynamicParameters();
                 parameters.Add("Username", username, DbType.String);
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Models.Entities.VO.UserVO>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<UserVO>(query, parameters);
 
             }
             catch (Exception e)
@@ -138,17 +138,17 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<Models.Entities.VO.UserVO> GetUserById(string userId)
+        public async Task<UserVO> GetUserById(string userId)
         {
             try
             {
-                var query = "SELECT * FROM user a JOIN UserDetail b ON a.UserId = b.UserId WHERE a.UserId = @UserId";
+                var query = "SELECT * FROM user a JOIN user_detail b ON a.UserId = b.UserId WHERE a.UserId = @UserId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("UserId", userId, DbType.String);
 
                 using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<Models.Entities.VO.UserVO>(query, parameters);
+                return await connection.QueryFirstOrDefaultAsync<UserVO>(query, parameters);
             }
             catch (Exception e)
             {
@@ -157,7 +157,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //CREATE
-        public async Task<int> CreateUser(Models.Entities.VO.UserVO userEntity)
+        public async Task<int> CreateUser(UserVO userEntity)
         {
             try
             {
@@ -224,9 +224,9 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE tbluser SET " +
-                    "fldConfirmation = 'Y' " +
-                    "WHERE fldUserId = @userId";
+                var query = "UPDATE user SET " +
+                    "Confirmation = 'Y' " +
+                    "WHERE UserId = @userId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("userId", id, DbType.Int32);

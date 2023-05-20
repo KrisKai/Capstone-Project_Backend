@@ -26,7 +26,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 routeId ??= "";
                 parameters.Add("routeId", routeId, DbType.String);
 
-                var query = "SELECT * FROM routeplan a INNER JOIN maplocation b ON a.MapId = b.MapId WHERE RouteId LIKE CONCAT('%', @routeId, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM route_plan a INNER JOIN map_location b ON a.MapId = b.MapId WHERE RouteId LIKE CONCAT('%', @routeId, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<RoutePlan>(query, parameters)).ToList();
@@ -41,7 +41,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM routeplan WHERE RouteId = @RouteId";
+                var query = "SELECT * FROM route_plan WHERE RouteId = @RouteId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("RouteId", routePlanId, DbType.Int16);
@@ -58,7 +58,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM routeplan WHERE RouteId LIKE CONCAT('%', @routeId, '%')";
+                var query = "SELECT COUNT(*) FROM route_plan WHERE RouteId LIKE CONCAT('%', @routeId, '%')";
 
                 routeId ??= "";
                 var parameters = new DynamicParameters();
@@ -77,7 +77,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "INSERT INTO routeplan ("
+                var query = "INSERT INTO route_plan ("
                     + "         RouteId, "
                     + "         PlanDescription) "
                     + "     VALUES ( "
@@ -100,7 +100,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE routeplan SET " +
+                var query = "UPDATE route_plan SET " +
                     "PlanDescription = @PlanDescription, " +
                     "WHERE PlanId = @PlanId";
 
@@ -121,7 +121,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "DELETE FROM routeplan WHERE RouteId = @RouteId";
+                var query = "DELETE FROM route_plan WHERE RouteId = @RouteId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("RouteId", routePlanId, DbType.String);

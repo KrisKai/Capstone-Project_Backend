@@ -25,7 +25,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 tripName ??= "";
                 parameters.Add("tripName", tripName, DbType.String);
 
-                var query = "SELECT * FROM trip a INNER JOIN tripdetail b ON a.TripId = b.TripId WHERE a.TripName LIKE CONCAT('%', @tripName, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM trip a INNER JOIN trip_detail b ON a.TripId = b.TripId WHERE a.TripName LIKE CONCAT('%', @tripName, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TripVO>(query, parameters)).ToList();
@@ -54,7 +54,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM trip a INNER JOIN tripdetail b ON a.TripId = b.TripId WHERE a.TripId = @tripId";
+                var query = "SELECT * FROM trip a INNER JOIN trip_detail b ON a.TripId = b.TripId WHERE a.TripId = @tripId";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("tripId", tripId, DbType.String);
@@ -201,7 +201,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tripdetail WHERE MONTH(CreateDate) = MONTH(now()) and YEAR(CreateDate) = YEAR(now())";
+                var query = "SELECT COUNT(*) FROM trip_detail WHERE MONTH(CreateDate) = MONTH(now()) and YEAR(CreateDate) = YEAR(now())";
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query));
 
@@ -216,7 +216,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tripdetail WHERE MONTH(CreateDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and YEAR(CreateDate) = YEAR(now())";
+                var query = "SELECT COUNT(*) FROM trip_detail WHERE MONTH(CreateDate) = MONTH(CURRENT_DATE - INTERVAL 1 MONTH) and YEAR(CreateDate) = YEAR(now())";
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query));
 
@@ -231,7 +231,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM tripdetail WHERE YEAR(CreateDate) = YEAR(now())";
+                var query = "SELECT COUNT(*) FROM trip_detail WHERE YEAR(CreateDate) = YEAR(now())";
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query));
 
