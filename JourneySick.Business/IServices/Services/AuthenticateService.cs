@@ -75,7 +75,6 @@ namespace JourneySick.Business.IServices.Services
 
                 if (await _userRepository.CreateUser(userDetailEntity) > 0)
                 {
-                    await EmailService.SendEmailRegister(userDetailEntity.Email, userDetailEntity.Fullname, await _userRepository.GetLastOneId());
                     userDetailEntity.Role = UserRoleEnum.USER.ToString();
                     //userDetailEntity.Birthday = Convert.ToDateTime(registereRequest.Birthday, CultureInfo.InvariantCulture);
                     userDetailEntity.ActiveStatus = "ACTIVE";
@@ -90,6 +89,8 @@ namespace JourneySick.Business.IServices.Services
                     userDetailEntity.TripCancelled = 0;
                     userDetailEntity.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
                     userDetailEntity.CreateBy = userDetailEntity.UserId;
+
+                    await EmailService.SendEmailRegister(userDetailEntity.Email, userDetailEntity.Fullname, await _userRepository.GetLastOneId());
                     if (await _userDetailRepository.CreateUserDetail(userDetailEntity) < 1)
                     {
                         throw new RegisterUserException("Đăng kí thất bại!!");

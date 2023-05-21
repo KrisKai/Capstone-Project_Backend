@@ -39,7 +39,7 @@ namespace RevenueSharingInvest.Business.Services.Extensions.Email
                     Body = SendMailBody
                 };
 
-                string emailHTML = GetEmailTemplate();
+                //string emailHTML = GetEmailTemplate();
                 email.Body = SendMailBody;
 
                 email.To.Add(receiver);
@@ -80,7 +80,7 @@ namespace RevenueSharingInvest.Business.Services.Extensions.Email
                     From = new MailAddress(SENDER),
                     Subject = SendMailSubject,
                 };
-                string emailHTML = GetEmailTemplate();
+                //string emailHTML = GetEmailTemplate();
                 email.Body = SendMailBody;
 
                 email.To.Add(receiver);
