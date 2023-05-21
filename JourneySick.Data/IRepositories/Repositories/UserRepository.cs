@@ -229,7 +229,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "WHERE UserId = @userId";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("userId", id, DbType.Int32);
+                parameters.Add("userId", id, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
             }
