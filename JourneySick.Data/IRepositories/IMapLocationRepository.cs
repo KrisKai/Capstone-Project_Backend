@@ -15,7 +15,7 @@ namespace JourneySick.Data.IRepositories
         public Task<MapLocation> GetMapLocationById(int locationId);
         public Task<int> GetLastOne();
         //CREATE
-        public Task<int> CreateMapLocation(MapLocation maplocation);
+        public Task<long> CreateMapLocation(MapLocation maplocation);
         //UPDATE
         public Task<int> UpdateMapLocation(MapLocation maplocation);
         //DELETE

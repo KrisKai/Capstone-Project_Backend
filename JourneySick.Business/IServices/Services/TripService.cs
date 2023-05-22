@@ -81,40 +81,39 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> CreateTrip(CreateTripRequest tripVO, CurrentUserRequest currentUser)
+        public async Task<string> CreateTrip(CreateTripRequest createTripRequest, CurrentUserRequest currentUser)
         {
             try
             {
-                tripVO.TripId = await GenerateUserID();
-                tripVO.TripStatus = "ACTIVE";
-                tripVO.TripBudget = tripVO.TripBudget;
-                tripVO.CreateBy = tripVO.CreateBy;
-                tripVO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                createTripRequest.TripId = await GenerateUserID();
+                createTripRequest.TripStatus = "ACTIVE";
+                createTripRequest.CreateBy = (currentUser != null)?currentUser.UserId:"123";
+                createTripRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
                 MapLocation startmaplocation = new()
                 {
-                    Latitude = tripVO.StartLatitude,
-                    Longitude = tripVO.StartLongitude,
-                    LocationName = tripVO.StartLocationName
+                    Latitude = createTripRequest.StartLatitude,
+                    Longitude = createTripRequest.StartLongitude,
+                    LocationName = createTripRequest.StartLocationName
                 };
-                await _mapLocationRepository.CreateMapLocation(startmaplocation);
-                int startMapId = await _mapLocationRepository.GetLastOne();
-                tripVO.TripStartLocationId = startMapId;
+                long startMapId = await _mapLocationRepository.CreateMapLocation(startmaplocation);
+                createTripRequest.TripStartLocationId = (int)startMapId;
 
                 MapLocation endmaplocation = new()
                 {
-                    Latitude = tripVO.EndLatitude,
-                    Longitude = tripVO.EndLongitude,
-                    LocationName = tripVO.EndLocationName
+                    Latitude = createTripRequest.EndLatitude,
+                    Longitude = createTripRequest.EndLongitude,
+                    LocationName = createTripRequest.EndLocationName
                 };
-                await _mapLocationRepository.CreateMapLocation(endmaplocation);
-                int endMapId = await _mapLocationRepository.GetLastOne();
-                tripVO.TripDestinationLocationId = endMapId;
+                long endMapId = await _mapLocationRepository.CreateMapLocation(endmaplocation);
+                createTripRequest.TripDestinationLocationId = (int)endMapId;
 
-                TripVO trip = _mapper.Map<TripVO>(tripVO);
-                long check = await _tripRepository.CreateTrip(trip);
-                if (await _tripDetailRepository.CreateTripDetail(trip) > 0)
+                TripVO trip = _mapper.Map<TripVO>(createTripRequest);
+                Task createTrip = _tripRepository.CreateTrip(trip);
+                Task createTripDetail = _tripDetailRepository.CreateTripDetail(trip);
+                
+                if (Task.WhenAll(createTrip, createTripDetail).IsCompletedSuccessfully)
                 {
-                    UserVO userVO = await _userDetailRepository.GetUserDetailById(tripVO.CreateBy);
+                    UserVO userVO = await _userDetailRepository.GetUserDetailById(createTripRequest.CreateBy);
                     userVO.TripCreated++;
                     if (await _userDetailRepository.UpdateTripQuantityCreated(userVO) > 0)
                     {

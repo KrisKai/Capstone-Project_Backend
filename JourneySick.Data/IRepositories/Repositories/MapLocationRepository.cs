@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Transaction;
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
@@ -56,7 +57,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT COALESCE(MAX(MapId), 0) FROM maplocation";
+                var query = "SELECT COALESCE(MAX(MapId), 0) FROM map_location";
 
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<int>(query);
@@ -67,11 +68,12 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CreateMapLocation(MapLocation maplocation)
+        public async Task<long> CreateMapLocation(MapLocation maplocation)
         {
 
             try
             {
+                long lastId;
                 var query = "INSERT INTO map_location ("
                     + "         Longitude, "
                     + "         Latitude, "
@@ -81,13 +83,24 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @Latitude, "
                     + "         @LocationName)";
 
+                var getLastId = "SELECT LAST_INSERT_ID()";
+                
+
                 var parameters = new DynamicParameters();
                 parameters.Add("Longitude", maplocation.Longitude, DbType.String);
                 parameters.Add("Latitude", maplocation.Latitude, DbType.String);
                 parameters.Add("LocationName", maplocation.LocationName, DbType.String);
 
-                using var connection = CreateConnection();
-                return await connection.ExecuteAsync(query, parameters);
+                
+                using (var connection = CreateConnection()) {
+                    connection.Open();
+                    using var transaction = connection.BeginTransaction();
+                    transaction.Execute(query, parameters);
+                    lastId = transaction.ExecuteScalar<long>(getLastId);
+                    transaction.Commit();
+                }
+                return lastId;
+                //return await connection.ExecuteAsync(query, parameters);
             }
             catch (Exception e)
             {
