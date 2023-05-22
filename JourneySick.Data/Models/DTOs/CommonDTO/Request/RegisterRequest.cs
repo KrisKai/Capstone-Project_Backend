@@ -15,7 +15,7 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
-        public string Birthday { get; set; }
+        public DateTime Birthday { get; set; }
 
     }
 
