@@ -29,7 +29,7 @@ namespace JourneySick.Business.Helpers
                 .ReverseMap(); //reverse so the both direction
             CreateMap<TripDTO, Trip>()
                 .ReverseMap(); //reverse so the both direction
-            CreateMap<TripRequest, TripVO>()
+            CreateMap<CreateTripRequest, TripVO>()
                 .ReverseMap(); //reverse so the both direction
             CreateMap<TripDetailDTO, TripDetail>()
                 .ReverseMap(); //reverse so the both direction

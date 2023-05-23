@@ -81,7 +81,7 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> CreateTrip(TripRequest tripVO, CurrentUserRequest currentUser)
+        public async Task<string> CreateTrip(CreateTripRequest tripVO, CurrentUserRequest currentUser)
         {
             try
             {
