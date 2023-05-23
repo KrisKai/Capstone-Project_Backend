@@ -1,4 +1,4 @@
-﻿using JourneySick.Data.Models.DTOs.CommonDTO.VO;
+﻿using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;

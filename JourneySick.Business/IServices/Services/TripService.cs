@@ -81,16 +81,17 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> CreateTrip(CreateTripRequest tripVO, CurrentUserRequest currentUser)
+        public async Task<string> CreateTrip(TripRequest tripVO, CurrentUserRequest currentUser)
         {
             try
             {
-                tripVO.TripId = await GenerateUserID();
+                tripVO.TripId = await GenerateTripID();
                 tripVO.TripStatus = "ACTIVE";
-                tripVO.TripBudget = tripVO.TripBudget;
-                tripVO.CreateBy = tripVO.CreateBy;
+                tripVO.TripBudget = 0;
+                tripVO.CreateBy = currentUser.UserId;
                 tripVO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                MapLocation startmaplocation = new()
+                //cmt để tạo trip
+                /*MapLocation startmaplocation = new()
                 {
                     Latitude = tripVO.StartLatitude,
                     Longitude = tripVO.StartLongitude,
@@ -108,7 +109,7 @@ namespace JourneySick.Business.IServices.Services
                 };
                 await _mapLocationRepository.CreateMapLocation(endmaplocation);
                 int endMapId = await _mapLocationRepository.GetLastOne();
-                tripVO.TripDestinationLocationId = endMapId;
+                tripVO.TripDestinationLocationId = endMapId;*/
 
                 TripVO trip = _mapper.Map<TripVO>(tripVO);
                 long check = await _tripRepository.CreateTrip(trip);
@@ -210,13 +211,16 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
         }
-        private async Task<string> GenerateUserID()
+        private async Task<string> GenerateTripID()
         {
             try
             {
                 string lastOne = await _tripRepository.GetLastOneId();
                 if (lastOne != null)
                 {
+                    if(lastOne.Equals("0")) {
+                        return "TRIP_00000001";
+                    }
                     string lastId = lastOne.Substring(5);
                     int newId = Convert.ToInt32(lastId) + 1;
                     string newIdStr = Convert.ToString(newId);

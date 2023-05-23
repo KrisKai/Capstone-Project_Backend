@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
+namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
 {
     public class UserRequest : UserDetailDTO
     {
