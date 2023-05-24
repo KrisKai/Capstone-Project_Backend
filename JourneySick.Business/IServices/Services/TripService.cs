@@ -87,7 +87,7 @@ namespace JourneySick.Business.IServices.Services
             {
                 createTripRequest.TripId = await GenerateUserID();
                 createTripRequest.TripStatus = "ACTIVE";
-                createTripRequest.CreateBy = (currentUser != null)?currentUser.UserId:"123";
+                createTripRequest.CreateBy = (currentUser != null)?currentUser.UserId:"TESTER";
                 createTripRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
                 MapLocation startmaplocation = new()
                 {
