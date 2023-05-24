@@ -12,9 +12,9 @@ namespace JourneySick.Business.IServices
         //SELECT BY ID
         public Task<FeedbackDTO> GetFeedbackById(int id);
         //CREATE
-        public Task<int> CreateFeedback(FeedbackDTO feedbackDTO, CurrentUserObject currentUser);
+        public Task<long> CreateFeedback(CreateFeedbackRequest feedbackRequest, CurrentUserObject currentUser);
         //UPDATE
-        public Task<int> UpdateFeedback(FeedbackDTO feedbackDTO, CurrentUserObject currentUser);
+        public Task<int> UpdateFeedback(UpdateFeedbackRequest feedbackRequest, CurrentUserObject currentUser);
         //DELETE
         public Task<int> DeleteFeedback(int id);
         public Task<AllFeedbackDTO> GetTopFeedback();

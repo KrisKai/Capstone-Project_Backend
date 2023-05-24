@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 
 namespace JourneySick.API.Controllers
 {
@@ -46,10 +47,10 @@ namespace JourneySick.API.Controllers
         [HttpPost]
         //[Route("create-admin")]
         [Authorize]
-        public async Task<IActionResult> CreateFeedback([FromBody] FeedbackDTO feedbackDTO)
+        public async Task<IActionResult> CreateFeedback([FromBody] CreateFeedbackRequest feedbackRequest)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            var result = await _feedbackService.CreateFeedback(feedbackDTO, currentUser);
+            var result = await _feedbackService.CreateFeedback(feedbackRequest, currentUser);
             return Ok(result);
 
         }
@@ -57,10 +58,10 @@ namespace JourneySick.API.Controllers
         //UPDATE
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdateFeedback([FromBody] FeedbackDTO feedbackDTO)
+        public async Task<IActionResult> UpdateFeedback([FromBody] UpdateFeedbackRequest feedbackRequest)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            var result = await _feedbackService.UpdateFeedback(feedbackDTO, currentUser);
+            var result = await _feedbackService.UpdateFeedback(feedbackRequest, currentUser);
             return Ok(result);
 
         }

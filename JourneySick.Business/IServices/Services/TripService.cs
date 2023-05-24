@@ -46,10 +46,10 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 List<TripVO> trips = await _tripRepository.GetAllTripsWithPaging(pageIndex, pageSize, tripName);
-                // convert entity to dto
-                List<TripRequest> tripsDTOs = _mapper.Map<List<TripRequest>>(trips);
+     /*           // convert entity to dto
+                List<TripRequest> tripsDTOs = _mapper.Map<List<TripRequest>>(trips);*/
                 int count = await _tripRepository.CountAllTrips(tripName);
-                result.ListOfTrip = tripsDTOs;
+                result.ListOfTrip = trips;
                 result.NumOfTrip = count;
                 return result;
             }

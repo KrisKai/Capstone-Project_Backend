@@ -27,12 +27,12 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
         public DateTime? EstimateEndDate { get; set; }
         public int? EstimateEndTime { get; set; }
         public decimal? Distance { get; set; }
-        public DateTime? CreateDate { get; set; }
-        public string? CreateBy { get; set; }
     }
 
     public class CreateTripRequest : CreateTripDetailRequest
     {
+        public DateTime? CreateDate { get; set; }
+        public string? CreateBy { get; set; }
         public IFormFile? TripThumbnail { get; set; }
     }
 
