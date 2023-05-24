@@ -11,9 +11,9 @@ namespace JourneySick.Business.IServices
         //Select ItemCategory
         public Task<ItemCategoryDTO> GetItemCategoryById(int itemId);
         //insert
-        public Task<int> CreateItemCategory(ItemCategoryDTO tripItemCategoryDTO, CurrentUserRequest currentUser);
+        public Task<int> CreateItemCategory(ItemCategoryDTO tripItemCategoryDTO, CurrentUserObject currentUser);
         //update
-        public Task<int> UpdateItemCategory(ItemCategoryDTO tripItemCategoryDTO, CurrentUserRequest currentUser);
+        public Task<int> UpdateItemCategory(ItemCategoryDTO tripItemCategoryDTO, CurrentUserObject currentUser);
         //update
         public Task<int> DeleteItemCategory(int itemId);
 

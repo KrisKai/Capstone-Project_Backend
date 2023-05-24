@@ -138,7 +138,7 @@ namespace JourneySick.Business.IServices.Services
                         }
                         UserRequest userRequest = _mapper.Map<UserRequest>(userVO);
                         loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname);
-                        CurrentUserRequest currentUser = new();
+                        CurrentUserObject currentUser = new();
                         currentUser.Name = userRequest.Fullname;
                         currentUser.Role = userRequest.Role;
                         currentUser.UserId = userRequest.UserId;
@@ -183,7 +183,7 @@ namespace JourneySick.Business.IServices.Services
                             {
                                 UserRequest userRequest = _mapper.Map<UserRequest>(userVO);
                                 loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname);
-                                CurrentUserRequest currentUser = new();
+                                CurrentUserObject currentUser = new();
                                 currentUser.Name = userRequest.Fullname;
                                 currentUser.Role = userRequest.Role;
                                 currentUser.UserId = userRequest.UserId;
@@ -216,7 +216,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<UserRequest> GetCurrentInfo(CurrentUserRequest currentUser)
+        public async Task<UserRequest> GetCurrentInfo(CurrentUserObject currentUser)
         {
             try
             {

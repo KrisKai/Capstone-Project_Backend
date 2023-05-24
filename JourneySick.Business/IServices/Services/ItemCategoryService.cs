@@ -61,7 +61,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateItemCategory(ItemCategoryDTO itemCategoryDTO, CurrentUserRequest currentUser)
+        public async Task<int> CreateItemCategory(ItemCategoryDTO itemCategoryDTO, CurrentUserObject currentUser)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateItemCategory(ItemCategoryDTO itemCategoryDTO, CurrentUserRequest currentUser)
+        public async Task<int> UpdateItemCategory(ItemCategoryDTO itemCategoryDTO, CurrentUserObject currentUser)
         {
             try
             {

@@ -9,6 +9,7 @@ namespace JourneySick.Data.Models.Entities.VO
     public class TripVO: TripDetail
     {
         public string? TripName { get; set; }
+        public string? TripThumbnail { get; set; }
         public decimal? TripBudget { get; set; }
         public string? TripDescription { get; set; }
         public string? TripStatus { get; set; }

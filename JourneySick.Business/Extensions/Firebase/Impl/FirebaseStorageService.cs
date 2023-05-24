@@ -54,7 +54,7 @@ namespace JourneySick.Business.Extensions.Firebase.Impl
                 return downloadUrl.ToString();
 
             }
-                catch (Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
                 throw;

@@ -12,9 +12,9 @@ namespace JourneySick.Business.IServices
         //Select Route
         public Task<TripRouteDTO> GetTripRouteById(int routeId);
         //insert
-        public Task<int> CreateTripRoute(TripRouteRequest tripRouteDTO, CurrentUserRequest currentUser);
+        public Task<int> CreateTripRoute(TripRouteRequest tripRouteDTO, CurrentUserObject currentUser);
         //update
-        public Task<int> UpdateTripRoute(TripRouteRequest tripRouteDTO, CurrentUserRequest currentUser);
+        public Task<int> UpdateTripRoute(TripRouteRequest tripRouteDTO, CurrentUserObject currentUser);
         //update
         public Task<int> DeleteTripRoute(int routeId);
 

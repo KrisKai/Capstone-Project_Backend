@@ -14,7 +14,7 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
 
     public class LoginResponse
     {
-        public CurrentUserRequest CurrentUserObj { get; set; }
+        public CurrentUserObject CurrentUserObj { get; set; }
 
         public string Token { get; set; }
     }

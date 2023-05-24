@@ -68,7 +68,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateTripMember(TripMemberDTO tripMemberDTO, CurrentUserRequest currentUser)
+        public async Task<int> CreateTripMember(TripMemberDTO tripMemberDTO, CurrentUserObject currentUser)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateTripMember(TripMemberDTO tripMemberDTO, CurrentUserRequest currentUser)
+        public async Task<int> UpdateTripMember(TripMemberDTO tripMemberDTO, CurrentUserObject currentUser)
         {
             try
             {

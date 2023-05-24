@@ -28,7 +28,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllItemCategorysWithPaging(int pageIndex, int pageSize, string? itemCategoryId)
         {
             var result = new AllItemCategoryDTO();
-            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserObject currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             result = await _itemCategoryService.GetAllItemCategorysWithPaging(pageIndex, pageSize, itemCategoryId);
             return Ok(result);
 

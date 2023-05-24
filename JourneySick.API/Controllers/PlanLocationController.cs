@@ -28,7 +28,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllLocationsWithPaging(int pageIndex, int pageSize)
         {
             var result = new List<PlanLocationDTO>();
-            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserObject currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             result = await _planLocationService.GetAllLocationsWithPaging(pageIndex, pageSize);
             return Ok(result);
 
@@ -72,7 +72,7 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteLocation(int id)
         {
-            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserObject currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
 
             var result = await _planLocationService.DeletePlanLocation(id);
             return Ok(result);

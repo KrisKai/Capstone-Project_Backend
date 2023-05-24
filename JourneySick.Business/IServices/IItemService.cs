@@ -11,9 +11,9 @@ namespace JourneySick.Business.IServices
         //Select Item
         public Task<ItemDTO> GetItemById(int itemId);
         //insert
-        public Task<int> CreateItem(ItemDTO tripItemDTO, CurrentUserRequest currentUser);
+        public Task<int> CreateItem(ItemDTO tripItemDTO, CurrentUserObject currentUser);
         //update
-        public Task<int> UpdateItem(ItemDTO tripItemDTO, CurrentUserRequest currentUser);
+        public Task<int> UpdateItem(ItemDTO tripItemDTO, CurrentUserObject currentUser);
         //update
         public Task<int> DeleteItem(int itemId);
 

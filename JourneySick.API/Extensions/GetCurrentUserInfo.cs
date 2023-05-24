@@ -13,9 +13,9 @@ namespace JourneySick.API.Extensions
 {
     public static class GetCurrentUserInfo
     {
-        public static async Task<CurrentUserRequest> GetThisUserInfo(HttpContext httpContext)
+        public static async Task<CurrentUserObject> GetThisUserInfo(HttpContext httpContext)
         {
-            CurrentUserRequest currentUser = new();
+            CurrentUserObject currentUser = new();
 
             var checkUser = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.SerialNumber);
             if (checkUser != null)

@@ -77,6 +77,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 var query = "INSERT INTO trip ("
                     + "         TripId, "
+                    + "         TripThumbnail, "
                     + "         TripName, "
                     + "         TripBudget, "
                     + "         TripDescription, "
@@ -85,6 +86,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         TripMember) "
                     + "     VALUES ( "
                     + "         @TripId, "
+                    + "         @TripThumbnail,"
                     + "         @TripName, "
                     + "         @TripBudget, "
                     + "         @TripDescription, "
@@ -94,6 +96,7 @@ namespace JourneySick.Data.IRepositories.Repositories
 
                 var parameters = new DynamicParameters();
                 parameters.Add("TripId", tripEntity.TripId, DbType.String);
+                parameters.Add("TripThumbnail", tripEntity.TripThumbnail, DbType.String);
                 parameters.Add("TripName", tripEntity.TripName, DbType.String);
                 parameters.Add("TripBudget", tripEntity.TripBudget, DbType.Decimal);
                 parameters.Add("TripDescription", tripEntity.TripDescription, DbType.String);

@@ -11,9 +11,9 @@ namespace JourneySick.Business.IServices
         //Select Plan
         public Task<TripPlanDTO> GetTripPlanById(int planId);
         //insert
-        public Task<int> CreateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserRequest currentUser);
+        public Task<int> CreateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserObject currentUser);
         //update
-        public Task<int> UpdateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserRequest currentUser);
+        public Task<int> UpdateTripPlan(TripPlanDTO tripPlanDTO, CurrentUserObject currentUser);
         //update
         public Task<int> DeleteTripPlan(int planId);
 

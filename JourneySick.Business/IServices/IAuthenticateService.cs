@@ -7,6 +7,6 @@ namespace JourneySick.Business.IServices
         public Task<RegisterResponse> RegisterUser(RegisterRequest registereRequest);
         public Task<LoginResponse> Login(LoginRequest loginRequest);
         public Task<LoginResponse> LoginUser(LoginRequest loginRequest);
-        public Task<UserRequest> GetCurrentInfo(CurrentUserRequest currentUser);
+        public Task<UserRequest> GetCurrentInfo(CurrentUserObject currentUser);
     }
 }

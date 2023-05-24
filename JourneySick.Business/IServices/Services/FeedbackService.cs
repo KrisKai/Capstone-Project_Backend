@@ -71,7 +71,7 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<int> CreateFeedback(FeedbackDTO feedbackDTO, CurrentUserRequest currentUser)
+        public async Task<int> CreateFeedback(FeedbackDTO feedbackDTO, CurrentUserObject currentUser)
         {
             try
             {
@@ -93,7 +93,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateFeedback(FeedbackDTO feedbackDTO, CurrentUserRequest currentUser)
+        public async Task<int> UpdateFeedback(FeedbackDTO feedbackDTO, CurrentUserObject currentUser)
         {
             try
             {

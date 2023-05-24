@@ -2,10 +2,10 @@
 
 namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
 {
-    public class TripRequest: TripDetailDTO
+    public class TripRequest
     {
-        public string? TripName { get; set; }
-        public decimal? TripBudget { get; set; }
+        public string TripName { get; set; }
+        public decimal TripBudget { get; set; }
         public string? TripDescription { get; set; }
         public string? TripStatus { get; set; }
         public int? TripMember { get; set; }
@@ -18,8 +18,28 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
         public string? EndLocationName { get; set; }
     }
 
-    public class CreateTripRequest : TripRequest
+    public class CreateTripDetailRequest : TripRequest
     {
-        public IFormFile? Thumbnail { get; set; }
+        public int? TripStartLocationId { get; set; }
+        public int? TripDestinationLocationId { get; set; }
+        public DateTime? EstimateStartDate { get; set; }
+        public int? EstimateStartTime { get; set; }
+        public DateTime? EstimateEndDate { get; set; }
+        public int? EstimateEndTime { get; set; }
+        public decimal? Distance { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public string? CreateBy { get; set; }
+    }
+
+    public class CreateTripRequest : CreateTripDetailRequest
+    {
+        public IFormFile? TripThumbnail { get; set; }
+    }
+
+    public class UpdateTripRequest : CreateTripRequest
+    {
+        public string TripId { get; set; }
+        public DateTime? UpdateDate { get; set; }
+        public string? UpdateBy { get; set; }
     }
 }

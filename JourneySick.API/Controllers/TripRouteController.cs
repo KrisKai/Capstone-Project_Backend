@@ -29,7 +29,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId)
         {
             var result = new AllTripRouteDTO();
-            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserObject currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             result = await _tripRouteService.GetAllTripRoutesWithPaging(pageIndex, pageSize, routeId);
             return Ok(result);
 

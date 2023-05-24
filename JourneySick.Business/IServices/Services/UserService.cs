@@ -33,7 +33,7 @@ namespace JourneySick.Business.IServices.Services
             _logger = logger;
         }
 
-        public async Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, CurrentUserRequest currentUser)
+        public async Task<AllUserDTO> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName, CurrentUserObject currentUser)
         {
             AllUserDTO result = new();
             try
@@ -70,7 +70,7 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> CreateUser(UserRequest userVO, CurrentUserRequest currentUser)
+        public async Task<string> CreateUser(UserRequest userVO, CurrentUserObject currentUser)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<string> UpdateUser(UserRequest userRequest, CurrentUserRequest currentUser)
+        public async Task<string> UpdateUser(UserRequest userRequest, CurrentUserObject currentUser)
         {
             try
             {
@@ -191,7 +191,7 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<int> ResetPassword(string? id, CurrentUserRequest currentUser)
+        public async Task<int> ResetPassword(string? id, CurrentUserObject currentUser)
         {
             if (currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
             {
@@ -237,7 +237,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateAcitveStatus(UserRequest userRequest, CurrentUserRequest currentUser)
+        public async Task<int> UpdateAcitveStatus(UserRequest userRequest, CurrentUserObject currentUser)
         {
             if (currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
             {

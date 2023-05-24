@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JourneySick.Business.Extensions.Firebase;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Data.IRepositories;
@@ -18,15 +19,23 @@ namespace JourneySick.Business.IServices.Services
         private readonly ITripDetailRepository _tripDetailRepository;
         private readonly IUserDetailRepository _userDetailRepository;
         private readonly IMapLocationRepository _mapLocationRepository;
+        private readonly IFirebaseStorageService _firebaseStorageService;
         private readonly IMapper _mapper;
         private readonly ILogger<TripService> _logger;
 
-        public TripService(ITripRepository tripRepository, IMapper mapper, ITripDetailRepository tripDetailRepository, IUserDetailRepository userDetailRepository, IMapLocationRepository mapLocationRepository, ILogger<TripService> logger)
+        public TripService(ITripRepository tripRepository, 
+            IMapper mapper, 
+            ITripDetailRepository tripDetailRepository, 
+            IUserDetailRepository userDetailRepository, 
+            IMapLocationRepository mapLocationRepository, 
+            ILogger<TripService> logger,
+            IFirebaseStorageService firebaseStorageService)
         {
             _tripRepository = tripRepository;
             _tripDetailRepository = tripDetailRepository;
             _userDetailRepository = userDetailRepository;
             _mapLocationRepository = mapLocationRepository;
+            _firebaseStorageService = firebaseStorageService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -51,27 +60,26 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<TripRequest> GetTripById(string tripId)
+        public async Task<TripVO> GetTripById(string tripId)
         {
             try
             {
                 TripVO trip = await _tripRepository.GetTripById(tripId);
-                TripRequest tripVO = _mapper.Map<TripRequest>(trip);
-                MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripStartLocationId);
+                MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripStartLocationId);
                 if (startmaplocation != null)
                 {
-                    tripVO.StartLocationName = startmaplocation.LocationName;
-                    tripVO.StartLatitude = startmaplocation.Latitude;
-                    tripVO.StartLongitude = startmaplocation.Longitude;
+                    trip.StartLocationName = startmaplocation.LocationName;
+                    trip.StartLatitude = startmaplocation.Latitude;
+                    trip.StartLongitude = startmaplocation.Longitude;
                 }
-                MapLocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripDestinationLocationId);
+                MapLocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripDestinationLocationId);
                 if (endmaplocation != null)
                 {
-                    tripVO.EndLocationName = endmaplocation.LocationName;
-                    tripVO.EndLatitude = endmaplocation.Latitude;
-                    tripVO.EndLongitude = endmaplocation.Longitude;
+                    trip.EndLocationName = endmaplocation.LocationName;
+                    trip.EndLatitude = endmaplocation.Latitude;
+                    trip.EndLongitude = endmaplocation.Longitude;
                 }
-                return tripVO;
+                return trip;
             }
             catch (Exception ex)
             {
@@ -81,11 +89,10 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<string> CreateTrip(CreateTripRequest createTripRequest, CurrentUserRequest currentUser)
+        public async Task<int> CreateTrip(CreateTripRequest createTripRequest, CurrentUserObject currentUser)
         {
             try
             {
-                createTripRequest.TripId = await GenerateTripID();
                 createTripRequest.TripStatus = "ACTIVE";
                 createTripRequest.CreateBy = (currentUser != null)?currentUser.UserId:"TESTER";
                 createTripRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
@@ -105,9 +112,15 @@ namespace JourneySick.Business.IServices.Services
                 };
                 createTripRequest.TripDestinationLocationId = (int)await _mapLocationRepository.CreateMapLocation(endmaplocation);
 
-                TripVO trip = _mapper.Map<TripVO>(createTripRequest);
-                Task createTrip = _tripRepository.CreateTrip(trip);
-                Task createTripDetail = _tripDetailRepository.CreateTripDetail(trip);
+                TripVO tripVO = _mapper.Map<TripVO>(createTripRequest);
+                tripVO.TripId = await GenerateTripID();
+                if(createTripRequest.TripThumbnail != null)
+                {
+                    tripVO.TripThumbnail = await _firebaseStorageService.UploadTripThumbnail(createTripRequest.TripThumbnail, tripVO.TripId);
+                }
+
+                Task createTrip = _tripRepository.CreateTrip(tripVO);
+                Task createTripDetail = _tripDetailRepository.CreateTripDetail(tripVO);
                 
                 if (Task.WhenAll(createTrip, createTripDetail).IsCompletedSuccessfully)
                 {
@@ -115,7 +128,7 @@ namespace JourneySick.Business.IServices.Services
                     userVO.TripCreated++;
                     if (await _userDetailRepository.UpdateTripQuantityCreated(userVO) > 0)
                     {
-                        return "1";
+                        return 1;
                     }
                     throw new InsertException("Something is wrong!!");
                 }
@@ -131,32 +144,36 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<string> UpdateTrip(TripRequest tripRequest, CurrentUserRequest currentUser)
+        public async Task<string> UpdateTrip(UpdateTripRequest updateTripRequest, CurrentUserObject currentUser)
         {
             try
             {
-                TripRequest getTrip = await GetTripById(tripRequest.TripId);
+                TripVO currentTrip = await GetTripById(updateTripRequest.TripId);
 
-                if (getTrip != null)
+                if (currentTrip != null)
                 {
-                    tripRequest.UpdateBy = currentUser.UserId;
-                    tripRequest.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    TripVO tripVO = _mapper.Map<TripVO>(tripRequest);
+                    updateTripRequest.UpdateBy = currentUser.UserId;
+                    updateTripRequest.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    TripVO tripVO = _mapper.Map<TripVO>(updateTripRequest);
                     if (await _tripRepository.UpdateTrip(tripVO) > 0 && await _tripDetailRepository.UpdateTripDetail(tripVO) > 0)
                     {
-                        MapLocation startmaplocation = new MapLocation();
-                        startmaplocation.Latitude = tripRequest.StartLatitude;
-                        startmaplocation.Longitude = tripRequest.StartLongitude;
-                        startmaplocation.LocationName = tripRequest.StartLocationName;
-                        startmaplocation.MapId = (int)tripRequest.TripStartLocationId;
+                        MapLocation startmaplocation = new()
+                        {
+                            Latitude = updateTripRequest.StartLatitude,
+                            Longitude = updateTripRequest.StartLongitude,
+                            LocationName = updateTripRequest.StartLocationName,
+                            MapId = (int)updateTripRequest.TripStartLocationId
+                        };
                         await _mapLocationRepository.UpdateMapLocation(startmaplocation);
-                        MapLocation endmaplocation = new MapLocation();
-                        endmaplocation.Latitude = tripRequest.EndLatitude;
-                        endmaplocation.Longitude = tripRequest.EndLongitude;
-                        endmaplocation.LocationName = tripRequest.EndLocationName;
-                        endmaplocation.MapId = (int)tripRequest.TripDestinationLocationId;
+                        MapLocation endmaplocation = new()
+                        {
+                            Latitude = updateTripRequest.EndLatitude,
+                            Longitude = updateTripRequest.EndLongitude,
+                            LocationName = updateTripRequest.EndLocationName,
+                            MapId = (int)updateTripRequest.TripDestinationLocationId
+                        };
                         await _mapLocationRepository.UpdateMapLocation(endmaplocation);
-                        return tripRequest.TripId;
+                        return updateTripRequest.TripId;
                     }
                     else
                     {
@@ -181,7 +198,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                TripRequest getTrip = await GetTripById(tripId);
+                TripVO getTrip = await GetTripById(tripId);
 
                 if (getTrip != null)
                 {

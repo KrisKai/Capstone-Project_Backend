@@ -55,7 +55,7 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> GetAllUsersWithPaging(int pageIndex, int pageSize, string? userName)
         {
             var result = new AllUserDTO();
-            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserObject currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             result = await _userService.GetAllUsersWithPaging(pageIndex, pageSize, userName, currentUser);
             return Ok(result);
 
@@ -66,7 +66,7 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserById([FromRoute] string id)
         {
-            CurrentUserRequest currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            CurrentUserObject currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.GetUserById(id);
             return Ok(result);
         }
