@@ -27,12 +27,11 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> GetAllItemsWithPaging(int pageIndex, int pageSize, string? itemId, int categoryId)
         {
-            var result = new AllItemDTO();
             CurrentUserObject currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            result = await _itemService.GetAllItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
+            var result = await _itemService.GetAllItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
             return Ok(result);
-
         }
+
         //GET
         [HttpGet]
         [Route("{id}")]
@@ -48,10 +47,10 @@ namespace JourneySick.API.Controllers
         //CREATE
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateItem([FromBody] ItemDTO itemDTO)
+        public async Task<IActionResult> CreateItem([FromBody] CreateItemRequest itemRequest)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            var result = await _itemService.CreateItem(itemDTO, currentUser);
+            var result = await _itemService.CreateItem(itemRequest, currentUser);
             return Ok(result);
 
         }
@@ -59,10 +58,10 @@ namespace JourneySick.API.Controllers
         //UPDATE
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdateItem([FromBody] ItemDTO itemDTO)
+        public async Task<IActionResult> UpdateItem([FromBody] UpdateItemRequest itemRequest)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            var result = await _itemService.UpdateItem(itemDTO, currentUser);
+            var result = await _itemService.UpdateItem(itemRequest, currentUser);
             return Ok(result);
 
         }

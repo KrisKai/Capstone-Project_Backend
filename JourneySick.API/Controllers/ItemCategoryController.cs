@@ -48,10 +48,10 @@ namespace JourneySick.API.Controllers
         //CREATE
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateItemCategory([FromBody] ItemCategoryDTO itemCategoryDTO)
+        public async Task<IActionResult> CreateItemCategory([FromBody] CreateItemCategoryRequest itemCategoryRequest)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            var result = await _itemCategoryService.CreateItemCategory(itemCategoryDTO, currentUser);
+            var result = await _itemCategoryService.CreateItemCategory(itemCategoryRequest, currentUser);
             return Ok(result);
 
         }
@@ -59,7 +59,7 @@ namespace JourneySick.API.Controllers
         //UPDATE
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdateItemCategory([FromBody] ItemCategoryDTO itemCategoryDTO)
+        public async Task<IActionResult> UpdateItemCategory([FromBody] UpdateItemCategoryRequest itemCategoryDTO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _itemCategoryService.UpdateItemCategory(itemCategoryDTO, currentUser);
