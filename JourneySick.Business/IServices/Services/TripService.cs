@@ -85,7 +85,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                createTripRequest.TripId = await GenerateUserID();
+                createTripRequest.TripId = await GenerateTripID();
                 createTripRequest.TripStatus = "ACTIVE";
                 createTripRequest.CreateBy = (currentUser != null)?currentUser.UserId:"TESTER";
                 createTripRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
@@ -95,8 +95,7 @@ namespace JourneySick.Business.IServices.Services
                     Longitude = createTripRequest.StartLongitude,
                     LocationName = createTripRequest.StartLocationName
                 };
-                long startMapId = await _mapLocationRepository.CreateMapLocation(startmaplocation);
-                createTripRequest.TripStartLocationId = (int)startMapId;
+                createTripRequest.TripStartLocationId = (int)await _mapLocationRepository.CreateMapLocation(startmaplocation);
 
                 MapLocation endmaplocation = new()
                 {
@@ -104,8 +103,7 @@ namespace JourneySick.Business.IServices.Services
                     Longitude = createTripRequest.EndLongitude,
                     LocationName = createTripRequest.EndLocationName
                 };
-                long endMapId = await _mapLocationRepository.CreateMapLocation(endmaplocation);
-                createTripRequest.TripDestinationLocationId = (int)endMapId;
+                createTripRequest.TripDestinationLocationId = (int)await _mapLocationRepository.CreateMapLocation(endmaplocation);
 
                 TripVO trip = _mapper.Map<TripVO>(createTripRequest);
                 Task createTrip = _tripRepository.CreateTrip(trip);
