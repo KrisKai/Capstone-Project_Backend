@@ -1,4 +1,4 @@
-﻿using JourneySick.Data.Models.DTOs.CommonDTO.VO;
+﻿using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 
 namespace JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO
 {

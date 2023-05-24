@@ -76,7 +76,7 @@ namespace JourneySick.Business.IServices.Services
                 if (await _userRepository.CreateUser(userDetailEntity) > 0)
                 {
                     userDetailEntity.Role = UserRoleEnum.USER.ToString();
-                    //userDetailEntity.Birthday = Convert.ToDateTime(registereRequest.Birthday, CultureInfo.InvariantCulture);
+                    userDetailEntity.Birthday = registereRequest.Birthday;
                     userDetailEntity.ActiveStatus = "ACTIVE";
                     userDetailEntity.Email = registereRequest.Email;
                     userDetailEntity.Fullname = registereRequest.FirstName + " " + registereRequest.LastName;
@@ -89,8 +89,6 @@ namespace JourneySick.Business.IServices.Services
                     userDetailEntity.TripCancelled = 0;
                     userDetailEntity.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
                     userDetailEntity.CreateBy = userDetailEntity.UserId;
-
-                    await EmailService.SendEmailRegister(userDetailEntity.Email, userDetailEntity.Fullname, await _userRepository.GetLastOneId());
                     if (await _userDetailRepository.CreateUserDetail(userDetailEntity) < 1)
                     {
                         throw new RegisterUserException("Đăng kí thất bại!!");
@@ -101,6 +99,7 @@ namespace JourneySick.Business.IServices.Services
                 registerResponse.Username = registereRequest.Username;
                 registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userDetailEntity.UserId, name: userDetailEntity.Fullname);
 
+                await EmailService.SendEmailRegister(userDetailEntity.Email, userDetailEntity.Fullname, await _userRepository.GetLastOneId());
                 return registerResponse;
             }
             catch (Exception ex)

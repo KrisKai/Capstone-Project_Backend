@@ -9,12 +9,12 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
         public string? TripDescription { get; set; }
         public string? TripStatus { get; set; }
         public int? TripMember { get; set; }
-        public string TripPresenter { get; set; } = null!;
-        public string StartLongitude { get; set; } = null!;
-        public string StartLatitude { get; set; } = null!;
+        public string? TripPresenter { get; set; }
+        public string? StartLongitude { get; set; } = null!;
+        public string? StartLatitude { get; set; } = null!;
         public string? StartLocationName { get; set; }
-        public string EndLongitude { get; set; } = null!;
-        public string EndLatitude { get; set; } = null!;
+        public string? EndLongitude { get; set; } = null!;
+        public string? EndLatitude { get; set; } = null!;
         public string? EndLocationName { get; set; }
     }
 

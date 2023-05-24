@@ -8,19 +8,19 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class TripDetailDTO
     {
-        public string TripId { get; set; } = null!;
+        public string? TripId { get; set; } = null!;
         public int? TripStartLocationId { get; set; }
         public int? TripDestinationLocationId { get; set; }
-        public DateOnly? EstimateStartDate { get; set; }
+        public DateTime? EstimateStartDate { get; set; }
         /// <summary>
         /// &apos;HH:MM&apos;
         /// </summary>
-        public string? EstimateStartTime { get; set; }
-        public DateOnly? EstimateEndDate { get; set; }
+        public int? EstimateStartTime { get; set; }
+        public DateTime? EstimateEndDate { get; set; }
         /// <summary>
         /// &apos;HH:MM&apos;
         /// </summary>
-        public string? EstimateEndTime { get; set; }
+        public int? EstimateEndTime { get; set; }
         public decimal? Distance { get; set; }
         public DateTime? CreateDate { get; set; }
         public string? CreateBy { get; set; }

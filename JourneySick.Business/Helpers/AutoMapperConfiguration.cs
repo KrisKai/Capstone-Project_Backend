@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -27,6 +28,8 @@ namespace JourneySick.Business.Helpers
             CreateMap<TripItemDTO, TripItem>()
                 .ReverseMap(); //reverse so the both direction
             CreateMap<TripDTO, Trip>()
+                .ReverseMap(); //reverse so the both direction
+            CreateMap<CreateTripRequest, TripVO>()
                 .ReverseMap(); //reverse so the both direction
             CreateMap<TripDetailDTO, TripDetail>()
                 .ReverseMap(); //reverse so the both direction

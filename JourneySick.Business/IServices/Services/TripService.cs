@@ -209,13 +209,16 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
         }
-        private async Task<string> GenerateUserID()
+        private async Task<string> GenerateTripID()
         {
             try
             {
                 string lastOne = await _tripRepository.GetLastOneId();
                 if (lastOne != null)
                 {
+                    if(lastOne.Equals("0")) {
+                        return "TRIP_00000001";
+                    }
                     string lastId = lastOne.Substring(5);
                     int newId = Convert.ToInt32(lastId) + 1;
                     string newIdStr = Convert.ToString(newId);

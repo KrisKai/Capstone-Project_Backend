@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.DTOs;
-using JourneySick.Data.Models.DTOs.CommonDTO.VO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Configuration;
@@ -86,7 +86,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //SELECT
-        public async Task<Models.DTOs.CommonDTO.VO.UserRequest> GetUserDetailByUserName(string username)
+        public async Task<UserRequest> GetUserDetailByUserName(string username)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("Username", username, DbType.String);
 
                 using var connection = CreateConnection();
-                return (await connection.QueryFirstOrDefaultAsync<Models.DTOs.CommonDTO.VO.UserRequest>(query));
+                return (await connection.QueryFirstOrDefaultAsync<UserRequest>(query));
             }
             catch (Exception e)
             {
