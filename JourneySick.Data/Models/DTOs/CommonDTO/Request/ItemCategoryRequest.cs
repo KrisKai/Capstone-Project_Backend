@@ -14,8 +14,8 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
 
     public class CreateItemCategoryRequest : ItemCategoryRequest
     {
-        public DateTime CreateDate { get; set; }
-        public string CreateBy { get; set; } = null!;
+        public DateTime? CreateDate { get; set; }
+        public string? CreateBy { get; set; } = null!;
     }
     public class UpdateItemCategoryRequest : ItemCategoryRequest
     {
