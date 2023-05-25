@@ -34,10 +34,10 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 List<FeedbackVO> feedbacks = await _feedbackRepository.GetAllFeedbacksWithPaging(pageIndex, pageSize, tripId);
-                // convert entity to dto
-                List<FeedbackRequest> feedbackRequests = _mapper.Map<List<FeedbackRequest>>(feedbacks);
+/*                // convert entity to dto
+                List<FeedbackRequest> feedbackRequests = _mapper.Map<List<FeedbackRequest>>(feedbacks);*/
                 int count = await _feedbackRepository.CountAllFeedbacks(tripId);
-                result.ListOfFeedback = feedbackRequests;
+                result.ListOfFeedback = feedbacks;
                 result.NumOfFeedback = count;
                 return result;
             }
@@ -52,9 +52,9 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                Feedback FeedbackDTO = await _feedbackRepository.GetFeedbackById(feedbackId);
+                Feedback feedbackEntity = await _feedbackRepository.GetFeedbackById(feedbackId);
                 // convert entity to dto
-                FeedbackDTO feedbackDTO = _mapper.Map<FeedbackDTO>(FeedbackDTO);
+                FeedbackDTO feedbackDTO = _mapper.Map<FeedbackDTO>(feedbackEntity);
 
                 return feedbackDTO;
             }
@@ -66,17 +66,20 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<int> CreateFeedback(FeedbackDTO feedbackDTO, CurrentUserObject currentUser)
+        public async Task<long> CreateFeedback(CreateFeedbackRequest feedbackRequest, CurrentUserObject currentUser)
         {
             try
             {
-                    feedbackDTO.CreateBy = currentUser.UserId;
-                    feedbackDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Feedback userEntity = _mapper.Map<Feedback>(feedbackDTO);
-                    if (await _feedbackRepository.CreateFeedback(userEntity) > 0)
-                    {
-                        return userEntity.FeedbackId;
-                    }
+                feedbackRequest.CreateBy = currentUser.UserId;
+                feedbackRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                Feedback feedbackEntity = _mapper.Map<Feedback>(feedbackRequest);
+                feedbackEntity.Like = 0;
+                feedbackEntity.Dislike = 0;
+                long lastId = await _feedbackRepository.CreateFeedback(feedbackEntity);
+                if(lastId > 0)
+                {
+                    return lastId;
+                }
                 
                 throw new InsertException("Create Feedback failed!");
 
@@ -88,21 +91,21 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateFeedback(FeedbackDTO feedbackDTO, CurrentUserObject currentUser)
+        public async Task<int> UpdateFeedback(UpdateFeedbackRequest feedbackRequest, CurrentUserObject currentUser)
         {
             try
             {
-                FeedbackDTO getTrip = await GetFeedbackById((int)feedbackDTO.FeedbackId);
+                FeedbackDTO currentFeedback = await GetFeedbackById((int)feedbackRequest.FeedbackId);
 
-                if (getTrip != null)
+                if (currentFeedback != null)
                 {
-                    feedbackDTO.UpdateBy = currentUser.UserId;
-                    feedbackDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Feedback feedback = _mapper.Map<Feedback>(feedbackDTO);
-                    int id = await _feedbackRepository.UpdateFeedback(feedback);
-                    if (id > 0)
+                    feedbackRequest.UpdateBy = currentUser.UserId;
+                    feedbackRequest.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    Feedback feedback = _mapper.Map<Feedback>(feedbackRequest);
+                    int check = await _feedbackRepository.UpdateFeedback(feedback);
+                    if (check > 0)
                     {
-                        return id;
+                        return check;
                     }
                     else
                     {
@@ -157,10 +160,10 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 List<FeedbackVO> feedbacks = await _feedbackRepository.GetTopFeedback();
-                // convert entity to dto
-                List<FeedbackRequest> feedbackRequests = _mapper.Map<List<FeedbackRequest>>(feedbacks);
+/*                // convert entity to dto
+                List<FeedbackRequest> feedbackRequests = _mapper.Map<List<FeedbackRequest>>(feedbacks);*/
                 int count = await _feedbackRepository.CountAllFeedbacks(null);
-                result.ListOfFeedback = feedbackRequests;
+                result.ListOfFeedback = feedbacks;
                 result.NumOfFeedback = count;
                 return result;
             }

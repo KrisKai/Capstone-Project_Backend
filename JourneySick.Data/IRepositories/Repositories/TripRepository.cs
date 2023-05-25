@@ -26,7 +26,11 @@ namespace JourneySick.Data.IRepositories.Repositories
                 tripName ??= "";
                 parameters.Add("tripName", tripName, DbType.String);
 
-                var query = "SELECT * FROM trip a INNER JOIN trip_detail b ON a.TripId = b.TripId WHERE a.TripName LIKE CONCAT('%', @tripName, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * " +
+                    "FROM trip a INNER JOIN trip_detail b ON a.TripId = b.TripId " +
+                    "WHERE a.TripName " +
+                    "LIKE CONCAT('%', @tripName, '%') " +
+                    "LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TripVO>(query, parameters)).ToList();

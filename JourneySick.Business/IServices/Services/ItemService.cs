@@ -29,10 +29,10 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 List<ItemVO> items = await _itemRepository.GetAllItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
-                // convert entity to dto
-                List<ItemRequest> itemRequests = _mapper.Map<List<ItemRequest>>(items);
+/*                // convert entity to dto
+                List<ItemRequest> itemRequests = _mapper.Map<List<ItemRequest>>(items);*/
                 int count = await _itemRepository.CountAllItems(itemId, categoryId);
-                result.ListOfItem = itemRequests;
+                result.ListOfItem = items;
                 result.NumOfItem = count;
                 return result;
             }
@@ -60,17 +60,17 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateItem(ItemDTO itemDTO, CurrentUserObject currentUser)
+        public async Task<int> CreateItem(CreateItemRequest itemRequest, CurrentUserObject currentUser)
         {
             try
             {
-                itemDTO.CreateBy = currentUser.UserId;
-                itemDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                Item item = _mapper.Map<Item>(itemDTO);
-                int id = await _itemRepository.CreateItem(item);
-                if (id > 0)
+                itemRequest.CreateBy = currentUser.UserId;
+                itemRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                Item item = _mapper.Map<Item>(itemRequest);
+                int check = await _itemRepository.CreateItem(item);
+                if (check > 0)
                 {
-                    return id;
+                    return check;
                 }
                 throw new InsertException("Create trip item failed!");
             }
@@ -81,20 +81,20 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateItem(ItemDTO itemDTO, CurrentUserObject currentUser)
+        public async Task<int> UpdateItem(UpdateItemRequest itemRequest, CurrentUserObject currentUser)
         {
             try
             {
-                ItemDTO getTrip = await GetItemById((int)itemDTO.ItemId);
+                ItemDTO getTrip = await GetItemById((int)itemRequest.ItemId);
 
                 if (getTrip != null)
                 {
-                    itemDTO.UpdateBy = currentUser.UserId;
-                    itemDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
-                    Item item = _mapper.Map<Item>(itemDTO);
+                    itemRequest.UpdateBy = currentUser.UserId;
+                    itemRequest.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    Item item = _mapper.Map<Item>(itemRequest);
                     if (await _itemRepository.UpdateItem(item) > 0)
                     {
-                        return (int)itemDTO.ItemId;
+                        return (int)itemRequest.ItemId;
                     }
                     else
                     {

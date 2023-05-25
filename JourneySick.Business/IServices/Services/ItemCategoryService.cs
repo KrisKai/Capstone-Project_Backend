@@ -58,17 +58,17 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateItemCategory(ItemCategoryDTO itemCategoryDTO, CurrentUserObject currentUser)
+        public async Task<int> CreateItemCategory(CreateItemCategoryRequest itemCategoryRequest, CurrentUserObject currentUser)
         {
             try
             {
-                itemCategoryDTO.CreateBy = currentUser.UserId;
-                itemCategoryDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                ItemCategory itemCategory = _mapper.Map<ItemCategory>(itemCategoryDTO);
-                int id = await _itemCategoryRepository.CreateItemCategory(itemCategory);
-                if (id > 0)
+                itemCategoryRequest.CreateBy = currentUser.UserId;
+                itemCategoryRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                ItemCategory itemCategory = _mapper.Map<ItemCategory>(itemCategoryRequest);
+                int check = await _itemCategoryRepository.CreateItemCategory(itemCategory);
+                if (check > 0)
                 {
-                    return id;
+                    return check;
                 }
                 throw new InsertException("Create Item Category failed!");
             }
@@ -79,7 +79,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> UpdateItemCategory(ItemCategoryDTO itemCategoryDTO, CurrentUserObject currentUser)
+        public async Task<int> UpdateItemCategory(UpdateItemCategoryRequest itemCategoryDTO, CurrentUserObject currentUser)
         {
             try
             {

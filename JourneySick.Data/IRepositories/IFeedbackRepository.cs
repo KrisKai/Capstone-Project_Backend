@@ -13,7 +13,7 @@ namespace JourneySick.Data.IRepositories
         public Task<Feedback> GetFeedbackById(int feedbackId);
 
         //CREATE
-        public Task<int> CreateFeedback(Feedback feedback);
+        public Task<long> CreateFeedback(Feedback feedback);
 
         //UPDATE
         public Task<int> UpdateFeedback(Feedback feedback);

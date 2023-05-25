@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Transaction;
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -20,7 +21,12 @@ namespace JourneySick.Data.IRepositories.Repositories
                 int firstIndex = pageIndex * pageSize;
                 int lastIndex = (pageIndex + 1) * pageSize;
                 tripId ??= "";
-                var query = "SELECT * FROM feedback a INNER JOIN User b ON a.UserId = b.UserId INNER JOIN user_detail c ON a.UserId = c.UserId INNER JOIN Trip d ON a.TripId = d.TripId  WHERE a.TripId LIKE CONCAT('%', @tripId, '%') LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * " +
+                    "FROM feedback a INNER JOIN User b ON a.UserId = b.UserId " +
+                    "INNER JOIN user_detail c ON a.UserId = c.UserId " +
+                    "INNER JOIN Trip d ON a.TripId = d.TripId " +
+                    "WHERE a.TripId LIKE CONCAT('%', @tripId, '%') " +
+                    "LIMIT @firstIndex, @lastIndex";
                 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
@@ -74,10 +80,11 @@ namespace JourneySick.Data.IRepositories.Repositories
         }
 
         //CREATE
-        public async Task<int> CreateFeedback(Feedback feedbackEntity)
+        public async Task<long> CreateFeedback(Feedback feedbackEntity)
         {
             try
             {
+                long lastId;
                 var query = "INSERT INTO feedback ("
                     + "         TripId, "
                     + "         UserId, "
@@ -91,18 +98,19 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "     VALUES ( "
                     + "         @TripId, "
                     + "         @UserId, "
-                    + "         @Feedback, "
+                    + "         @FeedbackDescription, "
                     + "         @Rate, "
                     + "         @Like, "
                     + "         @Dislike, "
                     + "         @LocationName, "
                     + "         @CreateDate, "
                     + "         @CreateBy)";
+                var getLastId = "SELECT LAST_INSERT_ID()";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("TripId", feedbackEntity.TripId, DbType.String);
                 parameters.Add("UserId", feedbackEntity.UserId, DbType.String);
-                parameters.Add("Feedback", feedbackEntity.FeedbackDescription, DbType.String);
+                parameters.Add("FeedbackDescription", feedbackEntity.FeedbackDescription, DbType.String);
                 parameters.Add("Rate", feedbackEntity.Rate, DbType.Double);
                 parameters.Add("Like", feedbackEntity.Like, DbType.Int32);
                 parameters.Add("Dislike", feedbackEntity.Dislike, DbType.Int32);
@@ -110,8 +118,15 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("CreateDate", feedbackEntity.CreateDate, DbType.DateTime);
                 parameters.Add("CreateBy", feedbackEntity.CreateBy, DbType.String);
 
-                using var connection = CreateConnection();
-                return await connection.ExecuteAsync(query, parameters);
+                using (var connection = CreateConnection())
+                {
+                    connection.Open();
+                    using var transaction = connection.BeginTransaction();
+                    transaction.Execute(query, parameters);
+                    lastId = transaction.ExecuteScalar<long>(getLastId);
+                    transaction.Commit();
+                }
+                return lastId;
             }
             catch (Exception e)
             {
@@ -168,7 +183,11 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT Username, `Like`, Dislike, LocationName, Rate, FeedbackDescription FROM feedback a INNER JOIN user b ON a.UserId = b.UserId INNER JOIN user_detail c ON a.UserId = c.UserId INNER JOIN trip d ON a.TripId = d.TripId ORDER BY `Like` LIMIT 10";
+                var query = "SELECT Username, `Like`, Dislike, LocationName, Rate, FeedbackDescription " +
+                    "FROM feedback a INNER JOIN user b ON a.UserId = b.UserId " +
+                    "INNER JOIN user_detail c ON a.UserId = c.UserId " +
+                    "INNER JOIN trip d ON a.TripId = d.TripId " +
+                    "ORDER BY `Like` LIMIT 10";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<FeedbackVO>(query)).ToList();
@@ -179,7 +198,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> IncreaseLike(Feedback feedbackDTO, string status)
+        public async Task<int> IncreaseLike(Feedback feedbackEntity, string status)
         {
             try
             {
@@ -190,16 +209,16 @@ namespace JourneySick.Data.IRepositories.Repositories
                     query = "UPDATE feedback ("
                     + "         Like = @Like, "
                     + "      WHERE FeedbackId = @FeedbackId";
-                    parameters.Add("Like", feedbackDTO.Like, DbType.Int32);
+                    parameters.Add("Like", feedbackEntity.Like, DbType.Int32);
                 }
                 else if(status.Equals("D"))
                 {
                     query = "UPDATE feedback ("
                     + "         Dislike = @Dislike, "
                     + "      WHERE FeedbackId = @FeedbackId";
-                    parameters.Add("Dislike", feedbackDTO.Dislike, DbType.Int32);
+                    parameters.Add("Dislike", feedbackEntity.Dislike, DbType.Int32);
                 }
-                parameters.Add("FeedbackId", feedbackDTO.FeedbackId, DbType.Int32);
+                parameters.Add("FeedbackId", feedbackEntity.FeedbackId, DbType.Int32);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
