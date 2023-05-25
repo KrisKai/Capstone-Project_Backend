@@ -22,11 +22,11 @@ namespace JourneySick.Business.IServices.Services
         private readonly IMapper _mapper;
         private readonly ILogger<TripService> _logger;
 
-        public TripService(ITripRepository tripRepository, 
-            IMapper mapper, 
-            ITripDetailRepository tripDetailRepository, 
-            IUserDetailRepository userDetailRepository, 
-            IMapLocationRepository mapLocationRepository, 
+        public TripService(ITripRepository tripRepository,
+            IMapper mapper,
+            ITripDetailRepository tripDetailRepository,
+            IUserDetailRepository userDetailRepository,
+            IMapLocationRepository mapLocationRepository,
             ILogger<TripService> logger,
             IFirebaseStorageService firebaseStorageService)
         {
@@ -45,8 +45,25 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 List<TripVO> trips = await _tripRepository.GetAllTripsWithPaging(pageIndex, pageSize, tripName);
-     /*           // convert entity to dto
-                List<TripRequest> tripsDTOs = _mapper.Map<List<TripRequest>>(trips);*/
+                /*           // convert entity to dto
+                           List<TripRequest> tripsDTOs = _mapper.Map<List<TripRequest>>(trips);*/
+                foreach (TripVO tripVO in trips)
+                {
+                    MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripStartLocationId);
+                    if (startmaplocation != null)
+                    {
+                        tripVO.StartLocationName = startmaplocation.LocationName;
+                        tripVO.StartLatitude = startmaplocation.Latitude;
+                        tripVO.StartLongitude = startmaplocation.Longitude;
+                    }
+                    MapLocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripDestinationLocationId);
+                    if (endmaplocation != null)
+                    {
+                        tripVO.EndLocationName = endmaplocation.LocationName;
+                        tripVO.EndLatitude = endmaplocation.Latitude;
+                        tripVO.EndLongitude = endmaplocation.Longitude;
+                    }
+                }
                 int count = await _tripRepository.CountAllTrips(tripName);
                 result.ListOfTrip = trips;
                 result.NumOfTrip = count;
@@ -64,7 +81,7 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 TripVO trip = await _tripRepository.GetTripById(tripId);
-                /*MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripStartLocationId);
+                MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripStartLocationId);
                 if (startmaplocation != null)
                 {
                     trip.StartLocationName = startmaplocation.LocationName;
@@ -77,7 +94,7 @@ namespace JourneySick.Business.IServices.Services
                     trip.EndLocationName = endmaplocation.LocationName;
                     trip.EndLatitude = endmaplocation.Latitude;
                     trip.EndLongitude = endmaplocation.Longitude;
-                }*/
+                }
                 return trip;
             }
             catch (Exception ex)
@@ -93,7 +110,7 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 createTripRequest.TripStatus = "ACTIVE";
-                createTripRequest.CreateBy = (currentUser != null)?currentUser.UserId:"TESTER";
+                createTripRequest.CreateBy = (currentUser != null) ? currentUser.UserId : "TESTER";
                 createTripRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
                 MapLocation startmaplocation = new()
                 {
@@ -113,14 +130,14 @@ namespace JourneySick.Business.IServices.Services
 
                 TripVO tripVO = _mapper.Map<TripVO>(createTripRequest);
                 tripVO.TripId = await GenerateTripID();
-                if(createTripRequest.TripThumbnail != null)
+                if (createTripRequest.TripThumbnail != null)
                 {
                     tripVO.TripThumbnail = await _firebaseStorageService.UploadTripThumbnail(createTripRequest.TripThumbnail, tripVO.TripId);
                 }
 
                 Task createTrip = _tripRepository.CreateTrip(tripVO);
                 Task createTripDetail = _tripDetailRepository.CreateTripDetail(tripVO);
-                
+
                 if (Task.WhenAll(createTrip, createTripDetail).IsCompletedSuccessfully)
                 {
                     UserVO userVO = await _userDetailRepository.GetUserDetailById(createTripRequest.CreateBy);
@@ -232,7 +249,8 @@ namespace JourneySick.Business.IServices.Services
                 string lastOne = await _tripRepository.GetLastOneId();
                 if (lastOne != null)
                 {
-                    if(lastOne.Equals("0")) {
+                    if (lastOne.Equals("0"))
+                    {
                         return "TRIP_00000001";
                     }
                     string lastId = lastOne.Substring(5);
@@ -271,7 +289,7 @@ namespace JourneySick.Business.IServices.Services
                 };
                 if (countThisMonth >= countPreviousMonth)
                 {
-                    if(countPreviousMonth == 0)
+                    if (countPreviousMonth == 0)
                     {
                         tripStatistic.countDiff = 100;
                         tripStatistic.trendStatus = "R";
