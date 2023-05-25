@@ -1,13 +1,8 @@
 ﻿using Dapper;
 using JourneySick.Data.Helpers;
-using JourneySick.Data.Models.DTOs;
-using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
-using JourneySick.Data.Models.Enums;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
 using System.Data;
 
 namespace JourneySick.Data.IRepositories.Repositories

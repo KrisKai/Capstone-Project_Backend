@@ -3,9 +3,9 @@ using JourneySick.API.Extensions;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
-using JourneySick.Data.Models.DTOs.CommonDTO.VO;
 using Microsoft.AspNetCore.Authorization;
 using JourneySick.Data.Models.Entities.VO;
+using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 
 namespace JourneySick.API.Controllers
 {

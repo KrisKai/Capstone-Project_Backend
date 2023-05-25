@@ -5,22 +5,15 @@ using JourneySick.Business.Helpers.SettingObject;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.Models.DTOs.CommonDTO.Request;
-using JourneySick.Data.Models.DTOs.CommonDTO.VO;
-using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using JourneySick.Data.Models.Enums;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RevenueSharingInvest.Business.Services.Extensions.Email;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace JourneySick.Business.IServices.Services
 {

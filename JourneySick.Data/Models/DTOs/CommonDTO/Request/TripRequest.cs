@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace JourneySick.Data.Models.DTOs.CommonDTO.VO
+namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
 {
     public class TripRequest
     {
+        public string? TripId { get; set; } = null!;
         public string TripName { get; set; }
         public decimal TripBudget { get; set; }
         public string? TripDescription { get; set; }
