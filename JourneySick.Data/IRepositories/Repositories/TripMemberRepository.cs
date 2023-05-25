@@ -15,21 +15,6 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-
-        public async Task<int> GetLastOneId()
-        {
-            try
-            {
-                var query = "SELECT COALESCE(MAX(MemberId), 0) FROM trip_member ";
-                using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<int>(query);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
         public async Task<TripmemberVO> GetTripMemberById(int memberId)
         {
             try

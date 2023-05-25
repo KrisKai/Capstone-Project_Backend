@@ -13,8 +13,6 @@ namespace JourneySick.Data.IRepositories
     {
         //SELECT ALL
         public Task<List<TripmemberVO>> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName);
-        //SELECT LAST ONE
-        public Task<int> GetLastOneId();
         //SELECT BY ID
         public Task<TripmemberVO> GetTripMemberById(int tripMemberId);
         //COUNT BY USERNAME AND TRIP ID
