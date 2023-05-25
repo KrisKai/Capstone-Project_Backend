@@ -22,7 +22,7 @@ namespace JourneySick.Data.IRepositories
         //COUNT
         public Task<int> CountAllTripMembers(string? memberName);
         //CREATE
-        public Task<int> CreateTripMember(TripMember tripmember);
+        public Task<long> CreateTripMember(TripMember tripmember);
         //UPDATE
         public Task<int> UpdateTripMember(TripMember tripmember);
         //DELETE

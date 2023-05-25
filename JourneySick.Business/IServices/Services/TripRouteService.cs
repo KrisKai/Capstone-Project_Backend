@@ -70,9 +70,7 @@ namespace JourneySick.Business.IServices.Services
                     Longitude = tripRouteDTO.Longitude,
                     LocationName = tripRouteDTO.LocationName
                 };
-                await _mapLocationRepository.CreateMapLocation(maplocation);
-                int mapId = await _mapLocationRepository.GetLastOne();
-                tripRouteDTO.MapId = mapId;
+                tripRouteDTO.MapId = (int)await _mapLocationRepository.CreateMapLocation(maplocation);
                 TripRoute triproute = _mapper.Map<TripRoute>(tripRouteDTO);
                 int id = await _tripRouteRepository.CreateTripRoute(triproute);
                 if (id > 0)

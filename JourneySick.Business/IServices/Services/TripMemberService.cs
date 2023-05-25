@@ -74,14 +74,13 @@ namespace JourneySick.Business.IServices.Services
                     tripMemberDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
                     tripMemberDTO.Confirmation = "N";
                     TripMember tripmember = _mapper.Map<TripMember>(tripMemberDTO);
-                    int id = await _tripMemberRepository.CreateTripMember(tripmember);
+                    int id = (int)await _tripMemberRepository.CreateTripMember(tripmember);
                     if (id > 0)
                     {
                         UserVO userdetail = await _userDetailRepository.GetUserDetailById(tripMemberDTO.UserId);
                         UserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(tripMemberDTO.TripId);
-                        int memberId = await _tripMemberRepository.GetLastOneId();
-                        await EmailService.SendEmailTrip(tripPresenter.Fullname, userdetail.Email, userdetail.Fullname, memberId);
-                        await _tripMemberRepository.UpdateSendMailDate(memberId);
+                        await EmailService.SendEmailTrip(tripPresenter.Fullname, userdetail.Email, userdetail.Fullname, id);
+                        await _tripMemberRepository.UpdateSendMailDate(id);
                         return id;
                     }
                 }
@@ -180,8 +179,7 @@ namespace JourneySick.Business.IServices.Services
                     {
                         UserVO userdetail = await _userDetailRepository.GetUserDetailById(getTrip.UserId);
                         UserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(getTrip.TripId);
-                        int memberId = await _tripMemberRepository.GetLastOneId();
-                        await EmailService.SendEmailTrip(tripPresenter.Fullname, userdetail.Email, userdetail.Fullname, memberId);
+                        await EmailService.SendEmailTrip(tripPresenter.Fullname, userdetail.Email, userdetail.Fullname, id);
                         await _tripMemberRepository.UpdateSendMailDate(id);
                         return id;
                     }

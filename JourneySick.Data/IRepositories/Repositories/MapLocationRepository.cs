@@ -53,21 +53,6 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> GetLastOne()
-        {
-            try
-            {
-                var query = "SELECT COALESCE(MAX(MapId), 0) FROM map_location";
-
-                using var connection = CreateConnection();
-                return await connection.QueryFirstOrDefaultAsync<int>(query);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
-
         public async Task<long> CreateMapLocation(MapLocation maplocation)
         {
 

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Transaction;
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
@@ -106,10 +107,11 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CreateTripMember(TripMember tripmember)
+        public async Task<long> CreateTripMember(TripMember tripmember)
         {
             try
             {
+                long lastId;
                 var query = "INSERT INTO trip_member ("
                     + "         UserId, "
                     + "         TripId, "
@@ -126,6 +128,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @Status, "
                     + "         @CreateDate, "
                     + "         @CreateBy)";
+                var getLastId = "SELECT LAST_INSERT_ID()";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("UserId", tripmember.UserId, DbType.String);
@@ -136,8 +139,15 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("CreateDate", tripmember.CreateDate, DbType.DateTime);
                 parameters.Add("CreateBy", tripmember.CreateBy, DbType.String);
 
-                using var connection = CreateConnection();
-                return await connection.ExecuteAsync(query, parameters);
+                using (var connection = CreateConnection())
+                {
+                    connection.Open();
+                    using var transaction = connection.BeginTransaction();
+                    transaction.Execute(query, parameters);
+                    lastId = transaction.ExecuteScalar<long>(getLastId);
+                    transaction.Commit();
+                }
+                return lastId;
             }
             catch (Exception e)
             {
