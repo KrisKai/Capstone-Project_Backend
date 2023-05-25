@@ -72,7 +72,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM user_detail a RIGHT JOIN trip b ON a.UserId = b.TripPresenter WHERE TripId = @TripId";
+                var query = "SELECT a.* FROM user_detail a RIGHT JOIN trip b ON a.UserId = b.TripPresenter WHERE TripId = @TripId";
                 var parameters = new DynamicParameters();
                 parameters.Add("TripId", tripId, DbType.String);
                 using var connection = CreateConnection();

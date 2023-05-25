@@ -64,7 +64,7 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 TripVO trip = await _tripRepository.GetTripById(tripId);
-                MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripStartLocationId);
+                /*MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripStartLocationId);
                 if (startmaplocation != null)
                 {
                     trip.StartLocationName = startmaplocation.LocationName;
@@ -77,7 +77,7 @@ namespace JourneySick.Business.IServices.Services
                     trip.EndLocationName = endmaplocation.LocationName;
                     trip.EndLatitude = endmaplocation.Latitude;
                     trip.EndLongitude = endmaplocation.Longitude;
-                }
+                }*/
                 return trip;
             }
             catch (Exception ex)
