@@ -43,6 +43,8 @@ namespace JourneySick.Business.Helpers
                 .ReverseMap(); //reverse so the both direction
             CreateMap<ItemCategoryDTO, ItemCategory>()
                 .ReverseMap(); //reverse so the both direction
+            CreateMap<UpdateItemCategoryRequest, ItemCategory>()
+                .ReverseMap(); //reverse so the both direction
             CreateMap<ItemRequest, ItemVO>()
                 .ReverseMap(); //reverse so the both direction
             CreateMap<MapLocationDTO, MapLocation>()
