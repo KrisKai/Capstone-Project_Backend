@@ -12,7 +12,7 @@ namespace JourneySick.Data.Models.Entities
         public int? EstimateStartTime { get; set; }
         public DateTime? EstimateEndDate { get; set; }
         public int? EstimateEndTime { get; set; }
-        public decimal? Distance { get; set; }
+        public string? Distance { get; set; }
         public DateTime? CreateDate { get; set; }
         public string? CreateBy { get; set; }
         public DateTime? UpdateDate { get; set; }

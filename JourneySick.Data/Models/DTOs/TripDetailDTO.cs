@@ -21,7 +21,7 @@ namespace JourneySick.Data.Models.DTOs
         /// &apos;HH:MM&apos;
         /// </summary>
         public int? EstimateEndTime { get; set; }
-        public decimal? Distance { get; set; }
+        public string? Distance { get; set; }
         public DateTime? CreateDate { get; set; }
         public string? CreateBy { get; set; }
         public DateTime? UpdateDate { get; set; }

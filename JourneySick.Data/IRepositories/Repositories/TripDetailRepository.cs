@@ -48,7 +48,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("EstimateStartTime", tripdetail.EstimateStartTime, DbType.Int32);
                 parameters.Add("EstimateEndDate", tripdetail.EstimateEndDate, DbType.DateTime);
                 parameters.Add("EstimateEndTime", tripdetail.EstimateEndTime, DbType.Int32);
-                parameters.Add("Distance", tripdetail.Distance, DbType.Decimal);
+                parameters.Add("Distance", tripdetail.Distance, DbType.String);
                 parameters.Add("CreateDate", tripdetail.CreateDate, DbType.DateTime);
                 parameters.Add("CreateBy", tripdetail.CreateBy, DbType.String);
 
@@ -85,7 +85,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("EstimateStartTime", tripdetail.EstimateStartTime, DbType.Int32);
                 parameters.Add("EstimateEndDate", tripdetail.EstimateEndDate, DbType.DateTime);
                 parameters.Add("EstimateEndTime", tripdetail.EstimateEndTime, DbType.Int32);
-                parameters.Add("Distance", tripdetail.Distance, DbType.Decimal);
+                parameters.Add("Distance", tripdetail.Distance, DbType.String);
                 parameters.Add("UpdateDate", tripdetail.UpdateDate, DbType.DateTime);
                 parameters.Add("UpdateBy", tripdetail.UpdateBy, DbType.String);
 

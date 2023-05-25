@@ -124,8 +124,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "UPDATE trip SET"
                     + "         TripName = @TripName, "
                     + "         TripDescription = @TripDescription, "
-                    + "         EstimateStartTime = @EstimateStartTime, "
-                    + "         EstimateArrivalTime = @EstimateArrivalTime, "
                     + "         TripStatus = @TripStatus, "
                     + "         TripMember = @TripMember,"
                     + "         TripPresenter = @TripPresenter"

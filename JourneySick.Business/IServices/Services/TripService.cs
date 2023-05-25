@@ -154,7 +154,9 @@ namespace JourneySick.Business.IServices.Services
                     updateTripRequest.UpdateBy = currentUser.UserId;
                     updateTripRequest.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
                     TripVO tripVO = _mapper.Map<TripVO>(updateTripRequest);
-                    if (await _tripRepository.UpdateTrip(tripVO) > 0 && await _tripDetailRepository.UpdateTripDetail(tripVO) > 0)
+                    int id = await _tripRepository.UpdateTrip(tripVO);
+                    int id_detail = await _tripDetailRepository.UpdateTripDetail(tripVO);
+                    if (id >= 0 && id_detail >= 0)
                     {
                         MapLocation startmaplocation = new()
                         {
