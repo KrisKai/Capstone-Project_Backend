@@ -363,7 +363,7 @@ namespace JourneySick.Data.Models.Entities
                     .HasPrecision(5, 2)
                     .HasDefaultValueSql("'0.00'");
 
-                entity.Property(e => e.Tripid).HasMaxLength(20);
+                entity.Property(e => e.TripId).HasMaxLength(20);
             });
 
             modelBuilder.Entity<User>(entity =>

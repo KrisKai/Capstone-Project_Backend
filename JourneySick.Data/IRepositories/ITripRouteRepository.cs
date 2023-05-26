@@ -12,8 +12,8 @@ namespace JourneySick.Data.IRepositories
     public interface ITripRouteRepository
     {
         //SELECT ALL
-        public Task<List<TriprouteVO>> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId);
-        public Task<int> CountAllTripRoutes(string? tripName);
+        public Task<List<TriprouteVO>> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId, string tripId);
+        public Task<int> CountAllTripRoutes(string? tripName, string tripId);
         public Task<TripRoute> GetTripRouteById(int tripRouteId);
         //CREATE
         public Task<int> CreateTripRoute(TripRoute triproute);

@@ -588,7 +588,7 @@ namespace JourneySick.Data.Migrations
                     b.Property<int?>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<string>("Tripid")
+                    b.Property<string>("TripId")
                         .HasMaxLength(20)
                         .HasColumnType("varchar(20)");
 

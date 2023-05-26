@@ -25,11 +25,11 @@ namespace JourneySick.API.Controllers
         //GET ALL
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllTripItemsWithPaging(int pageIndex, int pageSize, string? itemId, int categoryId)
+        public async Task<IActionResult> GetAllTripItemsWithPaging(int pageIndex, int pageSize, string? itemId, int categoryId, string tripId)
         {
             var result = new AllTripItemDTO();
             CurrentUserObject currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            result = await _tripItemService.GetAllTripItemsWithPaging(pageIndex, pageSize, itemId, categoryId);
+            result = await _tripItemService.GetAllTripItemsWithPaging(pageIndex, pageSize, itemId, categoryId, tripId);
             return Ok(result);
 
         }

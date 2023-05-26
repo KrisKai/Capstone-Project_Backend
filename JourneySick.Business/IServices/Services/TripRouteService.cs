@@ -23,15 +23,15 @@ namespace JourneySick.Business.IServices.Services
             _mapper = mapper;
             _logger = logger;
         }
-        public async Task<AllTripRouteDTO> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId)
+        public async Task<AllTripRouteDTO> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId, string tripId)
         {
             AllTripRouteDTO result = new();
             try
             {
-                List<TriprouteVO> triprouteVOs = await _tripRouteRepository.GetAllTripRoutesWithPaging(pageIndex, pageSize, routeId);
+                List<TriprouteVO> triprouteVOs = await _tripRouteRepository.GetAllTripRoutesWithPaging(pageIndex, pageSize, routeId, tripId);
                 // convert entity to dto
                 List<TripRouteRequest> tripRouteRequests = _mapper.Map<List<TripRouteRequest>>(triprouteVOs);
-                int count = await _tripRouteRepository.CountAllTripRoutes(routeId);
+                int count = await _tripRouteRepository.CountAllTripRoutes(routeId, tripId);
                 result.ListOfRoute = tripRouteRequests;
                 result.NumOfRoute = count;
                 return result;

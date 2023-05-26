@@ -13,7 +13,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<TriprouteVO>> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId)
+        public async Task<List<TriprouteVO>> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId, string tripId)
         {
             try
             {
@@ -24,8 +24,9 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("lastIndex", lastIndex, DbType.Int16);
                 routeId ??= "";
                 parameters.Add("routeId", routeId, DbType.String);
+                parameters.Add("tripId", tripId, DbType.String);
 
-                var query = "SELECT * FROM trip_route a INNER JOIN map_location b ON a.MapId = b.MapId WHERE RouteId LIKE CONCAT('%', @routeId, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM trip_route a INNER JOIN map_location b ON a.MapId = b.MapId WHERE TripId = @tripId AND RouteId LIKE CONCAT('%', @routeId, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TriprouteVO>(query, parameters)).ToList();
@@ -53,15 +54,16 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountAllTripRoutes(string? routeId)
+        public async Task<int> CountAllTripRoutes(string? routeId, string tripId)
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM trip_route WHERE RouteId LIKE CONCAT('%', @routeId, '%')";
+                var query = "SELECT COUNT(*) FROM trip_route WHERE TripId = @tripId AND RouteId LIKE CONCAT('%', @routeId, '%')";
 
                 routeId ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("routeId", routeId, DbType.String);
+                parameters.Add("tripId", tripId, DbType.String);
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query, parameters));
 
@@ -90,7 +92,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @Distance)";
 
                 var parameters = new DynamicParameters();
-                parameters.Add("TripId", triproute.Tripid, DbType.String);
+                parameters.Add("TripId", triproute.TripId, DbType.String);
                 parameters.Add("MapId", triproute.MapId, DbType.Int32);
                 parameters.Add("Priority", triproute.Priority, DbType.Int32);
                 parameters.Add("EstimateTime", triproute.EstimateTime, DbType.Decimal);

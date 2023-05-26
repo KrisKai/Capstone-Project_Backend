@@ -9,7 +9,7 @@ namespace JourneySick.Data.Models.DTOs
     public class TripRouteDTO
     {
         public int? RouteId { get; set; }
-        public string? Tripid { get; set; }
+        public string? TripId { get; set; }
         public int? MapId { get; set; }
         public int? Priority { get; set; }
         public decimal? EstimateTime { get; set; }

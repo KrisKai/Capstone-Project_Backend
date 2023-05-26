@@ -12,7 +12,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<TripItem>> GetAllTripItemsWithPaging(int pageIndex, int pageSize, string? itemId, int categoryId)
+        public async Task<List<TripItem>> GetAllTripItemsWithPaging(int pageIndex, int pageSize, string? itemId, int categoryId, string tripId)
         {
             try
             {
@@ -24,14 +24,15 @@ namespace JourneySick.Data.IRepositories.Repositories
                 itemId ??= "";
                 parameters.Add("itemId", itemId, DbType.String);
                 parameters.Add("categoryId", categoryId, DbType.Int32);
+                parameters.Add("tripId", tripId, DbType.String);
                 var query = "";
                 if (categoryId == 0)
                 {
-                    query = "SELECT * FROM trip_item WHERE ItemId LIKE CONCAT('%', @itemId, '%') LIMIT @firstIndex, @lastIndex";
+                    query = "SELECT * FROM trip_item WHERE TripId = @tripId AND ItemId LIKE CONCAT('%', @itemId, '%') LIMIT @firstIndex, @lastIndex";
                 }
                 else
                 {
-                    query = "SELECT * FROM trip_item WHERE ItemId LIKE CONCAT('%', @itemId, '%') AND CategoryId = @categoryId LIMIT @firstIndex, @lastIndex";
+                    query = "SELECT * FROM trip_item WHERE TripId = @tripId AND ItemId LIKE CONCAT('%', @itemId, '%') AND CategoryId = @categoryId LIMIT @firstIndex, @lastIndex";
                 }
 
                 using var connection = CreateConnection();
@@ -60,23 +61,24 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountAllTripItems(string? itemId, int categoryId)
+        public async Task<int> CountAllTripItems(string? itemId, int categoryId, string tripId)
         {
             try
             {
                 var query = "";
                 if (categoryId == 0)
                 {
-                    query = "SELECT COUNT(*) FROM trip_item WHERE ItemId LIKE CONCAT('%', @itemId, '%')";
+                    query = "SELECT COUNT(*) FROM trip_item WHERE TripId = @tripId AND ItemId LIKE CONCAT('%', @itemId, '%')";
                 }
                 else
                 {
-                    query = "SELECT COUNT(*) FROM trip_item WHERE ItemId LIKE CONCAT('%', @itemId, '%')";
+                    query = "SELECT COUNT(*) FROM trip_item WHERE TripId = @tripId AND ItemId LIKE CONCAT('%', @itemId, '%')";
                 }
                 itemId ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("itemId", itemId, DbType.String);
                 parameters.Add("categoryId", categoryId, DbType.Int32);
+                parameters.Add("tripId", tripId, DbType.String);
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query, parameters));
 
