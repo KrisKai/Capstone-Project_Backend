@@ -19,6 +19,9 @@ namespace JourneySick.Business.IServices.Services
         private readonly ITripDetailRepository _tripDetailRepository;
         private readonly IUserDetailRepository _userDetailRepository;
         private readonly IMapLocationRepository _mapLocationRepository;
+        private readonly ITripItemRepository _tripItemRepository;
+        private readonly ITripMemberRepository _tripMemberRepository;
+        private readonly ITripRouteRepository _tripRouteRepository;
         private readonly IFirebaseStorageService _firebaseStorageService;
         private readonly IMapper _mapper;
         private readonly ILogger<TripService> _logger;
@@ -28,6 +31,9 @@ namespace JourneySick.Business.IServices.Services
             ITripDetailRepository tripDetailRepository,
             IUserDetailRepository userDetailRepository,
             IMapLocationRepository mapLocationRepository,
+            ITripItemRepository tripItemRepository,
+            ITripMemberRepository tripMemberRepository,
+            ITripRouteRepository tripRouteRepository,
             ILogger<TripService> logger,
             IFirebaseStorageService firebaseStorageService)
         {
@@ -35,6 +41,9 @@ namespace JourneySick.Business.IServices.Services
             _tripDetailRepository = tripDetailRepository;
             _userDetailRepository = userDetailRepository;
             _mapLocationRepository = mapLocationRepository;
+            _tripItemRepository = tripItemRepository;
+            _tripMemberRepository = tripMemberRepository;
+            _tripRouteRepository = tripRouteRepository;
             _firebaseStorageService = firebaseStorageService;
             _mapper = mapper;
             _logger = logger;
@@ -224,6 +233,9 @@ namespace JourneySick.Business.IServices.Services
                     if (await _tripRepository.DeleteTrip(tripId) > 0 && await _tripDetailRepository.DeleteTripDetail(tripId) > 0
                         && await _mapLocationRepository.DeleteMapLocation((int)getTrip.TripStartLocationId) > 0 && await _mapLocationRepository.DeleteMapLocation((int)getTrip.TripDestinationLocationId) > 0)
                     {
+                        await _tripItemRepository.DeleteTripItemByTripId(tripId);
+                        await _tripMemberRepository.DeleteTripMemberByTripId(tripId);
+                        await _tripRouteRepository.DeleteTripMemberByTripId(tripId);
                         return 1;
                     }
                     else

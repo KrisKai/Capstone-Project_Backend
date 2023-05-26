@@ -185,6 +185,21 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public async Task<int> DeleteTripItemByTripId(string tripId)
+        {
+            try
+            {
+                var query = "DELETE FROM trip_item WHERE TripId = @TripId";
 
+                var parameters = new DynamicParameters();
+                parameters.Add("TripId", tripId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }
