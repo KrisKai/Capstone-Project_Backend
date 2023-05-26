@@ -86,5 +86,17 @@ namespace JourneySick.API.Controllers
 
         }
 
+        //TRIP STATISTIC
+        [HttpGet]
+        //[Authorize]
+        [Route("trip-history")]
+        public async Task<IActionResult> TripHistory()
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _tripService.GetTripHistory(currentUser.UserId);
+            return Ok(result);
+
+        }
+
     }
 }

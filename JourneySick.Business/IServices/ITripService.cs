@@ -19,5 +19,6 @@ namespace JourneySick.Business.IServices
         public Task<int> DeleteTrip(string tripId);
         //Count this month
         public Task<TripStatisticResponse> TripStatistic();
+        public Task<List<TripVO>> GetTripHistory(string userId);
     }
 }

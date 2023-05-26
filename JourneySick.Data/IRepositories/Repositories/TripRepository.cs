@@ -247,5 +247,26 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        public async Task<List<TripVO>> GetTripHistoryByUserId(string userId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("userId", userId, DbType.String);
+
+                var query = "SELECT a.* " +
+                    "FROM trip a INNER JOIN trip_detail b ON a.TripId = b.TripId " +
+                    "INNER JOIN trip_member c ON a.TripId = c.TripId " +
+                    "WHERE c.UserId = @userId";
+
+                using var connection = CreateConnection();
+                return (await connection.QueryAsync<TripVO>(query, parameters)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }

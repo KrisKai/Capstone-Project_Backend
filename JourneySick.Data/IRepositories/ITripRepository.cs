@@ -27,5 +27,6 @@ namespace JourneySick.Data.IRepositories
         public Task<int> CountTripCreatedPreviousMonth();
         //COUNT THIS YEAR
         public Task<int> CountTripCreatedThisYear();
+        public Task<List<TripVO>> GetTripHistoryByUserId(string userId);
     }
 }

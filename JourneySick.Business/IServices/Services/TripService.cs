@@ -9,6 +9,7 @@ using JourneySick.Data.Models.DTOs.CommonDTO.Response;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Logging;
+using MySqlX.XDevAPI.Common;
 
 namespace JourneySick.Business.IServices.Services
 {
@@ -314,6 +315,39 @@ namespace JourneySick.Business.IServices.Services
                     }
                 }
                 return tripStatistic;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
+        public async Task<List<TripVO>> GetTripHistory(string userId)
+        {
+            try
+            {
+                List<TripVO> trips = await _tripRepository.GetTripHistoryByUserId(userId);
+                /*           // convert entity to dto
+                           List<TripRequest> tripsDTOs = _mapper.Map<List<TripRequest>>(trips);*/
+                foreach (TripVO tripVO in trips)
+                {
+                    MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripStartLocationId);
+                    if (startmaplocation != null)
+                    {
+                        tripVO.StartLocationName = startmaplocation.LocationName;
+                        tripVO.StartLatitude = startmaplocation.Latitude;
+                        tripVO.StartLongitude = startmaplocation.Longitude;
+                    }
+                    MapLocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripDestinationLocationId);
+                    if (endmaplocation != null)
+                    {
+                        tripVO.EndLocationName = endmaplocation.LocationName;
+                        tripVO.EndLatitude = endmaplocation.Latitude;
+                        tripVO.EndLongitude = endmaplocation.Longitude;
+                    }
+                }
+                return trips;
             }
             catch (Exception ex)
             {
