@@ -105,7 +105,7 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    if (await _tripMemberRepository.CountTripMemberByUserIdAndTripId(tripMemberDTO.UserId, tripMemberDTO.TripId) == 0)
+                    if (await _tripMemberRepository.CountTripMemberByUserIdAndTripId(tripMemberDTO.UserId, tripMemberDTO.TripId) > 0 && getTrip.UserId.Equals(tripMemberDTO.UserId))
                     {
                         tripMemberDTO.UpdateBy = currentUser.UserId;
                         tripMemberDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();

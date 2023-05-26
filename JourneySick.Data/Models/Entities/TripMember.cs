@@ -8,7 +8,7 @@ namespace JourneySick.Data.Models.Entities
         public int MemberId { get; set; }
         public string UserId { get; set; } = null!;
         public string TripId { get; set; } = null!;
-        public string? MemberRoleId { get; set; }
+        public string? MemberRole { get; set; }
         public string? NickName { get; set; }
         public string? Status { get; set; }
         public string? Confirmation { get; set; }

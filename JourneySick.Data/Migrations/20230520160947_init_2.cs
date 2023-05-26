@@ -258,7 +258,7 @@ namespace JourneySick.Data.Migrations
                         .Annotation("MySql:CharSet", "latin1"),
                     TripId = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false, collation: "latin1_swedish_ci")
                         .Annotation("MySql:CharSet", "latin1"),
-                    MemberRoleId = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true, collation: "latin1_swedish_ci")
+                    MemberRole = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true, collation: "latin1_swedish_ci")
                         .Annotation("MySql:CharSet", "latin1"),
                     NickName = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true, collation: "latin1_swedish_ci")
                         .Annotation("MySql:CharSet", "latin1"),

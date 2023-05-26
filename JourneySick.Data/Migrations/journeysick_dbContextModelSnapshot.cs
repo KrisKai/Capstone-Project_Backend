@@ -452,7 +452,7 @@ namespace JourneySick.Data.Migrations
                     b.Property<DateTime?>("CreateDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("MemberRoleId")
+                    b.Property<string>("MemberRole")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 

@@ -14,7 +14,7 @@ namespace JourneySick.Data.Models.DTOs
 
         public string? TripId { get; set; }
 
-        public int? MemberRoleId { get; set; }
+        public string? MemberRole { get; set; }
 
         public string? NickName { get; set; }
 

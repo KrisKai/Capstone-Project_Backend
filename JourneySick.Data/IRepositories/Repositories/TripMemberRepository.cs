@@ -62,7 +62,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 memberName ??= "";
                 parameters.Add("NickName", memberName, DbType.String);
 
-                var query = "SELECT * FROM trip_member a LEFT JOIN user_detail b ON a.UserId = b.UserId INNER JOIN trip_role c ON a.MemberRoleId = c.RoleId WHERE NickName LIKE CONCAT('%', @NickName, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM trip_member a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE NickName LIKE CONCAT('%', @NickName, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TripmemberVO>(query, parameters)).ToList();
@@ -100,7 +100,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "INSERT INTO trip_member ("
                     + "         UserId, "
                     + "         TripId, "
-                    + "         MemberRoleId, "
+                    + "         MemberRole, "
                     + "         NickName, "
                     + "         Status, "
                     + "         CreateDate, "
@@ -108,7 +108,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "     VALUES ( "
                     + "         @UserId, "
                     + "         @TripId, "
-                    + "         @MemberRoleId, "
+                    + "         @MemberRole, "
                     + "         @NickName, "
                     + "         @Status, "
                     + "         @CreateDate, "
@@ -118,7 +118,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("UserId", tripmember.UserId, DbType.String);
                 parameters.Add("TripId", tripmember.TripId, DbType.String);
-                parameters.Add("MemberRoleId", tripmember.MemberRoleId, DbType.Int32);
+                parameters.Add("MemberRole", tripmember.MemberRole, DbType.String);
                 parameters.Add("NickName", tripmember.NickName, DbType.String);
                 parameters.Add("Status", tripmember.Status, DbType.String);
                 parameters.Add("CreateDate", tripmember.CreateDate, DbType.DateTime);
@@ -147,7 +147,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "UPDATE trip_member SET " +
                     "UserId = @UserId, " +
                     "TripId = @TripId, " +
-                    "MemberRoleId = @MemberRoleId, " +
+                    "MemberRole = @MemberRole, " +
                     "NickName = @NickName, " +
                     "Status = @Status, " +
                     "UpdateDate = @UpdateDate, " +
@@ -158,7 +158,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("MemberId", tripmember.MemberId, DbType.Int32);
                 parameters.Add("UserId", tripmember.UserId, DbType.String);
                 parameters.Add("TripId", tripmember.TripId, DbType.String);
-                parameters.Add("MemberRoleId", tripmember.MemberRoleId, DbType.Int32);
+                parameters.Add("MemberRole", tripmember.MemberRole, DbType.String);
                 parameters.Add("NickName", tripmember.NickName, DbType.String);
                 parameters.Add("Status", tripmember.Status, DbType.String);
                 parameters.Add("UpdateDate", tripmember.UpdateDate, DbType.DateTime);

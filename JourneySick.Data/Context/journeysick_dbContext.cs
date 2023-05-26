@@ -286,7 +286,7 @@ namespace JourneySick.Data.Models.Entities
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.MemberRoleId).HasMaxLength(50);
+                entity.Property(e => e.MemberRole).HasMaxLength(50);
 
                 entity.Property(e => e.NickName).HasMaxLength(50);
 
