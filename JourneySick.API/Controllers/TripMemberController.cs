@@ -26,11 +26,10 @@ namespace JourneySick.API.Controllers
         //GET ALL
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName)
+        public async Task<IActionResult> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string tripId, string? memberName)
         {
-            var result = new AllTripMemberDTO();
             CurrentUserObject currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
-            result = await _tripMemberService.GetAllTripMembersWithPaging(pageIndex, pageSize, memberName);
+            var result = await _tripMemberService.GetAllTripMembersWithPaging(pageIndex, pageSize, tripId, memberName);
             return Ok(result);
 
         }

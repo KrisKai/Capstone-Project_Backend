@@ -50,7 +50,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<List<TripmemberVO>> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string? memberName)
+        public async Task<List<TripmemberVO>> GetAllTripMembersWithPaging(int pageIndex, int pageSize, string tripId, string? memberName)
         {
             try
             {
@@ -59,10 +59,12 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
                 parameters.Add("lastIndex", lastIndex, DbType.Int16);
+
+                parameters.Add("tripId", tripId, DbType.String);
                 memberName ??= "";
                 parameters.Add("NickName", memberName, DbType.String);
 
-                var query = "SELECT * FROM trip_member a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE NickName LIKE CONCAT('%', @NickName, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM trip_member a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE TripId = @tripId AND NickName LIKE CONCAT('%', @NickName, '%')  LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TripmemberVO>(query, parameters)).ToList();
@@ -73,15 +75,16 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountAllTripMembers(string? memberName)
+        public async Task<int> CountAllTripMembers(string tripId, string? memberName)
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM trip_member WHERE NickName LIKE CONCAT('%', @NickName, '%')";
+                var query = "SELECT COUNT(*) FROM trip_member WHERE TripId = @tripId AND NickName LIKE CONCAT('%', @NickName, '%')";
 
                 memberName ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("NickName", memberName, DbType.String);
+                parameters.Add("tripId", tripId, DbType.String);
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query, parameters));
 
