@@ -27,7 +27,6 @@ namespace JourneySick.Data.Models.Entities
         public virtual DbSet<TripItem> TripItems { get; set; } = null!;
         public virtual DbSet<TripMember> TripMembers { get; set; } = null!;
         public virtual DbSet<TripPlan> TripPlans { get; set; } = null!;
-        public virtual DbSet<TripRole> TripRoles { get; set; } = null!;
         public virtual DbSet<TripRoute> TripRoutes { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserDetail> UserDetails { get; set; } = null!;
@@ -325,29 +324,6 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.UpdateBy).HasMaxLength(20);
 
                 entity.Property(e => e.UpdateDate).HasColumnType("datetime");
-            });
-
-            modelBuilder.Entity<TripRole>(entity =>
-            {
-                entity.HasKey(e => e.RoleId)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("trip_role");
-
-                entity.HasCharSet("latin1")
-                    .UseCollation("latin1_swedish_ci");
-
-                entity.HasIndex(e => e.RoleId, "fldRoleId_UNIQUE")
-                    .IsUnique();
-
-                entity.Property(e => e.Description).HasColumnType("text");
-
-                entity.Property(e => e.RoleName).HasMaxLength(150);
-
-                entity.Property(e => e.Type)
-                    .HasMaxLength(20)
-                    .UseCollation("utf8mb3_general_ci")
-                    .HasCharSet("utf8mb3");
             });
 
             modelBuilder.Entity<TripRoute>(entity =>
