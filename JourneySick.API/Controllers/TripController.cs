@@ -88,7 +88,7 @@ namespace JourneySick.API.Controllers
 
         //TRIP STATISTIC
         [HttpGet]
-        //[Authorize]
+        [Authorize]
         [Route("trip-history")]
         public async Task<IActionResult> TripHistory()
         {
