@@ -21,5 +21,7 @@ namespace JourneySick.Data.Models.Entities.VO
         public string? EndLongitude { get; set; } = null!;
         public string? EndLatitude { get; set; } = null!;
         public string? EndLocationName { get; set; }
+        public string? EstimateStartDateStr { get; set; }
+        public string? EstimateEndDateStr { get; set; }
     }
 }

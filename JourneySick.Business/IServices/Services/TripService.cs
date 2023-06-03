@@ -342,21 +342,26 @@ namespace JourneySick.Business.IServices.Services
                 List<TripVO> trips = await _tripRepository.GetTripHistoryByUserId(userId);
                 /*           // convert entity to dto
                            List<TripRequest> tripsDTOs = _mapper.Map<List<TripRequest>>(trips);*/
-                foreach (TripVO tripVO in trips)
+                if(trips.Count > 0)
                 {
-                    MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripStartLocationId);
-                    if (startmaplocation != null)
+                    foreach (TripVO tripVO in trips)
                     {
-                        tripVO.StartLocationName = startmaplocation.LocationName;
-                        tripVO.StartLatitude = startmaplocation.Latitude;
-                        tripVO.StartLongitude = startmaplocation.Longitude;
-                    }
-                    MapLocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripDestinationLocationId);
-                    if (endmaplocation != null)
-                    {
-                        tripVO.EndLocationName = endmaplocation.LocationName;
-                        tripVO.EndLatitude = endmaplocation.Latitude;
-                        tripVO.EndLongitude = endmaplocation.Longitude;
+                        tripVO.EstimateStartDateStr = $"{tripVO.EstimateStartDate:MMM dd}";
+                        tripVO.EstimateEndDateStr = $"{tripVO.EstimateEndDate:MMM dd}";
+                        MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripStartLocationId);
+                        if (startmaplocation != null)
+                        {
+                            tripVO.StartLocationName = startmaplocation.LocationName;
+                            tripVO.StartLatitude = startmaplocation.Latitude;
+                            tripVO.StartLongitude = startmaplocation.Longitude;
+                        }
+                        MapLocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripDestinationLocationId);
+                        if (endmaplocation != null)
+                        {
+                            tripVO.EndLocationName = endmaplocation.LocationName;
+                            tripVO.EndLatitude = endmaplocation.Latitude;
+                            tripVO.EndLongitude = endmaplocation.Longitude;
+                        }
                     }
                 }
                 return trips;
