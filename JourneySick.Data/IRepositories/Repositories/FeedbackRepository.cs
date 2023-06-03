@@ -183,7 +183,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT Username, `Like`, Dislike, LocationName, Rate, FeedbackDescription " +
+                var query = "SELECT Fullname, `Like`, Dislike, LocationName, Rate, FeedbackDescription " +
                     "FROM feedback a INNER JOIN user b ON a.UserId = b.UserId " +
                     "INNER JOIN user_detail c ON a.UserId = c.UserId " +
                     "INNER JOIN trip d ON a.TripId = d.TripId " +

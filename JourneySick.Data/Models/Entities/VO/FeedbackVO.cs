@@ -6,6 +6,7 @@ namespace JourneySick.Data.Models.Entities.VO
         public string Username { get; set; } = null!;
         public string Email { get; set; }
         public string TripName { get; set; }
+        public string Fullname { get; set; }
     }
 }
 
