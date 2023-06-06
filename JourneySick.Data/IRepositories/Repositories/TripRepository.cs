@@ -255,7 +255,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("userId", userId, DbType.String);
 
-                var query = "SELECT a.*, b.* " +
+                var query = "SELECT a.*, b.*, TripStatus " +
                     "FROM trip a INNER JOIN trip_detail b ON a.TripId = b.TripId " +
                     "INNER JOIN trip_member c ON a.TripId = c.TripId " +
                     "WHERE c.UserId = @userId";

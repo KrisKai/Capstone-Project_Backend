@@ -346,6 +346,11 @@ namespace JourneySick.Business.IServices.Services
                 {
                     foreach (TripVO tripVO in trips)
                     {
+                        // check status of trip
+                        if (tripVO.TripStatus.Equals("ACTIVE") && DateTime.Compare((DateTime)tripVO.EstimateEndDate,DateTime.Now) < 0)
+                        {
+                            tripVO.TripStatus = "CLOSED";
+                        }
                         tripVO.EstimateStartDateStr = $"{tripVO.EstimateStartDate:MMM dd}";
                         tripVO.EstimateEndDateStr = $"{tripVO.EstimateEndDate:MMM dd}";
                         MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripStartLocationId);
