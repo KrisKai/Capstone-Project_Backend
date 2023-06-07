@@ -148,6 +148,16 @@ namespace JourneySick.Business.IServices.Services
                 Task createTrip = _tripRepository.CreateTrip(tripVO);
                 Task createTripDetail = _tripDetailRepository.CreateTripDetail(tripVO);
 
+                TripMember tripMember = new();
+                tripMember.TripId = tripVO.TripId;
+                tripMember.UserId = currentUser.UserId;
+                tripMember.Status = "ACTIVE";
+                tripMember.Confirmation = "Y";
+                tripMember.MemberRole = "HOST";
+                tripMember.CreateBy = currentUser.UserId;
+                tripMember.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                await _tripMemberRepository.CreateTripMember(tripMember);
+
                 if (Task.WhenAll(createTrip, createTripDetail).IsCompletedSuccessfully)
                 {
                     UserVO userVO = await _userDetailRepository.GetUserDetailById(createTripRequest.CreateBy);
