@@ -98,6 +98,22 @@ namespace JourneySick.Business.IServices.Services
                 }
                 trip.EstimateStartDateStr = $"{trip.EstimateStartDate:MM/dd}";
                 trip.EstimateEndDateStr = $"{trip.EstimateEndDate:MM/dd}";
+                if(trip.EstimateStartTime > 0 && trip.EstimateStartTime <= 12)
+                {
+                    trip.EstimateStartTimeStr = trip.EstimateStartTime + " AM";
+                }
+                if(trip.EstimateStartTime==0||(trip.EstimateStartTime > 12 && trip.EstimateStartTime < 23))
+                {
+                    trip.EstimateStartTimeStr = trip.EstimateStartTime + " PM";
+                }
+                if (trip.EstimateEndTime > 0 && trip.EstimateEndTime <= 12)
+                {
+                    trip.EstimateEndTimeStr = trip.EstimateEndTime + " AM";
+                }
+                if (trip.EstimateEndTime == 0 || (trip.EstimateEndTime > 12 && trip.EstimateEndTime < 23))
+                {
+                    trip.EstimateEndTimeStr = (trip.EstimateEndTime - 12) + " PM";
+                }
                 MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripStartLocationId);
                 if (startmaplocation != null)
                 {
