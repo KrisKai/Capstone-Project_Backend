@@ -3,6 +3,7 @@ using JourneySick.Business.Extensions.Firebase;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Data.IRepositories;
+using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.DTOs.CommonDTO.Response;
@@ -91,6 +92,12 @@ namespace JourneySick.Business.IServices.Services
             try
             {
                 TripVO trip = await _tripRepository.GetTripById(tripId);
+                if(trip == null)
+                {
+                    throw new GetOneException("Something is wrong!!");
+                }
+                trip.EstimateStartDateStr = $"{trip.EstimateStartDate:MM/dd}";
+                trip.EstimateEndDateStr = $"{trip.EstimateEndDate:MM/dd}";
                 MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripStartLocationId);
                 if (startmaplocation != null)
                 {

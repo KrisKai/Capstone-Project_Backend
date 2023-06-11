@@ -8,7 +8,7 @@ namespace JourneySick.Data.Models.DTOs
 {
     public class TripItemDTO
     {
-        public int ItemId { get; set; }
+        public int? ItemId { get; set; }
         public string TripId { get; set; } = null!;
         public string? ItemName { get; set; }
         public string? ItemDescription { get; set; }

@@ -100,7 +100,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "UPDATE map_location SET"
                     + "         Longitude = @Longitude, "
                     + "         Latitude = @Latitude, "
-                    + "         LocationName = @LocationName, "
+                    + "         LocationName = @LocationName "
                     + "     WHERE MapId = @MapId";
 
                 var parameters = new DynamicParameters();
