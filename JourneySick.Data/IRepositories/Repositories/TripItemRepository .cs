@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using JourneySick.Data.Helpers;
 using JourneySick.Data.Models.Entities;
+using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
@@ -195,6 +196,23 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("TripId", tripId, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<int> CheckIfItemNameExisted(string itemName)
+        {
+            try
+            {
+                var query = "SELECT COUNT(*) FROM trip_item WHERE LOWER(`ItemName`) = @itemName";
+                var parameters = new DynamicParameters();
+                parameters.Add("itemName", itemName, DbType.String);
+                using var connection = CreateConnection();
+                return ((int)(long)connection.ExecuteScalar(query, parameters));
+
             }
             catch (Exception e)
             {

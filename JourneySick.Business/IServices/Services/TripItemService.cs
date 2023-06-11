@@ -67,6 +67,11 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
+                int count = await _tripItemRepository.CheckIfItemNameExisted(tripItemDTO.ItemName);
+                if (count > 0)
+                {
+                    throw new InsertException("Vật dụng này đã tồn tại!");
+                }
                 tripItemDTO.CreateBy = currentUser.UserId;
                 tripItemDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
                 TripItem tripitem = _mapper.Map<TripItem>(tripItemDTO);
@@ -114,6 +119,11 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
+                    int count = await _tripItemRepository.CheckIfItemNameExisted(tripItemDTO.ItemName);
+                    if (count > 0 && !tripItemDTO.ItemName.Equals(getTrip.ItemName))
+                    {
+                        throw new InsertException("Vật dụng này đã tồn tại!");
+                    }
                     tripItemDTO.UpdateBy = currentUser.UserId;
                     tripItemDTO.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
                     TripItem tripitem = _mapper.Map<TripItem>(tripItemDTO);
