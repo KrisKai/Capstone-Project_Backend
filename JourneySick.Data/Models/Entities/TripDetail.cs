@@ -5,7 +5,7 @@ namespace JourneySick.Data.Models.Entities
 {
     public partial class TripDetail
     {
-        public string TripId { get; set; } = null!;
+        public string TripId { get; set; }
         public int? TripStartLocationId { get; set; }
         public int? TripDestinationLocationId { get; set; }
         public DateTime? EstimateStartDate { get; set; }
