@@ -9,9 +9,9 @@ namespace JourneySick.Data.Models.DTOs
     public class FeedbackDTO
     {
         public int? FeedbackId { get; set; }
-        public string TripId { get; set; }
-        public string UserId { get; set; }
-        public string? Feedback { get; set; }
+        public string? TripId { get; set; } = null!;
+        public string? UserId { get; set; } = null!;
+        public string? FeedbackDescription { get; set; }
         public float? Rate { get; set; }
         public int? Like { get; set; }
         public int? Dislike { get; set; }

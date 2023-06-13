@@ -25,5 +25,9 @@ namespace JourneySick.Data.Models.Entities.VO
         public string? EstimateEndDateStr { get; set; }
         public string? EstimateStartTimeStr { get; set; }
         public string? EstimateEndTimeStr { get; set; }
+        public int? FeedbackId { get; set; }
+        public string? FeedbackDescription { get; set; }
+        public float? Rate { get; set; }
+
     }
 }

@@ -138,7 +138,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "UPDATE feedback ("
+                var query = "UPDATE feedback SET"
                     + "         FeedbackDescription = @Feedback, "
                     + "         Rate = @Rate, "
                     + "         UpdateDate = @UpdateDate, "

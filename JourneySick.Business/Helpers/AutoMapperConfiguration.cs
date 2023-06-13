@@ -41,6 +41,8 @@ namespace JourneySick.Business.Helpers
                 .ReverseMap(); //reverse so the both direction
             CreateMap<UpdateFeedbackRequest, FeedbackVO>()
                 .ReverseMap(); //reverse so the both direction
+            CreateMap<UpdateFeedbackRequest, Feedback>()
+                .ReverseMap(); //reverse so the both direction
             CreateMap<ItemDTO, Item>()
                 .ReverseMap(); //reverse so the both direction
             CreateMap<CreateItemRequest, Item>()
@@ -62,6 +64,8 @@ namespace JourneySick.Business.Helpers
             CreateMap<TripRouteDTO, TripRoute>()
                 .ReverseMap(); //reverse so the both direction
             CreateMap<RoutePlanDTO, RoutePlan>()
+                .ReverseMap(); //reverse so the both direction
+            CreateMap<FeedbackDTO, Feedback>()
                 .ReverseMap(); //reverse so the both direction
         }
     }
