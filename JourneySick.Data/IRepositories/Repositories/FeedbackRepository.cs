@@ -228,5 +228,22 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        public async Task<int> CountFeedbackByCreatorId(string userId)
+        {
+            try
+            {
+                var query = "SELECT COUNT(*) FROM feedback WHERE CreateBy LIKE CONCAT('%', @userId, '%')";
+                var parameters = new DynamicParameters();
+                parameters.Add("userId", userId, DbType.String);
+                using var connection = CreateConnection();
+                return ((int)(long)connection.ExecuteScalar(query, parameters));
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }

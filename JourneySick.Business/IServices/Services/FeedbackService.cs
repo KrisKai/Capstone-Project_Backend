@@ -70,6 +70,11 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
+                int count = await _feedbackRepository.CountFeedbackByCreatorId(currentUser.UserId);
+                if(count > 0)
+                {
+                    throw new InsertException("Bạn đã đánh giá rồi!");
+                }
                 feedbackRequest.CreateBy = currentUser.UserId;
                 feedbackRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
                 Feedback feedbackEntity = _mapper.Map<Feedback>(feedbackRequest);
@@ -80,7 +85,6 @@ namespace JourneySick.Business.IServices.Services
                 {
                     return lastId;
                 }
-                
                 throw new InsertException("Create Feedback failed!");
 
             }
