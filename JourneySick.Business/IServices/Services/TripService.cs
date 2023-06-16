@@ -409,5 +409,64 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
         }
+
+        public async Task<int> CreateTripUser(CreateTripRequest createTripRequest, CurrentUserObject currentUser)
+        {
+            try
+            {
+                createTripRequest.TripStatus = "ACTIVE";
+                createTripRequest.CreateBy = (currentUser != null) ? currentUser.UserId : "TESTER";
+                createTripRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+
+                MapLocation endmaplocation = new()
+                {
+                    Latitude = createTripRequest.EndLatitude,
+                    Longitude = createTripRequest.EndLongitude,
+                    LocationName = createTripRequest.EndLocationName
+                };
+                createTripRequest.TripDestinationLocationId = (int)await _mapLocationRepository.CreateMapLocation(endmaplocation);
+
+                TripVO tripVO = _mapper.Map<TripVO>(createTripRequest);
+                tripVO.TripId = await GenerateTripID();
+                if (createTripRequest.TripThumbnail != null)
+                {
+                    tripVO.TripThumbnail = await _firebaseStorageService.UploadTripThumbnail(createTripRequest.TripThumbnail, tripVO.TripId);
+                }
+                tripVO.TripName = "Chuyến đi tới " + tripVO.EndLocationName;
+
+                Task createTrip = _tripRepository.CreateTrip(tripVO);
+                Task createTripDetail = _tripDetailRepository.CreateTripDetail(tripVO);
+
+                TripMember tripMember = new();
+                tripMember.TripId = tripVO.TripId;
+                tripMember.UserId = currentUser.UserId;
+                tripMember.Status = "ACTIVE";
+                tripMember.Confirmation = "Y";
+                tripMember.MemberRole = "HOST";
+                tripMember.CreateBy = currentUser.UserId;
+                tripMember.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                await _tripMemberRepository.CreateTripMember(tripMember);
+
+                if (Task.WhenAll(createTrip, createTripDetail).IsCompletedSuccessfully)
+                {
+                    UserVO userVO = await _userDetailRepository.GetUserDetailById(createTripRequest.CreateBy);
+                    userVO.TripCreated++;
+                    if (await _userDetailRepository.UpdateTripQuantityCreated(userVO) > 0)
+                    {
+                        return 1;
+                    }
+                    throw new InsertException("Something is wrong!!");
+                }
+                else
+                {
+                    throw new InsertException("Add trip failed!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
     }
 }

@@ -20,5 +20,7 @@ namespace JourneySick.Business.IServices
         //Count this month
         public Task<TripStatisticResponse> TripStatistic();
         public Task<List<TripVO>> GetTripHistory(string userId);
+        //Create in user site
+        public Task<int> CreateTripUser(CreateTripRequest tripRequest, CurrentUserObject currentUser);
     }
 }

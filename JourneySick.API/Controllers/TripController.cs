@@ -98,5 +98,17 @@ namespace JourneySick.API.Controllers
 
         }
 
+        //TRIP STATISTIC
+        [HttpPost]
+        [Authorize]
+        [Route("create-trip-user")]
+        public async Task<IActionResult> CreateTripUser([FromBody] CreateTripRequest tripRequest)
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _tripService.CreateTripUser(tripRequest, currentUser);
+            return Ok(result);
+
+        }
+
     }
 }
