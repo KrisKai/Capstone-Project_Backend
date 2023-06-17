@@ -28,6 +28,6 @@ namespace JourneySick.Data.Models.Entities.VO
         public int? FeedbackId { get; set; }
         public string? FeedbackDescription { get; set; }
         public float? Rate { get; set; }
-
+        public List<string>? ListOfDate { get; set; }
     }
 }

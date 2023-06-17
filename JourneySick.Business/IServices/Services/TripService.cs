@@ -11,6 +11,7 @@ using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Logging;
 using MySqlX.XDevAPI.Common;
+using System.Globalization;
 
 namespace JourneySick.Business.IServices.Services
 {
@@ -96,9 +97,10 @@ namespace JourneySick.Business.IServices.Services
                 {
                     throw new GetOneException("Something is wrong!!");
                 }
-                trip.EstimateStartDateStr = $"{trip.EstimateStartDate:MM/dd}";
-                trip.EstimateEndDateStr = $"{trip.EstimateEndDate:MM/dd}";
-                if(trip.EstimateStartTime > 0 && trip.EstimateStartTime <= 12)
+                CultureInfo culture = new CultureInfo("vi-VN");
+                trip.EstimateStartDateStr = trip.EstimateStartDate.ToString("MMM/dd", culture);
+                trip.EstimateEndDateStr = $"{trip.EstimateEndDate:MMM/dd}";
+                /*if(trip.EstimateStartTime > 0 && trip.EstimateStartTime <= 12)
                 {
                     trip.EstimateStartTimeStr = trip.EstimateStartTime + " AM";
                 }
@@ -113,7 +115,7 @@ namespace JourneySick.Business.IServices.Services
                 if (trip.EstimateEndTime == 0 || (trip.EstimateEndTime > 12 && trip.EstimateEndTime < 23))
                 {
                     trip.EstimateEndTimeStr = (trip.EstimateEndTime - 12) + " PM";
-                }
+                }*/
                 /*MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripStartLocationId);
                 if (startmaplocation != null)
                 {
@@ -121,6 +123,21 @@ namespace JourneySick.Business.IServices.Services
                     trip.StartLatitude = startmaplocation.Latitude;
                     trip.StartLongitude = startmaplocation.Longitude;
                 }*/
+                if(DateTime.Compare((DateTime)trip.EstimateStartDate, (DateTime)trip.EstimateEndDate) == 0)
+                {
+                    List<string> dateList = new List<string>();
+                    dateList.Add(trip.EstimateEndDate.ToString("dddd, dd MMMM", culture));
+                    trip.ListOfDate = dateList;
+                } else if(DateTime.Compare((DateTime)trip.EstimateStartDate, (DateTime)trip.EstimateEndDate) < 0) {
+                    DateTime tmp = trip.EstimateStartDate;
+                    List<string> dateList = new List<string>();
+                    while (DateTime.Compare(tmp,trip.EstimateEndDate) < 0)
+                    {
+                        tmp = tmp.AddDays(1);
+                        dateList.Add(tmp.ToString("dddd, dd MMMM", culture));
+                    }
+                    trip.ListOfDate = dateList;
+                }
                 MapLocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripDestinationLocationId);
                 if (endmaplocation != null)
                 {
@@ -135,7 +152,6 @@ namespace JourneySick.Business.IServices.Services
                 _logger.LogError(ex.StackTrace, ex);
                 throw;
             }
-
         }
 
         public async Task<int> CreateTrip(CreateTripRequest createTripRequest, CurrentUserObject currentUser)

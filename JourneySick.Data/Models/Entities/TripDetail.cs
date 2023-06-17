@@ -8,9 +8,9 @@ namespace JourneySick.Data.Models.Entities
         public string TripId { get; set; }
         public int? TripStartLocationId { get; set; }
         public int? TripDestinationLocationId { get; set; }
-        public DateTime? EstimateStartDate { get; set; }
+        public DateTime EstimateStartDate { get; set; }
         public int? EstimateStartTime { get; set; }
-        public DateTime? EstimateEndDate { get; set; }
+        public DateTime EstimateEndDate { get; set; }
         public int? EstimateEndTime { get; set; }
         public string? Distance { get; set; }
         public DateTime? CreateDate { get; set; }
