@@ -131,10 +131,10 @@ namespace JourneySick.Business.IServices.Services
                 } else if(DateTime.Compare((DateTime)trip.EstimateStartDate, (DateTime)trip.EstimateEndDate) < 0) {
                     DateTime tmp = trip.EstimateStartDate;
                     List<string> dateList = new List<string>();
-                    while (DateTime.Compare(tmp,trip.EstimateEndDate) < 0)
+                    while (DateTime.Compare(tmp,trip.EstimateEndDate) <= 0)
                     {
-                        tmp = tmp.AddDays(1);
                         dateList.Add(tmp.ToString("dddd, dd MMMM", culture));
+                        tmp = tmp.AddDays(1);
                     }
                     trip.ListOfDate = dateList;
                 }
