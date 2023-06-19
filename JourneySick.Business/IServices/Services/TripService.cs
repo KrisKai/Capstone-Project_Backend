@@ -128,15 +128,21 @@ namespace JourneySick.Business.IServices.Services
                     List<string> dateList = new List<string>();
                     dateList.Add(trip.EstimateEndDate.ToString("dddd, dd MMMM", culture));
                     trip.ListOfDate = dateList;
+                    List<DateTime> dateTimeList = new List<DateTime>();
+                    dateTimeList.Add(trip.EstimateEndDate);
+                    trip.ListOfDateTime = dateTimeList;
                 } else if(DateTime.Compare((DateTime)trip.EstimateStartDate, (DateTime)trip.EstimateEndDate) < 0) {
                     DateTime tmp = trip.EstimateStartDate;
                     List<string> dateList = new List<string>();
+                    List<DateTime> dateTimeList = new List<DateTime>();
                     while (DateTime.Compare(tmp,trip.EstimateEndDate) <= 0)
                     {
                         dateList.Add(tmp.ToString("dddd, dd MMMM", culture));
+                        dateTimeList.Add(tmp);
                         tmp = tmp.AddDays(1);
                     }
                     trip.ListOfDate = dateList;
+                    trip.ListOfDateTime = dateTimeList;
                 }
                 MapLocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripDestinationLocationId);
                 if (endmaplocation != null)

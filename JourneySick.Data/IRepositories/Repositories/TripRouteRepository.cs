@@ -13,7 +13,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
         }
 
-        public async Task<List<TriprouteVO>> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId, string tripId)
+        public async Task<List<TriprouteVO>> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId, string tripId, DateTime? planDateTime)
         {
             try
             {
@@ -25,8 +25,9 @@ namespace JourneySick.Data.IRepositories.Repositories
                 routeId ??= "";
                 parameters.Add("routeId", routeId, DbType.String);
                 parameters.Add("tripId", tripId, DbType.String);
+                parameters.Add("planDateTime", planDateTime, DbType.DateTime);
 
-                var query = "SELECT * FROM trip_route a INNER JOIN map_location b ON a.MapId = b.MapId WHERE TripId = @tripId AND RouteId LIKE CONCAT('%', @routeId, '%')  LIMIT @firstIndex, @lastIndex";
+                var query = "SELECT * FROM trip_route a INNER JOIN map_location b ON a.MapId = b.MapId WHERE TripId = @tripId AND RouteId LIKE CONCAT('%', @routeId, '%') AND PlanDateTime = @planDateTime LIMIT @firstIndex, @lastIndex";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TriprouteVO>(query, parameters)).ToList();

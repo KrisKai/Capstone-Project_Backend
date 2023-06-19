@@ -29,5 +29,6 @@ namespace JourneySick.Data.Models.Entities.VO
         public string? FeedbackDescription { get; set; }
         public float? Rate { get; set; }
         public List<string>? ListOfDate { get; set; }
+        public List<DateTime>? ListOfDateTime { get; set; }
     }
 }
