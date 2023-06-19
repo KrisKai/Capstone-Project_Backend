@@ -1,4 +1,5 @@
 ﻿using JourneySick.Data;
+using JourneySick.Data.Context;
 using JourneySick.Data.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +9,7 @@ namespace JourneySick.API.Startup
     {
         public static IServiceCollection DatabaseSetup(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<journeysick_dbContext>(
+            services.AddDbContext<journey_sick_dbContext>(
             options =>
             {
                 options.UseMySql(configuration.GetConnectionString("DEV_PHAT"),
