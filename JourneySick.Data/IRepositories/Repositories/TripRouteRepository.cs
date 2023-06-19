@@ -55,16 +55,17 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountAllTripRoutes(string? routeId, string tripId)
+        public async Task<int> CountAllTripRoutes(string? routeId, string tripId, DateTime? planDateTime)
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM trip_route WHERE TripId = @tripId AND RouteId LIKE CONCAT('%', @routeId, '%')";
+                var query = "SELECT COUNT(*) FROM trip_route WHERE TripId = @tripId AND RouteId LIKE CONCAT('%', @routeId, '%') AND PlanDateTime = @planDateTime";
 
                 routeId ??= "";
                 var parameters = new DynamicParameters();
                 parameters.Add("routeId", routeId, DbType.String);
                 parameters.Add("tripId", tripId, DbType.String);
+                parameters.Add("planDateTime", planDateTime, DbType.DateTime);
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query, parameters));
 
@@ -84,12 +85,16 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         MapId, "
                     + "         Priority, "
                     + "         EstimateTime, "
+                    + "         Note, "
+                    + "         PlanDateTime, "
                     + "         Distance) "
                     + "     VALUES ( "
                     + "         @TripId, "
                     + "         @MapId, "
                     + "         @Priority, "
                     + "         @EstimateTime, "
+                    + "         @Note, "
+                    + "         @PlanDateTime, "
                     + "         @Distance)";
 
                 var parameters = new DynamicParameters();
@@ -98,6 +103,8 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("Priority", triproute.Priority, DbType.Int32);
                 parameters.Add("EstimateTime", triproute.EstimateTime, DbType.Decimal);
                 parameters.Add("Distance", triproute.Distance, DbType.Decimal);
+                parameters.Add("Note", triproute.Note, DbType.String);
+                parameters.Add("PlanDateTime", triproute.PlanDateTime, DbType.DateTime);
 
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
@@ -115,6 +122,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "Priority = @Priority, " +
                     "EstimateTime = @EstimateTime, " +
                     "Distance = @Distance, " +
+                    "Note = @Note " +
                     "WHERE RouteId = @RouteId";
 
                 var parameters = new DynamicParameters();
@@ -122,6 +130,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("Priority", triproute.Priority, DbType.Int32);
                 parameters.Add("EstimateTime", triproute.EstimateTime, DbType.Decimal);
                 parameters.Add("Distance", triproute.Distance, DbType.Decimal);
+                parameters.Add("Note", triproute.Note, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
 

@@ -31,7 +31,7 @@ namespace JourneySick.Business.IServices.Services
                 List<TriprouteVO> triprouteVOs = await _tripRouteRepository.GetAllTripRoutesWithPaging(pageIndex, pageSize, routeId, tripId, planDateTime);
                 // convert entity to dto
                 List<TripRouteRequest> tripRouteRequests = _mapper.Map<List<TripRouteRequest>>(triprouteVOs);
-                int count = await _tripRouteRepository.CountAllTripRoutes(routeId, tripId);
+                int count = await _tripRouteRepository.CountAllTripRoutes(routeId, tripId, planDateTime);
                 result.ListOfRoute = tripRouteRequests;
                 result.NumOfRoute = count;
                 return result;

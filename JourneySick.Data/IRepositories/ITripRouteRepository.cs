@@ -13,7 +13,7 @@ namespace JourneySick.Data.IRepositories
     {
         //SELECT ALL
         public Task<List<TriprouteVO>> GetAllTripRoutesWithPaging(int pageIndex, int pageSize, string? routeId, string tripId, DateTime? planDateTime);
-        public Task<int> CountAllTripRoutes(string? tripName, string tripId);
+        public Task<int> CountAllTripRoutes(string? tripName, string tripId, DateTime? planDateTime);
         public Task<TripRoute> GetTripRouteById(int tripRouteId);
         //CREATE
         public Task<int> CreateTripRoute(TripRoute triproute);

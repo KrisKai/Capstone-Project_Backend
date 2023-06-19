@@ -123,19 +123,19 @@ namespace JourneySick.Business.IServices.Services
                     trip.StartLatitude = startmaplocation.Latitude;
                     trip.StartLongitude = startmaplocation.Longitude;
                 }*/
-                if(DateTime.Compare((DateTime)trip.EstimateStartDate, (DateTime)trip.EstimateEndDate) == 0)
+                if(DateTime.Compare(trip.EstimateStartDate, trip.EstimateEndDate) == 0)
                 {
                     List<string> dateList = new List<string>();
                     dateList.Add(trip.EstimateEndDate.ToString("dddd, dd MMMM", culture));
                     trip.ListOfDate = dateList;
                     List<DateTime> dateTimeList = new List<DateTime>();
-                    dateTimeList.Add((DateTime)trip.EstimateEndDate);
+                    dateTimeList.Add(trip.EstimateEndDate);
                     trip.ListOfDateTime = dateTimeList;
-                } else if(DateTime.Compare((DateTime)trip.EstimateStartDate, (DateTime)trip.EstimateEndDate) < 0) {
-                    DateTime tmp = (DateTime)trip.EstimateStartDate;
+                } else if(DateTime.Compare(trip.EstimateStartDate, trip.EstimateEndDate) < 0) {
+                    DateTime tmp = trip.EstimateStartDate;
                     List<string> dateList = new List<string>();
                     List<DateTime> dateTimeList = new List<DateTime>();
-                    while (DateTime.Compare(tmp, (DateTime)trip.EstimateEndDate) <= 0)
+                    while (DateTime.Compare(tmp,trip.EstimateEndDate) <= 0)
                     {
                         dateList.Add(tmp.ToString("dddd, dd MMMM", culture));
                         dateTimeList.Add(tmp);

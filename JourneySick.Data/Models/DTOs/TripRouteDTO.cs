@@ -14,5 +14,7 @@ namespace JourneySick.Data.Models.DTOs
         public int? Priority { get; set; }
         public decimal? EstimateTime { get; set; }
         public decimal? Distance { get; set; }
+        public DateTime? PlanDateTime { get; set; }
+        public string? Note { get; set; }
     }
 }
