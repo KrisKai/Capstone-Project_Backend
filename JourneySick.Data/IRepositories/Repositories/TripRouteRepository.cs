@@ -174,5 +174,19 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        public async Task<int> GetLastOne()
+        {
+            try
+            {
+                var query = "SELECT COALESCE(MAX(RouteId), 0) FROM trip_route ";
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<int>(query);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }

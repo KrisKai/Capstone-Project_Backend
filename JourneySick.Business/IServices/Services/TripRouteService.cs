@@ -72,7 +72,8 @@ namespace JourneySick.Business.IServices.Services
                 };
                 tripRouteDTO.MapId = (int)await _mapLocationRepository.CreateMapLocation(maplocation);
                 TripRoute triproute = _mapper.Map<TripRoute>(tripRouteDTO);
-                int id = await _tripRouteRepository.CreateTripRoute(triproute);
+                await _tripRouteRepository.CreateTripRoute(triproute);
+                int id = await _tripRouteRepository.GetLastOne();
                 if (id > 0)
                 {
                     return id;

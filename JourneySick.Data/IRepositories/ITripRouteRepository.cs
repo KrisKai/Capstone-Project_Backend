@@ -20,5 +20,6 @@ namespace JourneySick.Data.IRepositories
         public Task<int> UpdateTripRoute(TripRoute triproute);
         public Task<int> DeleteTripRoute(int tripRouteId);
         public Task<int> DeleteTripMemberByTripId(string tripId);
+        public Task<int> GetLastOne();
     }
 }

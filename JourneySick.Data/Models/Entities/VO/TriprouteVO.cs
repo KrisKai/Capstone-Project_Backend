@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace JourneySick.Data.Models.Entities.VO
 {
-    public class TriprouteVO
+    public class TriprouteVO:TripRoute
     {
         public string Longitude { get; set; } = null!;
         public string Latitude { get; set; } = null!;
