@@ -21,6 +21,6 @@ namespace JourneySick.Business.IServices
         public Task<TripStatisticResponse> TripStatistic();
         public Task<List<TripVO>> GetTripHistory(string userId);
         //Create in user site
-        public Task<int> CreateTripUser(CreateTripRequest tripRequest, CurrentUserObject currentUser);
+        public Task<string> CreateTripUser(CreateTripRequest tripRequest, CurrentUserObject currentUser);
     }
 }

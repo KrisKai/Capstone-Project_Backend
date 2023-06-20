@@ -19,35 +19,26 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 var query = "INSERT INTO trip_detail ("
                     + "         TripId, "
-                    + "         TripStartLocationId, "
                     + "         TripDestinationLocationId, "
                     + "         EstimateStartDate, "
-                    + "         EstimateStartTime, "
                     + "         EstimateEndDate, "
-                    + "         EstimateEndTime, "
                     + "         Distance, "
                     + "         CreateDate, "
                     + "         CreateBy) "
                     + "     VALUES ( "
                     + "         @TripId, "
-                    + "         @TripStartLocationId, "
                     + "         @TripDestinationLocationId, "
                     + "         @EstimateStartDate, "
-                    + "         @EstimateStartTime, "
                     + "         @EstimateEndDate, "
-                    + "         @EstimateEndTime, "
                     + "         @Distance, "
                     + "         @CreateDate, "
                     + "         @CreateBy)";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("TripId", tripdetail.TripId, DbType.String);
-                parameters.Add("TripStartLocationId", tripdetail.TripStartLocationId, DbType.Int32);
                 parameters.Add("TripDestinationLocationId", tripdetail.TripDestinationLocationId, DbType.Int32);
                 parameters.Add("EstimateStartDate", tripdetail.EstimateStartDate, DbType.DateTime);
-                parameters.Add("EstimateStartTime", tripdetail.EstimateStartTime, DbType.Int32);
                 parameters.Add("EstimateEndDate", tripdetail.EstimateEndDate, DbType.DateTime);
-                parameters.Add("EstimateEndTime", tripdetail.EstimateEndTime, DbType.Int32);
                 parameters.Add("Distance", tripdetail.Distance, DbType.String);
                 parameters.Add("CreateDate", tripdetail.CreateDate, DbType.DateTime);
                 parameters.Add("CreateBy", tripdetail.CreateBy, DbType.String);
@@ -66,12 +57,9 @@ namespace JourneySick.Data.IRepositories.Repositories
             try
             {
                 var query = "UPDATE trip_detail SET"
-                    + "         TripStartLocationId = @TripStartLocationId, "
                     + "         TripDestinationLocationId = @TripDestinationLocationId, "
                     + "         EstimateStartDate = @EstimateStartDate, "
-                    + "         EstimateStartTime = @EstimateStartTime, "
                     + "         EstimateEndDate = @EstimateEndDate, "
-                    + "         EstimateEndTime = @EstimateEndTime, "
                     + "         Distance = @Distance, "
                     + "         UpdateDate = @UpdateDate, "
                     + "         UpdateBy = @UpdateBy"
@@ -79,12 +67,9 @@ namespace JourneySick.Data.IRepositories.Repositories
 
                 var parameters = new DynamicParameters();
                 parameters.Add("TripId", tripdetail.TripId, DbType.String);
-                parameters.Add("TripStartLocationId", tripdetail.TripStartLocationId, DbType.Int32);
                 parameters.Add("TripDestinationLocationId", tripdetail.TripDestinationLocationId, DbType.Int32);
                 parameters.Add("EstimateStartDate", tripdetail.EstimateStartDate, DbType.DateTime);
-                parameters.Add("EstimateStartTime", tripdetail.EstimateStartTime, DbType.Int32);
                 parameters.Add("EstimateEndDate", tripdetail.EstimateEndDate, DbType.DateTime);
-                parameters.Add("EstimateEndTime", tripdetail.EstimateEndTime, DbType.Int32);
                 parameters.Add("Distance", tripdetail.Distance, DbType.String);
                 parameters.Add("UpdateDate", tripdetail.UpdateDate, DbType.DateTime);
                 parameters.Add("UpdateBy", tripdetail.UpdateBy, DbType.String);

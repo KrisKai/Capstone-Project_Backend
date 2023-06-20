@@ -407,13 +407,6 @@ namespace JourneySick.Business.IServices.Services
                         }
                         tripVO.EstimateStartDateStr = $"{tripVO.EstimateStartDate:MMM dd}";
                         tripVO.EstimateEndDateStr = $"{tripVO.EstimateEndDate:MMM dd}";
-                        MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripStartLocationId);
-                        /*if (startmaplocation != null)
-                        {
-                            tripVO.StartLocationName = startmaplocation.LocationName;
-                            tripVO.StartLatitude = startmaplocation.Latitude;
-                            tripVO.StartLongitude = startmaplocation.Longitude;
-                        }*/
                         MapLocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripDestinationLocationId);
                         if (endmaplocation != null)
                         {
@@ -432,13 +425,14 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<int> CreateTripUser(CreateTripRequest createTripRequest, CurrentUserObject currentUser)
+        public async Task<string> CreateTripUser(CreateTripRequest createTripRequest, CurrentUserObject currentUser)
         {
             try
             {
                 createTripRequest.TripStatus = "ACTIVE";
                 createTripRequest.CreateBy = (currentUser != null) ? currentUser.UserId : "TESTER";
                 createTripRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                createTripRequest.TripPresenter = currentUser.UserId;
 
                 MapLocation endmaplocation = new()
                 {
@@ -467,15 +461,15 @@ namespace JourneySick.Business.IServices.Services
                 tripMember.MemberRole = "HOST";
                 tripMember.CreateBy = currentUser.UserId;
                 tripMember.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                await _tripMemberRepository.CreateTripMember(tripMember);
+                Task createMember = _tripMemberRepository.CreateTripMember(tripMember);
 
-                if (Task.WhenAll(createTrip, createTripDetail).IsCompletedSuccessfully)
+                if (Task.WhenAll(createTrip, createTripDetail, createMember).IsCompletedSuccessfully)
                 {
                     UserVO userVO = await _userDetailRepository.GetUserDetailById(createTripRequest.CreateBy);
                     userVO.TripCreated++;
                     if (await _userDetailRepository.UpdateTripQuantityCreated(userVO) > 0)
                     {
-                        return 1;
+                        return await _tripRepository.GetLastOneId();
                     }
                     throw new InsertException("Something is wrong!!");
                 }
