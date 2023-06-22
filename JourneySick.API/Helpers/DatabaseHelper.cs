@@ -1,6 +1,4 @@
-﻿using JourneySick.Data;
-using JourneySick.Data.Context;
-using JourneySick.Data.Models.Entities;
+﻿using JourneySick.Data.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace JourneySick.API.Startup

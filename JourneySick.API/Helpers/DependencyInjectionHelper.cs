@@ -37,15 +37,11 @@ namespace JourneySick.API.Startup
             services.AddTransient<IAuthenticateService, AuthenticateService>();
             services.AddTransient<ITripService, TripService>();
             services.AddTransient<ITripRepository, TripRepository>();
-            services.AddTransient<ITripPlanService, TripPlanService>();
-            services.AddTransient<ITripPlanRepository, TripPlanRepository>();
             services.AddTransient<ITripMemberService, TripMemberService>();
             services.AddTransient<ITripMemberRepository, TripMemberRepository>();
             services.AddTransient<ITripDetailRepository, TripDetailRepository>();
             services.AddTransient<ITripItemService, TripItemService>();
             services.AddTransient<ITripItemRepository, TripItemRepository>();
-            services.AddTransient<IPlanLocationService, PlanLocationService>();
-            services.AddTransient<IPlanLocationRepository, PlanLocationRepository>();
             services.AddTransient<IFeedbackService, FeedbackService>();
             services.AddTransient<IFeedbackRepository, FeedbackRepository>();
             services.AddTransient<IMapLocationRepository, MapLocationRepository>();
@@ -55,7 +51,6 @@ namespace JourneySick.API.Startup
             services.AddTransient<IItemCategoryService, ItemCategoryService>();
             services.AddTransient<ITripRouteService, TripRouteService>();
             services.AddTransient<ITripRouteRepository, TripRouteRepository>();
-            services.AddTransient<IRoutePlanRepository, RoutePlanRepository>();
 
             services.AddTransient<IFirebaseStorageService, FirebaseStorageService>();
 

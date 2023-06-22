@@ -21,13 +21,10 @@ namespace JourneySick.Data.Models.Entities
         public virtual DbSet<Item> Items { get; set; } = null!;
         public virtual DbSet<ItemCategory> ItemCategories { get; set; } = null!;
         public virtual DbSet<MapLocation> MapLocations { get; set; } = null!;
-        public virtual DbSet<PlanLocation> PlanLocations { get; set; } = null!;
-        public virtual DbSet<RoutePlan> RoutePlans { get; set; } = null!;
         public virtual DbSet<Trip> Trips { get; set; } = null!;
         public virtual DbSet<TripDetail> TripDetails { get; set; } = null!;
         public virtual DbSet<TripItem> TripItems { get; set; } = null!;
         public virtual DbSet<TripMember> TripMembers { get; set; } = null!;
-        public virtual DbSet<TripPlan> TripPlans { get; set; } = null!;
         public virtual DbSet<TripRoute> TripRoutes { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<UserDetail> UserDetails { get; set; } = null!;
@@ -173,49 +170,6 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.Longitude).HasMaxLength(200);
 
                 entity.Property(e => e.PlaceId).HasMaxLength(200);
-            });
-
-            modelBuilder.Entity<PlanLocation>(entity =>
-            {
-                entity.HasKey(e => e.PlanId)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("plan_location");
-
-                entity.Property(e => e.PlanId).HasColumnType("int(11)");
-
-                entity.Property(e => e.CreateBy).HasMaxLength(50);
-
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.LocationArrivalTime).HasColumnType("datetime");
-
-                entity.Property(e => e.MapId).HasColumnType("int(11)");
-
-                entity.Property(e => e.PlanLocationDescription).HasColumnType("text");
-
-                entity.Property(e => e.PlanLocationId).HasMaxLength(50);
-
-                entity.Property(e => e.UpdateBy).HasMaxLength(50);
-
-                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
-            });
-
-            modelBuilder.Entity<RoutePlan>(entity =>
-            {
-                entity.HasKey(e => e.PlanId)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("route_plan");
-
-                entity.HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci");
-
-                entity.Property(e => e.PlanId).HasColumnType("int(11)");
-
-                entity.Property(e => e.PlanDescription).HasColumnType("tinytext");
-
-                entity.Property(e => e.RouteId).HasColumnType("int(11)");
             });
 
             modelBuilder.Entity<Trip>(entity =>
@@ -368,28 +322,6 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.UserId).HasMaxLength(20);
             });
 
-            modelBuilder.Entity<TripPlan>(entity =>
-            {
-                entity.HasKey(e => e.PlanId)
-                    .HasName("PRIMARY");
-
-                entity.ToTable("trip_plan");
-
-                entity.HasIndex(e => e.PlanId, "fldPlanId_UNIQUE")
-                    .IsUnique();
-
-                entity.Property(e => e.PlanId).HasColumnType("int(11)");
-
-                entity.Property(e => e.CreateBy).HasMaxLength(20);
-
-                entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
-                entity.Property(e => e.TripId).HasMaxLength(20);
-
-                entity.Property(e => e.UpdateBy).HasMaxLength(20);
-
-                entity.Property(e => e.UpdateDate).HasColumnType("datetime");
-            });
 
             modelBuilder.Entity<TripRoute>(entity =>
             {

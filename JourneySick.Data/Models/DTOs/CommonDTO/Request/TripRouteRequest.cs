@@ -11,5 +11,6 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
         public string Longitude { get; set; } = null!;
         public string Latitude { get; set; } = null!;
         public string? LocationName { get; set; }
+        public string? PlaceId { get; set; }
     }
 }
