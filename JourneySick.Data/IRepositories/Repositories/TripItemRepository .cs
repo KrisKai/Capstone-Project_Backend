@@ -99,7 +99,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         ItemName, "
                     + "         ItemDescription, "
                     + "         PriceMin, "
-                    + "         PriceMax, "
                     + "         CategoryId, "
                     + "         Quantity, "
                     + "         CreateDate, "
@@ -109,7 +108,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @ItemName, "
                     + "         @ItemDescription, "
                     + "         @PriceMin, "
-                    + "         @PriceMax, "
                     + "         @ItemCategory, "
                     + "         @Quantity, "
                     + "         @CreateDate, "
@@ -120,7 +118,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("ItemName", tripitem.ItemName, DbType.String);
                 parameters.Add("ItemDescription", tripitem.ItemDescription, DbType.String);
                 parameters.Add("PriceMin", tripitem.PriceMin, DbType.Decimal);
-                parameters.Add("PriceMax", tripitem.PriceMax, DbType.Decimal);
                 parameters.Add("ItemCategory", tripitem.CategoryId, DbType.Int32);
                 parameters.Add("Quantity", tripitem.Quantity, DbType.Int32);
                 parameters.Add("CreateDate", tripitem.CreateDate, DbType.DateTime);
@@ -142,7 +139,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "ItemName = @ItemName, " +
                     "ItemDescription = @ItemDescription, " +
                     "PriceMin = @PriceMin, " +
-                    "PriceMax = @PriceMax, " +
                     "CategoryId = @ItemCategory, " +
                     "Quantity = @Quantity, " +
                     "UpdateDate = @UpdateDate, " +
@@ -154,7 +150,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("ItemName", tripitem.ItemName, DbType.String);
                 parameters.Add("ItemDescription", tripitem.ItemDescription, DbType.String);
                 parameters.Add("PriceMin", tripitem.PriceMin, DbType.Decimal);
-                parameters.Add("PriceMax", tripitem.PriceMax, DbType.Decimal);
                 parameters.Add("Quantity", tripitem.Quantity, DbType.Int32);
                 parameters.Add("ItemCategory", tripitem.CategoryId, DbType.Int32);
                 parameters.Add("UpdateDate", tripitem.UpdateDate, DbType.DateTime);

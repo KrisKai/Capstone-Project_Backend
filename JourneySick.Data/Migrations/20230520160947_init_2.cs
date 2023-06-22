@@ -57,7 +57,6 @@ namespace JourneySick.Data.Migrations
                     ItemUsage = table.Column<string>(type: "longtext", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    PriceMax = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: true, defaultValueSql: "'0.00'"),
                     PriceMin = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: true, defaultValueSql: "'0.00'"),
                     Quantity = table.Column<int>(type: "int", nullable: true, defaultValueSql: "'0'"),
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -231,7 +230,6 @@ namespace JourneySick.Data.Migrations
                     ItemDescription = table.Column<string>(type: "mediumtext", nullable: true, collation: "utf8mb4_0900_ai_ci")
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PriceMin = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: true, defaultValueSql: "'0.00'"),
-                    PriceMax = table.Column<decimal>(type: "decimal(12,2)", precision: 12, scale: 2, nullable: true, defaultValueSql: "'0.00'"),
                     CategoryId = table.Column<int>(type: "int", nullable: true),
                     Quantity = table.Column<int>(type: "int", nullable: true, defaultValueSql: "'0'"),
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: true),

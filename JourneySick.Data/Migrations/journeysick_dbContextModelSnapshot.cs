@@ -106,12 +106,6 @@ namespace JourneySick.Data.Migrations
                     b.Property<string>("ItemUsage")
                         .HasColumnType("longtext");
 
-                    b.Property<decimal?>("PriceMax")
-                        .ValueGeneratedOnAdd()
-                        .HasPrecision(12, 2)
-                        .HasColumnType("decimal(12,2)")
-                        .HasDefaultValueSql("'0.00'");
-
                     b.Property<decimal?>("PriceMin")
                         .ValueGeneratedOnAdd()
                         .HasPrecision(12, 2)
@@ -396,12 +390,6 @@ namespace JourneySick.Data.Migrations
                     b.Property<string>("ItemName")
                         .HasMaxLength(150)
                         .HasColumnType("varchar(150)");
-
-                    b.Property<decimal?>("PriceMax")
-                        .ValueGeneratedOnAdd()
-                        .HasPrecision(12, 2)
-                        .HasColumnType("decimal(12,2)")
-                        .HasDefaultValueSql("'0.00'");
 
                     b.Property<decimal?>("PriceMin")
                         .ValueGeneratedOnAdd()

@@ -109,10 +109,6 @@ namespace JourneySick.Data.Models.Entities
 
                 entity.Property(e => e.ItemName).HasMaxLength(150);
 
-                entity.Property(e => e.PriceMax)
-                    .HasPrecision(12, 2)
-                    .HasDefaultValueSql("'0.00'");
-
                 entity.Property(e => e.PriceMin)
                     .HasPrecision(12, 2)
                     .HasDefaultValueSql("'0.00'");
@@ -254,10 +250,6 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.ItemDescription).HasColumnType("mediumtext");
 
                 entity.Property(e => e.ItemName).HasMaxLength(150);
-
-                entity.Property(e => e.PriceMax)
-                    .HasPrecision(12, 2)
-                    .HasDefaultValueSql("'0.00'");
 
                 entity.Property(e => e.PriceMin)
                     .HasPrecision(12, 2)

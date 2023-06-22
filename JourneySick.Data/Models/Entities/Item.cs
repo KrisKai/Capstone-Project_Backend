@@ -10,7 +10,6 @@ namespace JourneySick.Data.Models.Entities
         public string? ItemDescription { get; set; }
         public string? ItemUsage { get; set; }
         public int CategoryId { get; set; }
-        public decimal? PriceMax { get; set; }
         public decimal? PriceMin { get; set; }
         public int? Quantity { get; set; }
         public DateTime? CreateDate { get; set; }
