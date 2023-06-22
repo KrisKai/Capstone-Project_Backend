@@ -11,5 +11,6 @@ namespace JourneySick.Data.Models.Entities.VO
         public string Longitude { get; set; } = null!;
         public string Latitude { get; set; } = null!;
         public string? LocationName { get; set; }
+        public string? PlaceId { get; set; }
     }
 }

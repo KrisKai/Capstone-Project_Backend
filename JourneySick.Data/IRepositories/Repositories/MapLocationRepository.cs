@@ -62,10 +62,12 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "INSERT INTO map_location ("
                     + "         Longitude, "
                     + "         Latitude, "
+                    + "         PlaceId, "
                     + "         LocationName) "
                     + "     VALUES ( "
                     + "         @Longitude, "
                     + "         @Latitude, "
+                    + "         @PlaceId, "
                     + "         @LocationName)";
 
                 var getLastId = "SELECT LAST_INSERT_ID()";
@@ -74,6 +76,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("Longitude", maplocation.Longitude, DbType.String);
                 parameters.Add("Latitude", maplocation.Latitude, DbType.String);
+                parameters.Add("PlaceId", maplocation.PlaceId, DbType.String);
                 parameters.Add("LocationName", maplocation.LocationName, DbType.String);
 
                 
@@ -100,6 +103,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "UPDATE map_location SET"
                     + "         Longitude = @Longitude, "
                     + "         Latitude = @Latitude, "
+                    + "         PlaceId = @PlaceId, "
                     + "         LocationName = @LocationName "
                     + "     WHERE MapId = @MapId";
 
@@ -107,6 +111,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("MapId", maplocation.MapId, DbType.Int32);
                 parameters.Add("Longitude", maplocation.Longitude, DbType.String);
                 parameters.Add("Latitude", maplocation.Latitude, DbType.String);
+                parameters.Add("PlaceId", maplocation.PlaceId, DbType.String);
                 parameters.Add("LocationName", maplocation.LocationName, DbType.String);
 
                 using var connection = CreateConnection();

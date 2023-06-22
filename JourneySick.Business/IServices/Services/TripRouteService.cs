@@ -68,6 +68,7 @@ namespace JourneySick.Business.IServices.Services
                 {
                     Latitude = tripRouteDTO.Latitude,
                     Longitude = tripRouteDTO.Longitude,
+                    PlaceId = tripRouteDTO.PlaceId,
                     LocationName = tripRouteDTO.LocationName
                 };
                 tripRouteDTO.MapId = (int)await _mapLocationRepository.CreateMapLocation(maplocation);
@@ -104,6 +105,7 @@ namespace JourneySick.Business.IServices.Services
                             getMap.Latitude = tripRouteDTO.Latitude;
                             getMap.Longitude = tripRouteDTO.Longitude;
                             getMap.LocationName = tripRouteDTO.LocationName;
+                            getMap.PlaceId = tripRouteDTO.PlaceId;
                             await _mapLocationRepository.UpdateMapLocation(getMap);
                         }
                         return (int)tripRouteDTO.RouteId;
