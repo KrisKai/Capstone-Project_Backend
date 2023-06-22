@@ -8,7 +8,6 @@ namespace JourneySick.Data.Models.Entities
         public int ItemId { get; set; }
         public string ItemName { get; set; } = null!;
         public string? ItemDescription { get; set; }
-        public string? ItemUsage { get; set; }
         public int CategoryId { get; set; }
         public decimal? PriceMin { get; set; }
         public int? Quantity { get; set; }

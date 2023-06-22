@@ -40,8 +40,8 @@ namespace JourneySick.Data.Models.Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.UseCollation("latin1_swedish_ci")
-                .HasCharSet("latin1");
+            modelBuilder.UseCollation("utf8mb4_general_ci")
+                .HasCharSet("utf8mb4");
 
             modelBuilder.Entity<Efmigrationshistory>(entity =>
             {
@@ -49,9 +49,6 @@ namespace JourneySick.Data.Models.Entities
                     .HasName("PRIMARY");
 
                 entity.ToTable("__efmigrationshistory");
-
-                entity.HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.MigrationId).HasMaxLength(150);
 
@@ -61,9 +58,6 @@ namespace JourneySick.Data.Models.Entities
             modelBuilder.Entity<Feedback>(entity =>
             {
                 entity.ToTable("feedback");
-
-                entity.HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.FeedbackId).HasColumnType("int(11)");
 
@@ -96,9 +90,6 @@ namespace JourneySick.Data.Models.Entities
             {
                 entity.ToTable("item");
 
-                entity.HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci");
-
                 entity.Property(e => e.ItemId).HasColumnType("int(11)");
 
                 entity.Property(e => e.CategoryId).HasColumnType("int(11)");
@@ -129,9 +120,6 @@ namespace JourneySick.Data.Models.Entities
 
                 entity.ToTable("item_category");
 
-                entity.HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci");
-
                 entity.Property(e => e.CategoryId).HasColumnType("int(11)");
 
                 entity.Property(e => e.CategoryDescription).HasColumnType("tinytext");
@@ -154,9 +142,6 @@ namespace JourneySick.Data.Models.Entities
 
                 entity.ToTable("map_location");
 
-                entity.HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci");
-
                 entity.Property(e => e.MapId).HasColumnType("int(11)");
 
                 entity.Property(e => e.Latitude).HasMaxLength(200);
@@ -171,6 +156,9 @@ namespace JourneySick.Data.Models.Entities
             modelBuilder.Entity<Trip>(entity =>
             {
                 entity.ToTable("trip");
+
+                entity.HasCharSet("latin1")
+                    .UseCollation("latin1_swedish_ci");
 
                 entity.HasIndex(e => e.TripId, "fldTripId_UNIQUE")
                     .IsUnique();
@@ -208,6 +196,9 @@ namespace JourneySick.Data.Models.Entities
 
                 entity.ToTable("trip_detail");
 
+                entity.HasCharSet("latin1")
+                    .UseCollation("latin1_swedish_ci");
+
                 entity.HasIndex(e => e.TripId, "fldTripId_UNIQUE1")
                     .IsUnique();
 
@@ -216,7 +207,6 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.CreateBy).HasMaxLength(20);
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
-
 
                 entity.Property(e => e.EstimateEndDate).HasColumnType("datetime");
 
@@ -235,9 +225,6 @@ namespace JourneySick.Data.Models.Entities
                     .HasName("PRIMARY");
 
                 entity.ToTable("trip_item");
-
-                entity.HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.ItemId).HasColumnType("int(11)");
 
@@ -273,6 +260,9 @@ namespace JourneySick.Data.Models.Entities
 
                 entity.ToTable("trip_member");
 
+                entity.HasCharSet("latin1")
+                    .UseCollation("latin1_swedish_ci");
+
                 entity.Property(e => e.MemberId).HasColumnType("int(11)");
 
                 entity.Property(e => e.Confirmation)
@@ -301,16 +291,12 @@ namespace JourneySick.Data.Models.Entities
                 entity.Property(e => e.UserId).HasMaxLength(20);
             });
 
-
             modelBuilder.Entity<TripRoute>(entity =>
             {
                 entity.HasKey(e => e.RouteId)
                     .HasName("PRIMARY");
 
                 entity.ToTable("trip_route");
-
-                entity.HasCharSet("utf8mb4")
-                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.RouteId).HasColumnType("int(11)");
 
@@ -334,6 +320,9 @@ namespace JourneySick.Data.Models.Entities
             modelBuilder.Entity<User>(entity =>
             {
                 entity.ToTable("user");
+
+                entity.HasCharSet("latin1")
+                    .UseCollation("latin1_swedish_ci");
 
                 entity.HasIndex(e => e.UserId, "fldUserId_UNIQUE")
                     .IsUnique();
@@ -361,6 +350,9 @@ namespace JourneySick.Data.Models.Entities
                     .HasName("PRIMARY");
 
                 entity.ToTable("user_detail");
+
+                entity.HasCharSet("latin1")
+                    .UseCollation("latin1_swedish_ci");
 
                 entity.HasIndex(e => e.Email, "fldEmail_UNIQUE")
                     .IsUnique();
