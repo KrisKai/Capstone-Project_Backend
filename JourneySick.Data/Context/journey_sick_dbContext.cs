@@ -221,25 +221,12 @@ namespace JourneySick.Data.Models.Entities
 
                 entity.Property(e => e.CreateDate).HasColumnType("datetime");
 
-                entity.Property(e => e.Distance)
-                    .HasMaxLength(50)
-                    .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.EstimateEndDate).HasColumnType("datetime");
 
-                entity.Property(e => e.EstimateEndTime)
-                    .HasMaxLength(10)
-                    .HasComment("'HH:MM'");
-
                 entity.Property(e => e.EstimateStartDate).HasColumnType("datetime");
 
-                entity.Property(e => e.EstimateStartTime)
-                    .HasMaxLength(10)
-                    .HasComment("'HH:MM'");
-
                 entity.Property(e => e.TripDestinationLocationId).HasColumnType("int(11)");
-
-                entity.Property(e => e.TripStartLocationId).HasColumnType("int(11)");
 
                 entity.Property(e => e.UpdateBy).HasMaxLength(20);
 

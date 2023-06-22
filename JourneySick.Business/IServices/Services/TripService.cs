@@ -61,13 +61,6 @@ namespace JourneySick.Business.IServices.Services
                            List<TripRequest> tripsDTOs = _mapper.Map<List<TripRequest>>(trips);*/
                 foreach (TripVO tripVO in trips)
                 {
-                   /* MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripStartLocationId);
-                    if (startmaplocation != null)
-                    {
-                        tripVO.StartLocationName = startmaplocation.LocationName;
-                        tripVO.StartLatitude = startmaplocation.Latitude;
-                        tripVO.StartLongitude = startmaplocation.Longitude;
-                    }*/
                     MapLocation endmaplocation = await _mapLocationRepository.GetMapLocationById((int)tripVO.TripDestinationLocationId);
                     if (endmaplocation != null)
                     {
@@ -100,29 +93,6 @@ namespace JourneySick.Business.IServices.Services
                 CultureInfo culture = new CultureInfo("vi-VN");
                 trip.EstimateStartDateStr = trip.EstimateStartDate.ToString("MMM/dd", culture);
                 trip.EstimateEndDateStr = $"{trip.EstimateEndDate:MMM/dd}";
-                /*if(trip.EstimateStartTime > 0 && trip.EstimateStartTime <= 12)
-                {
-                    trip.EstimateStartTimeStr = trip.EstimateStartTime + " AM";
-                }
-                if(trip.EstimateStartTime==0||(trip.EstimateStartTime > 12 && trip.EstimateStartTime < 23))
-                {
-                    trip.EstimateStartTimeStr = trip.EstimateStartTime + " PM";
-                }
-                if (trip.EstimateEndTime > 0 && trip.EstimateEndTime <= 12)
-                {
-                    trip.EstimateEndTimeStr = trip.EstimateEndTime + " AM";
-                }
-                if (trip.EstimateEndTime == 0 || (trip.EstimateEndTime > 12 && trip.EstimateEndTime < 23))
-                {
-                    trip.EstimateEndTimeStr = (trip.EstimateEndTime - 12) + " PM";
-                }*/
-                /*MapLocation startmaplocation = await _mapLocationRepository.GetMapLocationById((int)trip.TripStartLocationId);
-                if (startmaplocation != null)
-                {
-                    trip.StartLocationName = startmaplocation.LocationName;
-                    trip.StartLatitude = startmaplocation.Latitude;
-                    trip.StartLongitude = startmaplocation.Longitude;
-                }*/
                 if(DateTime.Compare(trip.EstimateStartDate, trip.EstimateEndDate) == 0)
                 {
                     List<string> dateList = new List<string>();
@@ -167,13 +137,6 @@ namespace JourneySick.Business.IServices.Services
                 createTripRequest.TripStatus = "ACTIVE";
                 createTripRequest.CreateBy = (currentUser != null) ? currentUser.UserId : "TESTER";
                 createTripRequest.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
-                /*MapLocation startmaplocation = new()
-                {
-                    Latitude = createTripRequest.StartLatitude,
-                    Longitude = createTripRequest.StartLongitude,
-                    LocationName = createTripRequest.StartLocationName
-                };
-                createTripRequest.TripStartLocationId = (int)await _mapLocationRepository.CreateMapLocation(startmaplocation);*/
 
                 MapLocation endmaplocation = new()
                 {
@@ -241,14 +204,6 @@ namespace JourneySick.Business.IServices.Services
                     int id_detail = await _tripDetailRepository.UpdateTripDetail(tripVO);
                     if (id >= 0 && id_detail >= 0)
                     {
-                        /*MapLocation startmaplocation = new()
-                        {
-                            Latitude = updateTripRequest.StartLatitude,
-                            Longitude = updateTripRequest.StartLongitude,
-                            LocationName = updateTripRequest.StartLocationName,
-                            MapId = (int)updateTripRequest.TripStartLocationId
-                        };
-                        await _mapLocationRepository.UpdateMapLocation(startmaplocation);*/
                         MapLocation endmaplocation = new()
                         {
                             Latitude = updateTripRequest.EndLatitude,
@@ -286,8 +241,7 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    if (await _tripRepository.DeleteTrip(tripId) > 0 && await _tripDetailRepository.DeleteTripDetail(tripId) > 0
-                        && await _mapLocationRepository.DeleteMapLocation((int)getTrip.TripStartLocationId) > 0 && await _mapLocationRepository.DeleteMapLocation((int)getTrip.TripDestinationLocationId) > 0)
+                    if (await _tripRepository.DeleteTrip(tripId) > 0 && await _tripDetailRepository.DeleteTripDetail(tripId) > 0 && await _mapLocationRepository.DeleteMapLocation((int)getTrip.TripDestinationLocationId) > 0)
                     {
                         await _tripItemRepository.DeleteTripItemByTripId(tripId);
                         await _tripMemberRepository.DeleteTripMemberByTripId(tripId);

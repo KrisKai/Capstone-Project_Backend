@@ -19,13 +19,9 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
 
     public class CreateTripDetailRequest : TripRequest
     {
-        public int? TripStartLocationId { get; set; }
         public int? TripDestinationLocationId { get; set; }
         public DateTime? EstimateStartDate { get; set; }
-        public int? EstimateStartTime { get; set; }
         public DateTime? EstimateEndDate { get; set; }
-        public int? EstimateEndTime { get; set; }
-        public string? Distance { get; set; }
     }
 
     public class CreateTripRequest : CreateTripDetailRequest

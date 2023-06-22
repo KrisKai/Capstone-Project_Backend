@@ -22,7 +22,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         TripDestinationLocationId, "
                     + "         EstimateStartDate, "
                     + "         EstimateEndDate, "
-                    + "         Distance, "
                     + "         CreateDate, "
                     + "         CreateBy) "
                     + "     VALUES ( "
@@ -30,7 +29,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @TripDestinationLocationId, "
                     + "         @EstimateStartDate, "
                     + "         @EstimateEndDate, "
-                    + "         @Distance, "
                     + "         @CreateDate, "
                     + "         @CreateBy)";
 
@@ -39,7 +37,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("TripDestinationLocationId", tripdetail.TripDestinationLocationId, DbType.Int32);
                 parameters.Add("EstimateStartDate", tripdetail.EstimateStartDate, DbType.DateTime);
                 parameters.Add("EstimateEndDate", tripdetail.EstimateEndDate, DbType.DateTime);
-                parameters.Add("Distance", tripdetail.Distance, DbType.String);
                 parameters.Add("CreateDate", tripdetail.CreateDate, DbType.DateTime);
                 parameters.Add("CreateBy", tripdetail.CreateBy, DbType.String);
 
@@ -60,7 +57,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         TripDestinationLocationId = @TripDestinationLocationId, "
                     + "         EstimateStartDate = @EstimateStartDate, "
                     + "         EstimateEndDate = @EstimateEndDate, "
-                    + "         Distance = @Distance, "
                     + "         UpdateDate = @UpdateDate, "
                     + "         UpdateBy = @UpdateBy"
                     + "     WHERE TripId = @TripId"; ;
@@ -70,7 +66,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("TripDestinationLocationId", tripdetail.TripDestinationLocationId, DbType.Int32);
                 parameters.Add("EstimateStartDate", tripdetail.EstimateStartDate, DbType.DateTime);
                 parameters.Add("EstimateEndDate", tripdetail.EstimateEndDate, DbType.DateTime);
-                parameters.Add("Distance", tripdetail.Distance, DbType.String);
                 parameters.Add("UpdateDate", tripdetail.UpdateDate, DbType.DateTime);
                 parameters.Add("UpdateBy", tripdetail.UpdateBy, DbType.String);
 
