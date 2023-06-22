@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using JourneySick.Data.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace JourneySick.Data.Context
+namespace JourneySick.Data.Models.Entities
 {
     public partial class journey_sick_dbContext : DbContext
     {
@@ -38,7 +37,7 @@ namespace JourneySick.Data.Context
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseMySql("server=localhost;user=CRM;database=journey_sick_db", ServerVersion.Parse("5.7.39-mysql"));
+                optionsBuilder.UseMySql("server=localhost;user=CRM;database=journey_sick_db", Microsoft.EntityFrameworkCore.ServerVersion.Parse("5.7.39-mysql"));
             }
         }
 
@@ -172,6 +171,8 @@ namespace JourneySick.Data.Context
                 entity.Property(e => e.LocationName).HasMaxLength(200);
 
                 entity.Property(e => e.Longitude).HasMaxLength(200);
+
+                entity.Property(e => e.PlaceId).HasMaxLength(200);
             });
 
             modelBuilder.Entity<PlanLocation>(entity =>
