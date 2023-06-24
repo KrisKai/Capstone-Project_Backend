@@ -355,7 +355,7 @@ namespace JourneySick.Business.IServices.Services
                     foreach (TripVO tripVO in trips)
                     {
                         // check status of trip
-                        if (tripVO.TripStatus.Equals("ACTIVE") && DateTime.Compare((DateTime)tripVO.EstimateEndDate,DateTime.Now) < 0)
+                        if (tripVO.TripStatus.Equals("ACTIVE") && tripVO.EstimateEndDate.Date < DateTime.Now.Date)
                         {
                             tripVO.TripStatus = "CLOSED";
                         }
