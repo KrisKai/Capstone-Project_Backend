@@ -265,39 +265,6 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
         }
-        private async Task<string> GenerateTripID()
-        {
-            try
-            {
-                string lastOne = await _tripRepository.GetLastOneId();
-                if (lastOne != null)
-                {
-                    if (lastOne.Equals("0"))
-                    {
-                        return "TRIP_00000001";
-                    }
-                    string lastId = lastOne.Substring(5);
-                    int newId = Convert.ToInt32(lastId) + 1;
-                    string newIdStr = Convert.ToString(newId);
-                    while (newIdStr.Length < 8)
-                    {
-                        newIdStr = "0" + newIdStr;
-                    }
-                    return "TRIP_" + newIdStr;
-                }
-                else
-                {
-                    return "TRIP_00000001";
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.StackTrace, ex);
-                throw new Exception(ex.Message);
-            }
-
-        }
-
         public async Task<TripStatisticResponse> TripStatistic()
         {
             try
@@ -344,7 +311,6 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
         }
-
         public async Task<List<TripVO>> GetTripHistory(string userId)
         {
             try
@@ -437,6 +403,39 @@ namespace JourneySick.Business.IServices.Services
                 _logger.LogError(ex.StackTrace, ex);
                 throw;
             }
+        }
+
+        private async Task<string> GenerateTripID()
+        {
+            try
+            {
+                string lastOne = await _tripRepository.GetLastOneId();
+                if (lastOne != null)
+                {
+                    if (lastOne.Equals("0"))
+                    {
+                        return "TRIP_00000001";
+                    }
+                    string lastId = lastOne.Substring(5);
+                    int newId = Convert.ToInt32(lastId) + 1;
+                    string newIdStr = Convert.ToString(newId);
+                    while (newIdStr.Length < 8)
+                    {
+                        newIdStr = "0" + newIdStr;
+                    }
+                    return "TRIP_" + newIdStr;
+                }
+                else
+                {
+                    return "TRIP_00000001";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw new Exception(ex.Message);
+            }
+
         }
     }
 }
