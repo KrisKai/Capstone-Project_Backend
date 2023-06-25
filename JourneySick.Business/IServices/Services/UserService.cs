@@ -5,8 +5,10 @@ using JourneySick.Business.Helpers.SettingObject;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.IRepositories.Repositories;
+using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.Request;
+using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using JourneySick.Data.Models.Enums;
 using Microsoft.Extensions.Logging;
@@ -299,6 +301,28 @@ namespace JourneySick.Business.IServices.Services
             throw new NotImplementedException();
         }
 
+
+        public async Task<int> CreateUserInterest(List<string> data, CurrentUserObject currentUser)
+        {
+            try
+            {
+                foreach (var item in data)
+                {
+                    UserInterest userInterest = new UserInterest();
+                    userInterest.Interest = item;
+                    userInterest.UserId = currentUser.UserId;
+                    await _userInterestRepository.CreateUserInterest(userInterest);
+                }
+                return 1;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
         private async Task<int> ValidateUserCreate(UserRequest userVO)
         {
             string username = await _userRepository.GetUsernameIfExist(userVO.Username);
@@ -379,6 +403,5 @@ namespace JourneySick.Business.IServices.Services
             }
 
         }
-
     }
 }

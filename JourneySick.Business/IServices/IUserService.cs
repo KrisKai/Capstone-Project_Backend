@@ -20,5 +20,6 @@ namespace JourneySick.Business.IServices
         public Task<string> ConfirmUser(string id);
         public Task<int> CheckUserHavingInterest(string id);
         public Task<AllUserDTO> GetAllUserInterestsWithPaging(CurrentUserObject currentUser);
+        public Task<int> CreateUserInterest(List<string> data, CurrentUserObject currentUser);
     }
 }

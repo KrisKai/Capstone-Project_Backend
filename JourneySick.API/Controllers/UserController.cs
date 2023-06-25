@@ -61,7 +61,6 @@ namespace JourneySick.API.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserById([FromRoute] string id)
         {
-            CurrentUserObject currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.GetUserById(id);
             return Ok(result);
         }
@@ -131,6 +130,19 @@ namespace JourneySick.API.Controllers
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.CheckUserHavingInterest(currentUser.UserId);
             return Ok(result);
+        }
+
+
+        //CREATE
+        [HttpPost]
+        [Route("create-user-interest")]
+        [Authorize]
+        public async Task<IActionResult> CreateUserInterest([FromBody] List<string> data)
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _userService.CreateUserInterest(data, currentUser);
+            return Ok(result);
+
         }
     }
 }
