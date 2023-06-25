@@ -24,7 +24,7 @@ namespace JourneySick.API.Controllers
 
         //CREATE
         [HttpPost]
-        public async Task<IActionResult> CreateTrip([FromBody] CreateTripRequest tripRequest)
+        public async Task<IActionResult> CreateTrip([FromForm] CreateTripRequest tripRequest)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _tripService.CreateTrip(tripRequest, currentUser);
@@ -35,7 +35,7 @@ namespace JourneySick.API.Controllers
         //UPDATE
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult> UpdateTrip([FromBody] UpdateTripRequest tripVO)
+        public async Task<IActionResult> UpdateTrip([FromForm] UpdateTripRequest tripVO)
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _tripService.UpdateTrip(tripVO, currentUser);
