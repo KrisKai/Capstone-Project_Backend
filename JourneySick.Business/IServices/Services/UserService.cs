@@ -4,6 +4,7 @@ using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Helpers.SettingObject;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
+using JourneySick.Data.IRepositories.Repositories;
 using JourneySick.Data.Models.DTOs.CommonDTO.GetAllDTO;
 using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.Entities.VO;
@@ -18,15 +19,17 @@ namespace JourneySick.Business.IServices.Services
         private readonly IUserRepository _userRepository;
         private readonly IUserDetailRepository _userDetailRepository;
         private readonly ITripMemberRepository _tripMemberRepository;
+        private readonly IUserInterestRepository _userInterestRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<UserService> _logger;
         private readonly AppSecrect _appSecrect;
 
-        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, ITripMemberRepository tripMemberRepository, IOptions<AppSecrect> appSecrect, IMapper mapper, ILogger<UserService> logger)
+        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, ITripMemberRepository tripMemberRepository, IUserInterestRepository userInterestRepository, IOptions<AppSecrect> appSecrect, IMapper mapper, ILogger<UserService> logger)
         {
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
             _tripMemberRepository = tripMemberRepository;
+            _userInterestRepository = userInterestRepository;
             _appSecrect = appSecrect.Value;
             _mapper = mapper;
             _logger = logger;
@@ -161,35 +164,6 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        private async Task<string> GenerateUserID()
-        {
-            try
-            {
-                string lastOne = await _userRepository.GetLastOneId();
-                if (lastOne != null)
-                {
-                    string lastId = lastOne.Substring(5);
-                    int newId = Convert.ToInt32(lastId) + 1;
-                    string newIdStr = Convert.ToString(newId);
-                    while (newIdStr.Length < 8)
-                    {
-                        newIdStr = "0" + newIdStr;
-                    }
-                    return "USER_" + newIdStr;
-                }
-                else
-                {
-                    return "USER_00000001";
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.StackTrace, ex);
-                throw;
-            }
-
-        }
-
         public async Task<int> ResetPassword(string? id, CurrentUserObject currentUser)
         {
             if (currentUser.Role.Equals(UserRoleEnum.ADMIN.ToString()))
@@ -269,6 +243,62 @@ namespace JourneySick.Business.IServices.Services
             throw new PermissionException("You do not have permission to access!!");
         }
 
+        public async Task<string> ConfirmUser(string id)
+        {
+            try
+            {
+                UserRequest userRequest = await GetUserById(id);
+
+                if (userRequest != null)
+                {
+                    if (userRequest.Confirmation.Equals("N"))
+                    {
+                        if (await _userRepository.ConfirmUser(id) > 0)
+                        {
+                            return id;
+                        }
+                        else
+                        {
+                            throw new UpdateException("Xác thực thất bại!");
+                        }
+                    }
+                    else
+                    {
+                        throw new UpdateException("Đường dẫn này không hợp lệ! Vui lòng thử lại sau");
+                    }
+                }
+                else
+                {
+                    throw new GetOneException("Thành viên này không tồn tại trong chuyến đi!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
+        public async Task<int> CheckUserHavingInterest(string id)
+        {
+            try
+            {
+                int count = await _userInterestRepository.CountAllUserInterests(id);
+
+                return count;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(message: ex.StackTrace, ex);
+                throw;
+            }
+        }
+
+        public Task<AllUserDTO> GetAllUserInterestsWithPaging(CurrentUserObject currentUser)
+        {
+            throw new NotImplementedException();
+        }
+
         private async Task<int> ValidateUserCreate(UserRequest userVO)
         {
             string username = await _userRepository.GetUsernameIfExist(userVO.Username);
@@ -321,33 +351,25 @@ namespace JourneySick.Business.IServices.Services
             return 0;
         }
 
-        public async Task<string> ConfirmUser(string id)
+        private async Task<string> GenerateUserID()
         {
             try
             {
-                UserRequest userRequest = await GetUserById(id);
-
-                if (userRequest != null)
+                string lastOne = await _userRepository.GetLastOneId();
+                if (lastOne != null)
                 {
-                    if (userRequest.Confirmation.Equals("N"))
+                    string lastId = lastOne.Substring(5);
+                    int newId = Convert.ToInt32(lastId) + 1;
+                    string newIdStr = Convert.ToString(newId);
+                    while (newIdStr.Length < 8)
                     {
-                        if (await _userRepository.ConfirmUser(id) > 0)
-                        {
-                            return id;
-                        }
-                        else
-                        {
-                            throw new UpdateException("Xác thực thất bại!");
-                        }
+                        newIdStr = "0" + newIdStr;
                     }
-                    else
-                    {
-                        throw new UpdateException("Đường dẫn này không hợp lệ! Vui lòng thử lại sau");
-                    }
+                    return "USER_" + newIdStr;
                 }
                 else
                 {
-                    throw new GetOneException("Thành viên này không tồn tại trong chuyến đi!");
+                    return "USER_00000001";
                 }
             }
             catch (Exception ex)
@@ -355,6 +377,8 @@ namespace JourneySick.Business.IServices.Services
                 _logger.LogError(ex.StackTrace, ex);
                 throw;
             }
+
         }
+
     }
 }

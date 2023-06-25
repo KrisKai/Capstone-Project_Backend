@@ -122,5 +122,15 @@ namespace JourneySick.API.Controllers
             var result = await _userService.ConfirmUser(id);
             return Ok(result);
         }
+
+        [Authorize]
+        [HttpGet]
+        [Route("check-interest")]
+        public async Task<IActionResult> CheckUserHavingInterest()
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _userService.CheckUserHavingInterest(currentUser.UserId);
+            return Ok(result);
+        }
     }
 }

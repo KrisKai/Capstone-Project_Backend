@@ -18,5 +18,7 @@ namespace JourneySick.Business.IServices
         public Task<int> ChangePassword(ChangePasswordRequest changePasswordDTO);
         public Task<int> UpdateAcitveStatus(UserRequest userDTO, CurrentUserObject currentUser);
         public Task<string> ConfirmUser(string id);
+        public Task<int> CheckUserHavingInterest(string id);
+        public Task<AllUserDTO> GetAllUserInterestsWithPaging(CurrentUserObject currentUser);
     }
 }
