@@ -30,7 +30,8 @@ namespace JourneySick.Business.IServices.Services
 
         public AuthenticateService(IUserService userService,
             IUserDetailRepository userDetailRepository,
-            IUserRepository userRepository, IUserInterestRepository userInterestRepository,
+            IUserRepository userRepository, 
+            IUserInterestRepository userInterestRepository,
             IOptions<AppSecrect> appSecrect,
             ILogger<AuthenticateService> logger, IMapper mapper)
         {
@@ -38,6 +39,7 @@ namespace JourneySick.Business.IServices.Services
             _appSecrect = appSecrect.Value;
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
+            _userInterestRepository = userInterestRepository;
             _logger = logger;
             _mapper = mapper;
         }
