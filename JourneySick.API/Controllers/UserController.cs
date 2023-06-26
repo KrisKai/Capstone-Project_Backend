@@ -148,9 +148,9 @@ namespace JourneySick.API.Controllers
         [HttpDelete]
         [Route("delete-interest-by-interest-id")]
         [Authorize]
-        public async Task<IActionResult> DeleteUserInterest(int interestId)
+        public async Task<IActionResult> DeleteUserInterest(int id)
         {
-            var result = await _userService.DeleteUserInterestByInterestId(interestId);
+            var result = await _userService.DeleteUserInterestByInterestId(id);
             return Ok(result);
 
         }
