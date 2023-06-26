@@ -1,4 +1,5 @@
 ﻿using JourneySick.Data.Models.DTOs;
+using JourneySick.Data.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
         public string? Password { get; set; }
         public string? Confirmation { get; set; }
         public DateTime SendDate { get; set; }
+        public List<UserInterest> userInterestList { get; set; }
     }
 }

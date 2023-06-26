@@ -14,7 +14,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         public UserInterestRepository(IConfiguration configuration) : base(configuration)
         {
         }
-        public async Task<List<UserInterest>> GetAllUserInterestsWithPaging(string userId)
+        public async Task<List<UserInterest>> GetAllUserInterests(string userId)
         {
             try
             {

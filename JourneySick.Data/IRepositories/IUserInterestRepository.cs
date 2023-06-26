@@ -5,7 +5,7 @@ namespace JourneySick.Data.IRepositories
 {
     public interface IUserInterestRepository
     {
-        public Task<List<UserInterest>> GetAllUserInterestsWithPaging(string userId);
+        public Task<List<UserInterest>> GetAllUserInterests(string userId);
 
         public Task<int> CountAllUserInterests(string userId);
 

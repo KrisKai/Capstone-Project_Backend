@@ -220,7 +220,7 @@ namespace JourneySick.Business.IServices.Services
                 {
                     UserVO userVO = _mapper.Map<UserVO>(userRequest);
                     UserVO getUser = await _userRepository.GetUserById(userVO.UserId);
-                    if(getUser != null)
+                    if (getUser != null)
                     {
                         if (getUser.ActiveStatus.Equals("ACTIVE"))
                         {
@@ -235,7 +235,7 @@ namespace JourneySick.Business.IServices.Services
                         }
                         return 0;
                     }
-                    
+
                 }
                 catch
                 {

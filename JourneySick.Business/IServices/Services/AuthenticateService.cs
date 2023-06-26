@@ -5,6 +5,7 @@ using JourneySick.Business.Helpers.SettingObject;
 using JourneySick.Business.Security;
 using JourneySick.Data.IRepositories;
 using JourneySick.Data.Models.DTOs.CommonDTO.Request;
+using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using JourneySick.Data.Models.Enums;
 using Microsoft.Extensions.Logging;
@@ -22,13 +23,14 @@ namespace JourneySick.Business.IServices.Services
         private readonly IUserService _userService;
         private readonly IUserRepository _userRepository;
         private readonly IUserDetailRepository _userDetailRepository;
+        private readonly IUserInterestRepository _userInterestRepository;
         private readonly AppSecrect _appSecrect;
         private readonly ILogger<AuthenticateService> _logger;
         private readonly IMapper _mapper;
 
         public AuthenticateService(IUserService userService,
             IUserDetailRepository userDetailRepository,
-            IUserRepository userRepository,
+            IUserRepository userRepository, IUserInterestRepository userInterestRepository,
             IOptions<AppSecrect> appSecrect,
             ILogger<AuthenticateService> logger, IMapper mapper)
         {
@@ -123,7 +125,7 @@ namespace JourneySick.Business.IServices.Services
                         if (userVO.Confirmation.Equals("N"))
                         {
                             // note: cheeck thêm đk sendDate
-                            if(userVO.Role.Equals(UserRoleEnum.USER.ToString()) && DateTime.Compare(userVO.SendDate.AddMinutes(30), DateTimePicker.GetDateTimeByTimeZone()) < 0)
+                            if (userVO.Role.Equals(UserRoleEnum.USER.ToString()) && DateTime.Compare(userVO.SendDate.AddMinutes(30), DateTimePicker.GetDateTimeByTimeZone()) < 0)
                             {
                                 await EmailService.SendEmailRegister(userVO.Email, userVO.Fullname, await _userRepository.GetLastOneId());
                                 throw new LoginFailedException("Vui lòng xác thực email của bạn!!");
@@ -170,7 +172,7 @@ namespace JourneySick.Business.IServices.Services
                     if (encryptedPassword.Equals(checkValue))
                     {
                         UserVO userVO = await _userRepository.GetUserByUsername(loginRequest.Username);
-                        if(userVO != null)
+                        if (userVO != null)
                         {
                             if (userVO.Role.Equals(UserRoleEnum.ADMIN.ToString()) || userVO.Role.Equals(UserRoleEnum.EMPL.ToString()))
                             {
@@ -213,11 +215,13 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                UserVO UserVO = await _userRepository.GetUserById(currentUser.UserId);
+                UserVO userVO = await _userRepository.GetUserById(currentUser.UserId);
                 // convert entity to dto
-                UserRequest userVO = _mapper.Map<UserRequest>(UserVO);
+                UserRequest userRequest = _mapper.Map<UserRequest>(userVO);
+                List<UserInterest> userInterests = await _userInterestRepository.GetAllUserInterests(currentUser.UserId);
+                userRequest.userInterestList = userInterests;
 
-                return userVO;
+                return userRequest;
             }
             catch (Exception ex)
             {
