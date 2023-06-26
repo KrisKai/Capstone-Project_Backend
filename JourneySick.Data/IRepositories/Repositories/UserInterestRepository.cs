@@ -32,9 +32,21 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public Task<UserInterest> GetUserInterestById(string userId)
+        public async Task<UserInterest> GetUserInterestById(int interestId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var query = "SELECT * FROM user_interest WHERE InterestId = @interestId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("interestId", interestId, DbType.Int32);
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<UserInterest>(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
         }
 
         public async Task<int> CountAllUserInterests(string userId)
@@ -110,7 +122,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> DeleteUser(string userId)
+        public async Task<int> DeleteUserInterest(string userId)
         {
             try
             {
@@ -127,7 +139,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> DeleteUserByInterestId(int interestId)
+        public async Task<int> DeleteUserInterestByInterestId(int interestId)
         {
             try
             {

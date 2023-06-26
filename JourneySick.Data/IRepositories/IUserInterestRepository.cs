@@ -9,7 +9,7 @@ namespace JourneySick.Data.IRepositories
 
         public Task<int> CountAllUserInterests(string userId);
 
-        public Task<UserInterest> GetUserInterestById(string userId);
+        public Task<UserInterest> GetUserInterestById(int interestId);
 
         //CREATE
         public Task<long> CreateUserInterest(UserInterest userInterest);
@@ -18,8 +18,8 @@ namespace JourneySick.Data.IRepositories
         public Task<int> UpdateUserInterest(UserInterest userInterest);
 
         //DELETE
-        public Task<int> DeleteUser(string userId);
+        public Task<int> DeleteUserInterest(string userId);
         //DELETE
-        public Task<int> DeleteUserByInterestId(int interestId);
+        public Task<int> DeleteUserInterestByInterestId(int interestId);
     }
 }

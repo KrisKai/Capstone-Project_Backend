@@ -132,7 +132,6 @@ namespace JourneySick.API.Controllers
             return Ok(result);
         }
 
-
         //CREATE
         [HttpPost]
         [Route("create-user-interest")]
@@ -141,6 +140,17 @@ namespace JourneySick.API.Controllers
         {
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _userService.CreateUserInterest(data, currentUser);
+            return Ok(result);
+
+        }
+
+        //DELETE
+        [HttpDelete]
+        [Route("delete-interest-by-interest-id")]
+        [Authorize]
+        public async Task<IActionResult> DeleteUserInterest(int interestId)
+        {
+            var result = await _userService.DeleteUserInterestByInterestId(interestId);
             return Ok(result);
 
         }

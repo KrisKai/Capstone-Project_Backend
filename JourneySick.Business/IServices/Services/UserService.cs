@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Firebase.Auth;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Helpers.SettingObject;
@@ -315,6 +316,36 @@ namespace JourneySick.Business.IServices.Services
                 }
                 return 1;
 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
+        public async Task<int> DeleteUserInterestByInterestId(int id)
+        {
+            try
+            {
+                UserInterest getInterest = await _userInterestRepository.GetUserInterestById(id);
+
+                if (getInterest != null)
+                {
+                    if (await _userInterestRepository.DeleteUserInterestByInterestId(id) > 0)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        throw new DeleteException("Xoá ưu thích thành công!");
+                    }
+
+                }
+                else
+                {
+                    throw new GetOneException("User is not existed!");
+                }
             }
             catch (Exception ex)
             {
