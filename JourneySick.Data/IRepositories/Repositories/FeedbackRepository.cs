@@ -21,12 +21,22 @@ namespace JourneySick.Data.IRepositories.Repositories
                 int firstIndex = pageIndex * pageSize;
                 int lastIndex = (pageIndex + 1) * pageSize;
                 tripId ??= "";
-                var query = "SELECT * " +
+                var query = "";
+                if (query.Equals(""))
+                {
+                    query = "SELECT * " +
+                    "FROM feedback a INNER JOIN User b ON a.UserId = b.UserId " +
+                    "INNER JOIN user_detail c ON a.UserId = c.UserId " +
+                    "LIMIT @firstIndex, @lastIndex";
+                } else
+                {
+                    query = "SELECT * " +
                     "FROM feedback a INNER JOIN User b ON a.UserId = b.UserId " +
                     "INNER JOIN user_detail c ON a.UserId = c.UserId " +
                     "INNER JOIN Trip d ON a.TripId = d.TripId " +
                     "WHERE a.TripId LIKE CONCAT('%', @tripId, '%') " +
                     "LIMIT @firstIndex, @lastIndex";
+                }
                 
                 var parameters = new DynamicParameters();
                 parameters.Add("firstIndex", firstIndex, DbType.Int16);
