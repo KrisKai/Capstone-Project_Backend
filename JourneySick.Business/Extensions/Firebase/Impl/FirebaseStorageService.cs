@@ -59,6 +59,35 @@ namespace JourneySick.Business.Extensions.Firebase.Impl
                 _logger.LogError(ex.StackTrace, ex);
                 throw;
             }
+        }        
+        
+        public async Task<string> UpdateTripThumbnail(IFormFile thumbnail, string tripId)
+        {
+            try
+            {
+                var auth = new FirebaseAuthProvider(new FirebaseConfig(_firebaseSetting.ApiKey));
+
+                var token = await auth.SignInWithEmailAndPasswordAsync(_firebaseSetting.Email, _firebaseSetting.Password);
+
+                var uploadTask = new FirebaseStorage(
+                                     _firebaseSetting.Bucket,
+                                     new FirebaseStorageOptions
+                                     {
+                                         AuthTokenAsyncFactory = () => Task.FromResult(token.FirebaseToken),
+                                         ThrowOnCancel = true,
+                                     }).Child("Images").Child("Trip").Child("Thumbnail").Child(tripId).PutAsync(thumbnail.OpenReadStream());
+
+                var downloadUrl = await uploadTask;
+
+
+                return downloadUrl.ToString();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
         }
     }
 }

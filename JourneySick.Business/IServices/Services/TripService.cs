@@ -200,6 +200,11 @@ namespace JourneySick.Business.IServices.Services
                     updateTripRequest.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
                     TripVO tripVO = _mapper.Map<TripVO>(updateTripRequest);
                     tripVO.TripId = updateTripRequest.TripId;
+
+                    if (updateTripRequest.TripThumbnail != null)
+                    {
+                        tripVO.TripThumbnail = await _firebaseStorageService.UploadTripThumbnail(updateTripRequest.TripThumbnail, tripVO.TripId);
+                    }
                     int id = await _tripRepository.UpdateTrip(tripVO);
                     int id_detail = await _tripDetailRepository.UpdateTripDetail(tripVO);
                     if (id >= 0 && id_detail >= 0)
