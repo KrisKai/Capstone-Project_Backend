@@ -32,6 +32,13 @@ namespace JourneySick.Business.IServices.Services
                 // convert entity to dto
                 List<TripRouteRequest> tripRouteRequests = _mapper.Map<List<TripRouteRequest>>(triprouteVOs);
                 int count = await _tripRouteRepository.CountAllTripRoutes(routeId, tripId, planDateTime);
+                foreach (var tripRouteRequest in tripRouteRequests)
+                {
+                    if(!tripRouteRequest.Note.Equals(""))
+                    {
+                        tripRouteRequest.ShowNote = true;
+                    }
+                }
                 result.ListOfRoute = tripRouteRequests;
                 result.NumOfRoute = count;
                 return result;
