@@ -100,8 +100,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         UserId, "
                     + "         FeedbackDescription, "
                     + "         Rate, "
-                    + "         Like, "
-                    + "         Dislike, "
                     + "         LocationName, "
                     + "         CreateDate, "
                     + "         CreateBy) "
@@ -110,8 +108,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @UserId, "
                     + "         @FeedbackDescription, "
                     + "         @Rate, "
-                    + "         @Like, "
-                    + "         @Dislike, "
                     + "         @LocationName, "
                     + "         @CreateDate, "
                     + "         @CreateBy)";
@@ -122,8 +118,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("UserId", feedbackEntity.UserId, DbType.String);
                 parameters.Add("FeedbackDescription", feedbackEntity.FeedbackDescription, DbType.String);
                 parameters.Add("Rate", feedbackEntity.Rate, DbType.Double);
-                parameters.Add("Like", feedbackEntity.Like, DbType.Int32);
-                parameters.Add("Dislike", feedbackEntity.Dislike, DbType.Int32);
                 parameters.Add("LocationName", feedbackEntity.LocationName, DbType.String);
                 parameters.Add("CreateDate", feedbackEntity.CreateDate, DbType.DateTime);
                 parameters.Add("CreateBy", feedbackEntity.CreateBy, DbType.String);
@@ -239,13 +233,14 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CountFeedbackByCreatorId(string userId)
+        public async Task<int> CountFeedbackByCreatorId(string userId, string tripId)
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM feedback WHERE CreateBy LIKE CONCAT('%', @userId, '%')";
+                var query = "SELECT COUNT(*) FROM feedback WHERE CreateBy LIKE CONCAT('%', @userId, '%') AND TripId = @tripId";
                 var parameters = new DynamicParameters();
                 parameters.Add("userId", userId, DbType.String);
+                parameters.Add("tripId", tripId, DbType.String);
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query, parameters));
 

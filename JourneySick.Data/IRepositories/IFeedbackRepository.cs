@@ -22,7 +22,7 @@ namespace JourneySick.Data.IRepositories
         public Task<int> DeleteFeedback(int userId);
         public Task<List<FeedbackVO>> GetTopFeedback();
         public Task<int> IncreaseLike(Feedback feedbackDTO, string status);
-        public Task<int> CountFeedbackByCreatorId(string userId);
+        public Task<int> CountFeedbackByCreatorId(string userId, string tripId);
     }
 }
 

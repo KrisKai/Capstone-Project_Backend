@@ -70,7 +70,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                int count = await _feedbackRepository.CountFeedbackByCreatorId(currentUser.UserId);
+                int count = await _feedbackRepository.CountFeedbackByCreatorId(currentUser.UserId, feedbackRequest.TripId);
                 if(count > 0)
                 {
                     throw new InsertException("Bạn đã đánh giá rồi!");
