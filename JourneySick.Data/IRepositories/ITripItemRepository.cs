@@ -14,7 +14,7 @@ namespace JourneySick.Data.IRepositories
         //SELECT ALL
         public Task<List<TripItem>> GetAllTripItemsWithPaging(int pageIndex, int pageSize, string? itemId, int categoryId, string tripId);
         public Task<int> CountAllTripItems(string? tripName, int categoryId, string tripId);
-        public Task<int> CheckIfItemNameExisted(string itemName);
+        public Task<int> CheckIfItemNameExisted(string tripId, string itemName);
         //CREATE
         public Task<int> CreateTripItem(TripItem tripitem);
         public Task<int> UpdateTripItem(TripItem tripitem);

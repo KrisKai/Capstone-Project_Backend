@@ -67,7 +67,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                int count = await _tripItemRepository.CheckIfItemNameExisted(tripItemDTO.ItemName);
+                int count = await _tripItemRepository.CheckIfItemNameExisted(tripItemDTO.TripId, tripItemDTO.ItemName);
                 if (count > 0)
                 {
                     throw new InsertException("Vật dụng này đã tồn tại!");
@@ -119,7 +119,7 @@ namespace JourneySick.Business.IServices.Services
 
                 if (getTrip != null)
                 {
-                    int count = await _tripItemRepository.CheckIfItemNameExisted(tripItemDTO.ItemName);
+                    int count = await _tripItemRepository.CheckIfItemNameExisted(tripItemDTO.TripId, tripItemDTO.ItemName);
                     if (count > 0 && !tripItemDTO.ItemName.Equals(getTrip.ItemName))
                     {
                         throw new InsertException("Vật dụng này đã tồn tại!");

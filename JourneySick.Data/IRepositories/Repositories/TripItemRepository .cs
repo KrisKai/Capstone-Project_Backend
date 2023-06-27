@@ -198,12 +198,13 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
-        public async Task<int> CheckIfItemNameExisted(string itemName)
+        public async Task<int> CheckIfItemNameExisted(string tripId, string itemName)
         {
             try
             {
-                var query = "SELECT COUNT(*) FROM trip_item WHERE LOWER(`ItemName`) = @itemName";
+                var query = "SELECT COUNT(*) FROM trip_item WHERE TripId = @tripId AND LOWER(`ItemName`) = @itemName";
                 var parameters = new DynamicParameters();
+                parameters.Add("tripId", tripId, DbType.String);
                 parameters.Add("itemName", itemName, DbType.String);
                 using var connection = CreateConnection();
                 return ((int)(long)connection.ExecuteScalar(query, parameters));
