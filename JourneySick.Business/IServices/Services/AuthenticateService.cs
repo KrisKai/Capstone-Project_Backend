@@ -246,10 +246,13 @@ namespace JourneySick.Business.IServices.Services
                     roleClaim = new Claim(ClaimTypes.Role, UserRoleEnum.ADMIN.ToString());
 
                 }
-                else
+                else if (roleCheck.Equals(UserRoleEnum.EMPL.ToString()))
                 {
                     roleClaim = new Claim(ClaimTypes.Role, UserRoleEnum.EMPL.ToString());
 
+                } else
+                {
+                    roleClaim = new Claim(ClaimTypes.Role, UserRoleEnum.USER.ToString());
                 }
 
                 int hours;

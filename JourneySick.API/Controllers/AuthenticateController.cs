@@ -61,11 +61,15 @@ namespace JourneySick.API.Controllers
             {
                 if ("EMPL".Equals(currentUser.Role))
                 {
-                    currentUser.Role = "Employee";
+                    currentUser.Role = "Nhân viên";
+                }
+                else if("ADMIN".Equals(currentUser.Role))
+                {
+                    currentUser.Role = "Quản trị viên";
                 }
                 else
                 {
-                    currentUser.Role = "Admin";
+                    currentUser.Role = "Người dùng";
                 }
             }
             return Ok(currentUser);

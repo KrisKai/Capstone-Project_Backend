@@ -10,13 +10,13 @@ namespace JourneySick.Business.IServices
         //Select list w paging
         public Task<AllTripDTO> GetAllTripsWithPaging(int pageIndex, int pageSize, string? tripName);
         //Select User
-        public Task<TripVO> GetTripById(string tripId);
+        public Task<TripVO> GetTripById(string tripId, CurrentUserObject currentUser);
         //Insert
         public Task<int> CreateTrip(CreateTripRequest createTripRequest, CurrentUserObject currentUser);
         //Update
         public Task<string> UpdateTrip(UpdateTripRequest updateTripRequest, CurrentUserObject currentUser);
         //Delete
-        public Task<int> DeleteTrip(string tripId);
+        public Task<int> DeleteTrip(string tripId, CurrentUserObject currentUser);
         //Count this month
         public Task<TripStatisticResponse> TripStatistic();
         public Task<List<TripVO>> GetTripHistory(string userId);

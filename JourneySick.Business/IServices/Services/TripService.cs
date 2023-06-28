@@ -81,7 +81,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        public async Task<TripVO> GetTripById(string tripId)
+        public async Task<TripVO> GetTripById(string tripId, CurrentUserObject currentUser)
         {
             try
             {
@@ -89,6 +89,11 @@ namespace JourneySick.Business.IServices.Services
                 if(trip == null)
                 {
                     throw new GetOneException("Something is wrong!!");
+                }
+                int count = await _tripMemberRepository.CountTripMemberByUserIdAndTripId(currentUser.UserId, tripId);
+                if(count == 0 && currentUser.Role.Equals("USER"))
+                {
+                    throw new GetOneException("Bạn không có quyền xem chuyến đi này!!");
                 }
                 CultureInfo culture = new CultureInfo("vi-VN");
                 trip.EstimateStartDateStr = trip.EstimateStartDate.ToString("MMM/dd", culture);
@@ -192,7 +197,7 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
-                TripVO currentTrip = await GetTripById(updateTripRequest.TripId);
+                TripVO currentTrip = await GetTripById(updateTripRequest.TripId, currentUser);
 
                 if (currentTrip != null)
                 {
@@ -238,11 +243,11 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
-        public async Task<int> DeleteTrip(string tripId)
+        public async Task<int> DeleteTrip(string tripId, CurrentUserObject currentUser)
         {
             try
             {
-                TripVO getTrip = await GetTripById(tripId);
+                TripVO getTrip = await GetTripById(tripId, currentUser);
 
                 if (getTrip != null)
                 {

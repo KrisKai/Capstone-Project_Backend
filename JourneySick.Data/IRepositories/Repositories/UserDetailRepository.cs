@@ -190,6 +190,7 @@ namespace JourneySick.Data.IRepositories.Repositories
             {
                 var query = "UPDATE user_detail SET " +
                     "Birthday = @Birthday, " +
+                    "Role = @Role, " +
                     "Email = @Email, " +
                     "Fullname = @Fullname, " +
                     "Phone = @Phone, " +
@@ -200,6 +201,7 @@ namespace JourneySick.Data.IRepositories.Repositories
 
                 var parameters = new DynamicParameters();
                 parameters.Add("UserId", userDetailEntity.UserId, DbType.String);
+                parameters.Add("Role", userDetailEntity.Role, DbType.String);
                 parameters.Add("Birthday", userDetailEntity.Birthday, DbType.DateTime);
                 parameters.Add("Email", userDetailEntity.Email, DbType.String);
                 parameters.Add("Fullname", userDetailEntity.Fullname, DbType.String);
