@@ -243,6 +243,40 @@ namespace JourneySick.Business.IServices.Services
 
         }
 
+        public async Task<string> UpdateTripThumbnail(UpdateTripRequest updateTripRequest, CurrentUserObject currentUser)
+        {
+            try
+            {
+                TripVO currentTrip = await GetTripById(updateTripRequest.TripId, currentUser);
+
+                if (currentTrip != null)
+                {
+                    updateTripRequest.UpdateBy = currentUser.UserId;
+                    updateTripRequest.UpdateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    TripVO tripVO = _mapper.Map<TripVO>(updateTripRequest);
+                    tripVO.TripId = updateTripRequest.TripId;
+
+                    if (updateTripRequest.TripThumbnail != null)
+                    {
+                        tripVO.TripThumbnail = await _firebaseStorageService.UploadTripThumbnail(updateTripRequest.TripThumbnail, tripVO.TripId);
+                    }
+                    int id = await _tripRepository.UpdateTrip(tripVO);
+                    return tripVO.TripThumbnail;
+                    
+                }
+                else
+                {
+                    throw new GetOneException("Trip is not existed!");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
         public async Task<int> DeleteTrip(string tripId, CurrentUserObject currentUser)
         {
             try

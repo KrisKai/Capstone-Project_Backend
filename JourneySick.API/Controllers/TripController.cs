@@ -29,7 +29,6 @@ namespace JourneySick.API.Controllers
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _tripService.CreateTrip(tripRequest, currentUser);
             return Ok(result);
-
         }
 
         //UPDATE
@@ -40,7 +39,6 @@ namespace JourneySick.API.Controllers
             var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
             var result = await _tripService.UpdateTrip(tripVO, currentUser);
             return Ok(result);
-
         }
 
         //GET ALL
@@ -109,6 +107,17 @@ namespace JourneySick.API.Controllers
             var result = await _tripService.CreateTripUser(tripRequest, currentUser);
             return Ok(result);
 
+        }
+
+        //UPDATE
+        [HttpPut]
+        [Authorize]
+        [Route("update-trip-thumbnail")]
+        public async Task<IActionResult> UpdateTripThumbnail([FromForm] UpdateTripRequest tripVO)
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _tripService.UpdateTripThumbnail(tripVO, currentUser);
+            return Ok(result);
         }
 
     }

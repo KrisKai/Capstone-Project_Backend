@@ -22,5 +22,6 @@ namespace JourneySick.Business.IServices
         public Task<List<TripVO>> GetTripHistory(string userId);
         //Create in user site
         public Task<string> CreateTripUser(CreateTripRequest tripRequest, CurrentUserObject currentUser);
+        public Task<string> UpdateTripThumbnail(UpdateTripRequest tripVO, CurrentUserObject currentUser);
     }
 }
