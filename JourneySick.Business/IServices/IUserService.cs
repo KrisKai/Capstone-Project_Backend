@@ -23,5 +23,6 @@ namespace JourneySick.Business.IServices
         public Task<int> CreateUserInterest(List<string> data, CurrentUserObject currentUser);
         //DELETE
         public Task<int> DeleteUserInterestByInterestId(int id);
+        public Task<string> UpdateAvatar(UserRequest userVO, CurrentUserObject currentUser);
     }
 }

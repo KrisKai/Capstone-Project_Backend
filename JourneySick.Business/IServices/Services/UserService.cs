@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Firebase.Auth;
+using JourneySick.Business.Extensions.Firebase;
+using JourneySick.Business.Extensions.Firebase.Impl;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Helpers.SettingObject;
@@ -23,16 +25,18 @@ namespace JourneySick.Business.IServices.Services
         private readonly IUserDetailRepository _userDetailRepository;
         private readonly ITripMemberRepository _tripMemberRepository;
         private readonly IUserInterestRepository _userInterestRepository;
+        private readonly IFirebaseStorageService _firebaseStorageService;
         private readonly IMapper _mapper;
         private readonly ILogger<UserService> _logger;
         private readonly AppSecrect _appSecrect;
 
-        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, ITripMemberRepository tripMemberRepository, IUserInterestRepository userInterestRepository, IOptions<AppSecrect> appSecrect, IMapper mapper, ILogger<UserService> logger)
+        public UserService(IUserRepository userRepository, IUserDetailRepository userDetailRepository, ITripMemberRepository tripMemberRepository, IUserInterestRepository userInterestRepository, IFirebaseStorageService firebaseStorageService, IOptions<AppSecrect> appSecrect, IMapper mapper, ILogger<UserService> logger)
         {
             _userRepository = userRepository;
             _userDetailRepository = userDetailRepository;
             _tripMemberRepository = tripMemberRepository;
             _userInterestRepository = userInterestRepository;
+            _firebaseStorageService = firebaseStorageService;
             _appSecrect = appSecrect.Value;
             _mapper = mapper;
             _logger = logger;
@@ -433,6 +437,41 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
 
+        }
+
+        public async Task<string> UpdateAvatar(UserRequest userRequest, CurrentUserObject currentUser)
+        {
+            try
+            {
+                UserRequest getTrip = await GetUserById(userId: userRequest.UserId);
+
+                if (getTrip != null && await ValidateUserUpdate(getTrip, userRequest) == 0)
+                {
+                    
+                    UserVO userVO = _mapper.Map<UserVO>(userRequest);
+                    if (userRequest.Avatar != null)
+                    {
+                        userVO.Avatar = await _firebaseStorageService.UploadTripThumbnail(userRequest.Avatar, userVO.UserId);
+                    }
+                    if (await _userDetailRepository.UpdateAvatar(userVO) > 0)
+                    {
+                        return userVO.UserId;
+                    }
+                    else
+                    {
+                        throw new UpdateException("Update user failed!");
+                    }
+                }
+                else
+                {
+                    throw new GetOneException("User is not existed!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
         }
     }
 }

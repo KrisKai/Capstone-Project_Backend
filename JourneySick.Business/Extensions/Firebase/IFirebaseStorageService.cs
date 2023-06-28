@@ -10,5 +10,6 @@ namespace JourneySick.Business.Extensions.Firebase
     public interface IFirebaseStorageService
     {
         public Task<string> UploadTripThumbnail(IFormFile thumbnail, string tripId);
+        public Task<string> UploadAvatar(IFormFile thumbnail, string userId);
     }
 }

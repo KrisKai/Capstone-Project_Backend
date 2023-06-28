@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -34,7 +35,7 @@ namespace JourneySick.Data.Models.DTOs
 
         public int? TripCancelled { get; set; }
 
-        public string? Avatar { get; set; }
+        public IFormFile? Avatar { get; set; }
 
         public DateTime? CreateDate { get; set; }
 

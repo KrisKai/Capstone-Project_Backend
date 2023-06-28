@@ -154,5 +154,17 @@ namespace JourneySick.API.Controllers
             return Ok(result);
 
         }
+        
+        //UPDATE
+        [HttpPut]
+        [Route("update-avatar")]
+        [Authorize]
+        public async Task<IActionResult> UpdateAvatar([FromForm] UserRequest userVO)
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _userService.UpdateAvatar(userVO, currentUser);
+            return Ok(result);
+
+        }
     }
 }
