@@ -275,26 +275,5 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
-
-        public async Task<int> UpdateAvatar(UserVO userDetailEntity)
-        {
-            try
-            {
-                var query = "UPDATE user_detail SET " +
-                    "Avatar = @Avatar " +
-                    "WHERE UserId = @UserId";
-
-                var parameters = new DynamicParameters();
-                parameters.Add("UserId", userDetailEntity.UserId, DbType.String);
-                parameters.Add("Avatar", userDetailEntity.Avatar, DbType.String);
-                using var connection = CreateConnection();
-                return await connection.ExecuteAsync(query, parameters);
-
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message, e);
-            }
-        }
     }
 }

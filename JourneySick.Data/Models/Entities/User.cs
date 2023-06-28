@@ -10,5 +10,6 @@ namespace JourneySick.Data.Models.Entities
         public string Password { get; set; } = null!;
         public string? Confirmation { get; set; }
         public DateTime? SendDate { get; set; }
+        public string? Avatar { get; set; }
     }
 }

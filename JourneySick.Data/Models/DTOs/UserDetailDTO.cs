@@ -35,8 +35,6 @@ namespace JourneySick.Data.Models.DTOs
 
         public int? TripCancelled { get; set; }
 
-        public IFormFile? Avatar { get; set; }
-
         public DateTime? CreateDate { get; set; }
 
         public string? CreateBy { get; set; }

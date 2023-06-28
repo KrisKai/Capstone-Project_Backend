@@ -7,6 +7,7 @@ namespace JourneySick.Data.Models.Entities.VO
         public String? Password { get; set; }
         public string? Confirmation { get; set; }
         public DateTime SendDate { get; set; }
+        public string? Avatar { get; set; }
 
         public List<UserInterest>? userInterestList;
     }

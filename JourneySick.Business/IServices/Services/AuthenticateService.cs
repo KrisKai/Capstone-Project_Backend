@@ -94,7 +94,7 @@ namespace JourneySick.Business.IServices.Services
                 registerResponse.Email = registereRequest.Email;
                 registerResponse.FullName = userDetailEntity.Fullname;
                 registerResponse.Username = registereRequest.Username;
-                registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userDetailEntity.UserId, name: userDetailEntity.Fullname);
+                registerResponse.Token = await GenerateTokenAsync(UserRoleEnum.USER.ToString(), userDetailEntity.UserId, name: userDetailEntity.Fullname, userDetailEntity.Avatar);
 
                 await EmailService.SendEmailRegister(userDetailEntity.Email, userDetailEntity.Fullname, await _userRepository.GetLastOneId());
                 return registerResponse;
@@ -134,7 +134,7 @@ namespace JourneySick.Business.IServices.Services
                             }
                         }
                         UserRequest userRequest = _mapper.Map<UserRequest>(userVO);
-                        loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname);
+                        loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname, avatar: userVO.Avatar);
                         CurrentUserObject currentUser = new();
                         currentUser.Name = userRequest.Fullname;
                         currentUser.Role = userRequest.Role;
@@ -179,7 +179,7 @@ namespace JourneySick.Business.IServices.Services
                             if (userVO.Role.Equals(UserRoleEnum.ADMIN.ToString()) || userVO.Role.Equals(UserRoleEnum.EMPL.ToString()))
                             {
                                 UserRequest userRequest = _mapper.Map<UserRequest>(userVO);
-                                loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname);
+                                loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname, avatar: userVO.Avatar);
                                 CurrentUserObject currentUser = new();
                                 currentUser.Name = userRequest.Fullname;
                                 currentUser.Role = userRequest.Role;
@@ -232,7 +232,7 @@ namespace JourneySick.Business.IServices.Services
             }
         }
 
-        private async Task<string> GenerateTokenAsync(string roleCheck, string userId, string name)
+        private async Task<string> GenerateTokenAsync(string roleCheck, string userId, string name, string avatar)
         {
             try
             {
@@ -265,6 +265,7 @@ namespace JourneySick.Business.IServices.Services
                 {
                     hours = 5;
                 }
+                avatar ??= string.Empty;
 
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
@@ -272,7 +273,8 @@ namespace JourneySick.Business.IServices.Services
                     {
                         new Claim(ClaimTypes.SerialNumber, userId),
                         new Claim(ClaimTypes.Name, name),
-                        roleClaim
+                        roleClaim,
+                        new Claim(ClaimTypes.Thumbprint, avatar)
 
                     }),
 

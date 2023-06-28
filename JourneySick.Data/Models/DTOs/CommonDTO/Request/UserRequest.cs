@@ -1,5 +1,6 @@
 ﻿using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,7 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
         public string? Confirmation { get; set; }
         public DateTime SendDate { get; set; }
         public List<UserInterest> userInterestList { get; set; }
+        public string? Avatar { get; set; }
+        public IFormFile? AvatarFile { get; set; }
     }
 }

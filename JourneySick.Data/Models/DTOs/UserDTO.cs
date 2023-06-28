@@ -13,5 +13,6 @@ namespace JourneySick.Data.Models.DTOs
         public String? Password { get; set; }
         public string? Confirmation { get; set; }
         public DateTime SendDate { get; set; }
+        public string? Avatar { get; set; }
     }
 }

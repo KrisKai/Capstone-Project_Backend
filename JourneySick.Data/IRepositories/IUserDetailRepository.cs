@@ -13,6 +13,5 @@ namespace JourneySick.Data.IRepositories
         public Task<int> DeleteUserDetail(string userId);
         public Task<int> UpdateTripQuantityCreated(UserVO userDetailEntity);
         public Task<int> UpdateAcitveStatus(UserVO userDetailEntity);
-        public Task<int> UpdateAvatar(UserVO userVO);
     }
 }

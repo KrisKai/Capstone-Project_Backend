@@ -449,13 +449,13 @@ namespace JourneySick.Business.IServices.Services
                 {
                     
                     UserVO userVO = _mapper.Map<UserVO>(userRequest);
-                    if (userRequest.Avatar != null)
+                    if (userRequest.AvatarFile != null)
                     {
-                        userVO.Avatar = await _firebaseStorageService.UploadTripThumbnail(userRequest.Avatar, userVO.UserId);
+                        userVO.Avatar = await _firebaseStorageService.UploadTripThumbnail(userRequest.AvatarFile, userVO.UserId);
                     }
-                    if (await _userDetailRepository.UpdateAvatar(userVO) > 0)
+                    if (await _userRepository.UpdateAvatar(userVO) > 0)
                     {
-                        return userVO.UserId;
+                        return userVO.Avatar;
                     }
                     else
                     {
