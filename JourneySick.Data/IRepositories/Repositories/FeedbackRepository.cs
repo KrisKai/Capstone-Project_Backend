@@ -190,8 +190,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "SELECT Fullname, `Like`, Dislike, LocationName, Rate, FeedbackDescription " +
                     "FROM feedback a INNER JOIN user b ON a.UserId = b.UserId " +
                     "INNER JOIN user_detail c ON a.UserId = c.UserId " +
-                    "INNER JOIN trip d ON a.TripId = d.TripId " +
-                    "ORDER BY `Like` LIMIT 10";
+                    "ORDER BY `Like` LIMIT 20";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<FeedbackVO>(query)).ToList();
