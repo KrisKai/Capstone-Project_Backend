@@ -87,7 +87,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         TripDescription, "
                     + "         TripStatus, "
                     + "         TripPresenter, "
-                    + "         TripThumbnail, "
                     + "         TripMember) "
                     + "     VALUES ( "
                     + "         @TripId, "
@@ -97,7 +96,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @TripDescription, "
                     + "         @TripStatus, "
                     + "         @TripPresenter, "
-                    + "         @TripThumbnail, "
                     + "         @TripMember) ";
 
                 var parameters = new DynamicParameters();
@@ -108,7 +106,6 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("TripDescription", tripEntity.TripDescription, DbType.String);
                 parameters.Add("TripStatus", tripEntity.TripStatus, DbType.String);
                 parameters.Add("TripMember", tripEntity.TripMember, DbType.String);
-                parameters.Add("TripThumbnail", tripEntity.TripThumbnail, DbType.String);
                 parameters.Add("TripPresenter", tripEntity.TripPresenter, DbType.String);
 
                 using var connection = CreateConnection();
