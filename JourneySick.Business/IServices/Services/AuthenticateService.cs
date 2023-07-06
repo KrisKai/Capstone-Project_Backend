@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FirebaseAdmin.Auth;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Business.Helpers.SettingObject;
@@ -42,6 +43,25 @@ namespace JourneySick.Business.IServices.Services
             _userInterestRepository = userInterestRepository;
             _logger = logger;
             _mapper = mapper;
+        }
+
+        public async Task<LoginResponse> GetFirebaseToken(string? firebaseToken)
+        {
+            try
+            {
+                FirebaseToken decryptedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(firebaseToken);
+                string uid = decryptedToken.Uid;
+                UserRecord userRecord = await FirebaseAuth.DefaultInstance.GetUserAsync(uid);
+                string email = userRecord.Email;
+                string lastName = userRecord.DisplayName;
+                string ImageUrl = userRecord.PhotoUrl.ToString();
+
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
         }
 
         public async Task<RegisterResponse> RegisterUser(RegisterRequest registereRequest)
