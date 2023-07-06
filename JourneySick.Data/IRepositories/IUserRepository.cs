@@ -15,9 +15,13 @@ namespace JourneySick.Data.IRepositories
 
         public Task<string> GetPasswordByUsername(string username);
 
+        public Task<string> GetPasswordByEmail(string email);
+
         public Task<UserVO> GetUserByUsername(string username);
 
         public Task<UserVO> GetUserById(string userId);
+
+        public Task<UserVO> GetUserByEmail(string email);
 
         //CREATE
         public Task<int> CreateUser(UserVO userEntity);

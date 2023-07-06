@@ -45,23 +45,40 @@ namespace JourneySick.Business.IServices.Services
             _mapper = mapper;
         }
 
-        public async Task<LoginResponse> GetFirebaseToken(string? firebaseToken)
+        public async Task<LoginResponse> LoginWithSocial(string firebaseToken)
         {
             try
             {
-                FirebaseToken decryptedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(firebaseToken);
-                string uid = decryptedToken.Uid;
-                UserRecord userRecord = await FirebaseAuth.DefaultInstance.GetUserAsync(uid);
-                string email = userRecord.Email;
-                string lastName = userRecord.DisplayName;
-                string ImageUrl = userRecord.PhotoUrl.ToString();
+                CurrentUserObject currentUser = await GetFirebaseToken(firebaseToken);
+                UserVO userVO = await _userRepository.GetUserByEmail(currentUser.Email);
+                LoginResponse loginResponse = new LoginResponse();
+                if (userVO != null)
+                {
+                    throw new LoginFailedException("Email chưa được đăng kí!!");
+                }
+                else
+                {
+                    UserRequest userRequest = _mapper.Map<UserRequest>(userVO);
+                    loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname, avatar: userVO.Avatar);
+                    currentUser.Name = userRequest.Fullname;
+                    currentUser.Role = userRequest.Role;
+                    currentUser.UserId = userRequest.UserId;
+                    loginResponse.CurrentUserObj = currentUser;
+                }
+
+                return loginResponse;
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace, ex);
                 throw;
             }
+        }
+
+        public Task<LoginResponse> RegisterWithSocial(string firebaseToken)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<RegisterResponse> RegisterUser(RegisterRequest registereRequest)
@@ -340,6 +357,29 @@ namespace JourneySick.Business.IServices.Services
                 throw;
             }
 
+        }
+
+        private async Task<CurrentUserObject> GetFirebaseToken(string firebaseToken)
+        {
+            try
+            {
+                FirebaseToken decryptedToken = await FirebaseAuth.DefaultInstance.VerifyIdTokenAsync(firebaseToken);
+                string uid = decryptedToken.Uid;
+                UserRecord userRecord = await FirebaseAuth.DefaultInstance.GetUserAsync(uid);
+                string email = userRecord.Email;
+                string lastName = userRecord.DisplayName;
+                string ImageUrl = userRecord.PhotoUrl.ToString();
+                CurrentUserObject currentUser = new();
+                currentUser.Name = lastName;
+                currentUser.Avatar = ImageUrl;
+                currentUser.Email = email;
+                return currentUser;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
         }
     }
 }

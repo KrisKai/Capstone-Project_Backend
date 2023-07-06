@@ -115,6 +115,22 @@ namespace JourneySick.Data.IRepositories.Repositories
             }
         }
 
+        public async Task<string> GetPasswordByEmail(string email)
+        {
+            try
+            {
+                var query = "SELECT Password FROM User a JOIN UserDetail b ON a.UserId = b.UserId WHERE Email = @email";
+                var parameters = new DynamicParameters();
+                parameters.Add("email", email, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
         public async Task<UserVO> GetUserByUsername(string username)
         {
             try
@@ -141,6 +157,25 @@ namespace JourneySick.Data.IRepositories.Repositories
 
                 var parameters = new DynamicParameters();
                 parameters.Add("UserId", userId, DbType.String);
+
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<UserVO>(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        //SELECT
+        public async Task<UserVO> GetUserByEmail(string email)
+        {
+            try
+            {
+                var query = "SELECT * FROM user a JOIN user_detail b ON a.UserId = b.UserId WHERE b.Email = @email";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("email", email, DbType.String);
 
                 using var connection = CreateConnection();
                 return await connection.QueryFirstOrDefaultAsync<UserVO>(query, parameters);
