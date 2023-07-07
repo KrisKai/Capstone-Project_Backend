@@ -49,12 +49,40 @@ namespace JourneySick.Business.IServices.Services
         {
             try
             {
+                LoginResponse loginResponse = new();
                 CurrentUserObject currentUser = await GetFirebaseToken(firebaseToken);
                 UserVO userVO = await _userRepository.GetUserByEmail(currentUser.Email);
-                LoginResponse loginResponse = new LoginResponse();
-                if (userVO != null)
+                
+                if (userVO == null)
                 {
-                    throw new LoginFailedException("Email chưa được đăng kí!!");
+                    
+                    userVO.Avatar = currentUser.Avatar;
+                    userVO.Email = currentUser.Email;
+                    
+                    if(await _userRepository.CreateUser(userVO) > 0)
+                    {
+                        userVO.UserId = await GenerateUserID();
+                        userVO.Role = UserRoleEnum.USER.ToString();
+                        userVO.ActiveStatus = "INACTIVE";
+                        userVO.Fullname = currentUser.Name;
+                        userVO.Experience = 0;
+                        userVO.TripCreated = 0;
+                        userVO.TripJoined = 0;
+                        userVO.TripCompleted = 0;
+                        userVO.TripCancelled = 0;
+                        userVO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                        userVO.CreateBy = userVO.UserId;
+
+                        if (await _userDetailRepository.CreateUserDetail(userVO) == 0)
+                        {
+                            throw new Exception();
+                        }
+                    } else
+                    {
+                        throw new Exception();
+                    }
+                    
+
                 }
                 else
                 {
@@ -172,10 +200,12 @@ namespace JourneySick.Business.IServices.Services
                         }
                         UserRequest userRequest = _mapper.Map<UserRequest>(userVO);
                         loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname, avatar: userVO.Avatar);
-                        CurrentUserObject currentUser = new();
-                        currentUser.Name = userRequest.Fullname;
-                        currentUser.Role = userRequest.Role;
-                        currentUser.UserId = userRequest.UserId;
+                        CurrentUserObject currentUser = new()
+                        {
+                            Name = userRequest.Fullname,
+                            Role = userRequest.Role,
+                            UserId = userRequest.UserId
+                        };
                         loginResponse.CurrentUserObj = currentUser;
                     }
                     else
@@ -369,10 +399,12 @@ namespace JourneySick.Business.IServices.Services
                 string email = userRecord.Email;
                 string lastName = userRecord.DisplayName;
                 string ImageUrl = userRecord.PhotoUrl.ToString();
-                CurrentUserObject currentUser = new();
-                currentUser.Name = lastName;
-                currentUser.Avatar = ImageUrl;
-                currentUser.Email = email;
+                CurrentUserObject currentUser = new()
+                {
+                    Name = lastName,
+                    Avatar = ImageUrl,
+                    Email = email
+                };
                 return currentUser;
             }
             catch (Exception ex)
