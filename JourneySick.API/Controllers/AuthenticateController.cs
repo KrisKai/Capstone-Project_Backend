@@ -56,7 +56,7 @@ namespace JourneySick.API.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("login-with-social")]
-        public async Task<IActionResult> LoginWithSocial(string firebaseToken)
+        public async Task<IActionResult> LoginWithSocial([FromBody] string firebaseToken)
         {
             var result = await _authenticateService.LoginWithSocial(firebaseToken);
             return Ok(result);
