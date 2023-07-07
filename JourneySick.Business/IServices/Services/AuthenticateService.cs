@@ -55,13 +55,14 @@ namespace JourneySick.Business.IServices.Services
                 
                 if (userVO == null)
                 {
-                    
+                    userVO = new();
                     userVO.Avatar = currentUser.Avatar;
                     userVO.Email = currentUser.Email;
-                    
-                    if(await _userRepository.CreateUser(userVO) > 0)
+                    userVO.UserId = await GenerateUserID();
+                    userVO.Username = await GenerateUserName();
+                    userVO.Password = PasswordEncryption.Encrypt("Qwer1234!", _appSecrect.SecrectKey);
+                    if (await _userRepository.CreateUser(userVO) > 0)
                     {
-                        userVO.UserId = await GenerateUserID();
                         userVO.Role = UserRoleEnum.USER.ToString();
                         userVO.ActiveStatus = "INACTIVE";
                         userVO.Fullname = currentUser.Name;
@@ -77,6 +78,10 @@ namespace JourneySick.Business.IServices.Services
                         {
                             throw new Exception();
                         }
+                        currentUser.Name = userVO.Fullname;
+                        currentUser.Role = userVO.Role;
+                        currentUser.UserId = userVO.UserId;
+                        loginResponse.CurrentUserObj = currentUser;
                     } else
                     {
                         throw new Exception();
@@ -379,6 +384,34 @@ namespace JourneySick.Business.IServices.Services
                 else
                 {
                     return "USER_00000001";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+
+        }
+        private async Task<string> GenerateUserName()
+        {
+            try
+            {
+                string lastOne = await _userRepository.GetLastOneId();
+                if (lastOne != null)
+                {
+                    string lastId = lastOne.Substring(5);
+                    int newId = Convert.ToInt32(lastId) + 1;
+                    string newIdStr = Convert.ToString(newId);
+                    while (newIdStr.Length < 8)
+                    {
+                        newIdStr = "0" + newIdStr;
+                    }
+                    return "JourneySick" + newIdStr;
+                }
+                else
+                {
+                    return "JourneySick00000001";
                 }
             }
             catch (Exception ex)
