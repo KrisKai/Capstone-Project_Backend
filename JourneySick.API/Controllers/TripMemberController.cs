@@ -119,5 +119,16 @@ namespace JourneySick.API.Controllers
             var result = await _tripMemberService.SendMail(id);
             return Ok(result);
         }
+
+        //SEND MAIL
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("send-mail-user")]
+        public async Task<IActionResult> SendMailUser([FromBody] TripMemberRequest tripMemberRequest)
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _tripMemberService.SendMailUser(tripMemberRequest.Email, tripMemberRequest.TripId, currentUser);
+            return Ok(result);
+        }
     }
 }

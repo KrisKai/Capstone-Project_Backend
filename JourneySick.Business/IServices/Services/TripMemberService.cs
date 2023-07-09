@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Execution;
 using JourneySick.Business.Helpers;
 using JourneySick.Business.Helpers.Exceptions;
 using JourneySick.Data.IRepositories;
@@ -192,6 +193,55 @@ namespace JourneySick.Business.IServices.Services
                 else
                 {
                     throw new GetOneException("Thành viên này không tồn tại trong chuyến đi!");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
+        public async Task<int> SendMailUser(string selectReceiver, string tripId, CurrentUserObject currentUser)
+        {
+            try
+            {
+                TripMemberDTO getTrip = await _tripMemberRepository.GetTripMemberByEmail(selectReceiver, tripId);
+
+                if (getTrip != null)
+                {
+                    if (getTrip.Confirmation.Equals("N"))
+                    {
+                        UserVO userdetail = await _userDetailRepository.GetUserDetailById(getTrip.UserId);
+                        UserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(getTrip.TripId);
+                        await EmailService.SendEmailTrip(tripPresenter.Fullname, userdetail.Email, userdetail.Fullname, (int)getTrip.MemberId);
+                        await _tripMemberRepository.UpdateSendMailDate((int)getTrip.MemberId);
+                        return (int)getTrip.MemberId;
+                    }
+                    else
+                    {
+                        throw new UpdateException("Thành viên này đã tham gia chuyến đi!");
+                    }
+                }
+                else
+                {
+                    UserVO userVO = await _userDetailRepository.GetUserDetailByEmail(selectReceiver);
+                    TripMemberDTO tripMemberDTO = new();
+                    tripMemberDTO.TripId = tripId;
+                    tripMemberDTO.CreateBy = currentUser.UserId;
+                    tripMemberDTO.UserId = userVO.UserId;
+                    tripMemberDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
+                    tripMemberDTO.Confirmation = "N";
+                    TripMember tripmember = _mapper.Map<TripMember>(tripMemberDTO);
+                    int id = (int)await _tripMemberRepository.CreateTripMember(tripmember);
+                    if (id > 0)
+                    {
+                        UserVO userdetail = await _userDetailRepository.GetUserDetailById(tripMemberDTO.UserId);
+                        UserVO tripPresenter = await _userDetailRepository.GetTripPresenterByTripId(tripMemberDTO.TripId);
+                        await EmailService.SendEmailTrip(tripPresenter.Fullname, userdetail.Email, userdetail.Fullname, id);
+                        await _tripMemberRepository.UpdateSendMailDate(id);
+                    }
+                    return id;
                 }
             }
             catch (Exception ex)

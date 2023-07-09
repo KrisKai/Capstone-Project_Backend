@@ -275,5 +275,22 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        public async Task<UserVO> GetUserDetailByEmail(string email)
+        {
+            try
+            {
+                var query = "SELECT * FROM user_detail WHERE Email = @email";
+                var parameters = new DynamicParameters();
+                parameters.Add("email", email, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<UserVO>(query, parameters);
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }

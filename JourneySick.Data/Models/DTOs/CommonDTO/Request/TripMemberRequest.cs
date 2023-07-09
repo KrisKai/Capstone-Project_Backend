@@ -15,5 +15,6 @@ namespace JourneySick.Data.Models.DTOs.CommonDTO.Request
         public string? Phone { get; set; }
 
         public string? RoleName { get; set; }
+        public string? Avatar { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Dapper.Transaction;
 using JourneySick.Data.Helpers;
+using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Configuration;
@@ -315,6 +316,24 @@ namespace JourneySick.Data.IRepositories.Repositories
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TripmemberVO>(query, parameters)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<TripMemberDTO> GetTripMemberByEmail(string selectReceiver, string tripId)
+        {
+            try
+            {
+                var query = "SELECT * FROM trip_member a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE Email = @email AND TripId = @tripId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("email", selectReceiver, DbType.String);
+                parameters.Add("tripId", tripId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<TripMemberDTO>(query, parameters);
             }
             catch (Exception e)
             {

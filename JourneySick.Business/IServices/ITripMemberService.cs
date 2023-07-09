@@ -20,6 +20,8 @@ namespace JourneySick.Business.IServices
         public Task<int> ConfirmTrip(int id);
         //Send mail
         public Task<int> SendMail(int id);
+        //Send mail
+        public Task<int> SendMailUser(string selectReceiver, string tripId, CurrentUserObject currentUser);
         public Task<List<string>> GetAllTripMemberByEmailOrUsername(string memberName);
         public Task<List<TripMemberRequest>> GetAllTripMemberUser(string tripId, CurrentUserObject currentUser);
     }

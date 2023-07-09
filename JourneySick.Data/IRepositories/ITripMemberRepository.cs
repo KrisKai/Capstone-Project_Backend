@@ -36,5 +36,6 @@ namespace JourneySick.Data.IRepositories
         public Task<int> UpdateSendMailDate(int id);
         public Task<List<TripmemberVO>> GetAllTripMemberByEmailOrUsername(string memberName);
         public Task<List<TripmemberVO>> GetAllTripMemberUser(string tripId);
+        public Task<TripMemberDTO> GetTripMemberByEmail(string selectReceiver, string tripId);
     }
 }
