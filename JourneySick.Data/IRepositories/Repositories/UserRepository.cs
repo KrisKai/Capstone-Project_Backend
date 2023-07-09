@@ -194,15 +194,18 @@ namespace JourneySick.Data.IRepositories.Repositories
                 var query = "INSERT INTO user ("
                     + "         UserId, "
                     + "         UserName, "
+                    + "         Avatar, "
                     + "         Password) "
                     + "     VALUES ( "
                     + "         @UserId, "
                     + "         @UserName, "
+                    + "         @Avatar, "
                     + "         @Password)";
 
                 var parameters = new DynamicParameters();
                 parameters.Add("UserId", userEntity.UserId, DbType.String);
                 parameters.Add("UserName", userEntity.Username, DbType.String);
+                parameters.Add("Avatar", userEntity.Avatar, DbType.String);
                 parameters.Add("Password", userEntity.Password, DbType.String);
 
                 using var connection = CreateConnection();

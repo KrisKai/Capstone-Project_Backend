@@ -78,6 +78,7 @@ namespace JourneySick.Business.IServices.Services
                         {
                             throw new Exception();
                         }
+                        loginResponse.Token = await GenerateTokenAsync(roleCheck: userVO.Role, userId: userVO.UserId, name: userVO.Fullname, avatar: userVO.Avatar);
                         currentUser.Name = userVO.Fullname;
                         currentUser.Role = userVO.Role;
                         currentUser.UserId = userVO.UserId;
