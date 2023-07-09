@@ -8,6 +8,7 @@ using JourneySick.Data.Models.DTOs.CommonDTO.Request;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Logging;
+using MySqlX.XDevAPI.Common;
 using RevenueSharingInvest.Business.Services.Extensions.Email;
 
 namespace JourneySick.Business.IServices.Services
@@ -228,6 +229,48 @@ namespace JourneySick.Business.IServices.Services
                 {
                     throw new GetOneException("Thành viên này không tồn tại trong chuyến đi!");
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
+        public async Task<List<string>> GetAllTripMemberByEmailOrUsername(string memberName)
+        {
+            try
+            {
+                List<TripmemberVO> tripmembers = await _tripMemberRepository.GetAllTripMemberByEmailOrUsername(memberName);
+                // convert entity to dto
+                List<TripMemberRequest> tripMemberDTOs = _mapper.Map<List<TripMemberRequest>>(tripmembers);
+                List<string> result = new List<string>();
+                foreach (TripmemberVO tripmember in tripmembers) { result.Add(tripmember.Email);}
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace, ex);
+                throw;
+            }
+        }
+
+        public async Task<List<TripMemberRequest>> GetAllTripMemberUser(string tripId, CurrentUserObject currentUser)
+        {
+            try
+            {
+                List<TripmemberVO> tripmembers = await _tripMemberRepository.GetAllTripMemberUser(tripId);
+                // convert entity to dto
+                List<TripMemberRequest> tripMemberDTOs = _mapper.Map<List<TripMemberRequest>>(tripmembers);
+                List<TripMemberRequest> result = new List<TripMemberRequest>();
+                foreach (TripMemberRequest tripmember in tripMemberDTOs) 
+                {
+                    if (!tripmember.Fullname.Equals(currentUser.Name))
+                    {
+                        result.Add(tripmember);
+                    }
+                }
+                return result;
             }
             catch (Exception ex)
             {

@@ -284,5 +284,42 @@ namespace JourneySick.Data.IRepositories.Repositories
                 throw new Exception(e.Message, e);
             }
         }
+
+        public async Task<List<TripmemberVO>> GetAllTripMemberByEmailOrUsername(string memberName)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                memberName ??= "";
+                parameters.Add("NickName", memberName, DbType.String);
+
+                var query = "SELECT * FROM user a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE LOWER(Username) LIKE CONCAT('%', LOWER(@NickName), '%') OR LOWER(Email) LIKE CONCAT('%', LOWER(@NickName), '%')  LIMIT 0, 20";
+
+                using var connection = CreateConnection();
+                return (await connection.QueryAsync<TripmemberVO>(query, parameters)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<List<TripmemberVO>> GetAllTripMemberUser(string tripId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("tripId", tripId, DbType.String);
+
+                var query = "SELECT * FROM trip_member a LEFT JOIN user_detail b ON a.UserId = b.UserId LEFT JOIN user c ON a.UserId = c.UserId WHERE TripId = @tripId ";
+
+                using var connection = CreateConnection();
+                return (await connection.QueryAsync<TripmemberVO>(query, parameters)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
     }
 }
