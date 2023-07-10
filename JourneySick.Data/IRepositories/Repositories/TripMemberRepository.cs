@@ -107,6 +107,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         MemberRole, "
                     + "         NickName, "
                     + "         Status, "
+                    + "         Confirmation, "
                     + "         CreateDate, "
                     + "         CreateBy) "
                     + "     VALUES ( "
@@ -115,6 +116,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @MemberRole, "
                     + "         @NickName, "
                     + "         @Status, "
+                    + "         @Confirmation, "
                     + "         @CreateDate, "
                     + "         @CreateBy)";
                 var getLastId = "SELECT LAST_INSERT_ID()";
@@ -125,6 +127,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("MemberRole", tripmember.MemberRole, DbType.String);
                 parameters.Add("NickName", tripmember.NickName, DbType.String);
                 parameters.Add("Status", tripmember.Status, DbType.String);
+                parameters.Add("Confirmation", tripmember.Confirmation, DbType.String);
                 parameters.Add("CreateDate", tripmember.CreateDate, DbType.DateTime);
                 parameters.Add("CreateBy", tripmember.CreateBy, DbType.String);
 
