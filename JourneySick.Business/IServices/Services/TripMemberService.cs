@@ -233,6 +233,7 @@ namespace JourneySick.Business.IServices.Services
                     tripMemberDTO.CreateDate = DateTimePicker.GetDateTimeByTimeZone();
                     tripMemberDTO.Confirmation = "N";
                     tripMemberDTO.MemberRole = "MEMBER";
+                    tripMemberDTO.Status = "ACTIVE";
                     TripMember tripmember = _mapper.Map<TripMember>(tripMemberDTO);
                     int id = (int)await _tripMemberRepository.CreateTripMember(tripmember);
                     if (id > 0)

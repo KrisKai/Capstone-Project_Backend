@@ -261,7 +261,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     "FROM trip a INNER JOIN trip_detail b ON a.TripId = b.TripId " +
                     "INNER JOIN trip_member c ON a.TripId = c.TripId " +
                     "LEFT JOIN feedback d ON (a.TripId = d.TripId AND c.UserId = d.UserId)" +
-                    "WHERE c.UserId = @userId";
+                    "WHERE c.UserId = @userId AND c.Confirmation = 'Y'";
 
                 using var connection = CreateConnection();
                 return (await connection.QueryAsync<TripVO>(query, parameters)).ToList();
