@@ -121,21 +121,23 @@ namespace JourneySick.Business.IServices.Services
             {
                 UserVO userDetailEntity = new();
                 RegisterResponse registerResponse = new();
+
                 string checkNameExist = await _userRepository.GetUsernameIfExist(registereRequest.Username);
                 if (checkNameExist != null)
                 {
-                    throw new UserAlreadyExistException("Tên đăng nhập này đã được sử dụng!!");
+                    throw new UserAlreadyExistException("This Username Already Used!!");
                 }
                 string checkEmailExist = await _userDetailRepository.GetEmailIfExist(registereRequest.Email);
                 if (checkEmailExist != null)
                 {
-                    throw new UserAlreadyExistException("Địa chỉ email này đã được sử dụng!!");
+                    throw new UserAlreadyExistException("This Email Address Already Used!!");
                 }
                 string checkPhoneExist = await _userDetailRepository.GetPhoneIfExist(registereRequest.Phone);
                 if (checkPhoneExist != null)
                 {
-                    throw new UserAlreadyExistException("Số điện thoại này đã được sử dụng!!");
+                    throw new UserAlreadyExistException("This Phone Number Already Used!!");
                 }
+
                 userDetailEntity.UserId = await GenerateUserID();
                 userDetailEntity.Username = registereRequest.Username;
                 userDetailEntity.Password = PasswordEncryption.Encrypt(registereRequest.Password, _appSecrect.SecrectKey);
@@ -159,7 +161,7 @@ namespace JourneySick.Business.IServices.Services
                     userDetailEntity.CreateBy = userDetailEntity.UserId;
                     if (await _userDetailRepository.CreateUserDetail(userDetailEntity) < 1)
                     {
-                        throw new RegisterUserException("Đăng kí thất bại!!");
+                        throw new RegisterUserException("Registration Failed!!");
                     }
                 }
                 registerResponse.Email = registereRequest.Email;

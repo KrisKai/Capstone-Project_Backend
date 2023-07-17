@@ -12,4 +12,11 @@ namespace JourneySick.Data.Models.Enums
         USER,
         EMPL
     }
+
+    public enum UserStatusEnum
+    {
+        ACTIVE,
+        INACTIVE
+    }
+
 }
