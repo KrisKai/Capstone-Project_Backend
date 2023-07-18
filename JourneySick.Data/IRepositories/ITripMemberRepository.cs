@@ -34,5 +34,8 @@ namespace JourneySick.Data.IRepositories
         //CONFIRM INVITATION
         public Task<int> ConfirmTrip(int tripMemberId);
         public Task<int> UpdateSendMailDate(int id);
+        public Task<List<TripmemberVO>> GetAllTripMemberByEmailOrUsername(string memberName);
+        public Task<List<TripmemberVO>> GetAllTripMemberUser(string tripId);
+        public Task<TripMemberDTO> GetTripMemberByEmail(string selectReceiver, string tripId);
     }
 }

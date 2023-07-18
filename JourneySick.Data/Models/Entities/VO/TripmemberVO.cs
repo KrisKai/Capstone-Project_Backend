@@ -15,5 +15,6 @@ namespace JourneySick.Data.Models.Entities.VO
         public string? Phone { get; set; }
 
         public string? RoleName { get; set; }
+        public string? Avatar { get; set; }
     }
 }

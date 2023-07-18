@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Dapper.Transaction;
 using JourneySick.Data.Helpers;
+using JourneySick.Data.Models.DTOs;
 using JourneySick.Data.Models.Entities;
 using JourneySick.Data.Models.Entities.VO;
 using Microsoft.Extensions.Configuration;
@@ -106,6 +107,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         MemberRole, "
                     + "         NickName, "
                     + "         Status, "
+                    + "         Confirmation, "
                     + "         CreateDate, "
                     + "         CreateBy) "
                     + "     VALUES ( "
@@ -114,6 +116,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                     + "         @MemberRole, "
                     + "         @NickName, "
                     + "         @Status, "
+                    + "         @Confirmation, "
                     + "         @CreateDate, "
                     + "         @CreateBy)";
                 var getLastId = "SELECT LAST_INSERT_ID()";
@@ -124,6 +127,7 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("MemberRole", tripmember.MemberRole, DbType.String);
                 parameters.Add("NickName", tripmember.NickName, DbType.String);
                 parameters.Add("Status", tripmember.Status, DbType.String);
+                parameters.Add("Confirmation", tripmember.Confirmation, DbType.String);
                 parameters.Add("CreateDate", tripmember.CreateDate, DbType.DateTime);
                 parameters.Add("CreateBy", tripmember.CreateBy, DbType.String);
 
@@ -278,6 +282,61 @@ namespace JourneySick.Data.IRepositories.Repositories
                 parameters.Add("TripId", tripId, DbType.String);
                 using var connection = CreateConnection();
                 return await connection.ExecuteAsync(query, parameters);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<List<TripmemberVO>> GetAllTripMemberByEmailOrUsername(string memberName)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                memberName ??= "";
+                parameters.Add("NickName", memberName, DbType.String);
+
+                var query = "SELECT * FROM user a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE LOWER(Username) LIKE CONCAT('%', LOWER(@NickName), '%') OR LOWER(Email) LIKE CONCAT('%', LOWER(@NickName), '%')  LIMIT 0, 20";
+
+                using var connection = CreateConnection();
+                return (await connection.QueryAsync<TripmemberVO>(query, parameters)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<List<TripmemberVO>> GetAllTripMemberUser(string tripId)
+        {
+            try
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("tripId", tripId, DbType.String);
+
+                var query = "SELECT * FROM trip_member a LEFT JOIN user_detail b ON a.UserId = b.UserId LEFT JOIN user c ON a.UserId = c.UserId WHERE TripId = @tripId ";
+
+                using var connection = CreateConnection();
+                return (await connection.QueryAsync<TripmemberVO>(query, parameters)).ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message, e);
+            }
+        }
+
+        public async Task<TripMemberDTO> GetTripMemberByEmail(string selectReceiver, string tripId)
+        {
+            try
+            {
+                var query = "SELECT * FROM trip_member a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE Email = @email AND TripId = @tripId";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("email", selectReceiver, DbType.String);
+                parameters.Add("tripId", tripId, DbType.String);
+                using var connection = CreateConnection();
+                return await connection.QueryFirstOrDefaultAsync<TripMemberDTO>(query, parameters);
             }
             catch (Exception e)
             {

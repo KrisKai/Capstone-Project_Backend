@@ -33,6 +33,30 @@ namespace JourneySick.API.Controllers
             return Ok(result);
 
         }
+
+        //GET ALL
+        [HttpGet]
+        [Route("get-all-by-email-or-username")]
+        [Authorize]
+        public async Task<IActionResult> GetAllTripMemberByEmailOrUsername(string value)
+        {
+            var result = await _tripMemberService.GetAllTripMemberByEmailOrUsername(value);
+            return Ok(result);
+
+        }
+
+        //GET ALL
+        [HttpGet]
+        [Route("get-all-user")]
+        [Authorize]
+        public async Task<IActionResult> GetAllTripMemberUser(string tripId)
+        {
+            CurrentUserObject currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _tripMemberService.GetAllTripMemberUser(tripId, currentUser);
+            return Ok(result);
+
+        }
+
         //GET
         [HttpGet]
         [Route("{id}")]
@@ -93,6 +117,17 @@ namespace JourneySick.API.Controllers
         public async Task<IActionResult> SendMail([FromBody] int id)
         {
             var result = await _tripMemberService.SendMail(id);
+            return Ok(result);
+        }
+
+        //SEND MAIL
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("send-mail-user")]
+        public async Task<IActionResult> SendMailUser([FromBody] TripMemberRequest tripMemberRequest)
+        {
+            var currentUser = await GetCurrentUserInfo.GetThisUserInfo(HttpContext);
+            var result = await _tripMemberService.SendMailUser(tripMemberRequest.Email, tripMemberRequest.TripId, currentUser);
             return Ok(result);
         }
     }
