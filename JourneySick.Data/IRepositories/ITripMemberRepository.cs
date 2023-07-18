@@ -27,7 +27,7 @@ namespace JourneySick.Data.IRepositories
         public Task<int> DeleteTripMember(int tripMemberId);
         //UPDATE STATUS
         public Task<int> UpdateMemberStatus(TripMember tripmember);
-        //DELETE BY USER ID
+        //DELETE BY user ID
         public Task<int> DeleteTripMemberByUserId(string userId);
         //DELETE BY TRIP ID
         public Task<int> DeleteTripMemberByTripId(string tripId);

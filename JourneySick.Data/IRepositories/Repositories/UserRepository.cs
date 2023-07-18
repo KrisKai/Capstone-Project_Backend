@@ -103,7 +103,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT Password FROM User WHERE Username = @Username";
+                var query = "SELECT Password FROM user WHERE Username = @Username";
                 var parameters = new DynamicParameters();
                 parameters.Add("Username", username, DbType.String);
                 using var connection = CreateConnection();
@@ -119,7 +119,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT Password FROM User a JOIN UserDetail b ON a.UserId = b.UserId WHERE Email = @email";
+                var query = "SELECT Password FROM user a JOIN UserDetail b ON a.UserId = b.UserId WHERE Email = @email";
                 var parameters = new DynamicParameters();
                 parameters.Add("email", email, DbType.String);
                 using var connection = CreateConnection();
@@ -135,7 +135,7 @@ namespace JourneySick.Data.IRepositories.Repositories
         {
             try
             {
-                var query = "SELECT * FROM User a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE Username = @Username AND ActiveStatus = 'ACTIVE'";
+                var query = "SELECT * FROM user a LEFT JOIN user_detail b ON a.UserId = b.UserId WHERE Username = @Username AND ActiveStatus = 'ACTIVE'";
                 var parameters = new DynamicParameters();
                 parameters.Add("Username", username, DbType.String);
                 using var connection = CreateConnection();

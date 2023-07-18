@@ -25,13 +25,13 @@ namespace JourneySick.Data.IRepositories.Repositories
                 if (query.Equals(""))
                 {
                     query = "SELECT * " +
-                    "FROM feedback a INNER JOIN User b ON a.UserId = b.UserId " +
+                    "FROM feedback a INNER JOIN user b ON a.UserId = b.UserId " +
                     "INNER JOIN user_detail c ON a.UserId = c.UserId " +
                     "LIMIT @firstIndex, @lastIndex";
                 } else
                 {
                     query = "SELECT * " +
-                    "FROM feedback a INNER JOIN User b ON a.UserId = b.UserId " +
+                    "FROM feedback a INNER JOIN user b ON a.UserId = b.UserId " +
                     "INNER JOIN user_detail c ON a.UserId = c.UserId " +
                     "INNER JOIN Trip d ON a.TripId = d.TripId " +
                     "WHERE a.TripId LIKE CONCAT('%', @tripId, '%') " +
